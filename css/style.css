@@ -1322,8 +1322,8 @@ footer {
 
 #experience-object {
     position: absolute;
-    top: 40px;      /* 위치를 조금 더 위로 붙이려면 조절 */
-    right: 40px;    
+    top: 280px;      /* 위치를 조금 더 위로 붙이려면 조절 */
+    right: 15%;    
     width: 480px;   /* 300px -> 480px로 키우기 */
     height: 480px;  /* 300px -> 480px로 키우기 */
     z-index: 1; 
