@@ -352,7 +352,7 @@ export function initSectionObject(containerId, characterText) {
       const lineSegments = new THREE.LineSegments(edges, lineMat);
       letterGroup.add(lineSegments);
 
-      letterGroup.scale.setScalar(1.3);
+      letterGroup.scale.setScalar(1.3); // 볼륨감 있는 크기
       scene.add(letterGroup);
 
       const clock = new THREE.Clock();
@@ -360,7 +360,14 @@ export function initSectionObject(containerId, characterText) {
       function animate() {
         requestAnimationFrame(animate);
         const time = clock.getElapsedTime();
+        const scrollY = window.scrollY || window.pageYOffset;
+
+        // 스크롤에 반응하여 위에서 아래로 살짝 밀려 내려오는 모션 (패럴랙스)
+        const scrollOffset = scrollY * 0.0015; 
+
+        letterGroup.position.y = 1.2 - scrollOffset + Math.sin(time * 0.4) * 0.06;
         letterGroup.rotation.y += 0.005;
+
         material.uniforms.uTime.value = time;
         renderer.render(scene, camera);
       }
