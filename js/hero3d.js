@@ -3,14 +3,13 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Sharper Sunbeam Rays + Ultra Milk-Ice Glass U)
+   HERO THREE.JS (Full-Coverage Ice Light Bg + Glass U)
 ========================================================= */
 
 export function initHero3D() {
   const container = document.getElementById("hero-3d");
   if (!container) return;
 
-  // 기존 캔버스 잔여물 제거 (에러 방지)
   container.innerHTML = "";
 
   const scene = new THREE.Scene();
@@ -21,14 +20,14 @@ export function initHero3D() {
   /* =====================================================
      LIGHTING
   ===================================================== */
-  const ambientLight = new THREE.AmbientLight(0xffffff, 3.5);
+  const ambientLight = new THREE.AmbientLight(0xffffff, 3.8);
   scene.add(ambientLight);
 
   const mainLight = new THREE.DirectionalLight(0xffffff, 4.5);
   mainLight.position.set(-5, 9, 10);
   scene.add(mainLight);
 
-  const mouseLight = new THREE.PointLight(0xffffff, 6.0, 35);
+  const mouseLight = new THREE.PointLight(0xffffff, 5.0, 35);
   scene.add(mouseLight);
 
   const renderer = new THREE.WebGLRenderer({
@@ -43,15 +42,16 @@ export function initHero3D() {
   container.appendChild(renderer.domElement);
 
   /* =====================================================
-     ★ BACKGROUND: SHARP DIAGONAL SUNBEAMS (레퍼런스 동일 사선 광선)
+     ★ FULL-COVERAGE ICE LIGHT BACKGROUND (여백 방지 & 고급 톤)
   ===================================================== */
-  const lightRayGeo = new THREE.PlaneGeometry(38, 26);
+  // 여백이 잘리지 않도록 크기를 120x120으로 넉넉하게 확장
+  const lightRayGeo = new THREE.PlaneGeometry(120, 120);
   const lightRayMat = new THREE.ShaderMaterial({
     uniforms: {
       uTime: { value: 0 },
       uMouse: { value: new THREE.Vector2(0, 0) },
-      uBgBase: { value: new THREE.Color(0xa1cbf1) },   // 은은하고 깨끗한 하늘색
-      uSunColor: { value: new THREE.Color(0xfffef2) }, // 화사한 웜화이트 광선
+      uBgBase: { value: new THREE.Color(0xd1e6f9) },   // 맑고 화사한 연한 파스텔 아이스 블루
+      uSunColor: { value: new THREE.Color(0xffffff) }, // 은은하고 밝은 퓨어 화이트 Sunlight
     },
     vertexShader: `
       varying vec2 vUv;
@@ -88,25 +88,26 @@ export function initHero3D() {
         vec2 st = vUv;
 
         // 좌상단 발산 원점 (마우스 연동)
-        vec2 sunOrigin = vec2(-0.25, 1.25) + uMouse * 0.12;
+        vec2 sunOrigin = vec2(0.1, 0.9) + uMouse * 0.08;
         vec2 rayDir = st - sunOrigin;
         
         float angle = atan(rayDir.y, rayDir.x);
         float dist = length(rayDir);
 
-        // 뚜렷하고 사선으로 뻗는 빛줄기 패턴 (Ray pattern)
-        float n = rayNoise(vec2(angle * 14.0, uTime * 0.03));
-        float rayPattern = pow(n, 2.2) * 1.8;
+        // 선명하게 뻗어 나오는 햇살 광선 패턴
+        float n = rayNoise(vec2(angle * 16.0, uTime * 0.025));
+        float rayPattern = pow(n, 2.0) * 1.5;
 
-        // 원점에서 멀어질수록 부드러워지는 감쇄
-        float attenuation = smoothstep(2.4, 0.1, dist);
+        // 자연스러운 감쇄
+        float attenuation = smoothstep(1.8, 0.05, dist);
 
-        // 선명한 고광도 코어 빛
-        float core = pow(smoothstep(0.85, 0.0, dist), 2.0) * 0.7;
+        // 좌상단 코어 빛
+        float core = pow(smoothstep(0.7, 0.0, dist), 1.8) * 0.8;
 
         float finalBeam = clamp(rayPattern * attenuation + core, 0.0, 1.0);
 
-        vec3 finalBg = mix(uBgBase, uSunColor, finalBeam * 0.88);
+        // 화사하고 맑은 화이트-아이스 블루 그라데이션
+        vec3 finalBg = mix(uBgBase, uSunColor, finalBeam * 0.9);
 
         gl_FragColor = vec4(finalBg, 1.0);
       }
@@ -115,7 +116,7 @@ export function initHero3D() {
   });
 
   const bgMesh = new THREE.Mesh(lightRayGeo, lightRayMat);
-  bgMesh.position.set(0, 0, -8);
+  bgMesh.position.set(0, 0, -10);
   scene.add(bgMesh);
 
   const group = new THREE.Group();
@@ -162,7 +163,7 @@ export function initHero3D() {
   const gridMaterial = new THREE.LineBasicMaterial({
     color: 0xffffff,
     transparent: true,
-    opacity: 0.38,
+    opacity: 0.42,
   });
 
   gridGroup.add(new THREE.LineSegments(curvedGridGeo, gridMaterial));
@@ -183,13 +184,13 @@ export function initHero3D() {
   scene.add(gridGroup);
 
   /* =====================================================
-     ★ U 전용: 고급스러운 아이스 화이트 글래스 (Frosted Ice Glass)
+     U 전용: 아이스 화이트 글래스 (Frosted Ice Glass)
   ===================================================== */
   const uIceGlassMaterial = new THREE.ShaderMaterial({
     uniforms: {
       uMouse: { value: new THREE.Vector2(0, 0) },
       topColor: { value: new THREE.Color(0xffffff) },
-      bottomColor: { value: new THREE.Color(0xcde6ff) },
+      bottomColor: { value: new THREE.Color(0xdceeff) },
       edgeHighlight: { value: new THREE.Color(0xffffff) },
     },
     vertexShader: `
@@ -231,8 +232,8 @@ export function initHero3D() {
 
         float fresnel = pow(1.0 - max(dot(normal, viewDir), 0.0), 2.2);
         
-        vec3 shadedColor = baseGradient * (0.82 + 0.28 * NdotL);
-        vec3 finalColor = mix(shadedColor, edgeHighlight, fresnel * 0.75) + edgeHighlight * spec * 0.7;
+        vec3 shadedColor = baseGradient * (0.85 + 0.25 * NdotL);
+        vec3 finalColor = mix(shadedColor, edgeHighlight, fresnel * 0.75) + edgeHighlight * spec * 0.75;
 
         gl_FragColor = vec4(finalColor, 0.92);
       }
@@ -246,13 +247,13 @@ export function initHero3D() {
      X 전용: CAD 스타일 미니멀 와이어프레임
   ===================================================== */
   const xWireframeMat = new THREE.LineBasicMaterial({
-    color: 0x475569,
+    color: 0x64748b,
     transparent: true,
     opacity: 0.35,
   });
 
   /* =====================================================
-     FONT LOADER & BATCH CREATION
+     FONT LOADER
   ===================================================== */
   const loader = new FontLoader();
 
