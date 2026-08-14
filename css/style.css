@@ -390,40 +390,42 @@ nav a:hover{
 
 .hero-message h2{
 
-    margin:0 0 14px;
+    margin:0 0 16px;
 
-    font-size:24px;
+    font-size:22px;
 
-    line-height:1.1;
+    line-height:1.15;
 
     font-weight:700;
 
-    letter-spacing:-.035em;
+    letter-spacing:-.04em;
 }
 
 .hero-message p{
 
     margin:0;
 
-    font-size:16px;
+    font-size:14px;
 
-    line-height:1.7;
+    line-height:1.8;
 
-    color:#666;
+    color:#777;
 
     letter-spacing:-.025em;
 }
 
 
 /* =========================================================
-   BETTER UX
+   HERO UX / INTRO
 ========================================================= */
 
 .hero-message-ux{
 
     left:4%;
 
-    top:57%;
+    top:58%;
+
+    width:430px;
 
     opacity:0;
 
@@ -434,28 +436,107 @@ nav a:hover{
 
 
 /* =========================================================
-   BETTER UI
+   HERO ACTION
 ========================================================= */
 
-.hero-message-ui{
+.hero-action{
 
-    left:42%;
+    display:flex;
 
-    top:68%;
+    align-items:center;
 
-    opacity:0;
+    gap:10px;
 
-    transform:translateY(30px);
-
-    animation:fade .8s .55s forwards;
+    margin-top:26px;
 }
 
-.hero-message-ui p{
+.hero-btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:12px;
+
+    height:46px;
+
+    padding:0 20px;
+
+    border-radius:999px;
+
+    box-sizing:border-box;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    line-height:1;
+
+    letter-spacing:-.02em;
+
+    text-decoration:none;
 
     white-space:nowrap;
+
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        color .2s ease;
+}
+
+.hero-btn span{
+
+    font-size:16px;
+
+    line-height:1;
+}
+
+.hero-btn:hover{
+
+    transform:translateY(-2px);
 }
 
 
+/* =========================================================
+   PORTFOLIO BUTTON
+========================================================= */
+
+.hero-btn-primary{
+
+    background:#111;
+
+    color:#fff;
+
+    border:1px solid #111;
+}
+
+.hero-btn-primary:hover{
+
+    background:#222;
+}
+
+
+/* =========================================================
+   CAREER BUTTON
+========================================================= */
+
+.hero-btn-secondary{
+
+    background:#fff;
+
+    color:#111;
+
+    border:1px solid #111;
+}
+
+.hero-btn-secondary:hover{
+
+    background:#111;
+
+    color:#fff;
+}
 /* =========================================================
    HERO ACTION
 ========================================================= */
