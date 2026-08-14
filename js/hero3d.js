@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Clean 3D Wireframe + Short, Sharp, Varied Light Beams)
+   HERO THREE.JS (Clean 3D Wireframe + Sharp Laser Beam Bands)
 ========================================================= */
 
 export function initHero3D() {
@@ -90,22 +90,22 @@ export function initHero3D() {
   });
 
   /* =====================================================
-     FONT LOADER & 오브젝트별 짧고 선명한 빛줄기 설정
+     FONT LOADER & 형광펜 느낌 없는 날카로운 레이저 밴드 설정
   ===================================================== */
   const loader = new FontLoader();
 
   loader.load(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
-      // 파라미터: 문자, 폰트, x, y, 회전Y, 스케일, 위상, 속도(speed), 빛 길이 압축(frequency), 투명도(opacity)
-      createShortBeamLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0.0, 0.6,  3.5, 0.35); // U자: 적당히 짧고 은은함
-      createShortBeamLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.5, 1.2,  5.0, 0.45); // 가운데 큰 X: 빛줄기를 짧게 압축하여 꽉 차지 않게 수정
-      createShortBeamLetter("X", font, -2.3, 3.8, 0.35, 0.52, 2.8, 0.4,  4.0, 0.25); // 상단 X: 느리고 아주 투명함
-      createShortBeamLetter("X", font, 5.3, -3.2, 0.45, 0.55, 0.9, 0.9,  6.0, 0.50); // 하단 X: 짧고 선명함
+      // 파라미터: 문자, 폰트, x, y, 회전Y, 스케일, 위상, 속도(speed), 밴드두께(thickness), 투명도(opacity)
+      createLaserBandLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0.0, 0.5, 0.35, 0.30);
+      createLaserBandLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.5, 1.0, 0.20, 0.42);
+      createLaserBandLetter("X", font, -2.3, 3.8, 0.35, 0.52, 2.8, 0.3, 0.50, 0.22);
+      createLaserBandLetter("X", font, 5.3, -3.2, 0.45, 0.55, 0.8, 0.8, 0.15, 0.48);
     }
   );
 
-  function createShortBeamLetter(character, font, x, y, rotationY, scale, phase, speed, frequency, maxOpacity) {
+  function createLaserBandLetter(character, font, x, y, rotationY, scale, phase, speed, thickness, maxOpacity) {
     const isU = character === "U";
     
     const geomOpts = isU
@@ -119,7 +119,7 @@ export function initHero3D() {
 
     const letterGroup = new THREE.Group();
 
-    // ★ 구름 같은 퍼짐을 없애고 짧고 날렵한 빛줄기 형태로 제한하는 셰이더
+    // ★ 번짐(Blur)이 전혀 없고 경계가 딱 떨어지는 날카로운 레이저 밴드 셰이더
     const sweepMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
@@ -127,7 +127,7 @@ export function initHero3D() {
         uMouseY: { value: 0 },
         uPhase: { value: phase },
         uSpeed: { value: speed },
-        uFreq: { value: frequency },
+        uThickness: { value: thickness },
         uMaxOpacity: { value: maxOpacity },
       },
       vertexShader: `
@@ -143,24 +143,26 @@ export function initHero3D() {
         uniform float uMouseY;
         uniform float uPhase;
         uniform float uSpeed;
-        uniform float uFreq;
+        uniform float uThickness;
         uniform float uMaxOpacity;
         varying vec3 vPosition;
 
         void main() {
           float t = uTime * uSpeed + uPhase;
           
-          // 사선 방향으로 짧은 빛줄기가 지나가도록 좌표 조합
-          float pos = vPosition.x * 0.7 + vPosition.y * 0.7;
+          // 사선 방향 좌표 계산
+          float pos = vPosition.x * 0.6 + vPosition.y * 0.7;
           
-          // uFreq(주파수)를 높여서 빛의 길이를 짧고 컴팩트하게 만듦
-          float wave = sin(pos * uFreq - t * 2.5);
+          // 삼각함수의 절댓값이나 임계치를 이용해 '띠(Band)' 형태 생성 (형광펜 그라데이션 제거)
+          float wave = fract(pos * 0.35 - t * 0.4);
           
-          // 임계값을 좁게 잡아 구름처럼 넓게 퍼지지 않고 샤프한 빛 라인 형성
-          float beam = smoothstep(0.72, 0.96, wave);
+          // uThickness 범위 내에만 딱 맞아떨어지도록 step 사용 (경계가 선명함)
+          float band = step(0.0, wave) * step(wave, uThickness);
 
-          vec3 greenColor = vec3(0.12, 0.9, 0.45);
-          float alpha = beam * uMaxOpacity;
+          vec3 greenColor = vec3(0.1, 0.88, 0.42);
+          float alpha = band * uMaxOpacity;
+
+          if (alpha < 0.01) discard; // 빛이 없는 영역은 연산 제외하여 깔끔하게 처리
 
           gl_FragColor = vec4(greenColor, alpha);
         }
