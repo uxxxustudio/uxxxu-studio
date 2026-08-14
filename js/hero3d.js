@@ -362,10 +362,8 @@ function animate() {
         const time = clock.getElapsedTime();
         
         const scrollY = window.scrollY || window.pageYOffset;
-        const scrollOffset = scrollY * 0.0012; 
-
-        letterGroup.position.y = 1.0 - scrollOffset + Math.sin(time * 0.4) * 0.06;
-
+        const scrollOffset = scrollY * 0.005;
+        letterGroup.position.y = 2.5 - scrollOffset + Math.sin(time * 0.4) * 0.06;
         letterGroup.rotation.y += 0.005;
         material.uniforms.uTime.value = time;
         renderer.render(scene, camera);
