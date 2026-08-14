@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (U-Letter Opposite Sweep & X-Letter Perimeter Sweep)
+   HERO THREE.JS (Single Laser Point per Letter, Opposite U Flow)
 ========================================================= */
 
 export function initHero3D() {
@@ -90,14 +90,13 @@ export function initHero3D() {
   });
 
   /* =====================================================
-     FONT LOADER & 글자별 맞춤형 셰이더 적용
+     FONT LOADER & 단일 빛 포인트 셰이더 설정
   ===================================================== */
   const loader = new FontLoader();
 
   loader.load(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
-      // U는 양쪽 기둥의 빛이 서로 반대 방향으로 흐르도록 isU 타입 전달
       createLetterMesh("U", font, -2.9, -0.65, -0.42, 0.92, 0.0, true);
       createLetterMesh("X", font, 2.25, 0.55, 0.42, 0.88, 1.8, false);
       createLetterMesh("X", font, -2.3, 3.8, 0.35, 0.52, 3.6, false);
@@ -117,7 +116,7 @@ export function initHero3D() {
 
     const letterGroup = new THREE.Group();
 
-    // U와 X에 맞는 최적화된 셰이더 적용
+    // U는 양쪽 기둥에 각각 단 1개씩의 빛이 서로 반대 방향으로 흐르도록 제어
     const material = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
@@ -141,7 +140,7 @@ export function initHero3D() {
         varying vec3 vNormal;
 
         void main() {
-          // 앞면과 뒷면(Z축 방향)은 완전히 비우고 옆면(두께)만 렌더링
+          // 앞면과 뒷면(Z축 방향)은 완전히 비우고 외곽 옆면(두께)만 타겟팅
           if (abs(vNormal.z) > 0.1) {
             discard; 
           }
@@ -149,15 +148,18 @@ export function initHero3D() {
           float beam = 0.0;
 
           if (uIsU > 0.5) {
-            // U자 형태: 좌우 기둥의 X 좌표를 기준으로 방향을 반대로 분기
+            // U자: 좌우 기둥 분기 및 단일 빛 포인트 (스케일 조절로 겹침 현상 원천 차단)
             float sideDir = (vPosition.x < 0.0) ? 1.0 : -1.0;
-            float verticalFlow = vPosition.y * 0.4 + (uTime * 2.5 * sideDir) + uOffset;
-            beam = pow(max(0.0, cos(verticalFlow)), 128.0) + pow(max(0.0, cos(verticalFlow)), 16.0) * 0.3;
+            // 모듈러 연산을 통해 주기를 단 하나로 고정
+            float flow = mod((vPosition.y * 0.15) + (uTime * 0.4 * sideDir) + (uOffset * 0.2), 1.0);
+            float distFromCenter = abs(flow - 0.5);
+            beam = smoothstep(0.08, 0.0, distFromCenter);
           } else {
-            // X자 형태: 외곽선을 따라 도는 레이저 스윕 효과 유지
+            // X자: 외곽선을 따라 부드럽게 도는 단일 레이저 포인트
             float angle = atan(vPosition.y, vPosition.x);
-            float sweep = angle - (uTime * 2.5) + uOffset;
-            beam = pow(max(0.0, cos(sweep)), 128.0) + pow(max(0.0, cos(sweep)), 16.0) * 0.3;
+            float sweep = mod((angle / 6.28318) - (uTime * 0.15) + (uOffset * 0.1), 1.0);
+            float distFromCenter = abs(sweep - 0.5);
+            beam = smoothstep(0.12, 0.0, distFromCenter);
           }
 
           vec3 baseColor = vec3(0.04, 0.04, 0.04);
