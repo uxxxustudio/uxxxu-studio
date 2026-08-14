@@ -97,20 +97,22 @@ export function initHero3D() {
   loader.load(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
-      createClean3DLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0, false);
-      createClean3DLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.7, true);
-      createClean3DLetter("X", font, -2.3, 3.8, 0.35, 0.52, 0.8, true);
-      createClean3DLetter("X", font, 5.3, -3.2, 0.45, 0.55, 2.3, true);
+      createClean3DLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0);
+      createClean3DLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.7);
+      createClean3DLetter("X", font, -2.3, 3.8, 0.35, 0.52, 0.8);
+      createClean3DLetter("X", font, 5.3, -3.2, 0.45, 0.55, 2.3);
     }
   );
 
-  function createClean3DLetter(character, font, x, y, rotationY, scale, phase, isRoundedX) {
-    const isU = character === "U";
-    
-    // 1. 입체 두께를 가진 임시 텍스트 지오메트리 생성
-    const geomOpts = isU
-      ? { font: font, size: 4.1, depth: 0.35, curveSegments: 4, bevelEnabled: false }
-      : { font: font, size: 4.1, depth: 0.35, curveSegments: isRoundedX ? 4 : 2, bevelEnabled: false };
+  function createClean3DLetter(character, font, x, y, rotationY, scale, phase) {
+    // 입체 연결 부위가 누락되지 않도록 세그먼트와 두께 최적화
+    const geomOpts = {
+      font: font,
+      size: 4.1,
+      depth: 0.35,
+      curveSegments: 6,
+      bevelEnabled: false,
+    };
 
     const geometry = new TextGeometry(character, geomOpts);
     geometry.computeBoundingBox();
@@ -119,9 +121,8 @@ export function initHero3D() {
 
     const letterGroup = new THREE.Group();
 
-    // ★ 2겹으로 겹치는 현상을 원천 차단하기 위해 
-    // 불필요한 내부 면 모서리를 제외하고, 외곽 윤곽선(Outline)만 단일선으로 추출
-    const edges = new THREE.EdgesGeometry(geometry, 60);
+    // 임계각(thresholdAngle)을 낮추어 X의 입체 연결선들이 끊김 없이 모두 표현되도록 설정
+    const edges = new THREE.EdgesGeometry(geometry, 15);
     const lineSegments = new THREE.LineSegments(edges, lineMat);
     
     letterGroup.add(lineSegments);
