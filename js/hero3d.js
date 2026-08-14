@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Clean 3D Line Art - Perfect Grid & Position)
+   HERO THREE.JS (Clean Single-Line Wireframe 3D)
 ========================================================= */
 
 export function initHero3D() {
@@ -32,7 +32,7 @@ export function initHero3D() {
   scene.add(group);
 
   /* =====================================================
-     1. 배경 공간 그리드 (카메라 정면에 수직으로 촘촘하게 배치)
+     1. 배경 공간 그리드 (촘촘한 간격)
   ===================================================== */
   function createConcaveGridGeometry(width, height, stepX, stepY, curveAmount = 0.01) {
     const points = [];
@@ -67,7 +67,7 @@ export function initHero3D() {
   gridGroup.position.set(0, 0, -3);
 
   const gridWidth = 36, gridHeight = 22;
-  const stepX = 1.2, stepY = 1.2, curveFactor = 0.01; // 촘촘한 간격
+  const stepX = 1.2, stepY = 1.2, curveFactor = 0.01;
   const curvedGridGeo = createConcaveGridGeometry(gridWidth, gridHeight, stepX, stepY, curveFactor);
 
   const gridMaterial = new THREE.LineBasicMaterial({
@@ -80,12 +80,12 @@ export function initHero3D() {
   scene.add(gridGroup);
 
   /* =====================================================
-     5. 얇고 깔끔한 블랙 테두리 라인 머티리얼 (카카오 스타일)
+     5. 얇고 깔끔한 블랙 테두리 라인 머티리얼 (단일선)
   ===================================================== */
   const blackOutlineMat = new THREE.LineBasicMaterial({
     color: 0x111111,
     transparent: true,
-    opacity: 0.85,
+    opacity: 0.9,
   });
 
   /* =====================================================
@@ -96,37 +96,31 @@ export function initHero3D() {
   loader.load(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
-      // 기존의 안정적이고 조화로운 위치와 각도로 U와 X 배치
-      createCleanLineLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0, false);
-      createCleanLineLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.7, true);
-      createCleanLineLetter("X", font, -2.3, 3.8, 0.35, 0.52, 0.8, true);
-      createCleanLineLetter("X", font, 5.3, -3.2, 0.45, 0.55, 2.3, true);
+      createSingleLineLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0, false);
+      createSingleLineLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.7, true);
+      createSingleLineLetter("X", font, -2.3, 3.8, 0.35, 0.52, 0.8, true);
+      createSingleLineLetter("X", font, 5.3, -3.2, 0.45, 0.55, 2.3, true);
     }
   );
 
-  function createCleanLineLetter(character, font, x, y, rotationY, scale, phase, isRoundedX) {
+  function createSingleLineLetter(character, font, x, y, rotationY, scale, phase, isRoundedX) {
     const isU = character === "U";
     
+    // 이중선이 생기지 않도록 두께와 베벨을 최소화하여 단일 선 구조 유도
     const geometryOptions = isU
       ? {
           font: font,
           size: 4.1,
-          depth: 0.45,
-          curveSegments: 4,
-          bevelEnabled: true,
-          bevelThickness: 0.08,
-          bevelSize: 0.05,
-          bevelSegments: 2,
+          depth: 0.2,
+          curveSegments: 2,
+          bevelEnabled: false,
         }
       : {
           font: font,
           size: 4.1,
-          depth: 0.45,
-          curveSegments: isRoundedX ? 6 : 2,
-          bevelEnabled: isRoundedX,
-          bevelThickness: 0.08,
-          bevelSize: 0.05,
-          bevelSegments: 2,
+          depth: 0.2,
+          curveSegments: isRoundedX ? 4 : 2,
+          bevelEnabled: false,
         };
 
     const geometry = new TextGeometry(character, geometryOptions);
@@ -136,9 +130,9 @@ export function initHero3D() {
 
     const letterGroup = new THREE.Group();
 
-    // 임계각을 조절하여 지저분한 내부 선은 없애고 깔끔한 입체 외곽 모서리만 남김
-    const edges = new THREE.EdgesGeometry(geometry, 15);
-    const lineSegments = new THREE.LineSegments(edges, blackOutlineMat);
+    // ★ 두 줄로 겹치지 않고 한 줄의 깔끔한 3D 와이어프레임 윤곽선만 생성
+    const wireframeGeo = new THREE.WireframeGeometry(geometry);
+    const lineSegments = new THREE.LineSegments(wireframeGeo, blackOutlineMat);
     letterGroup.add(lineSegments);
 
     letterGroup.position.set(x, y, 0);
