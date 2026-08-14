@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Tilted Top-Right U for Dynamic Angle)
+   HERO THREE.JS (Scroll-reactive U & X Parallax Effect)
 ========================================================= */
 
 export function initHero3D() {
@@ -90,25 +90,23 @@ export function initHero3D() {
   });
 
   /* =====================================================
-     FONT LOADER & 오브젝트 생성
+     FONT LOADER & 오브젝트 생성 (스크롤 반응 속성 부여)
   ===================================================== */
   const loader = new FontLoader();
 
   loader.load(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
-      // 기존 오브젝트들
-      createLetterMesh("U", font, -2.9, -0.65, -0.42, 0.92, 0.0, true);
-      createLetterMesh("X", font, 2.25, 0.55, 0.42, 0.88, 1.8, false);
-      createLetterMesh("X", font, -2.3, 3.8, 0.35, 0.52, 3.6, false);
-      createLetterMesh("X", font, 5.3, -3.2, 0.45, 0.55, 5.4, false);
-
-      // ✨ 우측 상단 U: 회전값을 더 깊게 주어(-0.75) 측면 느낌을 확 살림
-      createLetterMesh("U", font, 6.2, 1.8, -0.75, 0.48, 7.2, true);
+      // scrollSpeed: 값이 클수록 스크롤을 내릴 때 아래로 더 많이 따라 내려옴 (0이면 제자리, 0.005 등 조절 가능)
+      createLetterMesh("U", font, -2.9, -0.65, -0.42, 0.92, 0.0, true, 0.002);   // 메인 큰 U
+      createLetterMesh("X", font, 2.25, 0.55, 0.42, 0.88, 1.8, false, 0.003);  // 중앙 큰 X
+      createLetterMesh("X", font, -2.3, 3.8, 0.35, 0.52, 3.6, false, 0.001);   // 상단 X
+      createLetterMesh("X", font, 5.3, -3.2, 0.45, 0.55, 5.4, false, 0.004);   // 하단 X
+      createLetterMesh("U", font, 6.2, 1.8, -0.75, 0.48, 7.2, true, 0.0035);   // 우측 상단 U
     }
   );
 
-  function createLetterMesh(character, font, x, y, rotationY, scale, timeOffset, isU) {
+  function createLetterMesh(character, font, x, y, rotationY, scale, timeOffset, isU, scrollSpeed) {
     const geomOpts = { font: font, size: 4.1, depth: 0.38, curveSegments: isU ? 24 : 6, bevelEnabled: false };
 
     const geometry = new TextGeometry(character, geomOpts);
@@ -184,12 +182,21 @@ export function initHero3D() {
     letterGroup.scale.setScalar(scale);
     letterGroup.rotation.y = rotationY;
     letterGroup.rotation.x = -0.08;
-    letterGroup.userData = { baseX: x, baseY: y, baseRotationY: rotationY, material: material };
+    
+    // userData에 스크롤 반응 속도와 초기 좌표 저장
+    letterGroup.userData = { 
+      baseX: x, 
+      baseY: y, 
+      baseRotationY: rotationY, 
+      material: material,
+      scrollSpeed: scrollSpeed 
+    };
+    
     group.add(letterGroup);
   }
 
   /* =====================================================
-     ANIMATION LOOP
+     ANIMATION LOOP (마우스 + 스크롤 패럴랙스 연동)
   ===================================================== */
   const target = { x: 0, y: 0 };
   const mouse = { x: 0, y: 0 };
@@ -225,17 +232,23 @@ export function initHero3D() {
     requestAnimationFrame(animate);
 
     const time = clock.getElapsedTime();
+    const scrollY = window.scrollY || window.pageYOffset;
 
     mouse.x += (target.x - mouse.x) * 0.08;
     mouse.y += (target.y - mouse.y) * 0.08;
 
     gridGroup.position.x = -mouse.x * 0.2;
-    gridGroup.position.y = -mouse.y * 0.15;
+    gridGroup.position.y = -mouse.y * 0.15 + (scrollY * 0.001); // 그리드도 스크롤에 맞춰 은은하게 이동
 
     group.children.forEach((obj, index) => {
       const p = obj.userData;
+      
+      // 스크롤을 내릴 때(scrollY 증가) 기본 Y 위치에서 아래쪽으로 서서히 따라 내려오도록 계산
+      const scrollOffset = scrollY * p.scrollSpeed;
+
       obj.position.x = p.baseX + Math.sin(time * 0.4 + index) * 0.06;
-      obj.position.y = p.baseY + Math.cos(time * 0.5 + index) * 0.08;
+      obj.position.y = (p.baseY - scrollOffset) + Math.cos(time * 0.5 + index) * 0.08;
+      
       obj.rotation.y = p.baseRotationY + mouse.x * 0.2;
       obj.rotation.x = -0.08 - mouse.y * 0.1;
 
