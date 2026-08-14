@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Compact & Sharp Sunbeams)
+   HERO THREE.JS (Natural Soft Sunbeams / HAOQI-Style)
 ========================================================= */
 
 export function initHero3D() {
@@ -42,15 +42,15 @@ export function initHero3D() {
   container.appendChild(renderer.domElement);
 
   /* =====================================================
-     ★ BACKGROUND: COMPACT, SHARP DIAGONAL STREAKS
+     ★ BACKGROUND: 맑고 화사한 스카이블루 + 은은한 대각선 햇살 결
   ===================================================== */
   const lightRayGeo = new THREE.PlaneGeometry(120, 120);
   const lightRayMat = new THREE.ShaderMaterial({
     uniforms: {
       uTime: { value: 0 },
       uMouse: { value: new THREE.Vector2(0, 0) },
-      uBgBase: { value: new THREE.Color(0x9cc3ec) },   // 선명한 라이트 블루 배경
-      uSunColor: { value: new THREE.Color(0xffffee) }, // 쨍하고 밝은 크림 화이트 햇살
+      uBgBase: { value: new THREE.Color(0xa7cbf0) },   // 레퍼런스 스타일의 맑고 화사한 스카이블루
+      uSunColor: { value: new THREE.Color(0xffffff) }, // 순수 화이트 빛 결
     },
     vertexShader: `
       varying vec2 vUv;
@@ -77,8 +77,8 @@ export function initHero3D() {
 
       void main() {
         vec2 st = vUv;
-        vec2 mouseOffset = uMouse * 0.015;
-        vec2 p = st + mouseOffset - vec2(0.05, 0.95);
+        vec2 mouseOffset = uMouse * 0.01;
+        vec2 p = st + mouseOffset - vec2(0.1, 0.9);
 
         // 대각선 각도 (-45도)
         float angle = -0.785;
@@ -87,27 +87,22 @@ export function initHero3D() {
 
         float rx = p.x * cosA - p.y * sinA;
 
-        // ★ 주파수를 높여서 빛 줄기의 두께를 얇고 가늘게 축소
-        float ray1 = abs(sin(rx * 42.0));
-        float ray2 = abs(cos(rx * 78.0 + 1.2));
-        float ray3 = noise1D(rx * 32.0 + uTime * 0.01);
+        // 부드럽고 자연스러운 대각선 빛 결 생성
+        float rayPattern = sin(rx * 12.0 + uTime * 0.05) * 0.5 + 0.5;
+        float fineNoise = noise1D(rx * 24.0);
+        
+        float combinedLight = mix(rayPattern, fineNoise, 0.35);
 
-        float combined = (ray1 * 0.4 + ray2 * 0.4 + ray3 * 0.2);
-
-        // 엣지를 바짝 조여서 날카롭고 좁은 빛 띠 생성
-        float sharpStreaks = smoothstep(0.48, 0.62, combined);
-        sharpStreaks = pow(sharpStreaks, 2.0) * 1.3;
-
-        // ★ 빛이 퍼지는 전체 영역(크기)을 좁게 제한
+        // 좌상단에서 은은하게 퍼져나가는 부드러운 그라데이션 페이드
         float dist = length(st - vec2(0.0, 1.0));
-        float fade = clamp(1.0 - dist * 1.4, 0.0, 1.0);
+        float fade = smoothstep(1.3, 0.0, dist);
 
-        float finalIntensity = clamp(sharpStreaks * fade, 0.0, 1.0);
+        float lightIntensity = combinedLight * fade * 0.35; // 과하지 않고 은은한 강도
 
-        // 배경과 빛의 최종 합성
-        vec3 finalBg = mix(uBgBase, uSunColor, finalIntensity);
+        // 기본 밝은 하늘색 배경 위에 빛을 부드럽게 얹음 (Additive Mix)
+        vec3 finalColor = uBgBase + (uSunColor * lightIntensity);
 
-        gl_FragColor = vec4(finalBg, 1.0);
+        gl_FragColor = vec4(finalColor, 1.0);
       }
     `,
     depthWrite: false,
