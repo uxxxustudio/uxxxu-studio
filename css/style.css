@@ -652,77 +652,310 @@ section{
    SERVICE
 ========================================================= */
 
-.section-title{
+#experience{
 
-    font-size:14px;
+    padding:180px 64px;
 
-    letter-spacing:.18em;
-
-    text-transform:uppercase;
-
-    color:#999;
-
-    margin-bottom:80px;
-
-    font-weight:600;
 }
 
-.service-list{
+.experience-wrap{
+
+    max-width:1280px;
+
+    width:100%;
+
+    margin:auto;
+
+}
+
+
+/* =========================================================
+   EXPERIENCE HEADER
+========================================================= */
+
+.experience-header{
 
     display:flex;
 
-    flex-direction:column;
+    justify-content:space-between;
 
-    gap:70px;
+    align-items:flex-start;
+
+    margin-bottom:110px;
+
 }
 
-.service-item{
+.experience-heading h2{
 
-    display:grid;
+    margin:0 0 36px;
 
-    grid-template-columns:80px 1fr;
+    font-size:64px;
 
-    padding-bottom:60px;
+    line-height:1;
 
-    border-bottom:1px solid #ececec;
+    font-weight:800;
 
-    transition:.35s;
+    letter-spacing:-.055em;
+
+    color:#111;
+
 }
 
-.service-item:hover{
+.experience-heading p{
 
-    transform:translateX(8px);
-}
-
-.number{
-
-    font-size:13px;
-
-    font-weight:600;
-
-    color:#999;
-
-    padding-top:10px;
-}
-
-.service-item h3{
-
-    font-size:42px;
-
-    font-weight:700;
-
-    letter-spacing:-.04em;
-
-    margin-bottom:18px;
-}
-
-.service-item p{
+    margin:0;
 
     font-size:18px;
 
     line-height:1.8;
 
-    color:#666;
+    color:#555;
+
+    letter-spacing:-.025em;
+
+}
+
+.experience-years{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:flex-end;
+
+    padding-top:2px;
+
+    color:#111;
+
+}
+
+.experience-years strong{
+
+    font-size:28px;
+
+    line-height:1.15;
+
+    font-weight:700;
+
+    letter-spacing:-.035em;
+
+}
+
+.experience-years span{
+
+    margin-top:4px;
+
+    font-size:22px;
+
+    line-height:1.2;
+
+    font-weight:600;
+
+    letter-spacing:-.035em;
+
+}
+
+
+/* =========================================================
+   EXPERIENCE 3 COLUMN
+========================================================= */
+
+.experience-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+}
+
+.experience-item{
+
+    min-width:0;
+
+    padding:0 64px;
+
+}
+
+.experience-item:first-child{
+
+    padding-left:0;
+
+}
+
+.experience-item:last-child{
+
+    padding-right:0;
+
+}
+
+.experience-item + .experience-item{
+
+    border-left:1px solid #dcdcdc;
+
+}
+
+
+/* =========================================================
+   EXPERIENCE NUMBER
+========================================================= */
+
+.experience-number{
+
+    margin-bottom:26px;
+
+    font-size:15px;
+
+    line-height:1;
+
+    font-weight:600;
+
+    color:#111;
+
+}
+
+
+/* =========================================================
+   EXPERIENCE TITLE
+========================================================= */
+
+.experience-item h3{
+
+    margin:0;
+
+    font-size:30px;
+
+    line-height:1.1;
+
+    font-weight:700;
+
+    letter-spacing:-.045em;
+
+    color:#111;
+
+}
+
+
+/* =========================================================
+   EXPERIENCE LINE
+========================================================= */
+
+.experience-line{
+
+    width:58px;
+
+    height:1px;
+
+    margin:32px 0 34px;
+
+    background:#111;
+
+}
+
+
+/* =========================================================
+   EXPERIENCE KEYWORDS
+========================================================= */
+
+.experience-keywords{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+    margin-bottom:38px;
+
+}
+
+.experience-keywords span{
+
+    font-size:16px;
+
+    line-height:1.4;
+
+    color:#222;
+
+    letter-spacing:-.025em;
+
+}
+
+
+/* =========================================================
+   EXPERIENCE DESCRIPTION
+========================================================= */
+
+.experience-item p{
+
+    margin:0;
+
+    font-size:15px;
+
+    line-height:1.85;
+
+    color:#777;
+
+    letter-spacing:-.025em;
+
+}
+
+
+/* =========================================================
+   EXPERIENCE CAREER
+========================================================= */
+
+.experience-career{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    margin-top:100px;
+
+    padding-top:32px;
+
+    border-top:1px solid #e2e2e2;
+
+}
+
+.experience-career a{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:24px;
+
+    padding-bottom:8px;
+
+    border-bottom:1px solid #111;
+
+    color:#111;
+
+    font-size:18px;
+
+    font-weight:600;
+
+    letter-spacing:-.025em;
+
+    text-decoration:none;
+
+    transition:.25s;
+
+}
+
+.experience-career a:hover{
+
+    gap:32px;
+
+}
+
+.career-arrow{
+
+    font-size:24px;
+
+    line-height:1;
+
 }
 
 
@@ -1192,26 +1425,99 @@ footer{
     }
 
 
-    /* ---------------- Service ---------------- */
+   /* ---------------- Service ---------------- */
 
-    .service-item{
+#experience{
 
-        grid-template-columns:1fr;
+    padding:120px 26px;
 
-        gap:16px;
-    }
+}
 
-    .service-item h3{
+.experience-header{
 
-        font-size:30px;
-    }
+    flex-direction:column;
 
-    .service-item p{
+    gap:40px;
 
-        font-size:16px;
-    }
+    margin-bottom:70px;
 
+}
 
+.experience-heading h2{
+
+    font-size:48px;
+
+    margin-bottom:26px;
+
+}
+
+.experience-heading p{
+
+    font-size:16px;
+
+}
+
+.experience-years{
+
+    align-items:flex-start;
+
+}
+
+.experience-years strong{
+
+    font-size:24px;
+
+}
+
+.experience-years span{
+
+    font-size:19px;
+
+}
+
+.experience-grid{
+
+    grid-template-columns:1fr;
+
+}
+
+.experience-item{
+
+    padding:50px 0;
+
+}
+
+.experience-item:first-child{
+
+    padding-top:0;
+
+}
+
+.experience-item:last-child{
+
+    padding-bottom:0;
+
+}
+
+.experience-item + .experience-item{
+
+    border-left:0;
+
+    border-top:1px solid #dcdcdc;
+
+}
+
+.experience-item h3{
+
+    font-size:30px;
+
+}
+
+.experience-career{
+
+    margin-top:70px;
+
+}
     /* ---------------- Portfolio ---------------- */
 
     .portfolio-grid{
