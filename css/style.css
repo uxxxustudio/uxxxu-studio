@@ -161,14 +161,16 @@ nav a:hover {
 }
 
 /* Hero 3D Graphic */
+
 .hero-3d {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    z-index: 2;
-    pointer-events: none;
-    overflow: visible;
+    z-index: 1;                  /* 텍스트(z-index가 더 높은 요소들)보다 뒤로 가게 조정 */
+    pointer-events: none;        /* 마우스 클릭이 3D 요소를 통과해 아래 콘텐츠로 전달되도록 함 */
+    overflow: hidden;            /* 영역 밖으로 튀어나가는 3D 오브젝트 차단 */
     will-change: transform;
     animation: hero3dFloat 7s ease-in-out infinite alternate;
 }
