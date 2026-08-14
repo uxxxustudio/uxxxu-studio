@@ -103,7 +103,7 @@ nav a:hover{
 .hero{
     position:relative;
     isolation:isolate;
-    overflow:hidden;
+    /* 전체 스크롤이 자연스럽게 내려가도록 overflow 차단 속성 제거 */
 }
 
 .hero-light{
@@ -537,22 +537,6 @@ nav a:hover{
 
     color:#fff;
 }
-/* =========================================================
-   HERO ACTION
-========================================================= */
-
-.hero-action{
-
-    margin-top:62px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:flex-start;
-
-    gap:18px;
-}
 
 .cta{
 
@@ -960,7 +944,7 @@ section{
 
 
 /* =========================================================
-   PORTFOLIO
+   PORTFOLIO SECTION
 ========================================================= */
 
 .portfolio-header{
@@ -1260,7 +1244,7 @@ footer{
 
 
 /* =========================================================
-   RESPONSIVE
+   RESPONSIVE (TABLET & MOBILE)
 ========================================================= */
 
 @media (max-width:980px){
@@ -1359,13 +1343,6 @@ footer{
         top:58%;
     }
 
-    .hero-message-ui{
-
-        left:48%;
-
-        top:68%;
-    }
-
     .hero-message h2{
 
         font-size:20px;
@@ -1374,13 +1351,6 @@ footer{
     .hero-message p{
 
         font-size:14px;
-    }
-
-    .hero-message-ui p{
-
-        white-space:normal;
-
-        max-width:260px;
     }
 
     .hero-action{
@@ -1426,142 +1396,143 @@ footer{
     }
 
 
-   /* ---------------- Service ---------------- */
+    /* ---------------- Service ---------------- */
 
-#experience{
+    #experience{
 
-    padding:120px 26px;
+        padding:120px 26px;
 
-}
+    }
 
-.experience-header{
+    .experience-header{
 
-    flex-direction:column;
+        flex-direction:column;
 
-    gap:40px;
+        gap:40px;
 
-    margin-bottom:70px;
+        margin-bottom:70px;
 
-}
+    }
 
-.experience-heading h2{
+    .experience-heading h2{
 
-    font-size:48px;
+        font-size:48px;
 
-    margin-bottom:26px;
+        margin-bottom:26px;
 
-}
+    }
 
-.experience-heading p{
+    .experience-heading p{
 
-    font-size:16px;
+        font-size:16px;
 
-}
+    }
 
-.experience-years{
+    .experience-years{
 
-    align-items:flex-start;
+        align-items:flex-start;
 
-}
+    }
 
-.experience-years strong{
+    .experience-years strong{
 
-    font-size:24px;
+        font-size:24px;
 
-}
+    }
 
-.experience-years span{
+    .experience-years span{
 
-    font-size:19px;
+        font-size:19px;
 
-}
+    }
 
-.experience-grid{
+    .experience-grid{
 
-    grid-template-columns:1fr;
+        grid-template-columns:1fr;
 
-}
+    }
 
-.experience-item{
+    .experience-item{
 
-    padding:50px 0;
+        padding:50px 0;
 
-}
+    }
 
-.experience-item:first-child{
+    .experience-item:first-child{
 
-    padding-top:0;
+        padding-top:0;
 
-}
+    }
 
-.experience-item:last-child{
+    .experience-item:last-child{
 
-    padding-bottom:0;
+        padding-bottom:0;
 
-}
+    }
 
-.experience-item + .experience-item{
+    .experience-item + .experience-item{
 
-    border-left:0;
+        border-left:0;
 
-    border-top:1px solid #dcdcdc;
+        border-top:1px solid #dcdcdc;
 
-}
+    }
 
-.experience-item h3{
+    .experience-item h3{
 
-    font-size:30px;
+        font-size:30px;
 
-}
+    }
 
-.experience-career{
+    .experience-career{
 
-    margin-top:70px;
+        margin-top:70px;
 
-}
-/* ---------------- Portfolio ---------------- */
+    }
 
-.portfolio-header{
+    /* ---------------- Portfolio ---------------- */
 
-    flex-direction:column;
+    .portfolio-header{
 
-    gap:40px;
+        flex-direction:column;
 
-    margin-bottom:70px;
+        gap:40px;
 
-}
+        margin-bottom:70px;
 
-.portfolio-heading h2{
+    }
 
-    font-size:48px;
+    .portfolio-heading h2{
 
-    margin-bottom:26px;
+        font-size:48px;
 
-}
+        margin-bottom:26px;
 
-.portfolio-heading p{
+    }
 
-    font-size:16px;
+    .portfolio-heading p{
 
-}
+        font-size:16px;
 
-.portfolio-meta{
+    }
 
-    align-items:flex-start;
+    .portfolio-meta{
 
-}
+        align-items:flex-start;
 
-.portfolio-meta strong{
+    }
 
-    font-size:24px;
+    .portfolio-meta strong{
 
-}
+        font-size:24px;
 
-.portfolio-meta span{
+    }
 
-    font-size:19px;
+    .portfolio-meta span{
 
-}
+        font-size:19px;
+
+    }
 
     /* ---------------- About ---------------- */
 
@@ -1649,31 +1620,22 @@ footer{
 
 
 /* =========================================================
-   MOBILE HERO
+   MOBILE HERO (스마트폰 화면)
 ========================================================= */
 
 @media (max-width:767px){
-
-    /* -------------------------
-       HERO
-    ------------------------- */
 
     .hero{
         height:100svh;
         min-height:680px;
         padding:0;
-        overflow:hidden;
+        /* 스크롤 막힘 현상을 방지하기 위해 overflow: hidden 제거 완료 */
     }
 
     .hero-inner{
         width:100%;
         height:100%;
     }
-
-
-    /* -------------------------
-       HERO TITLE
-    ------------------------- */
 
     .hero h1{
         left:26px;
@@ -1716,11 +1678,6 @@ footer{
         text-align:left;
     }
 
-
-    /* -------------------------
-       3D GRAPHIC
-    ------------------------- */
-
     .hero-3d{
         position:absolute;
 
@@ -1744,28 +1701,11 @@ footer{
         opacity:.72;
     }
 
-
-    /* -------------------------
-       BETTER UX
-    ------------------------- */
-
     .hero-message-ux{
         left:26px;
         top:53%;
 
         width:calc(100% - 52px);
-    }
-
-
-    /* -------------------------
-       BETTER UI
-    ------------------------- */
-
-    .hero-message-ui{
-        left:50%;
-        top:65%;
-
-        width:calc(50% - 26px);
     }
 
     .hero-message h2{
@@ -1778,16 +1718,6 @@ footer{
         line-height:1.65;
     }
 
-    .hero-message-ui p{
-        white-space:normal;
-        max-width:none;
-    }
-
-
-    /* -------------------------
-       HERO ACTION
-    ------------------------- */
-
     .hero-message-ux .hero-action{
         margin-top:90px;
 
@@ -1799,22 +1729,6 @@ footer{
 
         gap:18px;
     }
-
-    .hero-message-ux .hero-action .btn-primary,
-    .hero-message-ux .hero-action .portfolio{
-        position:static !important;
-
-        top:auto !important;
-
-        transform:none !important;
-
-        font-size:15px;
-    }
-
-
-    /* -------------------------
-       HERO LIGHT
-    ------------------------- */
 
     .hero-light{
         width:120vw;
@@ -1829,6 +1743,7 @@ footer{
         filter:blur(45px);
     }
 }
+
 
 /* =========================================================
    HERO CTA — DESKTOP
@@ -1878,19 +1793,16 @@ footer{
     line-height: 1 !important;
 }
 
-/* Portfolio */
 .hero-action .hero-btn-primary {
     background: #111 !important;
     color: #fff !important;
 }
 
-/* Career */
 .hero-action .hero-btn-secondary {
     background: #fff !important;
     color: #111 !important;
 }
 
-/* Hover */
 .hero-action .hero-btn-primary:hover {
     background: #333 !important;
 }
@@ -1898,177 +1810,4 @@ footer{
 .hero-action .hero-btn-secondary:hover {
     background: #111 !important;
     color: #fff !important;
-}
-
-/* =========================================================
-   PORTFOLIO
-========================================================= */
-
-.portfolio-header{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:flex-start;
-
-    margin-bottom:110px;
-
-}
-
-.portfolio-heading h2{
-
-    margin:0 0 36px;
-
-    font-size:64px;
-
-    line-height:1;
-
-    font-weight:800;
-
-    letter-spacing:-.055em;
-
-    color:#111;
-
-}
-
-.portfolio-heading p{
-
-    margin:0;
-
-    font-size:18px;
-
-    line-height:1.8;
-
-    color:#555;
-
-    letter-spacing:-.025em;
-
-}
-
-.portfolio-meta{
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:flex-end;
-
-    padding-top:2px;
-
-    color:#111;
-
-}
-
-.portfolio-meta strong{
-
-    font-size:28px;
-
-    line-height:1.15;
-
-    font-weight:700;
-
-    letter-spacing:-.035em;
-
-}
-
-.portfolio-meta span{
-
-    margin-top:4px;
-
-    font-size:22px;
-
-    line-height:1.2;
-
-    font-weight:600;
-
-    letter-spacing:-.035em;
-
-}
-
-
-/* =========================================================
-   PORTFOLIO
-========================================================= */
-
-.portfolio-header{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:flex-start;
-
-    margin-bottom:110px;
-
-}
-
-.portfolio-heading h2{
-
-    margin:0 0 36px;
-
-    font-size:64px;
-
-    line-height:1;
-
-    font-weight:800;
-
-    letter-spacing:-.055em;
-
-    color:#111;
-
-}
-
-.portfolio-heading p{
-
-    margin:0;
-
-    font-size:18px;
-
-    line-height:1.8;
-
-    color:#555;
-
-    letter-spacing:-.025em;
-
-}
-
-.portfolio-meta{
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:flex-end;
-
-    padding-top:2px;
-
-    color:#111;
-
-}
-
-.portfolio-meta strong{
-
-    font-size:28px;
-
-    line-height:1.15;
-
-    font-weight:700;
-
-    letter-spacing:-.035em;
-
-}
-
-.portfolio-meta span{
-
-    margin-top:4px;
-
-    font-size:22px;
-
-    line-height:1.2;
-
-    font-weight:600;
-
-    letter-spacing:-.035em;
-
 }
