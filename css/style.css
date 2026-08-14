@@ -1422,3 +1422,75 @@ footer{
         filter:blur(45px);
     }
 }
+
+/* =========================================================
+   HERO CTA BUTTONS
+========================================================= */
+
+.hero-action {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin-top: 32px !important;
+}
+
+.hero-action .hero-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+
+    height: 48px !important;
+    padding: 0 20px !important;
+
+    border: 1px solid #111 !important;
+    border-radius: 999px !important;
+
+    box-sizing: border-box !important;
+
+    font-family: inherit !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    line-height: 1 !important;
+
+    text-decoration: none !important;
+
+    transition:
+        background-color .2s ease,
+        color .2s ease,
+        transform .2s ease !important;
+}
+
+.hero-action .hero-btn span {
+    font-size: 16px !important;
+    line-height: 1 !important;
+}
+
+/* Portfolio */
+
+.hero-action .hero-btn-primary {
+    background: #111 !important;
+    color: #fff !important;
+}
+
+/* Career */
+
+.hero-action .hero-btn-secondary {
+    background: #fff !important;
+    color: #111 !important;
+}
+
+/* Hover */
+
+.hero-action .hero-btn:hover {
+    transform: translateY(-2px) !important;
+}
+
+.hero-action .hero-btn-primary:hover {
+    background: #333 !important;
+}
+
+.hero-action .hero-btn-secondary:hover {
+    background: #111 !important;
+    color: #fff !important;
+}
