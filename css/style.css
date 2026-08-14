@@ -1,18 +1,31 @@
 /* =========================================================
-   0. RESET & BASE
+   1. COMMON & RESET
 ========================================================= */
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: "Pretendard", -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #fff;
     color: #111;
-    background-color: #fff; /* 전체 기본 배경 흰색 */
     overflow-x: hidden;
+    width: 100%;
     position: relative;
+    -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+    background: #111;
+    color: #fff;
 }
 
 a {
@@ -20,26 +33,20 @@ a {
     color: inherit;
 }
 
-
-/* =========================================================
-   1. BACKGROUND 3D LAYER (화면 전체 뒤쪽에 고정되는 3D 그리드/오브젝트)
-========================================================= */
-.hero-3d {
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1; /* 콘텐츠 영역보다 무조건 뒤쪽에 위치 */
-    pointer-events: none !important; /* 마우스 클릭이 캔버스를 통과해 아래/위 콘텐츠로 전달되도록 설정 */
-    overflow: hidden;
-    will-change: transform;
-    opacity: 0.85;
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
 }
 
-.hero-3d canvas {
-    width: 100% !important;
-    height: 100% !important;
-    display: block;
+section {
+    padding: 180px 64px;
+}
+
+.container {
+    max-width: 1280px;
+    width: 100%;
+    margin: auto;
 }
 
 
@@ -51,16 +58,17 @@ header {
     top: 0;
     left: 0;
     width: 100%;
+    overflow: visible;
     padding: 34px 64px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 999;
-    transition: background .35s ease, backdrop-filter .35s ease, border-color .35s ease;
+    transition: background .35s ease, backdrop-filter .35s ease, -webkit-backdrop-filter .35s ease, border-color .35s ease;
 }
 
 header.active {
-    background: rgba(255, 255, 255, .82);
+    background: rgba(255, 255, 255, .72);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(0, 0, 0, .05);
@@ -87,34 +95,41 @@ nav a:hover {
     opacity: .45;
 }
 
-
-/* =========================================================
-   3. CONTENT SECTIONS (3D 그리드 위를 완벽하게 덮는 불투명 컨테이너들)
-========================================================= */
-
-/* 모든 섹션(히어로 포함)에 흰색 배경과 레이어 명시 */
-section {
-    position: relative;
-    z-index: 2; /* 3D 배경(-1)보다 위에 배치 */
-    background-color: #fff; /* 핵심: 3D 오브젝트가 비쳐서 깨지지 않도록 불투명 흰색 배경 적용 */
-    width: 100%;
+.menu-toggle {
+    display: none;
+    width: 42px;
+    height: 42px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
 }
 
-/* 첫 번째 히어로는 배경을 투명하게 주어 처음 진입 시 3D가 바로 보이게 함 */
+.menu-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #111;
+    margin: 5px auto;
+    transition: .3s;
+}
+
+
+/* =========================================================
+   3. HERO SECTION & 3D / LIGHT EFFECTS
+========================================================= */
 .hero {
+    position: relative;
     height: 100vh;
     min-height: 720px;
     padding: 0;
-    background: transparent !important; 
     isolation: isolate;
 }
 
 .hero-inner {
     position: relative;
     width: 100%;
-    max-width: 1440px;
     height: 100%;
-    margin: 0 auto;
     z-index: 3;
 }
 
@@ -129,22 +144,58 @@ section {
     pointer-events: none;
     opacity: .82;
     filter: blur(52px);
-    background: radial-gradient(ellipse 30% 36% at 70% 44%, rgba(63,84,72,.095) 0%, rgba(63,84,72,0) 72%);
+    transform: translate3d(4%, 0, 0) scale(1);
+    background: 
+        radial-gradient(ellipse 30% 36% at 70% 44%, rgba(63,84,72,.095) 0%, rgba(63,84,72,.065) 25%, rgba(63,84,72,.025) 48%, rgba(63,84,72,0) 72%),
+        radial-gradient(ellipse 60% 54% at 62% 48%, rgba(125,130,128,.095) 0%, rgba(145,148,146,.065) 30%, rgba(170,173,171,.035) 50%, rgba(255,255,255,0) 76%);
+    animation: heroLightFlow 8s ease-in-out infinite alternate;
 }
 
-/* Hero Typography */
+.hero-light::after {
+    content: "";
+    position: absolute;
+    inset: -18%;
+    background: radial-gradient(ellipse 30% 42% at 76% 52%, rgba(255,255,255,.36) 0%, rgba(255,255,255,.15) 30%, rgba(255,255,255,0) 70%);
+    filter: blur(28px);
+    animation: heroLightPulse 6s ease-in-out infinite alternate;
+}
+
+/* Hero 3D Graphic */
+.hero-3d {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+    overflow: visible;
+    will-change: transform;
+    animation: hero3dFloat 7s ease-in-out infinite alternate;
+}
+
+.hero-3d canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+    opacity: .78;
+}
+
+/* Hero Typography & Content */
 .hero h1 {
     position: absolute;
     z-index: 4;
-    left: 6%;
-    top: 22%;
-    width: 90%;
+    left: 2.5%;
+    top: 26%;
+    width: 95%;
     margin: 0;
-    font-size: clamp(52px, 6vw, 100px);
+    font-size: clamp(72px, 7vw, 118px);
     font-weight: 900;
-    line-height: 0.95;
-    letter-spacing: -0.04em;
+    line-height: .90;
+    letter-spacing: -0.045em;
     color: #111;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: fade .8s .15s forwards;
 }
 
 .hero h1 .title-line-1 {
@@ -155,10 +206,11 @@ section {
 .hero h1 .title-line-2 {
     display: block;
     position: relative;
-    left: 0;
-    top: 10px;
+    left: -245px;
+    top: 26px;
     width: max-content;
     text-align: left;
+    margin-left: 48%;
 }
 
 .hero-message {
@@ -169,33 +221,1085 @@ section {
 }
 
 .hero-message h2 {
-    margin: 0 0 12px;
-    font-size: 18px;
-    line-height: 1.4;
+    margin: 0 0 16px;
+    font-size: 22px;
+    line-height: 1.15;
     font-weight: 700;
-    letter-spacing: -.03em;
+    letter-spacing: -.04em;
 }
 
 .hero-message p {
     margin: 0;
-    font-size: 13px;
-    line-height: 1.6;
+    font-size: 14px;
+    line-height: 1.8;
     color: #777;
-    letter-spacing: -.02em;
+    letter-spacing: -.025em;
 }
 
 .hero-message-ux {
-    left: 6%;
+    left: 4%;
     top: 58%;
-    width: 420px;
+    width: 430px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fade .8s .35s forwards;
 }
 
-/* 하부 콘텐츠 섹션들 (Experience, Projects, Profile 등) - 3D 위를 확실히 덮도록 처리 */
-.content-section, 
-section:not(.hero) {
+/* Hero Action Buttons */
+.hero-action {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    margin-top: 30px !important;
+    margin-left: 0 !important;
+    padding: 0 !important;
+}
+
+.hero-action .hero-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: auto !important;
+    min-width: 0 !important;
+    height: 46px !important;
+    padding: 0 18px !important;
+    border-radius: 999px !important;
+    border: 1px solid #111 !important;
+    box-sizing: border-box !important;
+    font-family: inherit !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    line-height: 1 !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    transition: transform .2s ease, background .2s ease, color .2s ease;
+}
+
+.hero-action .hero-btn:hover {
+    transform: translateY(-2px);
+}
+
+.hero-action .hero-btn span {
+    margin-left: 7px !important;
+    font-size: 15px !important;
+    line-height: 1 !important;
+}
+
+.hero-action .hero-btn-primary {
+    background: #111 !important;
+    color: #fff !important;
+}
+
+.hero-action .hero-btn-primary:hover {
+    background: #333 !important;
+}
+
+.hero-action .hero-btn-secondary {
+    background: #fff !important;
+    color: #111 !important;
+}
+
+.hero-action .hero-btn-secondary:hover {
+    background: #111 !important;
+    color: #fff !important;
+}
+
+.scroll {
+    display: none !important;
+}
+
+
+/* =========================================================
+   4. EXPERIENCE / SERVICE SECTION
+========================================================= */
+#experience {
+    padding: 180px 64px;
+}
+
+.experience-wrap {
+    max-width: 1280px;
+    width: 100%;
+    margin: auto;
+}
+
+.experience-header,
+.portfolio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 110px;
+}
+
+.experience-heading h2,
+.portfolio-heading h2 {
+    margin: 0 0 36px;
+    font-size: 64px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -.055em;
+    color: #111;
+}
+
+.experience-heading p,
+.portfolio-heading p {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.8;
+    color: #555;
+    letter-spacing: -.025em;
+}
+
+.experience-years,
+.portfolio-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-top: 2px;
+    color: #111;
+}
+
+.experience-years strong,
+.portfolio-meta strong {
+    font-size: 28px;
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -.035em;
+}
+
+.experience-years span,
+.portfolio-meta span {
+    margin-top: 4px;
+    font-size: 22px;
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -.035em;
+}
+
+.experience-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.experience-item {
+    min-width: 0;
+    padding: 0 64px;
+}
+
+.experience-item:first-child {
+    padding-left: 0;
+}
+
+.experience-item:last-child {
+    padding-right: 0;
+}
+
+.experience-item + .experience-item {
+    border-left: 1px solid #dcdcdc;
+}
+
+.experience-number {
+    margin-bottom: 26px;
+    font-size: 15px;
+    line-height: 1;
+    font-weight: 600;
+    color: #111;
+}
+
+.experience-item h3 {
+    margin: 0;
+    font-size: 30px;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -.045em;
+    color: #111;
+}
+
+.experience-line {
+    width: 58px;
+    height: 1px;
+    margin: 32px 0 34px;
+    background: #111;
+}
+
+.experience-keywords {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 38px;
+}
+
+.experience-keywords span {
+    font-size: 16px;
+    line-height: 1.4;
+    color: #222;
+    letter-spacing: -.025em;
+}
+
+.experience-item p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.85;
+    color: #777;
+    letter-spacing: -.025em;
+}
+
+.experience-career {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 100px;
+    padding-top: 32px;
+    border-top: 1px solid #e2e2e2;
+}
+
+.experience-career a {
+    display: inline-flex;
+    align-items: center;
+    gap: 24px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #111;
+    color: #111;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -.025em;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.experience-career a:hover {
+    gap: 32px;
+}
+
+.career-arrow {
+    font-size: 24px;
+    line-height: 1;
+}
+
+
+/* =========================================================
+   5. PORTFOLIO / SELECTED WORK
+========================================================= */
+
+#portfolio {
+    padding: 180px 64px;
+}
+
+#portfolio .container {
+    max-width: 1280px;
+    width: 100%;
+    margin: auto;
+}
+
+
+/* ---------------------------------------------------------
+   PORTFOLIO HEADER
+--------------------------------------------------------- */
+
+#portfolio .section-title {
+    margin: 0 0 42px;
+    font-size: 64px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -.055em;
+    color: #111;
+}
+
+#portfolio .section-title::after {
+    content: "20+ PROJECTS";
+    display: block;
+    float: right;
+    margin-top: -2px;
+    font-size: 28px;
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -.035em;
+}
+
+
+/* ---------------------------------------------------------
+   PORTFOLIO INTRO
+--------------------------------------------------------- */
+
+#portfolio .section-title + .portfolio-grid {
+    margin-top: 110px;
+}
+
+
+/* ---------------------------------------------------------
+   PROJECT LIST
+--------------------------------------------------------- */
+
+.portfolio-grid {
     position: relative;
-    z-index: 5; /* 히어로나 3D보다 상위에 위치 */
-    background-color: #fff !important; /* 스크롤 내릴 때 3D 그리드를 깔끔하게 가려줌 */
-    padding: 120px 64px;
-    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+
+/* ---------------------------------------------------------
+   PROJECT
+--------------------------------------------------------- */
+
+.project {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+
+    width: 100%;
+    max-width: 1120px;
+    min-height: 150px;
+
+    padding: 34px 0;
+
+    color: #111;
+
+    transition:
+        padding .45s cubic-bezier(.2,.7,.2,1),
+        opacity .35s ease;
+}
+
+.project + .project {
+    margin-top: 18px;
+}
+
+
+/* ---------------------------------------------------------
+   CATEGORY
+--------------------------------------------------------- */
+
+.project-category {
+    position: absolute;
+    left: 0;
+    top: 34px;
+
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 600;
+
+    color: #888;
+
+    letter-spacing: .04em;
+    text-transform: uppercase;
+
+    transition:
+        color .35s ease,
+        transform .4s cubic-bezier(.2,.7,.2,1);
+}
+
+
+/* ---------------------------------------------------------
+   PROJECT TITLE
+--------------------------------------------------------- */
+
+.project h2 {
+    margin: 28px 0 0;
+
+    font-size: clamp(34px, 4vw, 58px);
+    line-height: .98;
+
+    font-weight: 700;
+    letter-spacing: -.055em;
+
+    color: #111;
+
+    transition:
+        transform .5s cubic-bezier(.2,.7,.2,1),
+        letter-spacing .5s ease;
+}
+
+
+/* ---------------------------------------------------------
+   DESCRIPTION
+--------------------------------------------------------- */
+
+.project p {
+    grid-column: 1;
+
+    margin: 16px 0 0;
+
+    font-size: 15px;
+    line-height: 1.6;
+
+    color: #777;
+
+    letter-spacing: -.025em;
+
+    transition:
+        color .35s ease,
+        transform .45s cubic-bezier(.2,.7,.2,1);
+}
+
+
+/* ---------------------------------------------------------
+   VIEW LINK
+--------------------------------------------------------- */
+
+.project .arrow {
+    position: absolute;
+
+    right: 0;
+    bottom: 34px;
+
+    font-size: 14px;
+    line-height: 1;
+
+    font-weight: 600;
+
+    color: #111;
+
+    opacity: .75;
+
+    transition:
+        opacity .3s ease,
+        transform .45s cubic-bezier(.2,.7,.2,1);
+}
+
+
+/* ---------------------------------------------------------
+   HOVER INTERACTION
+--------------------------------------------------------- */
+
+.portfolio-grid:hover .project:not(:hover) {
+    opacity: .38;
+}
+
+.project:hover {
+    padding-left: 22px;
+    padding-right: 22px;
+}
+
+.project:hover h2 {
+    transform: translateX(10px);
+    letter-spacing: -.06em;
+}
+
+.project:hover .project-category {
+    color: #111;
+    transform: translateX(10px);
+}
+
+.project:hover p {
+    color: #444;
+    transform: translateX(10px);
+}
+
+.project:hover .arrow {
+    opacity: 1;
+    transform: translateX(8px);
+}
+
+
+/* ---------------------------------------------------------
+   HOVER LIGHT
+--------------------------------------------------------- */
+
+.project::after {
+    content: "";
+
+    position: absolute;
+
+    left: -30px;
+    top: 50%;
+
+    width: 70px;
+    height: 1px;
+
+    background: linear-gradient(
+        90deg,
+        rgba(80,255,160,0),
+        rgba(80,255,160,.95),
+        rgba(80,255,160,0)
+    );
+
+    opacity: 0;
+
+    transform: translate(-80px, -50%);
+
+    pointer-events: none;
+}
+
+.project:hover::after {
+    opacity: 1;
+
+    animation: portfolioLight .8s cubic-bezier(.4,0,.2,1) forwards;
+}
+
+@keyframes portfolioLight {
+
+    0% {
+        transform: translate(-80px, -50%);
+        opacity: 0;
+    }
+
+    25% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(
+            calc(100% + 1120px),
+            -50%
+        );
+        opacity: 0;
+    }
+}
+
+
+/* =========================================================
+   5. ABOUT & CONTACT & FOOTER SECTIONS
+========================================================= */
+.about-wrap {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 80px;
+}
+
+.about-content h2 {
+    font-size: 56px;
+    line-height: 1.15;
+    letter-spacing: -.05em;
+    margin-bottom: 42px;
+    font-weight: 800;
+}
+
+.about-content p {
+    font-size: 20px;
+    line-height: 2;
+    color: #666;
+    max-width: 760px;
+    margin-bottom: 30px;
+}
+
+.contact-wrap {
+    padding: 120px 0;
+    border-top: 1px solid #ececec;
+}
+
+.contact-wrap h2 {
+    font-size: 72px;
+    line-height: 1.05;
+    letter-spacing: -.06em;
+    margin: 26px 0;
+}
+
+.contact-wrap p {
+    font-size: 20px;
+    color: #666;
+    margin-bottom: 60px;
+}
+
+.contact-links {
+    display: flex;
+    gap: 36px;
+    flex-wrap: wrap;
+}
+
+.contact-links a {
+    font-size: 22px;
+    font-weight: 600;
+    transition: .25s;
+}
+
+.contact-links a:hover {
+    opacity: .45;
+}
+
+.contact-info {
+    display: flex;
+    gap: 100px;
+    margin-top: 56px;
+}
+
+.contact-info span {
+    display: block;
+    font-size: 13px;
+    color: #999;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.contact-info a {
+    font-size: 20px;
+    font-weight: 500;
+    color: #111;
+    text-decoration: none;
+}
+
+.contact-info a:hover {
+    opacity: .6;
+}
+
+.contact-info a span {
+    margin-left: 8px;
+}
+
+footer {
+    padding: 40px 64px;
+    border-top: 1px solid #ececec;
+}
+
+.footer-inner {
+    max-width: 1280px;
+    width: 100%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #888;
+}
+
+
+/* =========================================================
+   6. ANIMATIONS
+========================================================= */
+@keyframes fade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(8px);
+    }
+}
+
+@keyframes heroLightFlow {
+    0% {
+        transform: translate3d(5%, -2%, 0) scale(1);
+    }
+    50% {
+        transform: translate3d(-2%, 3%, 0) scale(1.055);
+    }
+    100% {
+        transform: translate3d(-7%, -1%, 0) scale(1.02);
+    }
+}
+
+@keyframes heroLightPulse {
+    0% {
+        transform: translate3d(5%, -2%, 0) scale(.92);
+        opacity: .48;
+    }
+    50% {
+        transform: translate3d(-2%, 2%, 0) scale(1.04);
+        opacity: .72;
+    }
+    100% {
+        transform: translate3d(-7%, -1%, 0) scale(.96);
+        opacity: .42;
+    }
+}
+
+@keyframes hero3dFloat {
+    0% {
+        transform: translate3d(-3px, 2px, 0);
+    }
+    50% {
+        transform: translate3d(4px, -5px, 0);
+    }
+    100% {
+        transform: translate3d(-2px, 4px, 0);
+    }
+}
+
+
+/* =========================================================
+   7. RESPONSIVE (TABLET & MOBILE)
+========================================================= */
+@media (max-width: 980px) {
+    .hero-light {
+        width: 120vw;
+        height: 72vh;
+        right: -48vw;
+        top: 10vh;
+        opacity: .58;
+        filter: blur(48px);
+    }
+
+    header {
+        padding: 26px;
+    }
+
+    nav {
+        display: none;
+        position: fixed;
+        top: 92px;
+        left: 0;
+        width: 100%;
+        background: rgba(248, 248, 248, .72);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, .06);
+        padding: 24px 26px;
+        flex-direction: column;
+        gap: 20px;
+        border-top: 1px solid rgba(0, 0, 0, .05);
+        z-index: 998;
+    }
+
+    nav.open {
+        display: flex;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .hero {
+        padding: 0 26px;
+        min-height: 720px;
+    }
+
+    .hero h1 {
+        left: 26px;
+        top: 28%;
+        font-size: clamp(52px, 13vw, 72px);
+        line-height: .95;
+        letter-spacing: -0.04em;
+    }
+
+    .hero-message-ux {
+        left: 26px;
+        top: 58%;
+    }
+
+    .hero-message h2 {
+        font-size: 20px;
+    }
+
+    .hero-message p {
+        font-size: 14px;
+    }
+
+    .hero-action {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 18px !important;
+        margin-top: 36px !important;
+    }
+
+    .scroll {
+        left: 26px;
+    }
+
+    .hero-3d {
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        right: auto;
+        top: auto;
+        transform: none;
+    }
+
+    section {
+        padding: 120px 26px;
+    }
+
+    #experience {
+        padding: 120px 26px;
+    }
+
+    .experience-header,
+    .portfolio-header {
+        flex-direction: column;
+        gap: 40px;
+        margin-bottom: 70px;
+    }
+
+    .experience-heading h2,
+    .portfolio-heading h2 {
+        font-size: 48px;
+        margin-bottom: 26px;
+    }
+
+    .experience-heading p,
+    .portfolio-heading p {
+        font-size: 16px;
+    }
+
+    .experience-years,
+    .portfolio-meta {
+        align-items: flex-start;
+    }
+
+    .experience-years strong,
+    .portfolio-meta strong {
+        font-size: 24px;
+    }
+
+    .experience-years span,
+    .portfolio-meta span {
+        font-size: 19px;
+    }
+
+    .experience-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .experience-item {
+        padding: 50px 0;
+    }
+
+    .experience-item:first-child {
+        padding-top: 0;
+    }
+
+    .experience-item:last-child {
+        padding-bottom: 0;
+    }
+
+    .experience-item + .experience-item {
+        border-left: 0;
+        border-top: 1px solid #dcdcdc;
+    }
+
+    .experience-item h3 {
+        font-size: 30px;
+    }
+
+    .experience-career {
+        margin-top: 70px;
+    }
+
+    .about-wrap {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .about-content h2 {
+        font-size: 38px;
+    }
+
+    .about-content p {
+        font-size: 17px;
+    }
+
+    .contact-wrap h2 {
+        font-size: 42px;
+    }
+
+    .contact-wrap p {
+        font-size: 17px;
+    }
+
+    .contact-links {
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .contact-links a {
+        font-size: 18px;
+    }
+
+    .contact-info {
+        flex-direction: column;
+        gap: 32px;
+    }
+
+    footer {
+        padding: 30px 26px;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+}
+
+
+/* =========================================================
+   8. MOBILE HERO & REDUCED MOTION (스마트폰 최적화)
+========================================================= */
+@media (prefers-reduced-motion: reduce) {
+    .hero-light,
+    .hero-light::after,
+    .hero-3d {
+        animation: none;
+    }
+}
+
+@media (max-width: 767px) {
+    .hero {
+        height: 100svh;
+        min-height: 680px;
+        padding: 0;
+    }
+
+    .hero-inner {
+        width: 100%;
+        height: 100%;
+    }
+
+    .hero h1 {
+        left: 26px;
+        top: 23%;
+        width: calc(100% - 52px);
+        font-size: clamp(48px, 13vw, 64px);
+        line-height: .94;
+        letter-spacing: -0.045em;
+        z-index: 4;
+    }
+
+    .hero h1 .title-line-1 {
+        display: block;
+        position: relative;
+        left: 0;
+        margin: 0;
+        width: 100%;
+        text-align: left;
+    }
+
+    .hero h1 .title-line-2 {
+        display: block;
+        position: relative;
+        left: 36%;
+        top: 16px;
+        margin-left: 0;
+        width: calc(100% - 36%);
+        text-align: left;
+    }
+
+    .hero-3d {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        transform: scale(.40);
+        transform-origin: center center;
+        z-index: 2;
+        overflow: visible;
+    }
+
+    .hero-3d canvas {
+        width: 100% !important;
+        height: 100% !important;
+        opacity: .72;
+    }
+
+    .hero-message-ux {
+        left: 26px;
+        top: 53%;
+        width: calc(100% - 52px);
+    }
+
+    .hero-message h2 {
+        font-size: 20px;
+        margin-bottom: 12px;
+    }
+
+    .hero-message p {
+        font-size: 14px;
+        line-height: 1.65;
+    }
+
+    .hero-message-ux .hero-action {
+        margin-top: 90px;
+        display: flex;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 18px !important;
+    }
+
+    .hero-light {
+        width: 120vw;
+        height: 70vh;
+        right: -45vw;
+        top: 15vh;
+        opacity: .45;
+        filter: blur(45px);
+    }
+}
+
+
+/* =========================================================
+   PORTFOLIO MOBILE
+========================================================= */
+@media (max-width: 767px) {
+
+    #portfolio {
+        padding: 120px 26px;
+    }
+
+    #portfolio .section-title {
+        font-size: 48px;
+        margin-bottom: 32px;
+    }
+
+    #portfolio .section-title::after {
+        float: none;
+        display: block;
+        margin-top: 18px;
+        font-size: 20px;
+    }
+
+    #portfolio .section-title + .portfolio-grid {
+        margin-top: 70px;
+    }
+
+    .project {
+        display: block;
+        width: 100%;
+        min-height: 170px;
+        padding: 28px 0;
+    }
+
+    .project + .project {
+        margin-top: 12px;
+    }
+
+    .project-category {
+        position: static;
+        display: block;
+        margin-bottom: 22px;
+        font-size: 11px;
+    }
+
+    .project h2 {
+        margin: 0;
+        font-size: clamp(30px, 9vw, 46px);
+        line-height: 1;
+    }
+
+    .project p {
+        margin-top: 14px;
+        font-size: 14px;
+    }
+
+    .project .arrow {
+        position: static;
+        display: inline-block;
+        margin-top: 28px;
+        font-size: 13px;
+    }
+
+    .project:hover {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .project:hover h2,
+    .project:hover .project-category,
+    .project:hover p {
+        transform: none;
+    }
+
+    .portfolio-grid:hover .project:not(:hover) {
+        opacity: 1;
+    }
+
+    .project::after {
+        display: none;
+    }
 }
