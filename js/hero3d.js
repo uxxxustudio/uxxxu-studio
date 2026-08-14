@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Crisp Glass Edge & Clear Form U)
+   HERO THREE.JS (Colorful Dreamy Glass & Mouse Light Rays)
 ========================================================= */
 
 export function initHero3D() {
@@ -21,15 +21,16 @@ export function initHero3D() {
   /* =====================================================
      LIGHTS
   ===================================================== */
-  const ambientLight = new THREE.AmbientLight(0xffffff, 2.5);
+  const ambientLight = new THREE.AmbientLight(0xffffff, 2.0);
   scene.add(ambientLight);
 
-  const mainLight = new THREE.DirectionalLight(0xffffff, 6.0);
-  mainLight.position.set(-4, 8, 12);
-  scene.add(mainLight);
-
-  const mouseLight = new THREE.PointLight(0xffffff, 6.0, 25);
+  // 마우스를 따라다닐 배경 하이라이트 조명
+  const mouseLight = new THREE.PointLight(0xfff7ed, 12.0, 30);
   scene.add(mouseLight);
+
+  const dirLight = new THREE.DirectionalLight(0xe0f2fe, 4.0);
+  dirLight.position.set(-5, 10, 8);
+  scene.add(dirLight);
 
   /* =====================================================
      RENDERER
@@ -44,6 +45,54 @@ export function initHero3D() {
   renderer.setClearColor(0x000000, 0);
 
   container.appendChild(renderer.domElement);
+
+  /* =====================================================
+     DREAMY LIGHT BEAMS BACKGROUND (★ 마우스 반응 빛줄기)
+  ===================================================== */
+  const lightRayGeo = new THREE.PlaneGeometry(30, 30);
+  const lightRayMat = new THREE.ShaderMaterial({
+    uniforms: {
+      uTime: { value: 0 },
+      uMouse: { value: new THREE.Vector2(0, 0) },
+      uBgColor: { value: new THREE.Color(0xbbe2f9) }, // 스카이블루 베이스
+      uRayColor: { value: new THREE.Color(0xfffdfa) }, // 부드러운 햇빛/크림색
+    },
+    vertexShader: `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      uniform float uTime;
+      uniform vec2 uMouse;
+      uniform vec3 uBgColor;
+      uniform vec3 uRayColor;
+      varying vec2 vUv;
+
+      void main() {
+        vec2 st = vUv;
+        
+        // 마우스 오프셋을 통한 조명 각도 왜곡
+        vec2 lightCenter = vec2(0.3, 0.8) + uMouse * 0.15;
+        vec2 dir = st - lightCenter;
+        
+        // 사선 빛줄기 쉐이프 계산
+        float angle = atan(dir.y, dir.x);
+        float ray = sin(angle * 7.0 + uTime * 0.2) * 0.5 + 0.5;
+        ray *= smoothstep(1.5, 0.0, length(dir));
+
+        vec3 finalBg = mix(uBgColor, uRayColor, ray * 0.35);
+        gl_FragColor = vec4(finalBg, 1.0);
+      }
+    `,
+    depthWrite: false,
+  });
+
+  const bgMesh = new THREE.Mesh(lightRayGeo, lightRayMat);
+  bgMesh.position.set(0, 0, -8);
+  scene.add(bgMesh);
 
   /* =====================================================
      GRAPHIC GROUP
@@ -84,7 +133,7 @@ export function initHero3D() {
   }
 
   /* =====================================================
-     BACKGROUND SPATIAL GRID
+     BACKGROUND SPATIAL GRID (White Soft Grid)
   ===================================================== */
   const gridGroup = new THREE.Group();
   gridGroup.position.set(0, 0, -3);
@@ -92,36 +141,17 @@ export function initHero3D() {
   const gridWidth = 36, gridHeight = 22, stepX = 2.4, stepY = 2.4, curveFactor = 0.01;
   const curvedGridGeo = createConcaveGridGeometry(gridWidth, gridHeight, stepX, stepY, curveFactor);
 
-  const gridMaterial = new THREE.ShaderMaterial({
-    uniforms: {
-      color: { value: new THREE.Color(0xcbd5e1) },
-      baseOpacity: { value: 0.14 },
-    },
-    vertexShader: `
-      varying vec3 vPosition;
-      void main() {
-        vPosition = position;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-      }
-    `,
-    fragmentShader: `
-      uniform vec3 color;
-      uniform float baseOpacity;
-      varying vec3 vPosition;
-
-      void main() {
-        float fade = smoothstep(-11.0, -2.0, vPosition.y);
-        gl_FragColor = vec4(color, baseOpacity * fade);
-      }
-    `,
+  const gridMaterial = new THREE.LineBasicMaterial({
+    color: 0xffffff,
     transparent: true,
-    depthWrite: false,
+    opacity: 0.35,
   });
 
   gridGroup.add(new THREE.LineSegments(curvedGridGeo, gridMaterial));
 
-  const nodeGeo = new THREE.BoxGeometry(0.035, 0.035, 0.035);
-  const nodeMat = new THREE.MeshBasicMaterial({ color: 0x64748b, transparent: true, opacity: 0.35 });
+  // + 모양 노드 스팟
+  const nodeGeo = new THREE.BoxGeometry(0.04, 0.04, 0.04);
+  const nodeMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6 });
 
   for (let x = -gridWidth / 2; x <= gridWidth / 2; x += stepX * 2) {
     for (let y = -gridHeight / 2; y <= gridHeight / 2; y += stepY * 2) {
@@ -136,16 +166,14 @@ export function initHero3D() {
   scene.add(gridGroup);
 
   /* =====================================================
-     U CRISP GLASS SHADER (★ 형태 선명도 극대화)
+     COLORFUL OPAL GLASS SHADER FOR U (오팔 굴절 3D)
   ===================================================== */
-  const cleanWhiteEdgeMaterial = new THREE.ShaderMaterial({
+  const opalGlassMaterial = new THREE.ShaderMaterial({
     uniforms: {
-      topColor: { value: new THREE.Color(0xffffff) },
-      bottomColor: { value: new THREE.Color(0xcbd5e1) }, // 선명한 폼을 위한 미디엄 라이트 그레이
-      edgeColor: { value: new THREE.Color(0xffffff) },
-      fresnelPower: { value: 1.8 },                      // 빛 반사 범위를 넓혀 윤곽 또렷하게
-      baseOpacity: { value: 0.68 },                      // 투명하지만 흐리지 않은 알파
-      lightDirection: { value: new THREE.Vector3(-0.5, 0.8, 1.0).normalize() }
+      uMouse: { value: new THREE.Vector2(0, 0) },
+      baseColor: { value: new THREE.Color(0x38bdf8) }, // 코발트 스카이
+      rimColor: { value: new THREE.Color(0xffffff) },  // 퓨어 엣지
+      opacity: { value: 0.72 },
     },
     vertexShader: `
       varying vec3 vNormal;
@@ -162,12 +190,10 @@ export function initHero3D() {
       }
     `,
     fragmentShader: `
-      uniform vec3 topColor;
-      uniform vec3 bottomColor;
-      uniform vec3 edgeColor;
-      uniform float fresnelPower;
-      uniform float baseOpacity;
-      uniform vec3 lightDirection;
+      uniform vec2 uMouse;
+      uniform vec3 baseColor;
+      uniform vec3 rimColor;
+      uniform float opacity;
 
       varying vec3 vNormal;
       varying vec3 vViewPosition;
@@ -177,44 +203,29 @@ export function initHero3D() {
         vec3 normal = normalize(vNormal);
         vec3 viewDir = normalize(vViewPosition);
 
-        // 상하 그라데이션
-        float heightRatio = clamp((vWorldPosition.y + 2.0) / 4.0, 0.0, 1.0);
-        vec3 baseGradient = mix(bottomColor, topColor, heightRatio);
+        // 마우스 빛 위치에 따른 실시간 라이팅
+        vec3 lightDir = normalize(vec3(uMouse.x * 3.0 - 1.0, uMouse.y * 2.0 + 1.0, 2.0));
+        float NdotL = max(dot(normal, lightDir), 0.0);
 
-        // 음영 콘트라스트를 살려 3D 입체감 명확히 표현
-        float NdotL = max(dot(normal, lightDirection), 0.0);
-        float lightIntensity = 0.75 + 0.25 * NdotL;
-        vec3 shadedColor = baseGradient * lightIntensity;
-
-        // ★ 모서리 윤곽 강조용 프레넬 (엣지에서 완전 선명한 White 맺힘)
-        float fresnel = 1.0 - max(dot(normal, viewDir), 0.0);
-        fresnel = pow(fresnel, fresnelPower);
-
-        vec3 finalColor = mix(shadedColor, edgeColor, fresnel * 0.95);
+        // 외곽 오팔 림라이트 (무지갯빛 굴절 효과)
+        float fresnel = pow(1.0 - max(dot(normal, viewDir), 0.0), 2.2);
         
-        // 중심부는 은은하게 비치고, 외곽으로 갈수록 또렷해지는 유기적 알파
-        float alpha = mix(baseOpacity, 0.9, fresnel);
+        vec3 colorMix = mix(baseColor, vec3(1.0), NdotL * 0.4);
+        vec3 finalColor = mix(colorMix, rimColor, fresnel * 0.85);
 
-        gl_FragColor = vec4(finalColor, alpha);
+        gl_FragColor = vec4(finalColor, opacity);
       }
     `,
     transparent: true,
-    depthWrite: true,  // 또렷한 전면 렌더링 유지
+    depthWrite: true,
     side: THREE.FrontSide
   });
 
-  // X 와이어프레임 재질
+  // X 와이어프레임 (화이트 계열로 산뜻하게)
   const xLineMaterial = new THREE.LineBasicMaterial({
-    color: 0x94a3b8,
+    color: 0xffffff,
     transparent: true,
-    opacity: 0.38,
-  });
-
-  const xNodeMaterial = new THREE.PointsMaterial({
-    color: 0x64748b,
-    size: 0.06,
-    transparent: true,
-    opacity: 0.6,
+    opacity: 0.5,
   });
 
   /* =====================================================
@@ -265,12 +276,10 @@ export function initHero3D() {
     const letterGroup = new THREE.Group();
 
     if (isU) {
-      letterGroup.add(new THREE.Mesh(geometry, cleanWhiteEdgeMaterial));
+      letterGroup.add(new THREE.Mesh(geometry, opalGlassMaterial));
     } else {
       const edges = new THREE.EdgesGeometry(geometry, 25);
       letterGroup.add(new THREE.LineSegments(edges, xLineMaterial));
-      const pointsMesh = new THREE.Points(geometry, xNodeMaterial);
-      letterGroup.add(pointsMesh);
     }
 
     letterGroup.position.set(x, y, 0);
@@ -327,6 +336,11 @@ export function initHero3D() {
 
     mouse.x += (target.x - mouse.x) * 0.05;
     mouse.y += (target.y - mouse.y) * 0.05;
+
+    // 배경 라이트 및 쉐이더 유니폼 업데이트
+    lightRayMat.uniforms.uTime.value = time;
+    lightRayMat.uniforms.uMouse.value.set(mouse.x, mouse.y);
+    opalGlassMaterial.uniforms.uMouse.value.set(mouse.x, mouse.y);
 
     mouseLight.position.set(mouse.x * 12, mouse.y * 8, 6);
 
