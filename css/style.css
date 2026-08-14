@@ -1,4 +1,50 @@
 /* =========================================================
+   0. RESET & BASE
+========================================================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #111;
+    background-color: #fff;
+    overflow-x: hidden;
+    position: relative;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+/* =========================================================
+   1. BACKGROUND 3D LAYER (스크롤 시에도 따라오되, 레이어 겹침 및 깨짐 방지)
+========================================================= */
+.hero-3d {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1; /* 콘텐츠와 텍스트 뒤쪽 배경으로 완전히 격리 */
+    pointer-events: none !important; /* 필수: 3D 캔버스가 마우스 클릭을 가로채지 않고 아래로 통과시키도록 차단 */
+    overflow: hidden;
+    will-change: transform;
+    opacity: 0.85;
+}
+
+.hero-3d canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+    opacity: .78;
+}
+
+
+/* =========================================================
    2. HEADER & NAVIGATION
 ========================================================= */
 header {
@@ -64,14 +110,22 @@ nav a:hover {
 
 
 /* =========================================================
-   3. HERO SECTION & 3D / LIGHT EFFECTS (스크롤 연동형 3D 배치)
+   3. SECTIONS & HERO AREA (텍스트 깨짐 방지 및 레이어 정돈)
 ========================================================= */
+section {
+    position: relative;
+    z-index: 2; /* 3D 배경(-1)보다 위에 오도록 설정하여 글씨가 묻히거나 깨지는 현상 방지 */
+    background: #fff; /* 콘텐츠 영역의 배경을 확실하게 잡아줌 */
+}
+
 .hero {
     position: relative;
     height: 100vh;
     min-height: 720px;
     padding: 0;
+    background: transparent; /* 히어로는 투명하게 유지하여 3D 배경이 보이도록 함 */
     isolation: isolate;
+    z-index: 2;
 }
 
 .hero-inner {
@@ -96,7 +150,6 @@ nav a:hover {
     background: 
         radial-gradient(ellipse 30% 36% at 70% 44%, rgba(63,84,72,.095) 0%, rgba(63,84,72,.065) 25%, rgba(63,84,72,.025) 48%, rgba(63,84,72,0) 72%),
         radial-gradient(ellipse 60% 54% at 62% 48%, rgba(125,130,128,.095) 0%, rgba(145,148,146,.065) 30%, rgba(170,173,171,.035) 50%, rgba(255,255,255,0) 76%);
-    animation: heroLightFlow 8s ease-in-out infinite alternate;
 }
 
 .hero-light::after {
@@ -105,34 +158,6 @@ nav a:hover {
     inset: -18%;
     background: radial-gradient(ellipse 30% 42% at 76% 52%, rgba(255,255,255,.36) 0%, rgba(255,255,255,.15) 30%, rgba(255,255,255,0) 70%);
     filter: blur(28px);
-    animation: heroLightPulse 6s ease-in-out infinite alternate;
-}
-
-/* Hero 3D Graphic - 스크롤 시 화면에 은은하게 머무르도록 Fixed/Absolute 전환 */
-.hero-3d {
-    position: fixed; /* 페이지를 스크롤해도 배경에 3D 오브젝트가 은은하게 느껴지도록 고정 */
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 1; /* 컨텐츠 뒤쪽, 배경보다는 위쪽에 위치 */
-    pointer-events: none;
-    overflow: visible;
-    will-change: transform;
-    opacity: 0.85;
-    transition: opacity 0.5s ease;
-}
-
-.hero-3d canvas {
-    width: 100% !important;
-    height: 100% !important;
-    display: block;
-    opacity: .78;
-}
-
-/* 스크롤이 히어로 섹션을 벗어났을 때 3D 오브젝트 투명도 조절 (JS 연동 혹은 레이어 분할용 클래스) */
-body.scrolled-past-hero .hero-3d {
-    opacity: 0.25; /* 스크롤 내리면 컨텐츠 가독성을 위해 살짝 흐리게 처리 */
 }
 
 /* Hero Typography & Content */
@@ -148,9 +173,6 @@ body.scrolled-past-hero .hero-3d {
     line-height: .90;
     letter-spacing: -0.045em;
     color: #111;
-    opacity: 0;
-    transform: translateY(40px);
-    animation: fade .8s .15s forwards;
 }
 
 .hero h1 .title-line-1 {
@@ -195,9 +217,6 @@ body.scrolled-past-hero .hero-3d {
     left: 4%;
     top: 58%;
     width: 430px;
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fade .8s .35s forwards;
 }
 
 /* Hero Action Buttons */
@@ -205,11 +224,9 @@ body.scrolled-past-hero .hero-3d {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
-    justify-conting: flex-start !important;
+    justify-content: flex-start !important;
     gap: 10px !important;
     margin-top: 30px !important;
     margin-left: 0 !important;
     padding: 0 !important;
 }
-
-/* (이하 기존 스타일 유지) */
