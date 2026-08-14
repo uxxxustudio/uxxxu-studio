@@ -10,7 +10,7 @@
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     color: #111;
-    background-color: #fff;
+    background-color: #fff; /* 전체 기본 배경 흰색 */
     overflow-x: hidden;
     position: relative;
 }
@@ -22,15 +22,15 @@ a {
 
 
 /* =========================================================
-   1. BACKGROUND 3D LAYER (스크롤 연동형 배경 고정)
+   1. BACKGROUND 3D LAYER (화면 전체 뒤쪽에 고정되는 3D 그리드/오브젝트)
 ========================================================= */
 .hero-3d {
     position: fixed;
     inset: 0;
     width: 100vw;
     height: 100vh;
-    z-index: -1; /* 컨텐츠 뒤쪽 배경으로 완전히 격리 */
-    pointer-events: none !important; /* 마우스 클릭이 캔버스를 통과해 아래 요소로 전달되도록 차단 */
+    z-index: -1; /* 콘텐츠 영역보다 무조건 뒤쪽에 위치 */
+    pointer-events: none !important; /* 마우스 클릭이 캔버스를 통과해 아래/위 콘텐츠로 전달되도록 설정 */
     overflow: hidden;
     will-change: transform;
     opacity: 0.85;
@@ -40,7 +40,6 @@ a {
     width: 100% !important;
     height: 100% !important;
     display: block;
-    opacity: .78;
 }
 
 
@@ -52,17 +51,16 @@ header {
     top: 0;
     left: 0;
     width: 100%;
-    overflow: visible;
     padding: 34px 64px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 999;
-    transition: background .35s ease, backdrop-filter .35s ease, -webkit-backdrop-filter .35s ease, border-color .35s ease;
+    transition: background .35s ease, backdrop-filter .35s ease, border-color .35s ease;
 }
 
 header.active {
-    background: rgba(255, 255, 255, .72);
+    background: rgba(255, 255, 255, .82);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(0, 0, 0, .05);
@@ -89,45 +87,26 @@ nav a:hover {
     opacity: .45;
 }
 
-.menu-toggle {
-    display: none;
-    width: 42px;
-    height: 42px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    padding: 0;
-}
-
-.menu-toggle span {
-    display: block;
-    width: 24px;
-    height: 2px;
-    background: #111;
-    margin: 5px auto;
-    transition: .3s;
-}
-
 
 /* =========================================================
-   3. HERO SECTION & LAYOUT FIX (텍스트 겹침/깨짐 완벽 방지)
+   3. CONTENT SECTIONS (3D 그리드 위를 완벽하게 덮는 불투명 컨테이너들)
 ========================================================= */
+
+/* 모든 섹션(히어로 포함)에 흰색 배경과 레이어 명시 */
 section {
     position: relative;
-    z-index: 2;
-    background: #fff;
+    z-index: 2; /* 3D 배경(-1)보다 위에 배치 */
+    background-color: #fff; /* 핵심: 3D 오브젝트가 비쳐서 깨지지 않도록 불투명 흰색 배경 적용 */
+    width: 100%;
 }
 
+/* 첫 번째 히어로는 배경을 투명하게 주어 처음 진입 시 3D가 바로 보이게 함 */
 .hero {
-    position: relative;
-    width: 100%;
     height: 100vh;
     min-height: 720px;
     padding: 0;
-    background: transparent;
-    overflow: hidden; /* 내부 요소가 바깥으로 튀어나가 겹치는 현상 방지 */
+    background: transparent !important; 
     isolation: isolate;
-    z-index: 2;
 }
 
 .hero-inner {
@@ -150,21 +129,10 @@ section {
     pointer-events: none;
     opacity: .82;
     filter: blur(52px);
-    transform: translate3d(4%, 0, 0) scale(1);
-    background: 
-        radial-gradient(ellipse 30% 36% at 70% 44%, rgba(63,84,72,.095) 0%, rgba(63,84,72,.065) 25%, rgba(63,84,72,.025) 48%, rgba(63,84,72,0) 72%),
-        radial-gradient(ellipse 60% 54% at 62% 48%, rgba(125,130,128,.095) 0%, rgba(145,148,146,.065) 30%, rgba(170,173,171,.035) 50%, rgba(255,255,255,0) 76%);
+    background: radial-gradient(ellipse 30% 36% at 70% 44%, rgba(63,84,72,.095) 0%, rgba(63,84,72,0) 72%);
 }
 
-.hero-light::after {
-    content: "";
-    position: absolute;
-    inset: -18%;
-    background: radial-gradient(ellipse 30% 42% at 76% 52%, rgba(255,255,255,.36) 0%, rgba(255,255,255,.15) 30%, rgba(255,255,255,0) 70%);
-    filter: blur(28px);
-}
-
-/* Hero Typography & Content (깨짐 방지용 안전 좌표 적용) */
+/* Hero Typography */
 .hero h1 {
     position: absolute;
     z-index: 4;
@@ -222,22 +190,12 @@ section {
     width: 420px;
 }
 
-/* Hero Action Buttons */
-.hero-action {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    gap: 10px !important;
-    margin-top: 20px !important;
-    margin-left: 0 !important;
-    padding: 0 !important;
-}
-
-/* 아래쪽 콘텐츠 섹션들과 겹치지 않도록 여백 분리 */
-.content-section, section:not(.hero) {
+/* 하부 콘텐츠 섹션들 (Experience, Projects, Profile 등) - 3D 위를 확실히 덮도록 처리 */
+.content-section, 
+section:not(.hero) {
     position: relative;
-    z-index: 5;
-    background: #fff;
-    padding-top: 100px;
+    z-index: 5; /* 히어로나 3D보다 상위에 위치 */
+    background-color: #fff !important; /* 스크롤 내릴 때 3D 그리드를 깔끔하게 가려줌 */
+    padding: 120px 64px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
