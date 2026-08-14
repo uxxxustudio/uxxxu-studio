@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Kakao Style Dashed Wireframe Art)
+   HERO THREE.JS (3D Dashed Wireframe Objects & Dense Grid)
 ========================================================= */
 
 export function initHero3D() {
@@ -32,7 +32,7 @@ export function initHero3D() {
   scene.add(group);
 
   /* =====================================================
-     1. 배경 공간 그리드 (레퍼런스처럼 촘촘한 점선 그리드)
+     1. 배경 공간 그리드 (촘촘한 점선 그리드)
   ===================================================== */
   function createDashedGridGeometry(width, height, stepX, stepY, curveAmount = 0.01) {
     const points = [];
@@ -70,7 +70,6 @@ export function initHero3D() {
   const stepX = 1.2, stepY = 1.2, curveFactor = 0.01;
   const dashedGridGeo = createDashedGridGeometry(gridWidth, gridHeight, stepX, stepY, curveFactor);
 
-  // ★ 레퍼런스 스타일의 점선 그리드 재질
   const gridMaterial = new THREE.LineDashedMaterial({
     color: 0xd0d5dd,
     dashSize: 0.15,
@@ -80,14 +79,14 @@ export function initHero3D() {
   });
 
   const gridLines = new THREE.LineSegments(dashedGridGeo, gridMaterial);
-  gridLines.computeLineDistances(); // 점선 렌더링에 필수
+  gridLines.computeLineDistances();
   gridGroup.add(gridLines);
   scene.add(gridGroup);
 
   /* =====================================================
-     레퍼런스 스타일 점선 오브젝트 머티리얼
+     점선 입체 오브젝트 머티리얼 (카카오 스타일 블랙 점선)
   ===================================================== */
-  const dashedOutlineMat = new THREE.LineDashedMaterial({
+  const dashed3DMat = new THREE.LineDashedMaterial({
     color: 0x111111,
     dashSize: 0.12,
     gapSize: 0.08,
@@ -96,29 +95,46 @@ export function initHero3D() {
   });
 
   /* =====================================================
-     FONT LOADER & 점선 3D 오브젝트 생성
+     FONT LOADER & 3D 입체 점선 오브젝트 생성
   ===================================================== */
   const loader = new FontLoader();
 
   loader.load(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
-      createDashedLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0);
-      createDashedLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.7);
-      createDashedLetter("X", font, -2.3, 3.8, 0.35, 0.52, 0.8);
-      createDashedLetter("X", font, 5.3, -3.2, 0.45, 0.55, 2.3);
+      // U와 X 모두 3D 입체 두께(depth)를 가지면서 점선 와이어프레임으로 표현
+      createDashed3DLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0, false);
+      createDashed3DLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.7, true);
+      createDashed3DLetter("X", font, -2.3, 3.8, 0.35, 0.52, 0.8, true);
+      createDashed3DLetter("X", font, 5.3, -3.2, 0.45, 0.55, 2.3, true);
     }
   );
 
-  function createDashedLetter(character, font, x, y, rotationY, scale, phase) {
-    // 입체 두께를 없애고 단일 평면(Flat) 형태로 추출하여 이중선 원인 원천 차단
-    const geometryOptions = {
-      font: font,
-      size: 4.1,
-      depth: 0, // 두께 0으로 설정하여 완벽한 단일 라인 외곽 유지
-      curveSegments: 8,
-      bevelEnabled: false,
-    };
+  function createDashed3DLetter(character, font, x, y, rotationY, scale, phase, isRoundedX) {
+    const isU = character === "U";
+    
+    // 3D 입체감을 위한 두께(depth)와 베벨 설정 유지
+    const geometryOptions = isU
+      ? {
+          font: font,
+          size: 4.1,
+          depth: 0.45,
+          curveSegments: 6,
+          bevelEnabled: true,
+          bevelThickness: 0.08,
+          bevelSize: 0.05,
+          bevelSegments: 2,
+        }
+      : {
+          font: font,
+          size: 4.1,
+          depth: 0.45,
+          curveSegments: isRoundedX ? 8 : 4,
+          bevelEnabled: isRoundedX,
+          bevelThickness: 0.08,
+          bevelSize: 0.05,
+          bevelSegments: 2,
+        };
 
     const geometry = new TextGeometry(character, geometryOptions);
     geometry.computeBoundingBox();
@@ -127,10 +143,10 @@ export function initHero3D() {
 
     const letterGroup = new THREE.Group();
 
-    // 외곽선만 깔끔하게 추출 후 점선 적용
-    const edges = new THREE.EdgesGeometry(geometry, 1);
-    const lineSegments = new THREE.LineSegments(edges, dashedOutlineMat);
-    lineSegments.computeLineDistances(); // 점선 계산 필수
+    // ★ 3D 입체 형태의 외곽 및 모서리 엣지만 추출하여 점선 적용
+    const edges = new THREE.EdgesGeometry(geometry, 25);
+    const lineSegments = new THREE.LineSegments(edges, dashed3DMat);
+    lineSegments.computeLineDistances(); // 점선 렌더링에 필수
     
     letterGroup.add(lineSegments);
 
