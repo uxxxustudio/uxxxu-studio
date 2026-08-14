@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Clean 3D Wireframe + Varied Light Length, Speed & Opacity)
+   HERO THREE.JS (Clean 3D Wireframe + Short, Sharp, Varied Light Beams)
 ========================================================= */
 
 export function initHero3D() {
@@ -90,22 +90,22 @@ export function initHero3D() {
   });
 
   /* =====================================================
-     FONT LOADER & 오브젝트별 개별 길이, 속도, 투명도 설정
+     FONT LOADER & 오브젝트별 짧고 선명한 빛줄기 설정
   ===================================================== */
   const loader = new FontLoader();
 
   loader.load(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
-      // 파라미터: 문자, 폰트, x, y, 회전Y, 스케일, 위상, 속도(speed), 빛 길이(length), 투명도(opacity)
-      createUniqueSweepLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0.0, 0.55, 1.8, 0.35); // 크고 부드럽고 은은함
-      createUniqueSweepLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.4, 1.10, 0.9,  0.50); // 중간 크기, 빠르고 선명함
-      createUniqueSweepLetter("X", font, -2.3, 3.8, 0.35, 0.52, 2.2, 0.35, 2.5,  0.25); // 매우 길고 아주 느리며 투명함
-      createUniqueSweepLetter("X", font, 5.3, -3.2, 0.45, 0.55, 0.8, 0.85, 0.6,  0.42); // 짧고 날렵함
+      // 파라미터: 문자, 폰트, x, y, 회전Y, 스케일, 위상, 속도(speed), 빛 길이 압축(frequency), 투명도(opacity)
+      createShortBeamLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0.0, 0.6,  3.5, 0.35); // U자: 적당히 짧고 은은함
+      createShortBeamLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.5, 1.2,  5.0, 0.45); // 가운데 큰 X: 빛줄기를 짧게 압축하여 꽉 차지 않게 수정
+      createShortBeamLetter("X", font, -2.3, 3.8, 0.35, 0.52, 2.8, 0.4,  4.0, 0.25); // 상단 X: 느리고 아주 투명함
+      createShortBeamLetter("X", font, 5.3, -3.2, 0.45, 0.55, 0.9, 0.9,  6.0, 0.50); // 하단 X: 짧고 선명함
     }
   );
 
-  function createUniqueSweepLetter(character, font, x, y, rotationY, scale, phase, speed, length, maxOpacity) {
+  function createShortBeamLetter(character, font, x, y, rotationY, scale, phase, speed, frequency, maxOpacity) {
     const isU = character === "U";
     
     const geomOpts = isU
@@ -119,7 +119,7 @@ export function initHero3D() {
 
     const letterGroup = new THREE.Group();
 
-    // ★ 빛의 길이, 속도, 투명도를 오브젝트별로 다르게 제어하는 커스텀 셰이더
+    // ★ 구름 같은 퍼짐을 없애고 짧고 날렵한 빛줄기 형태로 제한하는 셰이더
     const sweepMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
@@ -127,7 +127,7 @@ export function initHero3D() {
         uMouseY: { value: 0 },
         uPhase: { value: phase },
         uSpeed: { value: speed },
-        uLength: { value: length },
+        uFreq: { value: frequency },
         uMaxOpacity: { value: maxOpacity },
       },
       vertexShader: `
@@ -143,26 +143,24 @@ export function initHero3D() {
         uniform float uMouseY;
         uniform float uPhase;
         uniform float uSpeed;
-        uniform float uLength;
+        uniform float uFreq;
         uniform float uMaxOpacity;
         varying vec3 vPosition;
 
         void main() {
-          // 개별 속도와 위상을 적용한 흐름 시간
           float t = uTime * uSpeed + uPhase;
           
-          // 위치 좌표를 활용한 빗살무늬/스캔 라인 생성
-          float coord = vPosition.x * 0.6 + vPosition.y * 0.6;
+          // 사선 방향으로 짧은 빛줄기가 지나가도록 좌표 조합
+          float pos = vPosition.x * 0.7 + vPosition.y * 0.7;
           
-          // uLength 값에 따라 빛의 길이와 퍼짐 정도가 다름
-          float wave = sin(coord * uLength - t * 2.0);
-          float glow = smoothstep(0.4, 0.96, wave);
+          // uFreq(주파수)를 높여서 빛의 길이를 짧고 컴팩트하게 만듦
+          float wave = sin(pos * uFreq - t * 2.5);
+          
+          // 임계값을 좁게 잡아 구름처럼 넓게 퍼지지 않고 샤프한 빛 라인 형성
+          float beam = smoothstep(0.72, 0.96, wave);
 
-          // 싱그러운 민트/그린 톤
-          vec3 greenColor = vec3(0.12, 0.88, 0.45);
-          
-          // 개별 지정된 투명도(uMaxOpacity) 적용
-          float alpha = glow * uMaxOpacity;
+          vec3 greenColor = vec3(0.12, 0.9, 0.45);
+          float alpha = beam * uMaxOpacity;
 
           gl_FragColor = vec4(greenColor, alpha);
         }
