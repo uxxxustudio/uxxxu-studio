@@ -357,13 +357,19 @@ export function initSectionObject(containerId, characterText) {
 
       const clock = new THREE.Clock();
 
-function animate() {
+      function animate() {
         requestAnimationFrame(animate);
         const time = clock.getElapsedTime();
         
-        const scrollY = window.scrollY || window.pageYOffset;
-        const scrollOffset = scrollY * 0.005;
-        letterGroup.position.y = 2.5 - scrollOffset + Math.sin(time * 0.4) * 0.06;
+        const rect = container.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        let scrollProgress = (windowHeight - rect.top) / (windowHeight + rect.height);
+        scrollProgress = Math.max(0, Math.min(1, scrollProgress));
+
+        const targetY = 1.0 - (scrollProgress * 2.0);
+        letterGroup.position.y = targetY + Math.sin(time * 0.4) * 0.06;
+
         letterGroup.rotation.y += 0.005;
         material.uniforms.uTime.value = time;
         renderer.render(scene, camera);
