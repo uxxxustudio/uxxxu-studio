@@ -273,7 +273,7 @@ export function initSectionObject(containerId, characterText) {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 100);
-  camera.position.set(0, 0, 15);
+  camera.position.set(0, 0, 18);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(container.clientWidth, container.clientHeight);
@@ -354,24 +354,27 @@ export function initSectionObject(containerId, characterText) {
       const lineSegments = new THREE.LineSegments(edges, lineMat);
       letterGroup.add(lineSegments);
 
-      letterGroup.scale.setScalar(1.3); // 볼륨감 있는 크기
+      letterGroup.scale.setScalar(1.3);
       scene.add(letterGroup);
 
       const clock = new THREE.Clock();
 
-function animate() {
+      function animate() {
         requestAnimationFrame(animate);
         const time = clock.getElapsedTime();
         
         const scrollY = window.scrollY || window.pageYOffset;
         
-        const scrollOffset = scrollY * 0.0025; 
-        const targetY = -2.5 + scrollOffset; 
+        // 1. X축 위치: 02와 03 사이로 가도록 고정값 부여 (필요하면 이 숫자만 -3.5 ~ -1.5 사이로 조절하세요)
+        const targetX = -2.5; 
+        
+        // 2. Y축 모션: 아래(-2.5)에서 시작해 스크롤할수록 위로 올라오게 설정
+        const targetY = -2.5 + (scrollY * 0.002);
 
+        letterGroup.position.x = targetX;
         letterGroup.position.y = targetY + Math.sin(time * 0.4) * 0.06;
-        letterGroup.position.x = 0.0; // 여기서 X 위치를 강제 고정
-
         letterGroup.rotation.y += 0.005;
+
         material.uniforms.uTime.value = time;
         renderer.render(scene, camera);
       }
@@ -379,3 +382,4 @@ function animate() {
     }
   );
 }
+
