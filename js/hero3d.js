@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Unified Single Laser Point, Opposite U Flow)
+   HERO THREE.JS (Independent Pillar Flow for U, Perimeter Sweep for X)
 ========================================================= */
 
 export function initHero3D() {
@@ -90,7 +90,7 @@ export function initHero3D() {
   });
 
   /* =====================================================
-     FONT LOADER & 단일 레이저 포인트 셰이더 설정
+     FONT LOADER & 맞춤형 셰이더 설정
   ===================================================== */
   const loader = new FontLoader();
 
@@ -147,14 +147,15 @@ export function initHero3D() {
           float beam = 0.0;
 
           if (uIsU > 0.5) {
-            // U자 형태: 좌우 기둥 위치를 판별하여 빛이 서로 반대 방향으로 흐르도록 설정 (개수도 단 1개로 고정)
-            float sideFactor = (vPosition.x < 0.0) ? 1.0 : -1.0;
-            float angle = atan(vPosition.y, vPosition.x);
-            float sweep = mod((angle / 6.28318) + (uTime * 0.15 * sideFactor) + (uOffset * 0.1), 1.0);
+            // U자 전용: 좌우 기둥을 분리하여 각각 단 하나의 빛이 서로 반대 방향으로 흐르도록 설정
+            float pillarDir = (vPosition.x < 0.0) ? 1.0 : -1.0;
+            // 유효 높이 범위를 정규화하여 기둥 전체를 커버하는 단일 포인트 스윕 생성
+            float normalizedY = (vPosition.y + 2.0) / 4.0;
+            float sweep = mod(normalizedY + (uTime * 0.2 * pillarDir) + (uOffset * 0.1), 1.0);
             float distFromCenter = abs(sweep - 0.5);
-            beam = smoothstep(0.12, 0.0, distFromCenter);
+            beam = smoothstep(0.15, 0.0, distFromCenter);
           } else {
-            // X자 형태: 외곽선을 따라 도는 단일 레이저 포인트
+            // X자 전용: 외곽선을 따라 도는 단일 레이저 포인트
             float angle = atan(vPosition.y, vPosition.x);
             float sweep = mod((angle / 6.28318) - (uTime * 0.15) + (uOffset * 0.1), 1.0);
             float distFromCenter = abs(sweep - 0.5);
