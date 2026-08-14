@@ -105,14 +105,12 @@ export function initHero3D() {
   );
 
   function createClean3DLetter(character, font, x, y, rotationY, scale, phase) {
-    // 입체 연결 부위가 누락되지 않도록 세그먼트와 두께 최적화
-    const geomOpts = {
-      font: font,
-      size: 4.1,
-      depth: 0.35,
-      curveSegments: 6,
-      bevelEnabled: false,
-    };
+    const isU = character === "U";
+    
+    // ★ U 글자의 하단 곡선이 완벽한 3D 입체 곡면 엣지를 가지도록 곡선 세그먼트를 높임
+    const geomOpts = isU
+      ? { font: font, size: 4.1, depth: 0.35, curveSegments: 24, bevelEnabled: false }
+      : { font: font, size: 4.1, depth: 0.35, curveSegments: 6, bevelEnabled: false };
 
     const geometry = new TextGeometry(character, geomOpts);
     geometry.computeBoundingBox();
@@ -121,8 +119,8 @@ export function initHero3D() {
 
     const letterGroup = new THREE.Group();
 
-    // 임계각(thresholdAngle)을 낮추어 X의 입체 연결선들이 끊김 없이 모두 표현되도록 설정
-    const edges = new THREE.EdgesGeometry(geometry, 15);
+    // 임계각을 조정하여 U의 곡선부와 X의 엣지가 모두 정확히 입체로 연결되도록 설정
+    const edges = new THREE.EdgesGeometry(geometry, isU ? 25 : 15);
     const lineSegments = new THREE.LineSegments(edges, lineMat);
     
     letterGroup.add(lineSegments);
