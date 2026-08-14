@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Clean 3D Wireframe + True Glass Fresnel & Mouse Specular)
+   HERO THREE.JS (Clean 3D Wireframe + Pure Glass Edge Glow, No Laser)
 ========================================================= */
 
 export function initHero3D() {
@@ -90,21 +90,21 @@ export function initHero3D() {
   });
 
   /* =====================================================
-     FONT LOADER & 진짜 유리 재질 셰이더 설정
+     FONT LOADER & 순수 엣지 글래스모피즘 설정
   ===================================================== */
   const loader = new FontLoader();
 
   loader.load(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
-      createTrueGlassLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0.0);
-      createTrueGlassLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.5);
-      createTrueGlassLetter("X", font, -2.3, 3.8, 0.35, 0.52, 2.8);
-      createTrueGlassLetter("X", font, 5.3, -3.2, 0.45, 0.55, 0.9);
+      createPureGlassLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0.0, 0.35);
+      createPureGlassLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.8, 0.42);
+      createPureGlassLetter("X", font, -2.3, 3.8, 0.35, 0.52, 3.6, 0.25);
+      createPureGlassLetter("X", font, 5.3, -3.2, 0.45, 0.55, 5.4, 0.35);
     }
   );
 
-  function createTrueGlassLetter(character, font, x, y, rotationY, scale, phase) {
+  function createPureGlassLetter(character, font, x, y, rotationY, scale, timeOffset, maxOpacity) {
     const isU = character === "U";
     
     const geomOpts = isU
@@ -118,13 +118,14 @@ export function initHero3D() {
 
     const letterGroup = new THREE.Group();
 
-    // ★ 형광펜 효과를 완전히 제거하고 프레넬 반사와 마우스 연동 글래스 스펙큘러를 적용한 셰이더
+    // ★ 레이저 현상을 없애고, 프레넬 테두리와 은은한 면 반사만 남긴 셰이더
     const glassMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
         uMouseX: { value: 0 },
         uMouseY: { value: 0 },
-        uPhase: { value: phase },
+        uOffset: { value: timeOffset },
+        uMaxAlpha: { value: maxOpacity },
       },
       vertexShader: `
         varying vec3 vPosition;
@@ -139,27 +140,30 @@ export function initHero3D() {
         uniform float uTime;
         uniform float uMouseX;
         uniform float uMouseY;
-        uniform float uPhase;
+        uniform float uOffset;
+        uniform float uMaxAlpha;
         varying vec3 vPosition;
         varying vec3 vNormal;
 
         void main() {
-          // 아주 투명하고 맑은 유리 베이스 틴트 (거의 투명함)
-          vec3 baseColor = vec3(0.95, 0.98, 0.96);
-          vec3 tintGreen = vec3(0.15, 0.85, 0.45);
+          // 순차적으로 나타났다 사라지는 부드러운 주기
+          float cycle = sin(uTime * 0.6 + uOffset);
+          float fadeInOut = smoothstep(-0.2, 1.0, cycle);
 
-          // 마우스 위치에 따른 입체 반사광(Specular Highlight) 계산
-          vec2 lightDir = normalize(vec2(uMouseX * 3.0, uMouseY * 3.0) - vPosition.xy);
-          float specular = max(0.0, dot(normalize(vPosition.xy), lightDir));
-          specular = pow(specular, 16.0) * 0.6; // 아주 날렵하고 선명한 하이라이트 포인트
+          // 유리의 가장자리(Edge)로 갈수록 은은한 그린빛이 도는 프레넬 효과
+          float edgeGlow = pow(1.0 - abs(dot(vNormal, vec3(0.0, 0.0, 1.0))), 2.5);
 
-          // 은은한 글래스 엣지 반사 (가장자리로 갈수록 맑은 그린빛이 살짝 맺힘)
-          float edgeGlow = pow(1.0 - abs(dot(vNormal, vec3(0.0, 0.0, 1.0))), 2.0);
+          // 마우스 움직임에 따라 미세하게 표면 톤이 살짝 바뀌는 인터랙션
+          float mouseEffect = (vPosition.x * uMouseX + vPosition.y * uMouseY) * 0.03;
 
-          // 최종 투명도: 면 안쪽은 맑게 비치고, 마우스 반사광과 엣지 부근만 영롱하게 빛남
-          float alpha = 0.04 + edgeGlow * 0.25 + specular * 0.5;
+          vec3 glassGreen = vec3(0.12, 0.88, 0.45);
+          vec3 baseTint = vec3(0.95, 0.98, 0.96);
 
-          vec3 finalColor = mix(baseColor, tintGreen, edgeGlow + specular);
+          // 레이저처럼 뭉치지 않고 면 전체에 은은하게 퍼지는 투명도
+          float alpha = (0.05 + edgeGlow * 0.5 + mouseEffect) * fadeInOut * uMaxAlpha;
+          alpha = clamp(alpha, 0.0, uMaxAlpha);
+
+          vec3 finalColor = mix(baseTint, glassGreen, edgeGlow);
 
           gl_FragColor = vec4(finalColor, alpha);
         }
@@ -181,7 +185,7 @@ export function initHero3D() {
     letterGroup.scale.setScalar(scale);
     letterGroup.rotation.y = rotationY;
     letterGroup.rotation.x = -0.08;
-    letterGroup.userData = { baseX: x, baseY: y, baseRotationY: rotationY, phase: phase, material: glassMaterial };
+    letterGroup.userData = { baseX: x, baseY: y, baseRotationY: rotationY, material: glassMaterial };
     group.add(letterGroup);
   }
 
