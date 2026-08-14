@@ -362,10 +362,10 @@ export function initSectionObject(containerId, characterText) {
         const rect = container.getBoundingClientRect();
         const windowHeight = window.innerHeight;
         
-        let scrollProgress = (windowHeight - rect.top) / (windowHeight + rect.height);
+      let scrollProgress = (windowHeight - rect.top) / (windowHeight + rect.height * 1.5);
         scrollProgress = Math.max(0, Math.min(1, scrollProgress));
 
-        const targetY = 2.5 - (scrollProgress * 4.0); 
+        const targetY = 1.5 - (scrollProgress * 3.0); 
         letterGroup.position.y = targetY + Math.sin(time * 0.4) * 0.06;
         material.uniforms.uTime.value = time;
         renderer.render(scene, camera);
