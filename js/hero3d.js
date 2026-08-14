@@ -357,7 +357,7 @@ export function initSectionObject(containerId, characterText) {
 
       const clock = new THREE.Clock();
 
-      function animate() {
+function animate() {
         requestAnimationFrame(animate);
         const time = clock.getElapsedTime();
         
@@ -367,7 +367,7 @@ export function initSectionObject(containerId, characterText) {
         let scrollProgress = (windowHeight - rect.top) / (windowHeight + rect.height);
         scrollProgress = Math.max(0, Math.min(1, scrollProgress));
 
-        const targetY = 2.0 - (scrollProgress * 3.0);
+        const targetY = -1.0 + (scrollProgress * 2.5);
         letterGroup.position.y = targetY + Math.sin(time * 0.4) * 0.06;
 
         letterGroup.rotation.y += 0.005;
