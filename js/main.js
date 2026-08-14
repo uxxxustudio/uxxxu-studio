@@ -55,6 +55,12 @@ window.addEventListener("DOMContentLoaded", async () => {
         "service",
         new URL("service.html", componentPath)
     );
+   /* =========================================================
+       [추가] Experience 섹션 로드 완료 후 3D 오브젝트 실행
+    ========================================================= */
+    import("./hero3d.js").then(({ initSectionObject }) => {
+        initSectionObject("experience-object", "U"); // "U" 또는 원하는 글자 입력 가능
+    });
 
     await loadComponent(
         "portfolio",
