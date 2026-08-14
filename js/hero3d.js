@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Clean 3D Wireframe + Sharp Laser Beam Bands)
+   HERO THREE.JS (Clean 3D Wireframe + Sequential Soft Morning Sun Glow)
 ========================================================= */
 
 export function initHero3D() {
@@ -90,22 +90,22 @@ export function initHero3D() {
   });
 
   /* =====================================================
-     FONT LOADER & 형광펜 느낌 없는 날카로운 레이저 밴드 설정
+     FONT LOADER & 순차적 아침 햇살 그라데이션 페이드 설정
   ===================================================== */
   const loader = new FontLoader();
 
   loader.load(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
-      // 파라미터: 문자, 폰트, x, y, 회전Y, 스케일, 위상, 속도(speed), 밴드두께(thickness), 투명도(opacity)
-      createLaserBandLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0.0, 0.5, 0.35, 0.30);
-      createLaserBandLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.5, 1.0, 0.20, 0.42);
-      createLaserBandLetter("X", font, -2.3, 3.8, 0.35, 0.52, 2.8, 0.3, 0.50, 0.22);
-      createLaserBandLetter("X", font, 5.3, -3.2, 0.45, 0.55, 0.8, 0.8, 0.15, 0.48);
+      // 파라미터: 문자, 폰트, x, y, 회전Y, 스케일, 순차 타이밍 지연(delay), 최대 밝기(opacity)
+      createSunlitLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0.0, 0.28); // 첫 번째 순서
+      createSunlitLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.8, 0.35); // 두 번째 순서 (가운데 X)
+      createSunlitLetter("X", font, -2.3, 3.8, 0.35, 0.52, 3.6, 0.22); // 세 번째 순서
+      createSunlitLetter("X", font, 5.3, -3.2, 0.45, 0.55, 5.4, 0.30); // 네 번째 순서
     }
   );
 
-  function createLaserBandLetter(character, font, x, y, rotationY, scale, phase, speed, thickness, maxOpacity) {
+  function createSunlitLetter(character, font, x, y, rotationY, scale, timeOffset, maxOpacity) {
     const isU = character === "U";
     
     const geomOpts = isU
@@ -119,16 +119,14 @@ export function initHero3D() {
 
     const letterGroup = new THREE.Group();
 
-    // ★ 번짐(Blur)이 전혀 없고 경계가 딱 떨어지는 날카로운 레이저 밴드 셰이더
+    // ★ 아침 햇살처럼 은은하고 넓은 그라데이션이 순차적으로 들어오고 나가는 셰이더
     const sweepMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
         uMouseX: { value: 0 },
         uMouseY: { value: 0 },
-        uPhase: { value: phase },
-        uSpeed: { value: speed },
-        uThickness: { value: thickness },
-        uMaxOpacity: { value: maxOpacity },
+        uOffset: { value: timeOffset },
+        uMaxAlpha: { value: maxOpacity },
       },
       vertexShader: `
         varying vec3 vPosition;
@@ -141,30 +139,26 @@ export function initHero3D() {
         uniform float uTime;
         uniform float uMouseX;
         uniform float uMouseY;
-        uniform float uPhase;
-        uniform float uSpeed;
-        uniform float uThickness;
-        uniform float uMaxOpacity;
+        uniform float uOffset;
+        uniform float uMaxAlpha;
         varying vec3 vPosition;
 
         void main() {
-          float t = uTime * uSpeed + uPhase;
-          
-          // 사선 방향 좌표 계산
-          float pos = vPosition.x * 0.6 + vPosition.y * 0.7;
-          
-          // 삼각함수의 절댓값이나 임계치를 이용해 '띠(Band)' 형태 생성 (형광펜 그라데이션 제거)
-          float wave = fract(pos * 0.35 - t * 0.4);
-          
-          // uThickness 범위 내에만 딱 맞아떨어지도록 step 사용 (경계가 선명함)
-          float band = step(0.0, wave) * step(wave, uThickness);
+          // 오브젝트별로 완전히 다른 시간 주기를 주어 순차적으로 나타났다 사라짐 (Fade in/out)
+          float cycle = sin(uTime * 0.6 + uOffset);
+          float intensity = smoothstep(-0.2, 1.0, cycle); // 부드러운 전환 곡선
 
-          vec3 greenColor = vec3(0.1, 0.88, 0.42);
-          float alpha = band * uMaxOpacity;
+          // 대각선 방향으로 부드럽게 퍼지는 아침 햇살 그라데이션 톤
+          float sunGradient = (vPosition.x * 0.25 + vPosition.y * 0.25) + 0.5;
+          sunGradient = clamp(sunGradient, 0.0, 1.0);
 
-          if (alpha < 0.01) discard; // 빛이 없는 영역은 연산 제외하여 깔끔하게 처리
+          // 맑고 싱그러운 아침 햇살 그린 컬러
+          vec3 sunGreen = vec3(0.15, 0.85, 0.48);
+          
+          // 투명에서 그린 빛으로 부드럽게 비치고 사라짐
+          float alpha = sunGradient * intensity * uMaxAlpha;
 
-          gl_FragColor = vec4(greenColor, alpha);
+          gl_FragColor = vec4(sunGreen, alpha);
         }
       `,
       transparent: true,
@@ -184,7 +178,7 @@ export function initHero3D() {
     letterGroup.scale.setScalar(scale);
     letterGroup.rotation.y = rotationY;
     letterGroup.rotation.x = -0.08;
-    letterGroup.userData = { baseX: x, baseY: y, baseRotationY: rotationY, phase: phase, material: sweepMaterial };
+    letterGroup.userData = { baseX: x, baseY: y, baseRotationY: rotationY, material: sweepMaterial };
     group.add(letterGroup);
   }
 
@@ -232,10 +226,10 @@ export function initHero3D() {
     gridGroup.position.x = -mouse.x * 0.2;
     gridGroup.position.y = -mouse.y * 0.15;
 
-    group.children.forEach((obj) => {
+    group.children.forEach((obj, index) => {
       const p = obj.userData;
-      obj.position.x = p.baseX + Math.sin(time * 0.55 + p.phase) * 0.08;
-      obj.position.y = p.baseY + Math.cos(time * 0.7 + p.phase) * 0.1;
+      obj.position.x = p.baseX + Math.sin(time * 0.4 + index) * 0.06;
+      obj.position.y = p.baseY + Math.cos(time * 0.5 + index) * 0.08;
       obj.rotation.y = p.baseRotationY + mouse.x * 0.2;
       obj.rotation.x = -0.08 - mouse.y * 0.1;
 
