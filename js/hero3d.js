@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Clean 2-Point U Flow & X Sweep)
+   HERO THREE.JS (Added extra U on the top-right gray area)
 ========================================================= */
 
 export function initHero3D() {
@@ -90,17 +90,21 @@ export function initHero3D() {
   });
 
   /* =====================================================
-     FONT LOADER & 오브젝트 생성
+     FONT LOADER & 오브젝트 생성 (우측 상단 U 추가)
   ===================================================== */
   const loader = new FontLoader();
 
   loader.load(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
+      // 기존 오브젝트들
       createLetterMesh("U", font, -2.9, -0.65, -0.42, 0.92, 0.0, true);
       createLetterMesh("X", font, 2.25, 0.55, 0.42, 0.88, 1.8, false);
       createLetterMesh("X", font, -2.3, 3.8, 0.35, 0.52, 3.6, false);
       createLetterMesh("X", font, 5.3, -3.2, 0.45, 0.55, 5.4, false);
+
+      // ✨ 우측 상단 회색 영역 부근에 추가된 U 오브젝트 (위치, 회전, 스케일 조정)
+      createLetterMesh("U", font, 5.1, 3.2, -0.35, 0.62, 7.2, true);
     }
   );
 
@@ -144,13 +148,11 @@ export function initHero3D() {
           float beam = 0.0;
 
           if (uIsU > 0.5) {
-            // 깔끔한 2개 포인트 (좌우 기둥에 각각 반대 방향으로 흐르는 형태)
             float sideDir = (vPosition.x < 0.0) ? 1.0 : -1.0;
             float flow = mod((vPosition.y * 0.2) + (uTime * 0.3 * sideDir) + (uOffset * 0.2), 1.0);
             float distFromCenter = abs(flow - 0.5);
             beam = smoothstep(0.12, 0.0, distFromCenter);
           } else {
-            // X자 글자
             float angle = atan(vPosition.y, vPosition.x);
             float sweep = mod((angle / 6.28318) - (uTime * 0.15) + (uOffset * 0.1), 1.0);
             float distFromCenter = abs(sweep - 0.5);
