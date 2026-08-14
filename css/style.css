@@ -1,0 +1,1424 @@
+/* =========================================================
+   COMMON
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+    overflow-x:hidden;
+    width:100%;
+}
+
+body{
+    font-family:"Pretendard",-apple-system,BlinkMacSystemFont,sans-serif;
+    background:#fff;
+    color:#111;
+    overflow-x:hidden;
+    width:100%;
+    position:relative;
+    -webkit-font-smoothing:antialiased;
+}
+
+::selection{
+    background:#111;
+    color:#fff;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+img{
+    display:block;
+    max-width:100%;
+    height:auto;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    overflow:visible;
+    padding:34px 64px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    z-index:999;
+
+    transition:
+        background .35s ease,
+        backdrop-filter .35s ease,
+        -webkit-backdrop-filter .35s ease,
+        border-color .35s ease;
+}
+
+header.active{
+    background:rgba(255,255,255,.72);
+
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+
+    border-bottom:1px solid rgba(0,0,0,.05);
+}
+
+.logo{
+    font-size:30px;
+    font-weight:900;
+    letter-spacing:-0.03em;
+}
+
+nav{
+    display:flex;
+    gap:44px;
+}
+
+nav a{
+    font-size:15px;
+    font-weight:500;
+    letter-spacing:-0.01em;
+}
+
+nav a:hover{
+    opacity:.45;
+}
+
+
+/* =========================================================
+   HERO LIGHT
+   LIGHT GRAY + SOFT DEEP GREEN
+========================================================= */
+
+.hero{
+    position:relative;
+    isolation:isolate;
+    overflow:hidden;
+}
+
+.hero-light{
+    position:absolute;
+
+    z-index:0;
+
+    width:72vw;
+    height:78vh;
+
+    right:-14vw;
+    top:8vh;
+
+    pointer-events:none;
+
+    opacity:.82;
+
+    filter:blur(52px);
+
+    transform:translate3d(4%,0,0) scale(1);
+
+    background:
+
+        radial-gradient(
+            ellipse 30% 36% at 70% 44%,
+            rgba(63,84,72,.095) 0%,
+            rgba(63,84,72,.065) 25%,
+            rgba(63,84,72,.025) 48%,
+            rgba(63,84,72,0) 72%
+        ),
+
+        radial-gradient(
+            ellipse 60% 54% at 62% 48%,
+            rgba(125,130,128,.095) 0%,
+            rgba(145,148,146,.065) 30%,
+            rgba(170,173,171,.035) 50%,
+            rgba(255,255,255,0) 76%
+        );
+
+    animation:
+        heroLightFlow 8s ease-in-out infinite alternate;
+}
+
+.hero-light::after{
+    content:"";
+
+    position:absolute;
+
+    inset:-18%;
+
+    background:
+
+        radial-gradient(
+            ellipse 30% 42% at 76% 52%,
+            rgba(255,255,255,.36) 0%,
+            rgba(255,255,255,.15) 30%,
+            rgba(255,255,255,0) 70%
+        );
+
+    filter:blur(28px);
+
+    animation:
+        heroLightPulse 6s ease-in-out infinite alternate;
+}
+
+.hero-inner{
+    position:relative;
+    z-index:3;
+}
+
+
+/* =========================================================
+   HERO LIGHT MOTION
+========================================================= */
+
+@keyframes heroLightFlow{
+
+    0%{
+        transform:
+            translate3d(5%,-2%,0)
+            scale(1);
+    }
+
+    50%{
+        transform:
+            translate3d(-2%,3%,0)
+            scale(1.055);
+    }
+
+    100%{
+        transform:
+            translate3d(-7%,-1%,0)
+            scale(1.02);
+    }
+}
+
+@keyframes heroLightPulse{
+
+    0%{
+        transform:
+            translate3d(5%,-2%,0)
+            scale(.92);
+
+        opacity:.48;
+    }
+
+    50%{
+        transform:
+            translate3d(-2%,2%,0)
+            scale(1.04);
+
+        opacity:.72;
+    }
+
+    100%{
+        transform:
+            translate3d(-7%,-1%,0)
+            scale(.96);
+
+        opacity:.42;
+    }
+}
+
+
+/* =========================================================
+   HERO 3D GRAPHIC
+   Three.js wireframe
+========================================================= */
+
+.hero-3d{
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    z-index:2;
+
+    pointer-events:none;
+    overflow:visible;
+
+    will-change:transform;
+
+    animation:hero3dFloat 7s ease-in-out infinite alternate;
+}
+
+.hero-3d canvas{
+    width:100% !important;
+    height:100% !important;
+
+    display:block;
+
+    opacity:.78;
+}
+
+
+/* =========================================================
+   HERO 3D MOTION
+========================================================= */
+
+@keyframes hero3dFloat{
+
+    0%{
+        transform:
+            translate3d(-3px,2px,0);
+    }
+
+    50%{
+        transform:
+            translate3d(4px,-5px,0);
+    }
+
+    100%{
+        transform:
+            translate3d(-2px,4px,0);
+    }
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+
+    height:100vh;
+
+    min-height:720px;
+
+    display:block;
+
+    padding:0;
+
+    position:relative;
+}
+
+.hero-inner{
+
+    position:relative;
+
+    width:100%;
+
+    height:100%;
+
+    max-width:none;
+
+    min-width:0;
+
+    margin:0;
+}
+
+
+/* =========================================================
+   HERO MAIN COPY
+========================================================= */
+
+.hero h1{
+
+    position:absolute;
+
+    z-index:4;
+
+    left:2.5%;
+
+    top:26%;
+
+    width:95%;
+
+    margin:0;
+
+    font-size:clamp(72px,7vw,118px);
+
+    font-weight:900;
+
+    line-height:.90;
+
+    letter-spacing:-0.045em;
+
+    color:#111;
+
+    opacity:0;
+
+    transform:translateY(40px);
+
+    animation:fade .8s .15s forwards;
+}
+
+.hero h1 .title-line-1{
+    display:block;
+    text-align:left;
+}
+
+.hero h1 .title-line-2{
+    display:block;
+
+    position:relative;
+
+    left:-245px;
+    top:26px;
+
+    width:max-content;
+
+    text-align:left;
+
+    margin-left:48%;
+}
+
+
+/* =========================================================
+   HERO MESSAGE COMMON
+========================================================= */
+
+.hero-message{
+
+    position:absolute;
+
+    z-index:4;
+
+    margin:0;
+
+    color:#111;
+}
+
+.hero-message h2{
+
+    margin:0 0 14px;
+
+    font-size:24px;
+
+    line-height:1.1;
+
+    font-weight:700;
+
+    letter-spacing:-.035em;
+}
+
+.hero-message p{
+
+    margin:0;
+
+    font-size:16px;
+
+    line-height:1.7;
+
+    color:#666;
+
+    letter-spacing:-.025em;
+}
+
+
+/* =========================================================
+   BETTER UX
+========================================================= */
+
+.hero-message-ux{
+
+    left:4%;
+
+    top:57%;
+
+    opacity:0;
+
+    transform:translateY(30px);
+
+    animation:fade .8s .35s forwards;
+}
+
+
+/* =========================================================
+   BETTER UI
+========================================================= */
+
+.hero-message-ui{
+
+    left:42%;
+
+    top:68%;
+
+    opacity:0;
+
+    transform:translateY(30px);
+
+    animation:fade .8s .55s forwards;
+}
+
+.hero-message-ui p{
+
+    white-space:nowrap;
+}
+
+
+/* =========================================================
+   HERO ACTION
+========================================================= */
+
+.hero-action{
+
+    margin-top:62px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    gap:18px;
+}
+
+.cta{
+
+    font-size:15px;
+
+    font-weight:600;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+}
+
+.cta span{
+
+    transition:.25s;
+}
+
+.cta:hover span{
+
+    transform:translateX(8px);
+}
+
+.portfolio{
+
+    font-size:15px;
+
+    color:#888;
+
+    transition:.25s;
+}
+
+.portfolio:hover{
+
+    color:#111;
+}
+
+
+/* =========================================================
+   SCROLL
+========================================================= */
+
+.scroll{
+    display:none !important;
+}
+
+
+/* =========================================================
+   COMMON SECTION
+========================================================= */
+
+section{
+
+    padding:180px 64px;
+}
+
+.container{
+
+    max-width:1280px;
+
+    width:100%;
+
+    margin:auto;
+}
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes fade{
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+    }
+}
+
+@keyframes float{
+
+    0%,100%{
+
+        transform:translateY(0);
+    }
+
+    50%{
+
+        transform:translateY(8px);
+    }
+}
+
+
+/* =========================================================
+   SERVICE
+========================================================= */
+
+.section-title{
+
+    font-size:14px;
+
+    letter-spacing:.18em;
+
+    text-transform:uppercase;
+
+    color:#999;
+
+    margin-bottom:80px;
+
+    font-weight:600;
+}
+
+.service-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:70px;
+}
+
+.service-item{
+
+    display:grid;
+
+    grid-template-columns:80px 1fr;
+
+    padding-bottom:60px;
+
+    border-bottom:1px solid #ececec;
+
+    transition:.35s;
+}
+
+.service-item:hover{
+
+    transform:translateX(8px);
+}
+
+.number{
+
+    font-size:13px;
+
+    font-weight:600;
+
+    color:#999;
+
+    padding-top:10px;
+}
+
+.service-item h3{
+
+    font-size:42px;
+
+    font-weight:700;
+
+    letter-spacing:-.04em;
+
+    margin-bottom:18px;
+}
+
+.service-item p{
+
+    font-size:18px;
+
+    line-height:1.8;
+
+    color:#666;
+}
+
+
+/* =========================================================
+   PORTFOLIO
+========================================================= */
+
+.portfolio-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:32px;
+}
+
+.project{
+
+    padding:56px;
+
+    border:1px solid #ececec;
+
+    border-radius:28px;
+
+    background:#fff;
+
+    transition:.35s;
+
+    display:flex;
+
+    flex-direction:column;
+
+    min-height:340px;
+
+    overflow:hidden;
+}
+
+.project:hover{
+
+    transform:translateY(-8px);
+
+    border-color:#111;
+}
+
+.project-category{
+
+    font-size:13px;
+
+    letter-spacing:.15em;
+
+    color:#999;
+
+    margin-bottom:28px;
+
+    font-weight:600;
+}
+
+.project h2{
+
+    font-size:34px;
+
+    line-height:1.2;
+
+    letter-spacing:-.04em;
+
+    margin-bottom:18px;
+}
+
+.project p{
+
+    font-size:18px;
+
+    line-height:1.8;
+
+    color:#666;
+
+    margin-bottom:auto;
+}
+
+.arrow{
+
+    margin-top:42px;
+
+    font-size:15px;
+
+    font-weight:600;
+}
+
+
+/* =========================================================
+   ABOUT
+========================================================= */
+
+.about-wrap{
+
+    display:grid;
+
+    grid-template-columns:180px 1fr;
+
+    gap:80px;
+}
+
+.about-content h2{
+
+    font-size:56px;
+
+    line-height:1.15;
+
+    letter-spacing:-.05em;
+
+    margin-bottom:42px;
+
+    font-weight:800;
+}
+
+.about-content p{
+
+    font-size:20px;
+
+    line-height:2;
+
+    color:#666;
+
+    max-width:760px;
+
+    margin-bottom:30px;
+}
+
+
+/* =========================================================
+   CONTACT
+========================================================= */
+
+.contact-wrap{
+
+    padding:120px 0;
+
+    border-top:1px solid #ececec;
+}
+
+.contact-wrap h2{
+
+    font-size:72px;
+
+    line-height:1.05;
+
+    letter-spacing:-.06em;
+
+    margin:26px 0;
+}
+
+.contact-wrap p{
+
+    font-size:20px;
+
+    color:#666;
+
+    margin-bottom:60px;
+}
+
+.contact-links{
+
+    display:flex;
+
+    gap:36px;
+
+    flex-wrap:wrap;
+}
+
+.contact-links a{
+
+    font-size:22px;
+
+    font-weight:600;
+
+    transition:.25s;
+}
+
+.contact-links a:hover{
+
+    opacity:.45;
+}
+
+
+/* =========================================================
+   CONTACT INFO
+========================================================= */
+
+.contact-info{
+
+    display:flex;
+
+    gap:100px;
+
+    margin-top:56px;
+}
+
+.contact-info span{
+
+    display:block;
+
+    font-size:13px;
+
+    color:#999;
+
+    letter-spacing:.15em;
+
+    text-transform:uppercase;
+
+    margin-bottom:12px;
+}
+
+.contact-info a{
+
+    font-size:20px;
+
+    font-weight:500;
+
+    color:#111;
+
+    text-decoration:none;
+}
+
+.contact-info a:hover{
+
+    opacity:.6;
+}
+
+.contact-info a span{
+
+    margin-left:8px;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+
+    padding:40px 64px;
+
+    border-top:1px solid #ececec;
+}
+
+.footer-inner{
+
+    max-width:1280px;
+
+    width:100%;
+
+    margin:auto;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    font-size:14px;
+
+    color:#888;
+}
+
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+.menu-toggle{
+
+    display:none;
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    background:transparent;
+
+    cursor:pointer;
+
+    padding:0;
+}
+
+.menu-toggle span{
+
+    display:block;
+
+    width:24px;
+
+    height:2px;
+
+    background:#111;
+
+    margin:5px auto;
+
+    transition:.3s;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width:980px){
+
+    .hero-light{
+
+        width:120vw;
+
+        height:72vh;
+
+        right:-48vw;
+
+        top:10vh;
+
+        opacity:.58;
+
+        filter:blur(48px);
+    }
+
+
+    /* ---------------- Header ---------------- */
+
+    header{
+
+        padding:26px;
+    }
+
+    nav{
+
+        display:none;
+
+        position:fixed;
+
+        top:92px;
+
+        left:0;
+
+        width:100%;
+
+        background:rgba(248,248,248,.72);
+
+        backdrop-filter:blur(20px) saturate(180%);
+
+        -webkit-backdrop-filter:blur(20px) saturate(180%);
+
+        box-shadow:0 10px 30px rgba(0,0,0,.06);
+
+        padding:24px 26px;
+
+        flex-direction:column;
+
+        gap:20px;
+
+        border-top:1px solid rgba(0,0,0,.05);
+
+        z-index:998;
+    }
+
+    nav.open{
+
+        display:flex;
+    }
+
+    .menu-toggle{
+
+        display:block;
+    }
+
+
+    /* ---------------- Hero ---------------- */
+
+    .hero{
+
+        padding:0 26px;
+
+        min-height:720px;
+    }
+
+    .hero h1{
+
+        left:26px;
+
+        top:28%;
+
+        font-size:clamp(52px,13vw,72px);
+
+        line-height:.95;
+
+        letter-spacing:-0.04em;
+    }
+
+    .hero-message-ux{
+
+        left:26px;
+
+        top:58%;
+    }
+
+    .hero-message-ui{
+
+        left:48%;
+
+        top:68%;
+    }
+
+    .hero-message h2{
+
+        font-size:20px;
+    }
+
+    .hero-message p{
+
+        font-size:14px;
+    }
+
+    .hero-message-ui p{
+
+        white-space:normal;
+
+        max-width:260px;
+    }
+
+    .hero-action{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:18px;
+
+        margin-top:36px;
+    }
+
+    .scroll{
+
+        left:26px;
+    }
+
+
+    /* ---------------- Graphic ---------------- */
+
+    .hero-3d{
+
+        inset:0;
+
+        width:100%;
+
+        height:100%;
+
+        right:auto;
+
+        top:auto;
+
+        transform:none;
+    }
+
+
+    /* ---------------- Common ---------------- */
+
+    section{
+
+        padding:120px 26px;
+    }
+
+
+    /* ---------------- Service ---------------- */
+
+    .service-item{
+
+        grid-template-columns:1fr;
+
+        gap:16px;
+    }
+
+    .service-item h3{
+
+        font-size:30px;
+    }
+
+    .service-item p{
+
+        font-size:16px;
+    }
+
+
+    /* ---------------- Portfolio ---------------- */
+
+    .portfolio-grid{
+
+        grid-template-columns:1fr;
+    }
+
+    .project{
+
+        padding:36px;
+
+        min-height:auto;
+    }
+
+    .project h2{
+
+        font-size:28px;
+    }
+
+    .project p{
+
+        font-size:16px;
+    }
+
+
+    /* ---------------- About ---------------- */
+
+    .about-wrap{
+
+        grid-template-columns:1fr;
+
+        gap:40px;
+    }
+
+    .about-content h2{
+
+        font-size:38px;
+    }
+
+    .about-content p{
+
+        font-size:17px;
+    }
+
+
+    /* ---------------- Contact ---------------- */
+
+    .contact-wrap h2{
+
+        font-size:42px;
+    }
+
+    .contact-wrap p{
+
+        font-size:17px;
+    }
+
+    .contact-links{
+
+        flex-direction:column;
+
+        gap:18px;
+    }
+
+    .contact-links a{
+
+        font-size:18px;
+    }
+
+    .contact-info{
+
+        flex-direction:column;
+
+        gap:32px;
+    }
+
+
+    /* ---------------- Footer ---------------- */
+
+    footer{
+
+        padding:30px 26px;
+    }
+
+    .footer-inner{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:12px;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce){
+
+    .hero-light,
+    .hero-light::after,
+    .hero-3d{
+
+        animation:none;
+    }
+}
+
+
+/* =========================================================
+   MOBILE HERO
+========================================================= */
+
+@media (max-width:767px){
+
+    /* -------------------------
+       HERO
+    ------------------------- */
+
+    .hero{
+        height:100svh;
+        min-height:680px;
+        padding:0;
+        overflow:hidden;
+    }
+
+    .hero-inner{
+        width:100%;
+        height:100%;
+    }
+
+
+    /* -------------------------
+       HERO TITLE
+    ------------------------- */
+
+    .hero h1{
+        left:26px;
+        top:23%;
+
+        width:calc(100% - 52px);
+
+        font-size:clamp(48px,13vw,64px);
+        line-height:.94;
+        letter-spacing:-0.045em;
+
+        z-index:4;
+    }
+
+    .hero h1 .title-line-1{
+        display:block;
+
+        position:relative;
+
+        left:0;
+        margin:0;
+
+        width:100%;
+
+        text-align:left;
+    }
+
+    .hero h1 .title-line-2{
+        display:block;
+
+        position:relative;
+
+        left:36%;
+        top:16px;
+
+        margin-left:0;
+
+        width:calc(100% - 36%);
+
+        text-align:left;
+    }
+
+
+    /* -------------------------
+       3D GRAPHIC
+    ------------------------- */
+
+    .hero-3d{
+        position:absolute;
+
+        inset:0;
+
+        width:100%;
+        height:100%;
+
+        transform:scale(.40);
+        transform-origin:center center;
+
+        z-index:2;
+
+        overflow:visible;
+    }
+
+    .hero-3d canvas{
+        width:100% !important;
+        height:100% !important;
+
+        opacity:.72;
+    }
+
+
+    /* -------------------------
+       BETTER UX
+    ------------------------- */
+
+    .hero-message-ux{
+        left:26px;
+        top:53%;
+
+        width:calc(100% - 52px);
+    }
+
+
+    /* -------------------------
+       BETTER UI
+    ------------------------- */
+
+    .hero-message-ui{
+        left:50%;
+        top:65%;
+
+        width:calc(50% - 26px);
+    }
+
+    .hero-message h2{
+        font-size:20px;
+        margin-bottom:12px;
+    }
+
+    .hero-message p{
+        font-size:14px;
+        line-height:1.65;
+    }
+
+    .hero-message-ui p{
+        white-space:normal;
+        max-width:none;
+    }
+
+
+    /* -------------------------
+       HERO ACTION
+    ------------------------- */
+
+    .hero-message-ux .hero-action{
+        margin-top:90px;
+
+        display:flex;
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:18px;
+    }
+
+    .hero-message-ux .hero-action .btn-primary,
+    .hero-message-ux .hero-action .portfolio{
+        position:static !important;
+
+        top:auto !important;
+
+        transform:none !important;
+
+        font-size:15px;
+    }
+
+
+    /* -------------------------
+       HERO LIGHT
+    ------------------------- */
+
+    .hero-light{
+        width:120vw;
+
+        height:70vh;
+
+        right:-45vw;
+        top:15vh;
+
+        opacity:.45;
+
+        filter:blur(45px);
+    }
+}

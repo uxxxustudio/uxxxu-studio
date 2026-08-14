@@ -1,0 +1,1882 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Jeju Seolmundaehalmang Exhibition | uxxxu</title>
+
+<meta name="description"
+content="제주설문대할망전시관 전시 콘텐츠 UX/UI 및 인터랙티브 콘텐츠 디자인">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #f7f7f5;
+    color: #111;
+    font-family: "Pretendard", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+    letter-spacing: -0.025em;
+    overflow-x: hidden;
+}
+
+img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+}
+
+iframe {
+    max-width: 100%;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.container {
+    width: min(1200px, calc(100% - 80px));
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+header {
+    height: 88px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 0 40px;
+    background: rgba(247,247,245,.92);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    border-bottom: 1px solid #e7e7e3;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    flex-shrink: 0;
+}
+
+.back {
+    font-size: 14px;
+    color: #666;
+    white-space: nowrap;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    padding: 110px 0 100px;
+}
+
+.eyebrow {
+    font-size: 13px;
+    font-weight: 600;
+    color: #777;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+}
+
+.hero h1 {
+    margin: 0;
+    max-width: 100%;
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: .98;
+    letter-spacing: -.065em;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.hero-title-ko {
+    margin-top: 28px;
+    font-size: 22px;
+    font-weight: 500;
+    color: #555;
+}
+
+.hero-description {
+    max-width: 650px;
+    margin-top: 22px;
+    font-size: 18px;
+    line-height: 1.7;
+    color: #555;
+}
+
+.hero-image {
+    margin-top: 80px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.hero-image img {
+    aspect-ratio: 1650 / 850;
+    object-fit: cover;
+}
+
+
+/* =========================
+   PROJECT INFO
+========================= */
+
+.project-info {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    margin-top: 65px;
+    padding-top: 28px;
+    border-top: 1px solid #dcdcd7;
+}
+
+.info-label {
+    display: block;
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 9px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+}
+
+.info-value {
+    font-size: 15px;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+
+/* =========================
+   SECTION
+========================= */
+
+section {
+    padding: 140px 0;
+    overflow: hidden;
+}
+
+.section-head {
+    margin-bottom: 70px;
+}
+
+.section-number {
+    font-size: 13px;
+    color: #999;
+    letter-spacing: .08em;
+    margin-bottom: 18px;
+}
+
+.section-title {
+    font-size: clamp(34px, 4vw, 54px);
+    line-height: 1.1;
+    letter-spacing: -.055em;
+    margin: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.section-description {
+    max-width: 680px;
+    margin-top: 24px;
+    color: #666;
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+
+/* =========================
+   OVERVIEW
+========================= */
+
+.overview {
+    background: #fff;
+}
+
+.overview-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.7fr;
+    gap: 90px;
+}
+
+.overview-label {
+    font-size: 13px;
+    color: #888;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.overview-copy {
+    font-size: 18px;
+    line-height: 1.9;
+    color: #444;
+    margin: 0;
+}
+
+.highlight {
+    font-weight: 600;
+    color: #111;
+}
+
+.design-points {
+    margin-top: 55px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.point {
+    padding: 26px;
+    background: #f5f5f2;
+}
+
+.point-number {
+    font-size: 12px;
+    color: #999;
+}
+
+.point h3 {
+    margin: 18px 0 10px;
+    font-size: 17px;
+}
+
+.point p {
+    margin: 0;
+    color: #666;
+    line-height: 1.65;
+    font-size: 14px;
+}
+
+
+/* =========================
+   CONTENT BLOCK
+========================= */
+
+.content-block {
+    margin-top: 90px;
+}
+
+.content-title {
+    margin-bottom: 28px;
+}
+
+.content-title span {
+    display: block;
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 10px;
+    letter-spacing: .06em;
+}
+
+.content-title h3 {
+    margin: 0;
+    font-size: 32px;
+    letter-spacing: -.045em;
+    max-width: 100%;
+}
+
+.content-title p {
+    max-width: 700px;
+    margin: 16px 0 0;
+    color: #666;
+    line-height: 1.75;
+}
+
+.full-image {
+    margin-top: 35px;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.full-image img {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+
+/* =========================
+   IMAGE GRID
+========================= */
+
+.image-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-top: 18px;
+}
+
+.image-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 18px;
+}
+
+.image-card {
+    overflow: hidden;
+    background: #eee;
+    border-radius: 4px;
+}
+
+.image-card img {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+
+/* =========================
+   EXHIBITION
+========================= */
+
+.exhibition {
+    background: #111;
+    color: #fff;
+}
+
+.exhibition .section-number,
+.exhibition .content-title span {
+    color: #777;
+}
+
+.exhibition .section-description,
+.exhibition .content-title p {
+    color: #aaa;
+}
+
+.exhibition .full-image {
+    background: #1a1a1a;
+}
+
+
+/* =========================
+   GAMES
+========================= */
+
+.games-intro {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 55px;
+}
+
+.games-intro p {
+    max-width: 550px;
+    margin: 0;
+    color: #666;
+    line-height: 1.75;
+}
+
+.game {
+    padding: 70px 0 85px;
+    border-top: 1px solid #ddd;
+}
+
+.game:last-child {
+    border-bottom: 1px solid #ddd;
+}
+
+.game-meta {
+    font-size: 12px;
+    color: #999;
+    letter-spacing: .08em;
+    margin-bottom: 12px;
+}
+
+.game h3 {
+    margin: 0;
+    font-size: 30px;
+    line-height: 1.25;
+    letter-spacing: -.045em;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.game-description {
+    max-width: 700px;
+    margin: 17px 0 35px;
+    color: #666;
+    line-height: 1.75;
+}
+
+.game-images {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 14px;
+}
+
+.game-images img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.game-images img:first-child {
+    grid-column: 1;
+    grid-row: 1 / 3;
+}
+
+.game-images img:nth-child(2) {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.game-images img:nth-child(3) {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+/* =========================
+   YOUTUBE
+========================= */
+
+.youtube-wrap {
+    width: 88%;
+    max-width: 980px;
+    aspect-ratio: 16 / 9;
+    margin: 42px auto 0;
+    overflow: hidden;
+    border-radius: 4px;
+    background: #111;
+}
+
+.youtube-wrap iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* =========================
+   VIDEO MODAL
+========================= */
+
+.video-modal {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 99999 !important;
+    display: none;
+    pointer-events: none;
+}
+
+.video-modal.is-open {
+    display: block !important;
+    pointer-events: auto;
+}
+
+.video-modal-inner {
+    position: fixed !important;
+    width: min(720px, calc(100vw - 40px));
+    aspect-ratio: 16 / 9;
+    background: #000;
+    box-shadow: 0 20px 60px rgba(0,0,0,.25);
+}
+
+.video-modal iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.video-modal-close {
+    position: absolute;
+    top: -42px;
+    right: 0;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #111;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+}
+    
+    
+/* =========================
+   VIDEO BUTTON
+========================= */
+
+.video-button {
+    -webkit-appearance: none;
+    appearance: none;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 30px;
+    padding: 10px 18px;
+
+    border: 1px solid #111;
+    border-radius: 999px;
+
+    background: #fff;
+    color: #111;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+
+    cursor: pointer;
+    box-shadow: none;
+}
+
+.video-button:hover {
+    background: #111;
+    color: #fff;
+}
+    
+
+/* =========================
+   CONCEPT
+========================= */
+
+.concept {
+    background: #fff;
+}
+
+.concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+}
+
+.concept-copy {
+    font-size: 18px;
+    line-height: 1.9;
+    color: #444;
+}
+
+.concept-copy strong {
+    color: #111;
+}
+
+.concept-image {
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.concept-image img {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    padding: 80px 40px;
+    background: #111;
+    color: #fff;
+    text-align: center;
+}
+
+.footer-title {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 18px;
+}
+
+.footer-link {
+    font-size: 28px;
+    letter-spacing: -.04em;
+    overflow-wrap: anywhere;
+}
+
+.footer-back {
+    display: inline-block;
+    margin-top: 40px;
+    font-size: 13px;
+    color: #aaa;
+}
+
+
+/* =========================
+   HUBUK MOBILE SLIDER
+========================= */
+
+.hubuk-mobile {
+    display: none;
+}
+
+.hubuk-slider {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 4px;
+    background: #eee;
+}
+
+.hubuk-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .6s ease;
+}
+
+.hubuk-slide.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.hubuk-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hubuk-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 14px;
+}
+
+.hubuk-dots span {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #d0d0d0;
+}
+
+.hubuk-dots span.active {
+    background: #111;
+}
+
+
+/* =========================
+   SHINHWAJI MOBILE LAYOUT
+========================= */
+
+.shinhwaji-gallery {
+    display: block;
+}
+
+.shinhwaji-mobile {
+    display: none;
+}
+
+@media (max-width: 800px) {
+
+    .shinhwaji-desktop {
+        display: none;
+    }
+
+    .shinhwaji-mobile {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 18px;
+    }
+
+    .shinhwaji-mobile .shinhwa-main {
+        grid-column: 1 / 3;
+    }
+
+    .shinhwaji-mobile .image-card {
+        width: 100%;
+    }
+
+    .shinhwaji-mobile .image-card img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+    }
+
+    .shinhwaji-mobile .shinhwa-main img {
+        aspect-ratio: 16 / 9;
+    }
+
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 800px) {
+
+    .hubuk-desktop {
+        display: none;
+    }
+
+    .hubuk-mobile {
+        display: block;
+    }
+
+    header {
+        height: 72px;
+        padding: 0 20px;
+    }
+
+    .logo {
+        font-size: 18px;
+    }
+
+    .back {
+        font-size: 12px;
+    }
+
+    .container {
+        width: calc(100% - 40px);
+    }
+
+    .hero {
+        padding: 70px 0;
+    }
+
+    .hero h1 {
+        font-size: clamp(38px, 11vw, 58px);
+        line-height: 1;
+        letter-spacing: -.065em;
+        overflow-wrap: anywhere;
+    }
+
+    .hero-title-ko {
+        margin-top: 20px;
+        font-size: 18px;
+    }
+
+    .hero-description {
+        font-size: 16px;
+        line-height: 1.7;
+    }
+
+    .hero-image {
+        margin-top: 55px;
+    }
+
+    .project-info {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px 20px;
+        margin-top: 50px;
+    }
+
+    .info-value {
+        font-size: 14px;
+    }
+
+    section {
+        padding: 90px 0;
+    }
+
+    .section-head {
+        margin-bottom: 50px;
+    }
+
+    .section-title {
+        font-size: clamp(32px, 9vw, 46px);
+        line-height: 1.12;
+        overflow-wrap: anywhere;
+    }
+
+    .section-description {
+        font-size: 15px;
+        line-height: 1.75;
+    }
+
+    .overview-layout,
+    .concept-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .overview-copy {
+        font-size: 16px;
+        line-height: 1.85;
+    }
+
+    .design-points {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-top: 40px;
+    }
+
+    .point {
+        padding: 22px;
+    }
+
+    .content-block {
+        margin-top: 65px;
+    }
+
+    .content-title h3 {
+        font-size: 26px;
+    }
+
+    .content-title p {
+        font-size: 15px;
+    }
+
+    .image-grid-2,
+    .image-grid-3 {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .game {
+        padding: 55px 0 65px;
+    }
+
+    .game h3 {
+        font-size: 25px;
+        line-height: 1.3;
+    }
+
+    .game-description {
+        font-size: 15px;
+        margin: 15px 0 28px;
+    }
+
+   .game-images {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+        gap: 10px;
+    }
+
+    .game-images img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+    }
+
+    /* PLAY */
+    .game-images img:first-child {
+        grid-column: 1 / 3;
+        grid-row: 1;
+    }
+
+    /* TITLE */
+    .game-images img:nth-child(2) {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    /* CLEAR */
+    .game-images img:nth-child(3) {
+        grid-column: 2;
+        grid-row: 2;
+    }
+}
+
+    .youtube-wrap {
+        width: 100%;
+        margin-top: 32px;
+        border-radius: 3px;
+    }
+
+    .concept-copy {
+        font-size: 16px;
+        line-height: 1.85;
+    }
+
+    footer {
+        padding: 65px 20px;
+    }
+
+    .footer-link {
+        font-size: 23px;
+    }
+
+}
+
+
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media (max-width: 420px) {
+
+    header {
+        padding: 0 16px;
+    }
+
+    .container {
+        width: calc(100% - 32px);
+    }
+
+    .back {
+        font-size: 11px;
+    }
+
+    .hero h1 {
+        font-size: 38px;
+    }
+
+    .project-info {
+        gap: 22px 14px;
+    }
+
+    .section-title {
+        font-size: 32px;
+    }
+}
+
+
+
+    
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<a href="../index.html" class="logo">
+    uxxxu
+</a>
+
+<a href="../index.html" class="back">
+    ← Back to Portfolio
+</a>
+
+</header>
+
+
+<main>
+
+
+<!-- =========================================
+     HERO
+========================================= -->
+
+<section class="hero">
+
+<div class="container">
+
+<div class="eyebrow">
+    Exhibition & Digital Contents
+</div>
+
+<h1>
+    Jeju<br>
+    Seolmundaehalmang
+</h1>
+
+<div class="hero-title-ko">
+    제주설문대할망전시관
+</div>
+
+<p class="hero-description">
+    제주 여신 신화인 설문대할망 이야기를 바탕으로
+    전시 콘텐츠와 인터랙티브 디지털 경험을 디자인했습니다.
+</p>
+
+
+<div class="project-info">
+
+<div>
+<span class="info-label">Category</span>
+<div class="info-value">Exhibition Design</div>
+</div>
+
+<div>
+<span class="info-label">Year</span>
+<div class="info-value">2024</div>
+</div>
+
+<div>
+<span class="info-label">Tools</span>
+<div class="info-value">
+    Adobe Photoshop<br>
+    Adobe Illustrator
+</div>
+</div>
+
+<div>
+<span class="info-label">Contribution</span>
+<div class="info-value">
+    UX Planning<br>
+    UI Design<br>
+    Contents Design
+</div>
+</div>
+
+</div>
+
+
+<div class="hero-image">
+<img src="images/jeju_smd_img/image.png" alt="제주설문대할망전시관">
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =========================================
+     OVERVIEW
+========================================= -->
+
+<section class="overview">
+
+<div class="container">
+
+<div class="section-head">
+
+<div class="section-number">
+    01 / PROJECT
+</div>
+
+<h2 class="section-title">
+    신화를 디지털 경험으로
+    확장하다.
+</h2>
+
+</div>
+
+
+<div class="overview-layout">
+
+<div>
+<div class="overview-label">
+    Project Overview
+</div>
+</div>
+
+<div>
+
+<p class="overview-copy">
+
+‘설문대할망 전시관’은 제주 여신 신화인
+설문대할망 이야기를 중심으로,
+제주의 자연, 여성성, 신화적 상상력을
+현대적으로 풀어낸 전시 콘텐츠입니다.
+
+<br><br>
+
+전시 콘텐츠의 성격에 따라
+<strong class="highlight">
+감성적인 영상 콘텐츠부터
+인터랙티브 키오스크와 미니게임까지
+</strong>
+다양한 디지털 경험을 설계하고 디자인했습니다.
+
+<br><br>
+
+캐릭터 제작을 제외한
+화면 구성, UI, 콘텐츠 비주얼 및
+사용자 경험 설계를 담당했습니다.
+
+</p>
+
+</div>
+
+</div>
+
+
+<div class="design-points">
+
+<div class="point">
+
+<div class="point-number">01</div>
+
+<h3>Storytelling</h3>
+
+<p>
+제주의 신화와 자연을
+현대적인 시각 언어로 재해석
+</p>
+
+</div>
+
+
+<div class="point">
+
+<div class="point-number">02</div>
+
+<h3>Interaction</h3>
+
+<p>
+관람객이 직접 참여하고
+경험할 수 있는 인터랙션 설계
+</p>
+
+</div>
+
+
+<div class="point">
+
+<div class="point-number">03</div>
+
+<h3>Visual System</h3>
+
+<p>
+돌, 물결, 빛 등의 상징 요소를
+콘텐츠 전반의 그래픽 언어로 확장
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =========================================
+     HOBUK
+========================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-head">
+
+<div class="section-number">
+    02 / HŎBŎK
+</div>
+
+<h2 class="section-title">
+    빛으로 표현한<br>
+    제주인의 이야기
+</h2>
+
+<p class="section-description">
+    허벅에서 흘러나오는 빛 입자를 통해
+    자연과 인간의 조화로운 연결을 표현했습니다.
+    ‘담다’라는 키워드를 중심으로
+    제주의 삶과 자연을 현대적으로 시각화했습니다.
+</p>
+
+</div>
+
+
+<div class="content-block">
+
+<div class="content-title">
+
+<span>TRANSPARENT OLED DISPLAY</span>
+
+<h3>
+    허벅 영상 디자인
+</h3>
+
+<p>
+    제주 허벅 전시관에 설치된
+    투명 OLED 디스플레이 영상 콘텐츠를 디자인했습니다.
+</p>
+
+</div>
+
+
+<!-- PC -->
+<div class="hubuk-desktop">
+
+    <div class="full-image">
+        <img src="images/jeju_smd_img/image_hubuk_1.png" alt="허벅 영상 디자인">
+    </div>
+
+    <div class="image-grid-2">
+
+        <div class="image-card">
+            <img src="images/jeju_smd_img/view_jeju4.jpg" alt="허벅 전시 공간">
+        </div>
+
+        <div class="image-card">
+            <img src="images/jeju_smd_img/view_jeju1.jpg" alt="허벅 전시 콘텐츠">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- 모바일 -->
+<div class="hubuk-mobile">
+
+    <div class="hubuk-slider">
+
+        <div class="hubuk-slide active">
+            <img src="images/jeju_smd_img/image_hubuk_1.png" alt="허벅 영상 디자인">
+        </div>
+
+        <div class="hubuk-slide">
+            <img src="images/jeju_smd_img/view_jeju4.jpg" alt="허벅 전시 공간">
+        </div>
+
+        <div class="hubuk-slide">
+            <img src="images/jeju_smd_img/view_jeju1.jpg" alt="허벅 전시 콘텐츠">
+        </div>
+
+    </div>
+
+    <div class="hubuk-dots">
+        <span class="active"></span>
+        <span></span>
+        <span></span>
+    </div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =========================================
+     JIJANG
+========================================= -->
+
+<section class="exhibition">
+
+<div class="container">
+
+<div class="section-head">
+
+<div class="section-number">
+    03 / JIJANG BONPULI
+</div>
+
+<h2 class="section-title">
+    전통 설화를<br>
+    현대적인 영상으로
+</h2>
+
+<p class="section-description">
+    지장본풀이의 전통 설화를 현대적인 감각으로
+    재해석하고, 미니멀리즘과 몽환적인 분위기를
+    중심으로 컨셉 영상을 디자인했습니다.
+</p>
+
+</div>
+
+
+<div class="content-block">
+
+<div class="content-title">
+
+<span>CONCEPT VIDEO</span>
+
+<h3>
+    지장본풀이
+</h3>
+
+<p>
+    리듬감 있는 모션과 그라데이션 컬러,
+    원과 면을 활용해 설화의 신비롭고
+    초월적인 분위기를 표현했습니다.
+</p>
+
+</div>
+
+
+<div class="full-image">
+<img src="images/jeju_smd_img/jijang_main.jpg" alt="지장본풀이 컨셉 영상">
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =========================================
+     SHINHWAJI
+========================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-head">
+
+<div class="section-number">
+    04 / SHINHWAJI
+</div>
+
+<h2 class="section-title">
+    관람객이 직접 참여하는<br>
+    인터랙티브 전시
+</h2>
+
+<p class="section-description">
+    ‘소망의 돌’을 중심으로 구성된
+    인터랙티브 체험 콘텐츠입니다.
+    6개의 미니게임을 완료하면 제주 돌을 획득하고,
+    디오라마 위에 돌을 쌓아 소망을 완성합니다.
+</p>
+
+</div>
+
+
+<!-- PC -->
+<div class="shinhwaji-desktop">
+
+    <div class="full-image">
+        <img src="images/jeju_smd_img/shinhwa_main.jpg" alt="신화지 메인">
+    </div>
+
+    <div class="image-grid-2">
+
+        <div class="image-card">
+            <img src="images/jeju_smd_img/shinhwa_diorama.jpg" alt="신화지 디오라마">
+        </div>
+
+        <div class="image-card">
+            <img src="images/jeju_smd_img/shinhwa_select_stone.jpg" alt="돌 선택 화면">
+        </div>
+
+    </div>
+
+    <div class="image-grid-2">
+
+        <div class="image-card">
+            <img src="images/jeju_smd_img/shinhwa_stone_decorate_ui.jpg" alt="돌 꾸미기 UI">
+        </div>
+
+        <div class="image-card">
+            <img src="images/jeju_smd_img/shinhwa_stone_decorate_ui_2.jpg" alt="돌 꾸미기 UI">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- 모바일 -->
+<div class="shinhwaji-mobile">
+
+    <div class="image-card shinhwa-main">
+        <img src="images/jeju_smd_img/shinhwa_main.jpg" alt="신화지 메인">
+    </div>
+
+    <div class="image-card">
+        <img src="images/jeju_smd_img/shinhwa_diorama.jpg" alt="신화지 디오라마">
+    </div>
+
+    <div class="image-card">
+        <img src="images/jeju_smd_img/shinhwa_select_stone.jpg" alt="돌 선택 화면">
+    </div>
+
+    <div class="image-card">
+        <img src="images/jeju_smd_img/shinhwa_stone_decorate_ui.jpg" alt="돌 꾸미기 UI">
+    </div>
+
+    <div class="image-card">
+        <img src="images/jeju_smd_img/shinhwa_stone_decorate_ui_2.jpg" alt="돌 꾸미기 UI">
+    </div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =========================================
+     GAMES
+========================================= -->
+
+<section class="overview">
+
+<div class="container">
+
+<div class="section-head">
+
+<div class="section-number">
+    05 / INTERACTIVE GAMES
+</div>
+
+<h2 class="section-title">
+    제주 신화를<br>
+    직접 플레이하다.
+</h2>
+
+<p class="section-description">
+    제주 지역의 지형과 설화를 각각의 게임 방식으로
+    재해석해 관람객이 자연스럽게 이야기를
+    경험할 수 있도록 구성했습니다.
+</p>
+
+</div>
+
+
+
+<!-- GAME 01 -->
+
+<div class="game">
+
+<div class="game-meta">
+    GAME 01
+</div>
+
+<h3>
+    등경돌에 불을 밝혀라!
+</h3>
+
+<p class="game-description">
+    숲 속에 숨어 있는 불을 든 캐릭터를 찾아 선택하고,
+    등경돌에 불을 붙여 마을에 빛을 밝히는 과정을
+    체험할 수 있도록 디자인했습니다.
+</p>
+
+<div class="game-images">
+
+<img src="images/jeju_smd_img/game01_03_full.jpg" alt="등경돌 게임 메인">
+<img src="images/jeju_smd_img/game01_01_start.jpg" alt="게임 시작">
+<img src="images/jeju_smd_img/game01_04_ending.jpg" alt="게임 완료">
+
+</div>
+
+<button
+    class="video-button"
+    type="button"
+    data-video="https://www.youtube.com/embed/dsiB7E_3_J0">
+    Watch Interaction →
+</button>
+
+</div>
+
+
+
+<!-- GAME 02 -->
+
+<div class="game">
+
+<div class="game-meta">
+    GAME 02
+</div>
+
+<h3>
+    범섬 구멍을 뚫어라!
+</h3>
+
+<p class="game-description">
+    설문대할망이 바다에 돌을 던져
+    범섬을 만들었다는 설화를 바탕으로,
+    돌을 정확히 던져 구멍을 만드는 체험형 게임입니다.
+</p>
+
+<div class="game-images">
+
+<img src="images/jeju_smd_img/bumsum_02.jpg" alt="범섬 게임 메인">
+<img src="images/jeju_smd_img/bumsum_00_start.jpg" alt="게임 시작">
+<img src="images/jeju_smd_img/bumsum_03_ending.jpg" alt="게임 완료">
+
+</div>
+
+<button
+    class="video-button"
+    type="button"
+    data-video="https://www.youtube.com/embed/vTs3-bvJFMY">
+    Watch Interaction →
+</button>
+
+</div>
+
+
+
+<!-- GAME 03 -->
+
+<div class="game">
+
+<div class="game-meta">
+    GAME 03
+</div>
+
+<h3>
+    우도에서 빨래를 하자!
+</h3>
+
+<p class="game-description">
+    우도를 커다란 빨래판으로 재해석하고,
+    전통 빨래 방식의 요소를 게임 인터랙션으로
+    연결했습니다.
+</p>
+
+<div class="game-images">
+
+<img src="images/jeju_smd_img/marado-4-2.jpg" alt="우도 빨래 게임 메인">
+<img src="images/jeju_smd_img/marado-00-stat.jpg" alt="게임 시작">
+<img src="images/jeju_smd_img/marado-05-ending.jpg" alt="게임 완료">
+
+</div>
+
+<button
+    class="video-button"
+    type="button"
+    data-video="https://www.youtube.com/embed/BdZdL7qRYFk">
+    Watch Interaction →
+</button>
+</div>
+
+
+
+<!-- GAME 04 -->
+
+<div class="game">
+
+<div class="game-meta">
+    GAME 04
+</div>
+
+<h3>
+    엉장메코지 다리를 놓자!
+</h3>
+
+<p class="game-description">
+    하늘에서 떨어지는 돌을 정확한 위치에 놓아
+    다리를 완성하는 방식으로
+    엉장메코지 설화를 직관적으로 체험할 수 있도록 디자인했습니다.
+</p>
+
+<div class="game-images">
+
+<img src="images/jeju_smd_img/bridge_05.jpg" alt="다리 놓기 게임">
+<img src="images/jeju_smd_img/bridge_00-START.jpg" alt="게임 시작">
+<img src="images/jeju_smd_img/bridge_06_ending.jpg" alt="게임 완료">
+
+</div>
+
+<button
+    class="video-button"
+    type="button"
+    data-video="https://www.youtube.com/embed/GU0OhCvejnY">
+    Watch Interaction →
+</button>
+
+</div>
+
+
+
+<!-- GAME 05 -->
+
+<div class="game">
+
+<div class="game-meta">
+    GAME 05
+</div>
+
+<h3>
+    고내봉에서 공기놀이 하자!
+</h3>
+
+<p class="game-description">
+    설문대할망이 돌을 던져 만든 봉우리라는 설화를
+    바탕으로, 돌을 공기놀이 방식으로 받는
+    인터랙션으로 재해석했습니다.
+</p>
+
+<div class="game-images">
+
+<img src="images/jeju_smd_img/go_03.jpg" alt="고내봉 게임">
+<img src="images/jeju_smd_img/go_00-start.jpg" alt="게임 시작">
+<img src="images/jeju_smd_img/go_05_ending.jpg" alt="게임 완료">
+
+</div>
+
+<button
+    class="video-button"
+    type="button"
+    data-video="https://www.youtube.com/embed/I_bm1Ac6mfI">
+    Watch Interaction →
+</button>
+
+</div>
+
+</section>
+
+
+
+<!-- =========================================
+     CONCEPT
+========================================= -->
+
+<section class="concept">
+
+<div class="container">
+
+<div class="section-head">
+
+<div class="section-number">
+    06 / DESIGN CONCEPT
+</div>
+
+<h2 class="section-title">
+    하나의 신화,<br>
+    서로 다른 경험
+</h2>
+
+</div>
+
+
+<div class="concept-grid">
+
+<div class="concept-copy">
+
+<p>
+    ‘허벅’을 모티프로 한
+    <strong>서정적 공간</strong>,
+    설문대할망의 삶을 다룬
+    <strong>지장본풀이 시각화 콘텐츠</strong>,
+    그리고 체험형
+    <strong>‘신화지’ 게임</strong>까지
+    각기 다른 주제의 전시에 맞춰
+    콘텐츠를 구성했습니다.
+</p>
+
+<p>
+    콘텐츠의 성격에 따라
+    감성적인 영상,
+    상징적인 그래픽 언어,
+    직접 참여하는 인터랙션 등
+    서로 다른 경험 방식을 설계했습니다.
+</p>
+
+<p>
+    각 콘텐츠는 서로 다른 형태를 가지고 있지만,
+    돌·물결·빛과 같은 제주와 설문대할망의
+    상징 요소를 통해 하나의 전시 경험으로
+    연결되도록 디자인했습니다.
+</p>
+
+</div>
+
+
+<div class="concept-image">
+
+<img src="images/jeju_smd_img/image.png" alt="제주설문대할망전시관 대표 이미지">
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+</main>
+
+
+<footer>
+
+<div class="footer-title">
+    Exhibition & Digital Contents
+</div>
+
+<div class="footer-link">
+    Jeju Seolmundaehalmang
+</div>
+
+<a href="../index.html" class="footer-back">
+    ← Back to Portfolio
+</a>
+
+</footer>
+<!-- VIDEO MODAL -->
+
+<div class="video-modal" id="videoModal">
+
+    <div class="video-modal-inner">
+
+        <button
+            class="video-modal-close"
+            id="videoModalClose"
+            type="button"
+            aria-label="Close video">
+            ×
+        </button>
+
+        <iframe
+            id="videoFrame"
+            src=""
+            title="Interaction Video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+        </iframe>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   HUBUK MOBILE SLIDER
+========================= */
+
+(function () {
+
+    const slides = document.querySelectorAll(".hubuk-slide");
+    const dots = document.querySelectorAll(".hubuk-dots span");
+
+    if (!slides.length) return;
+
+    let current = 0;
+
+    setInterval(function () {
+
+        slides[current].classList.remove("active");
+        dots[current].classList.remove("active");
+
+        current = (current + 1) % slides.length;
+
+        slides[current].classList.add("active");
+        dots[current].classList.add("active");
+
+    }, 3500);
+
+})();
+
+</script>
+
+<script>
+
+const videoModal = document.getElementById("videoModal");
+const videoFrame = document.getElementById("videoFrame");
+const videoModalClose = document.getElementById("videoModalClose");
+const videoModalInner = document.querySelector(".video-modal-inner");
+const videoButtons = document.querySelectorAll(".video-button");
+
+
+videoButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        const videoUrl = button.dataset.video;
+
+        videoFrame.src = videoUrl + "?autoplay=1";
+
+        videoModal.classList.add("is-open");
+
+        /*
+         * 클릭한 버튼 위치를 기준으로
+         * 영상이 버튼 위쪽에 뜨도록 위치 계산
+         */
+
+        const rect = button.getBoundingClientRect();
+
+        const popupWidth = Math.min(
+            720,
+            window.innerWidth - 40
+        );
+
+        const popupHeight = popupWidth * 9 / 16;
+
+        let left = (window.innerWidth - popupWidth) / 2;
+        let top = rect.top - popupHeight - 24;
+
+        /*
+         * 화면 위쪽을 넘어가면
+         * 버튼 아래쪽으로 표시
+         */
+
+        if (top < 20) {
+            top = rect.bottom + 24;
+        }
+
+        /*
+         * 오른쪽/왼쪽 화면 밖으로 나가지 않도록
+         */
+
+        if (left < 20) {
+            left = 20;
+        }
+
+        if (left + popupWidth > window.innerWidth - 20) {
+            left = window.innerWidth - popupWidth - 20;
+        }
+
+        videoModalInner.style.left = left + "px";
+        videoModalInner.style.top = top + "px";
+
+        document.body.style.overflow = "hidden";
+
+    });
+
+});
+
+
+function closeVideo() {
+
+    videoModal.classList.remove("is-open");
+
+    videoFrame.src = "";
+
+    document.body.style.overflow = "";
+
+}
+
+
+videoModalClose.addEventListener("click", closeVideo);
+
+
+videoModal.addEventListener("click", (event) => {
+
+    if (event.target === videoModal) {
+        closeVideo();
+    }
+
+});
+
+
+document.addEventListener("keydown", (event) => {
+
+    if (event.key === "Escape") {
+        closeVideo();
+    }
+
+});
+
+</script>
+
+</body>
+</html>
