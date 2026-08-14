@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Minimal Gray Tone + Warm Point Glow)
+   HERO THREE.JS (Clean Minimal Line Art / Black Outlines)
 ========================================================= */
 
 export function initHero3D() {
@@ -18,85 +18,30 @@ export function initHero3D() {
   camera.position.set(0, 0, 15);
 
   /* =====================================================
-     LIGHTING
+     LIGHTING (미니멀 라인 표현을 위해 최소한의 기본 조명)
   ===================================================== */
-  const ambientLight = new THREE.AmbientLight(0xffffff, 3.8);
+  const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
   scene.add(ambientLight);
-
-  const mainLight = new THREE.DirectionalLight(0xffffff, 4.5);
-  mainLight.position.set(-5, 9, 10);
-  scene.add(mainLight);
-
-  const mouseLight = new THREE.PointLight(0xff5533, 4.0, 35);
-  scene.add(mouseLight);
 
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
-    alpha: false, // CSS 파란색 배경이 비치지 않도록 투명도 차단
+    alpha: false,
     powerPreference: "high-performance",
   });
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  // ★ CSS 스타일에 구애받지 않도록 캔버스 배경을 세련된 미니멀 그레이톤으로 강제 설정
-  renderer.setClearColor(0xeef0f4, 1);
+  // 1. 배경 및 빛을 완전히 제거한 순백색(Clean White) 배경
+  renderer.setClearColor(0xffffff, 1);
 
   container.appendChild(renderer.domElement);
-
-  /* =====================================================
-     ★ BACKGROUND: 세련된 그레이톤 베이스 + 측면 따스한 포인트 글로우
-  ===================================================== */
-  const lightRayGeo = new THREE.PlaneGeometry(120, 120);
-  const lightRayMat = new THREE.ShaderMaterial({
-    uniforms: {
-      uTime: { value: 0 },
-      uMouse: { value: new THREE.Vector2(0, 0) },
-      uBgBase: { value: new THREE.Color(0xeef0f4) },   // 세련된 미니멀 그레이 베이스 톤
-      uWarmGlow: { value: new THREE.Color(0xff5c35) }, // 레퍼런스 느낌의 따스한 포인트 빛
-    },
-    vertexShader: `
-      varying vec2 vUv;
-      void main() {
-        vUv = uv;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-      }
-    `,
-    fragmentShader: `
-      uniform float uTime;
-      uniform vec2 uMouse;
-      uniform vec3 uBgBase;
-      uniform vec3 uWarmGlow;
-      varying vec2 vUv;
-
-      void main() {
-        vec2 st = vUv;
-        vec2 mouseOffset = uMouse * 0.02;
-
-        // 좌측 하단에서 은은하게 피어오르는 따스한 빛 포인트
-        vec2 glowCenter = vec2(0.18 + mouseOffset.x, 0.22 + mouseOffset.y);
-        float dist = length(st - glowCenter);
-
-        float glow = smoothstep(0.8, 0.0, dist);
-        glow = pow(glow, 1.6) * 0.35; // 과하지 않게 은은한 강도
-
-        vec3 finalColor = mix(uBgBase, uWarmGlow, glow);
-
-        gl_FragColor = vec4(finalColor, 1.0);
-      }
-    `,
-    depthWrite: false,
-  });
-
-  const bgMesh = new THREE.Mesh(lightRayGeo, lightRayMat);
-  bgMesh.position.set(0, 0, -10);
-  scene.add(bgMesh);
 
   const group = new THREE.Group();
   scene.add(group);
 
   /* =====================================================
-     GRID (그레이 톤에 어울리는 차분하고 정돈된 라인)
+     1. 배경 공간 그리드 (기존보다 더 촘촘하게 간격 조정)
   ===================================================== */
-  function createConcaveGridGeometry(width, height, stepX, stepY, curveAmount = 0.01) {
+  function createDenseGridGeometry(width, height, stepX, stepY, curveAmount = 0.01) {
     const points = [];
     const resolution = 30;
 
@@ -128,137 +73,71 @@ export function initHero3D() {
   const gridGroup = new THREE.Group();
   gridGroup.position.set(0, 0, -3);
 
-  const gridWidth = 36, gridHeight = 22, stepX = 2.4, stepY = 2.4, curveFactor = 0.01;
-  const curvedGridGeo = createConcaveGridGeometry(gridWidth, gridHeight, stepX, stepY, curveFactor);
+  const gridWidth = 36, gridHeight = 22;
+  // 기존보다 간격을 좁혀서 더 촘촘하게 설정 (step 1.2)
+  const stepX = 1.2, stepY = 1.2, curveFactor = 0.01;
+  const denseGridGeo = createDenseGridGeometry(gridWidth, gridHeight, stepX, stepY, curveFactor);
 
   const gridMaterial = new THREE.LineBasicMaterial({
-    color: 0xc4c9d4,
+    color: 0xe0e0e0,
     transparent: true,
-    opacity: 0.35,
+    opacity: 0.6,
   });
 
-  gridGroup.add(new THREE.LineSegments(curvedGridGeo, gridMaterial));
-
-  const nodeGeo = new THREE.BoxGeometry(0.035, 0.035, 0.035);
-  const nodeMat = new THREE.MeshBasicMaterial({ color: 0x9499a6, transparent: true, opacity: 0.4 });
-
-  for (let x = -gridWidth / 2; x <= gridWidth / 2; x += stepX * 2) {
-    for (let y = -gridHeight / 2; y <= gridHeight / 2; y += stepY * 2) {
-      if (y > -8) {
-        const z = (x * x * 0.8 + y * y) * curveFactor - 3.0;
-        const node = new THREE.Mesh(nodeGeo, nodeMat);
-        node.position.set(x, y, z);
-        gridGroup.add(node);
-      }
-    }
-  }
+  gridGroup.add(new THREE.LineSegments(denseGridGeo, gridMaterial));
   scene.add(gridGroup);
 
   /* =====================================================
-     U 전용: 아이스 화이트 글래스 (Frosted Ice Glass)
+     5. 얇고 깔끔한 블랙 테두리 라인 머티리얼 (카카오 스타일 펜 라인)
   ===================================================== */
-  const uIceGlassMaterial = new THREE.ShaderMaterial({
-    uniforms: {
-      uMouse: { value: new THREE.Vector2(0, 0) },
-      topColor: { value: new THREE.Color(0xffffff) },
-      bottomColor: { value: new THREE.Color(0xd8dce6) },
-      edgeHighlight: { value: new THREE.Color(0xffffff) },
-    },
-    vertexShader: `
-      varying vec3 vNormal;
-      varying vec3 vViewPosition;
-      varying vec3 vWorldPosition;
-
-      void main() {
-        vNormal = normalize(normalMatrix * normal);
-        vec4 worldPosition = modelMatrix * vec4(position, 1.0);
-        vWorldPosition = worldPosition.xyz;
-        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-        vViewPosition = -mvPosition.xyz;
-        gl_Position = projectionMatrix * mvPosition;
-      }
-    `,
-    fragmentShader: `
-      uniform vec2 uMouse;
-      uniform vec3 topColor;
-      uniform vec3 bottomColor;
-      uniform vec3 edgeHighlight;
-
-      varying vec3 vNormal;
-      varying vec3 vViewPosition;
-      varying vec3 vWorldPosition;
-
-      void main() {
-        vec3 normal = normalize(vNormal);
-        vec3 viewDir = normalize(vViewPosition);
-
-        vec3 lightDir = normalize(vec3(-0.5 + uMouse.x * 0.5, 1.2 + uMouse.y * 0.5, 1.5));
-        float NdotL = max(dot(normal, lightDir), 0.0);
-
-        vec3 halfDir = normalize(lightDir + viewDir);
-        float spec = pow(max(dot(normal, halfDir), 0.0), 32.0);
-
-        float heightRatio = clamp((vWorldPosition.y + 2.2) / 4.5, 0.0, 1.0);
-        vec3 baseGradient = mix(bottomColor, topColor, heightRatio);
-
-        float fresnel = pow(1.0 - max(dot(normal, viewDir), 0.0), 2.2);
-        
-        vec3 shadedColor = baseGradient * (0.85 + 0.25 * NdotL);
-        vec3 finalColor = mix(shadedColor, edgeHighlight, fresnel * 0.75) + edgeHighlight * spec * 0.75;
-
-        gl_FragColor = vec4(finalColor, 0.95);
-      }
-    `,
+  const blackOutlineMat = new THREE.LineBasicMaterial({
+    color: 0x111111,
+    linewidth: 1, // 브라우저 지원에 따라 1px 실선
     transparent: true,
-    depthWrite: true,
-    side: THREE.FrontSide
+    opacity: 0.85,
   });
 
   /* =====================================================
-     X 전용: CAD 스타일 미니멀 와이어프레임
-  ===================================================== */
-  const xWireframeMat = new THREE.LineBasicMaterial({
-    color: 0x8b93a0,
-    transparent: true,
-    opacity: 0.4,
-  });
-
-  /* =====================================================
-     FONT LOADER
+     FONT LOADER & 3D OBJECTS CREATION
   ===================================================== */
   const loader = new FontLoader();
 
   loader.load(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
-      createLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0);
-      createLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.7);
-      createLetter("X", font, -2.3, 3.8, 0.35, 0.52, 0.8);
-      createLetter("X", font, 5.3, -3.2, 0.45, 0.55, 2.3);
+      // 2, 3, 4. U와 X 모두 3D 입체감을 가지되 효과를 빼고 라인으로만 구성 (X는 부드러운 곡선 곡면 반영)
+      createLineArtLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0, false);
+      createLineArtLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.7, true);
+      createLineArtLetter("X", font, -2.3, 3.8, 0.35, 0.52, 0.8, true);
+      createLineArtLetter("X", font, 5.3, -3.2, 0.45, 0.55, 2.3, true);
     }
   );
 
-  function createLetter(character, font, x, y, rotationY, scale, phase) {
+  function createLineArtLetter(character, font, x, y, rotationY, scale, phase, isRoundedX) {
     const isU = character === "U";
     
+    // 2, 3, 4. 3D 입체 구조를 가지면서 면 채우기 없이 외곽/입체 엣지 라인만 추출
     const geometryOptions = isU
       ? {
           font: font,
           size: 4.1,
-          depth: 0.5,
-          curveSegments: 32,
+          depth: 0.45,
+          curveSegments: 16,
           bevelEnabled: true,
-          bevelThickness: 0.45,
-          bevelSize: 0.32,
-          bevelOffset: 0,
-          bevelSegments: 16,
+          bevelThickness: 0.15,
+          bevelSize: 0.1,
+          bevelSegments: 4,
         }
       : {
           font: font,
           size: 4.1,
-          depth: 0.7,
-          curveSegments: 1,
-          bevelEnabled: false,
+          depth: 0.5,
+          // 3. X는 너무 각지지 않게 베벨을 살짝 주어 모서리를 부드럽게 처리
+          curveSegments: isRoundedX ? 12 : 1,
+          bevelEnabled: isRoundedX,
+          bevelThickness: 0.12,
+          bevelSize: 0.1,
+          bevelSegments: 4,
         };
 
     const geometry = new TextGeometry(character, geometryOptions);
@@ -268,12 +147,10 @@ export function initHero3D() {
 
     const letterGroup = new THREE.Group();
 
-    if (isU) {
-      letterGroup.add(new THREE.Mesh(geometry, uIceGlassMaterial));
-    } else {
-      const edges = new THREE.EdgesGeometry(geometry, 25);
-      letterGroup.add(new THREE.LineSegments(edges, xWireframeMat));
-    }
+    // 5. 입체 매쉬 대신 EdgesGeometry를 사용하여 깔끔한 얇은 블랙 라인 아트로 구성
+    const edges = new THREE.EdgesGeometry(geometry, isRoundedX ? 35 : 20);
+    const lineSegments = new THREE.LineSegments(edges, blackOutlineMat);
+    letterGroup.add(lineSegments);
 
     letterGroup.position.set(x, y, 0);
     letterGroup.scale.setScalar(scale);
@@ -324,14 +201,8 @@ export function initHero3D() {
     mouse.x += (target.x - mouse.x) * 0.08;
     mouse.y += (target.y - mouse.y) * 0.08;
 
-    lightRayMat.uniforms.uTime.value = time;
-    lightRayMat.uniforms.uMouse.value.set(mouse.x, mouse.y);
-    uIceGlassMaterial.uniforms.uMouse.value.set(mouse.x, mouse.y);
-
-    mouseLight.position.set(mouse.x * 12, mouse.y * 8, 6);
-
-    gridGroup.position.x = -mouse.x * 0.3;
-    gridGroup.position.y = -mouse.y * 0.2;
+    gridGroup.position.x = -mouse.x * 0.2;
+    gridGroup.position.y = -mouse.y * 0.15;
 
     group.children.forEach((obj) => {
       const p = obj.userData;
