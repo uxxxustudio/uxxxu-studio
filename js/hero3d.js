@@ -19,12 +19,12 @@ export function initHero3D() {
 
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
-    alpha: false,
+    alpha: true, // 배경 투명 처리 (페이지 전체 흐름과 어우러지도록)
     powerPreference: "high-performance",
   });
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setClearColor(0xffffff, 1);
+  renderer.setClearColor(0x000000, 0); // 완전 투명 배경
 
   container.appendChild(renderer.domElement);
 
@@ -90,19 +90,18 @@ export function initHero3D() {
   });
 
   /* =====================================================
-     FONT LOADER & 오브젝트 생성 (스크롤 반응 속성 부여)
+     FONT LOADER & 오브젝트 생성
   ===================================================== */
   const loader = new FontLoader();
 
   loader.load(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
-      // scrollSpeed: 값이 클수록 스크롤을 내릴 때 아래로 더 많이 따라 내려옴 (0이면 제자리, 0.005 등 조절 가능)
-      createLetterMesh("U", font, -2.9, -0.65, -0.42, 0.92, 0.0, true, 0.002);   // 메인 큰 U
-      createLetterMesh("X", font, 2.25, 0.55, 0.42, 0.88, 1.8, false, 0.003);  // 중앙 큰 X
-      createLetterMesh("X", font, -2.3, 3.8, 0.35, 0.52, 3.6, false, 0.001);   // 상단 X
-      createLetterMesh("X", font, 5.3, -3.2, 0.45, 0.55, 5.4, false, 0.004);   // 하단 X
-      createLetterMesh("U", font, 6.2, 1.8, -0.75, 0.48, 7.2, true, 0.0035);   // 우측 상단 U
+      createLetterMesh("U", font, -2.9, -0.65, -0.42, 0.92, 0.0, true, 0.002);
+      createLetterMesh("X", font, 2.25, 0.55, 0.42, 0.88, 1.8, false, 0.003);
+      createLetterMesh("X", font, -2.3, 3.8, 0.35, 0.52, 3.6, false, 0.001);
+      createLetterMesh("X", font, 5.3, -3.2, 0.45, 0.55, 5.4, false, 0.004);
+      createLetterMesh("U", font, 6.2, 1.8, -0.75, 0.48, 7.2, true, 0.0035);
     }
   );
 
@@ -183,7 +182,6 @@ export function initHero3D() {
     letterGroup.rotation.y = rotationY;
     letterGroup.rotation.x = -0.08;
     
-    // userData에 스크롤 반응 속도와 초기 좌표 저장
     letterGroup.userData = { 
       baseX: x, 
       baseY: y, 
@@ -211,9 +209,9 @@ export function initHero3D() {
   );
 
   function resize() {
-    const width = container.clientWidth;
-    const height = container.clientHeight;
-    if (!width || !height) return;
+    // 윈도우 전체 크기 기준으로 렌더러와 카메라 맞춤
+    const width = window.innerWidth;
+    const height = window.innerHeight;
 
     const isMobile = window.innerWidth < 768;
     camera.aspect = width / height;
@@ -221,7 +219,7 @@ export function initHero3D() {
     camera.updateProjectionMatrix();
 
     group.scale.setScalar(isMobile ? 0.68 : 1.0);
-    renderer.setSize(width, height, false);
+    renderer.setSize(width, height);
   }
 
   window.addEventListener("resize", resize);
@@ -238,12 +236,10 @@ export function initHero3D() {
     mouse.y += (target.y - mouse.y) * 0.08;
 
     gridGroup.position.x = -mouse.x * 0.2;
-    gridGroup.position.y = -mouse.y * 0.15 + (scrollY * 0.001); // 그리드도 스크롤에 맞춰 은은하게 이동
+    gridGroup.position.y = -mouse.y * 0.15 + (scrollY * 0.001);
 
     group.children.forEach((obj, index) => {
       const p = obj.userData;
-      
-      // 스크롤을 내릴 때(scrollY 증가) 기본 Y 위치에서 아래쪽으로 서서히 따라 내려오도록 계산
       const scrollOffset = scrollY * p.scrollSpeed;
 
       obj.position.x = p.baseX + Math.sin(time * 0.4 + index) * 0.06;
