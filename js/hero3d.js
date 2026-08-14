@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Sharp HAOQI-Style Sunbeams without Blur)
+   HERO THREE.JS (Compact & Sharp Sunbeams)
 ========================================================= */
 
 export function initHero3D() {
@@ -42,7 +42,7 @@ export function initHero3D() {
   container.appendChild(renderer.domElement);
 
   /* =====================================================
-     ★ BACKGROUND: SHARP, NON-BLURRY DIAGONAL STREAKS
+     ★ BACKGROUND: COMPACT, SHARP DIAGONAL STREAKS
   ===================================================== */
   const lightRayGeo = new THREE.PlaneGeometry(120, 120);
   const lightRayMat = new THREE.ShaderMaterial({
@@ -78,7 +78,7 @@ export function initHero3D() {
       void main() {
         vec2 st = vUv;
         vec2 mouseOffset = uMouse * 0.015;
-        vec2 p = st + mouseOffset - vec2(0.1, 0.9);
+        vec2 p = st + mouseOffset - vec2(0.05, 0.95);
 
         // 대각선 각도 (-45도)
         float angle = -0.785;
@@ -87,20 +87,20 @@ export function initHero3D() {
 
         float rx = p.x * cosA - p.y * sinA;
 
-        // ★ 블러를 없애고 엣지를 살리기 위해 주파수를 높이고 선명한 하모닉스 조합
-        float ray1 = abs(sin(rx * 22.0));
-        float ray2 = abs(cos(rx * 44.0 + 1.2));
-        float ray3 = noise1D(rx * 18.0 + uTime * 0.01);
+        // ★ 주파수를 높여서 빛 줄기의 두께를 얇고 가늘게 축소
+        float ray1 = abs(sin(rx * 42.0));
+        float ray2 = abs(cos(rx * 78.0 + 1.2));
+        float ray3 = noise1D(rx * 32.0 + uTime * 0.01);
 
-        float combined = (ray1 * 0.5 + ray2 * 0.3 + ray3 * 0.2);
+        float combined = (ray1 * 0.4 + ray2 * 0.4 + ray3 * 0.2);
 
-        // ★ 문턱값(Threshold)을 강하게 주어 빛의 경계면을 붓 자국처럼 날카롭고 선명하게 형성
-        float sharpStreaks = smoothstep(0.35, 0.65, combined);
-        sharpStreaks = pow(sharpStreaks, 1.8) * 1.5;
+        // 엣지를 바짝 조여서 날카롭고 좁은 빛 띠 생성
+        float sharpStreaks = smoothstep(0.48, 0.62, combined);
+        sharpStreaks = pow(sharpStreaks, 2.0) * 1.3;
 
-        // 좌상단에서 시작해 화면 전반에 걸치되 너무 흐려지지 않게 최소 가시성 확보
+        // ★ 빛이 퍼지는 전체 영역(크기)을 좁게 제한
         float dist = length(st - vec2(0.0, 1.0));
-        float fade = clamp(1.2 - dist * 0.9, 0.15, 1.0);
+        float fade = clamp(1.0 - dist * 1.4, 0.0, 1.0);
 
         float finalIntensity = clamp(sharpStreaks * fade, 0.0, 1.0);
 
