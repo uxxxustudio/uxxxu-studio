@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Clean Minimal Line Art / Black Outlines)
+   HERO THREE.JS (Clean 3D Line Art & Dense Grid)
 ========================================================= */
 
 export function initHero3D() {
@@ -17,9 +17,6 @@ export function initHero3D() {
   const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
   camera.position.set(0, 0, 15);
 
-  /* =====================================================
-     LIGHTING (미니멀 라인 표현을 위해 최소한의 기본 조명)
-  ===================================================== */
   const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
   scene.add(ambientLight);
 
@@ -30,8 +27,7 @@ export function initHero3D() {
   });
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  // 1. 배경 및 빛을 완전히 제거한 순백색(Clean White) 배경
-  renderer.setClearColor(0xffffff, 1);
+  renderer.setClearColor(0xffffff, 1); // 순백색 배경
 
   container.appendChild(renderer.domElement);
 
@@ -39,7 +35,7 @@ export function initHero3D() {
   scene.add(group);
 
   /* =====================================================
-     1. 배경 공간 그리드 (기존보다 더 촘촘하게 간격 조정)
+     1. 배경 그리드 (더 촘촘하게 조정)
   ===================================================== */
   function createDenseGridGeometry(width, height, stepX, stepY, curveAmount = 0.01) {
     const points = [];
@@ -74,25 +70,23 @@ export function initHero3D() {
   gridGroup.position.set(0, 0, -3);
 
   const gridWidth = 36, gridHeight = 22;
-  // 기존보다 간격을 좁혀서 더 촘촘하게 설정 (step 1.2)
   const stepX = 1.2, stepY = 1.2, curveFactor = 0.01;
   const denseGridGeo = createDenseGridGeometry(gridWidth, gridHeight, stepX, stepY, curveFactor);
 
   const gridMaterial = new THREE.LineBasicMaterial({
-    color: 0xe0e0e0,
+    color: 0xe5e7eb,
     transparent: true,
-    opacity: 0.6,
+    opacity: 0.7,
   });
 
   gridGroup.add(new THREE.LineSegments(denseGridGeo, gridMaterial));
   scene.add(gridGroup);
 
   /* =====================================================
-     5. 얇고 깔끔한 블랙 테두리 라인 머티리얼 (카카오 스타일 펜 라인)
+     5. 깔끔한 블랙 테두리 라인 머티리얼
   ===================================================== */
   const blackOutlineMat = new THREE.LineBasicMaterial({
     color: 0x111111,
-    linewidth: 1, // 브라우저 지원에 따라 1px 실선
     transparent: true,
     opacity: 0.85,
   });
@@ -105,39 +99,37 @@ export function initHero3D() {
   loader.load(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
-      // 2, 3, 4. U와 X 모두 3D 입체감을 가지되 효과를 빼고 라인으로만 구성 (X는 부드러운 곡선 곡면 반영)
-      createLineArtLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0, false);
-      createLineArtLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.7, true);
-      createLineArtLetter("X", font, -2.3, 3.8, 0.35, 0.52, 0.8, true);
-      createLineArtLetter("X", font, 5.3, -3.2, 0.45, 0.55, 2.3, true);
+      createCleanLineLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0, false);
+      createCleanLineLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.7, true);
+      createCleanLineLetter("X", font, -2.3, 3.8, 0.35, 0.52, 0.8, true);
+      createCleanLineLetter("X", font, 5.3, -3.2, 0.45, 0.55, 2.3, true);
     }
   );
 
-  function createLineArtLetter(character, font, x, y, rotationY, scale, phase, isRoundedX) {
+  function createCleanLineLetter(character, font, x, y, rotationY, scale, phase, isRoundedX) {
     const isU = character === "U";
     
-    // 2, 3, 4. 3D 입체 구조를 가지면서 면 채우기 없이 외곽/입체 엣지 라인만 추출
+    // 2, 3. 효과를 빼고 라인으로만 구성되도록 베벨과 곡면 세분화 최적화
     const geometryOptions = isU
       ? {
           font: font,
           size: 4.1,
-          depth: 0.45,
-          curveSegments: 16,
+          depth: 0.4,
+          curveSegments: 4, // 각지지 않으면서 불필요한 삼각분할 최소화
           bevelEnabled: true,
-          bevelThickness: 0.15,
-          bevelSize: 0.1,
-          bevelSegments: 4,
+          bevelThickness: 0.08,
+          bevelSize: 0.05,
+          bevelSegments: 2,
         }
       : {
           font: font,
           size: 4.1,
-          depth: 0.5,
-          // 3. X는 너무 각지지 않게 베벨을 살짝 주어 모서리를 부드럽게 처리
-          curveSegments: isRoundedX ? 12 : 1,
+          depth: 0.4,
+          curveSegments: isRoundedX ? 6 : 2,
           bevelEnabled: isRoundedX,
-          bevelThickness: 0.12,
-          bevelSize: 0.1,
-          bevelSegments: 4,
+          bevelThickness: 0.08,
+          bevelSize: 0.05,
+          bevelSegments: 2,
         };
 
     const geometry = new TextGeometry(character, geometryOptions);
@@ -147,8 +139,8 @@ export function initHero3D() {
 
     const letterGroup = new THREE.Group();
 
-    // 5. 입체 매쉬 대신 EdgesGeometry를 사용하여 깔끔한 얇은 블랙 라인 아트로 구성
-    const edges = new THREE.EdgesGeometry(geometry, isRoundedX ? 35 : 20);
+    // ★ 각진 면 라인이 깨지지 않도록 임계각(thresholdAngle)을 높여 매끄러운 외곽선만 추출
+    const edges = new THREE.EdgesGeometry(geometry, 1); 
     const lineSegments = new THREE.LineSegments(edges, blackOutlineMat);
     letterGroup.add(lineSegments);
 
