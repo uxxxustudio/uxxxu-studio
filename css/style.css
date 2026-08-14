@@ -963,85 +963,86 @@ section{
    PORTFOLIO
 ========================================================= */
 
-.portfolio-grid{
-
-    display:grid;
-
-    grid-template-columns:repeat(2,1fr);
-
-    gap:32px;
-}
-
-.project{
-
-    padding:56px;
-
-    border:1px solid #ececec;
-
-    border-radius:28px;
-
-    background:#fff;
-
-    transition:.35s;
+.portfolio-header{
 
     display:flex;
 
-    flex-direction:column;
+    justify-content:space-between;
 
-    min-height:340px;
+    align-items:flex-start;
 
-    overflow:hidden;
+    margin-bottom:110px;
+
 }
 
-.project:hover{
+.portfolio-heading h2{
 
-    transform:translateY(-8px);
+    margin:0 0 36px;
 
-    border-color:#111;
+    font-size:64px;
+
+    line-height:1;
+
+    font-weight:800;
+
+    letter-spacing:-.055em;
+
+    color:#111;
+
 }
 
-.project-category{
+.portfolio-heading p{
 
-    font-size:13px;
-
-    letter-spacing:.15em;
-
-    color:#999;
-
-    margin-bottom:28px;
-
-    font-weight:600;
-}
-
-.project h2{
-
-    font-size:34px;
-
-    line-height:1.2;
-
-    letter-spacing:-.04em;
-
-    margin-bottom:18px;
-}
-
-.project p{
+    margin:0;
 
     font-size:18px;
 
     line-height:1.8;
 
-    color:#666;
+    color:#555;
 
-    margin-bottom:auto;
+    letter-spacing:-.025em;
+
 }
 
-.arrow{
+.portfolio-meta{
 
-    margin-top:42px;
+    display:flex;
 
-    font-size:15px;
+    flex-direction:column;
+
+    align-items:flex-end;
+
+    padding-top:2px;
+
+    color:#111;
+
+}
+
+.portfolio-meta strong{
+
+    font-size:28px;
+
+    line-height:1.15;
+
+    font-weight:700;
+
+    letter-spacing:-.035em;
+
+}
+
+.portfolio-meta span{
+
+    margin-top:4px;
+
+    font-size:22px;
+
+    line-height:1.2;
 
     font-weight:600;
+
+    letter-spacing:-.035em;
+
 }
 
 
@@ -1518,30 +1519,49 @@ footer{
     margin-top:70px;
 
 }
-    /* ---------------- Portfolio ---------------- */
+/* ---------------- Portfolio ---------------- */
 
-    .portfolio-grid{
+.portfolio-header{
 
-        grid-template-columns:1fr;
-    }
+    flex-direction:column;
 
-    .project{
+    gap:40px;
 
-        padding:36px;
+    margin-bottom:70px;
 
-        min-height:auto;
-    }
+}
 
-    .project h2{
+.portfolio-heading h2{
 
-        font-size:28px;
-    }
+    font-size:48px;
 
-    .project p{
+    margin-bottom:26px;
 
-        font-size:16px;
-    }
+}
 
+.portfolio-heading p{
+
+    font-size:16px;
+
+}
+
+.portfolio-meta{
+
+    align-items:flex-start;
+
+}
+
+.portfolio-meta strong{
+
+    font-size:24px;
+
+}
+
+.portfolio-meta span{
+
+    font-size:19px;
+
+}
 
     /* ---------------- About ---------------- */
 
