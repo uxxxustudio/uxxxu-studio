@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Added extra U on the top-right gray area)
+   HERO THREE.JS (Repositioned & Scaled Down Top-Right U)
 ========================================================= */
 
 export function initHero3D() {
@@ -90,7 +90,7 @@ export function initHero3D() {
   });
 
   /* =====================================================
-     FONT LOADER & 오브젝트 생성 (우측 상단 U 추가)
+     FONT LOADER & 오브젝트 생성
   ===================================================== */
   const loader = new FontLoader();
 
@@ -103,8 +103,8 @@ export function initHero3D() {
       createLetterMesh("X", font, -2.3, 3.8, 0.35, 0.52, 3.6, false);
       createLetterMesh("X", font, 5.3, -3.2, 0.45, 0.55, 5.4, false);
 
-      // ✨ 우측 상단 회색 영역 부근에 추가된 U 오브젝트 (위치, 회전, 스케일 조정)
-      createLetterMesh("U", font, 5.1, 3.2, -0.35, 0.62, 7.2, true);
+      // ✨ 우측 상단 U: 크기를 더 줄이고(0.48), 아래쪽(y: 1.8)과 오른쪽(x: 6.2)으로 이동
+      createLetterMesh("U", font, 6.2, 1.8, -0.3, 0.48, 7.2, true);
     }
   );
 
