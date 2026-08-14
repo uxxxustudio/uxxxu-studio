@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (HAOQI-Style Volumetric Sunbeam Rays)
+   HERO THREE.JS (Sharp HAOQI-Style Sunbeams without Blur)
 ========================================================= */
 
 export function initHero3D() {
@@ -42,15 +42,15 @@ export function initHero3D() {
   container.appendChild(renderer.domElement);
 
   /* =====================================================
-     ★ BACKGROUND: EXACT DIAGONAL SUNBEAM STREAKS SHADER
+     ★ BACKGROUND: SHARP, NON-BLURRY DIAGONAL STREAKS
   ===================================================== */
   const lightRayGeo = new THREE.PlaneGeometry(120, 120);
   const lightRayMat = new THREE.ShaderMaterial({
     uniforms: {
       uTime: { value: 0 },
       uMouse: { value: new THREE.Vector2(0, 0) },
-      uBgBase: { value: new THREE.Color(0xa7cbf0) },   // 선명하고 깨끗한 라이트 스카이 블루
-      uSunColor: { value: new THREE.Color(0xfffef0) }, // 레퍼런스 스타일 화이트/크림 햇살
+      uBgBase: { value: new THREE.Color(0x9cc3ec) },   // 선명한 라이트 블루 배경
+      uSunColor: { value: new THREE.Color(0xffffee) }, // 쨍하고 밝은 크림 화이트 햇살
     },
     vertexShader: `
       varying vec2 vUv;
@@ -77,40 +77,35 @@ export function initHero3D() {
 
       void main() {
         vec2 st = vUv;
-        vec2 mouseOffset = uMouse * 0.02;
-        vec2 p = st + mouseOffset - vec2(0.15, 0.85);
+        vec2 mouseOffset = uMouse * 0.015;
+        vec2 p = st + mouseOffset - vec2(0.1, 0.9);
 
-        // 대각선 회전 (-48도)
-        float angle = -0.8378;
+        // 대각선 각도 (-45도)
+        float angle = -0.785;
         float cosA = cos(angle);
         float sinA = sin(angle);
 
-        // rx: 빛 줄기의 폭/간격 (수직 방향)
-        // ry: 빛 줄기의 길이 방향
         float rx = p.x * cosA - p.y * sinA;
-        float ry = p.x * sinA + p.y * cosA;
 
-        // 1. 크기와 간격이 다양한 대각선 빛 줄기 패턴 생성
-        float ray1 = sin(rx * 16.0) * 0.5 + 0.5;
-        float ray2 = sin(rx * 32.0 + 1.5) * 0.5 + 0.5;
-        float ray3 = noise1D(rx * 14.0 + uTime * 0.015);
+        // ★ 블러를 없애고 엣지를 살리기 위해 주파수를 높이고 선명한 하모닉스 조합
+        float ray1 = abs(sin(rx * 22.0));
+        float ray2 = abs(cos(rx * 44.0 + 1.2));
+        float ray3 = noise1D(rx * 18.0 + uTime * 0.01);
 
-        float combinedRays = (ray1 * 0.45 + ray2 * 0.25 + ray3 * 0.30);
+        float combined = (ray1 * 0.5 + ray2 * 0.3 + ray3 * 0.2);
 
-        // 2. 높은 명암 대비 (줄기 사이 파란 배경이 명확히 노출되도록)
-        float sharpRays = pow(combinedRays, 2.4) * 2.0;
+        // ★ 문턱값(Threshold)을 강하게 주어 빛의 경계면을 붓 자국처럼 날카롭고 선명하게 형성
+        float sharpStreaks = smoothstep(0.35, 0.65, combined);
+        sharpStreaks = pow(sharpStreaks, 1.8) * 1.5;
 
-        // 3. 좌상단 발산 및 하단 감쇄
-        float distFromOrigin = length(st - vec2(0.08, 0.92));
-        float fade = smoothstep(1.45, 0.1, distFromOrigin);
+        // 좌상단에서 시작해 화면 전반에 걸치되 너무 흐려지지 않게 최소 가시성 확보
+        float dist = length(st - vec2(0.0, 1.0));
+        float fade = clamp(1.2 - dist * 0.9, 0.15, 1.0);
 
-        // 좌상단 중심부 글로우
-        float coreGlow = smoothstep(0.7, 0.0, distFromOrigin) * 0.6;
+        float finalIntensity = clamp(sharpStreaks * fade, 0.0, 1.0);
 
-        float finalRayIntensity = clamp((sharpRays * fade * 0.85) + coreGlow, 0.0, 1.0);
-
-        // 배경 파란색과 따뜻한 햇살의 합성
-        vec3 finalBg = mix(uBgBase, uSunColor, finalRayIntensity);
+        // 배경과 빛의 최종 합성
+        vec3 finalBg = mix(uBgBase, uSunColor, finalIntensity);
 
         gl_FragColor = vec4(finalBg, 1.0);
       }
