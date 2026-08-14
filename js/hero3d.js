@@ -3,24 +3,18 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Balanced Soft Sky & Clean Glass)
+   HERO THREE.JS (2안: Blueprint Wireframe Glass X + Solid Glass U)
 ========================================================= */
 
 export function initHero3D() {
   const container = document.getElementById("hero-3d");
   if (!container) return;
 
-  /* =====================================================
-     SCENE & CAMERA
-  ===================================================== */
   const scene = new THREE.Scene();
 
   const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
   camera.position.set(0, 0, 15);
 
-  /* =====================================================
-     LIGHTS
-  ===================================================== */
   const ambientLight = new THREE.AmbientLight(0xffffff, 3.0);
   scene.add(ambientLight);
 
@@ -31,9 +25,6 @@ export function initHero3D() {
   const mouseLight = new THREE.PointLight(0xffffff, 8.0, 35);
   scene.add(mouseLight);
 
-  /* =====================================================
-     RENDERER
-  ===================================================== */
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
     alpha: true,
@@ -46,15 +37,15 @@ export function initHero3D() {
   container.appendChild(renderer.domElement);
 
   /* =====================================================
-     BALANCED SOFT SKY BACKGROUND (★ 은은한 전면 스카이 빛)
+     BACKGROUND SKY LIGHT
   ===================================================== */
   const lightRayGeo = new THREE.PlaneGeometry(36, 24);
   const lightRayMat = new THREE.ShaderMaterial({
     uniforms: {
       uTime: { value: 0 },
       uMouse: { value: new THREE.Vector2(0, 0) },
-      uBgSky: { value: new THREE.Color(0xb2d8f7) },   // 은은한 스카이블루
-      uBgWarm: { value: new THREE.Color(0xfbf6ee) },  // 부드러운 크림 워커톤
+      uBgSky: { value: new THREE.Color(0xb2d8f7) },
+      uBgWarm: { value: new THREE.Color(0xfbf6ee) },
     },
     vertexShader: `
       varying vec2 vUv;
@@ -72,12 +63,9 @@ export function initHero3D() {
 
       void main() {
         vec2 st = vUv;
-        
-        // 전체적으로 은은하게 퍼지는 대각선 빛 그라데이션
         float grad = (st.x * 0.4 + st.y * 0.6) + (uMouse.x * 0.08 - uMouse.y * 0.08);
         grad = smoothstep(-0.2, 1.2, grad);
 
-        // 상단 부드러운 광원 반사
         vec2 lightPos = vec2(0.3, 0.7) + uMouse * 0.1;
         float lightSpot = 1.0 - smoothstep(0.0, 1.2, length(st - lightPos));
 
@@ -94,14 +82,11 @@ export function initHero3D() {
   bgMesh.position.set(0, 0, -8);
   scene.add(bgMesh);
 
-  /* =====================================================
-     GRAPHIC GROUP
-  ===================================================== */
   const group = new THREE.Group();
   scene.add(group);
 
   /* =====================================================
-     CONCAVE CURVED GRID GENERATOR
+     GRID
   ===================================================== */
   function createConcaveGridGeometry(width, height, stepX, stepY, curveAmount = 0.01) {
     const points = [];
@@ -132,9 +117,6 @@ export function initHero3D() {
     return geometry;
   }
 
-  /* =====================================================
-     BACKGROUND SPATIAL GRID
-  ===================================================== */
   const gridGroup = new THREE.Group();
   gridGroup.position.set(0, 0, -3);
 
@@ -165,15 +147,16 @@ export function initHero3D() {
   scene.add(gridGroup);
 
   /* =====================================================
-     CLEAN CLEAR GLASS SHADER FOR U (★ 유광 투명 유리 원복)
+     MATERIALS (U 전용 매끈한 유리 & X 전용 와이어프레임 유리)
   ===================================================== */
+  // 공통 베이스 3D 글래스 셰이더
   const cleanGlassMaterial = new THREE.ShaderMaterial({
     uniforms: {
       uMouse: { value: new THREE.Vector2(0, 0) },
       topColor: { value: new THREE.Color(0xffffff) },
       bottomColor: { value: new THREE.Color(0xe2e8f0) },
       edgeColor: { value: new THREE.Color(0xffffff) },
-      opacity: { value: 0.5 },
+      opacity: { value: 0.45 },
     },
     vertexShader: `
       varying vec3 vNormal;
@@ -204,22 +187,18 @@ export function initHero3D() {
         vec3 normal = normalize(vNormal);
         vec3 viewDir = normalize(vViewPosition);
 
-        // 마우스 라이팅 반응
         vec3 lightDir = normalize(vec3(uMouse.x * 2.0 - 0.5, uMouse.y * 2.0 + 0.8, 1.5));
         float NdotL = max(dot(normal, lightDir), 0.0);
 
-        // 높이에 따른 은은한 화이트-그레이 그라데이션
         float heightRatio = clamp((vWorldPosition.y + 2.0) / 4.0, 0.0, 1.0);
         vec3 baseGradient = mix(bottomColor, topColor, heightRatio);
 
-        // 모서리 하이라이트 (유리 프레넬)
         float fresnel = pow(1.0 - max(dot(normal, viewDir), 0.0), 2.0);
         
         vec3 shadedColor = baseGradient * (0.8 + 0.3 * NdotL);
         vec3 finalColor = mix(shadedColor, edgeColor, fresnel * 0.9);
 
-        // 모서리는 또렷하고 중앙은 투명한 유리 알파
-        float alpha = mix(opacity, 0.85, fresnel);
+        float alpha = mix(opacity, 0.82, fresnel);
 
         gl_FragColor = vec4(finalColor, alpha);
       }
@@ -229,18 +208,18 @@ export function initHero3D() {
     side: THREE.FrontSide
   });
 
-  // ★ [개선] X 가시성 해결: 선명한 슬레이트 다크블루 라인
-  const xLineMaterial = new THREE.LineBasicMaterial({
-    color: 0x334155,        // 명확하게 선이 보이는 다크 슬레이트 톤
+  // ★ X 내부 와이어프레임 라인 재질 (슬레이트 톤으로 또렷함 확보)
+  const xWireframeLineMat = new THREE.LineBasicMaterial({
+    color: 0x334155,
     transparent: true,
-    opacity: 0.6,
+    opacity: 0.75,
   });
 
-  const xNodeMaterial = new THREE.PointsMaterial({
-    color: 0x1e293b,
-    size: 0.05,
+  const xWireframePointMat = new THREE.PointsMaterial({
+    color: 0x0f172a,
+    size: 0.06,
     transparent: true,
-    opacity: 0.7,
+    opacity: 0.85,
   });
 
   /* =====================================================
@@ -259,10 +238,13 @@ export function initHero3D() {
   );
 
   /* =====================================================
-     CREATE 3D LETTER
+     CREATE 3D LETTER (2안: U는 솔리드 유기체 글래스, X는 와이어프레임 글래스)
   ===================================================== */
   function createLetter(character, font, x, y, rotationY, scale, phase) {
     const isU = character === "U";
+    
+    // U: 부드럽고 둥근 3D 베벨
+    // X: 명확한 다면체 입체 구조
     const geometryOptions = isU
       ? {
           font: font,
@@ -278,9 +260,13 @@ export function initHero3D() {
       : {
           font: font,
           size: 4.1,
-          depth: 0.72,
-          curveSegments: 1,
-          bevelEnabled: false,
+          depth: 0.65,
+          curveSegments: 2,
+          bevelEnabled: true,
+          bevelThickness: 0.1,
+          bevelSize: 0.08,
+          bevelOffset: 0,
+          bevelSegments: 3,
         };
 
     const geometry = new TextGeometry(character, geometryOptions);
@@ -291,12 +277,19 @@ export function initHero3D() {
     const letterGroup = new THREE.Group();
 
     if (isU) {
+      // U: 완전한 매끈한 3D 유리
       letterGroup.add(new THREE.Mesh(geometry, cleanGlassMaterial));
     } else {
-      const edges = new THREE.EdgesGeometry(geometry, 25);
-      letterGroup.add(new THREE.LineSegments(edges, xLineMaterial));
-      const pointsMesh = new THREE.Points(geometry, xNodeMaterial);
-      letterGroup.add(pointsMesh);
+      // ★ X (2안 핵심): 반투명 3D 유리 Mesh + 내부 와이어프레임/노드 듀얼 레이어
+      const glassMesh = new THREE.Mesh(geometry, cleanGlassMaterial);
+      letterGroup.add(glassMesh);
+
+      const edges = new THREE.EdgesGeometry(geometry, 15);
+      const wireframeLines = new THREE.LineSegments(edges, xWireframeLineMat);
+      letterGroup.add(wireframeLines);
+
+      const nodePoints = new THREE.Points(geometry, xWireframePointMat);
+      letterGroup.add(nodePoints);
     }
 
     letterGroup.position.set(x, y, 0);
@@ -308,7 +301,7 @@ export function initHero3D() {
   }
 
   /* =====================================================
-     MOUSE & INTERACTION
+     ANIMATION LOOP
   ===================================================== */
   const target = { x: 0, y: 0 };
   const mouse = { x: 0, y: 0 };
@@ -322,9 +315,6 @@ export function initHero3D() {
     { passive: true }
   );
 
-  /* =====================================================
-     RESIZE & RESPONSIVE SCALE
-  ===================================================== */
   function resize() {
     const width = container.clientWidth;
     const height = container.clientHeight;
@@ -341,9 +331,6 @@ export function initHero3D() {
 
   window.addEventListener("resize", resize);
 
-  /* =====================================================
-     ANIMATION LOOP
-  ===================================================== */
   const clock = new THREE.Clock();
 
   function animate() {
@@ -354,7 +341,6 @@ export function initHero3D() {
     mouse.x += (target.x - mouse.x) * 0.05;
     mouse.y += (target.y - mouse.y) * 0.05;
 
-    // 배경 조명 및 유니폼 업데이트
     lightRayMat.uniforms.uTime.value = time;
     lightRayMat.uniforms.uMouse.value.set(mouse.x, mouse.y);
     cleanGlassMaterial.uniforms.uMouse.value.set(mouse.x, mouse.y);
