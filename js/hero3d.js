@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (HAOQI.DESIGN Multiple Discrete Sunbeam Patches)
+   HERO THREE.JS (HAOQI-Style Volumetric Sunbeam Rays)
 ========================================================= */
 
 export function initHero3D() {
@@ -42,15 +42,15 @@ export function initHero3D() {
   container.appendChild(renderer.domElement);
 
   /* =====================================================
-     ★ BACKGROUND: MULTIPLE DISCRETE LIGHT PATCHES SHADER
+     ★ BACKGROUND: EXACT DIAGONAL SUNBEAM STREAKS SHADER
   ===================================================== */
   const lightRayGeo = new THREE.PlaneGeometry(120, 120);
   const lightRayMat = new THREE.ShaderMaterial({
     uniforms: {
       uTime: { value: 0 },
       uMouse: { value: new THREE.Vector2(0, 0) },
-      uBgBase: { value: new THREE.Color(0xbdd8f4) },   // 산뜻하고 세련된 라이트 스카이 블루
-      uSunColor: { value: new THREE.Color(0xfffeeb) }, // 따뜻한 웜 크림/파스텔 옐로우 햇살
+      uBgBase: { value: new THREE.Color(0xa7cbf0) },   // 선명하고 깨끗한 라이트 스카이 블루
+      uSunColor: { value: new THREE.Color(0xfffef0) }, // 레퍼런스 스타일 화이트/크림 햇살
     },
     vertexShader: `
       varying vec2 vUv;
@@ -66,59 +66,51 @@ export function initHero3D() {
       uniform vec3 uSunColor;
       varying vec2 vUv;
 
-      float hash21(vec2 p) {
-        p = fract(p * vec2(123.34, 456.21));
-        p += dot(p, p + 45.32);
-        return fract(p.x * p.y);
-      }
+      float hash(float n) { return fract(sin(n) * 43758.5453123); }
 
-      float noise(vec2 p) {
-        vec2 i = floor(p);
-        vec2 f = fract(p);
+      float noise1D(float x) {
+        float i = floor(x);
+        float f = fract(x);
         f = f * f * (3.0 - 2.0 * f);
-        return mix(
-          mix(hash21(i), hash21(i + vec2(1.0, 0.0)), f.x),
-          mix(hash21(i + vec2(0.0, 1.0)), hash21(i + vec2(1.0, 1.0)), f.x),
-          f.y
-        );
+        return mix(hash(i), hash(i + 1.0), f);
       }
 
       void main() {
         vec2 st = vUv;
         vec2 mouseOffset = uMouse * 0.02;
-        vec2 p = st + mouseOffset;
+        vec2 p = st + mouseOffset - vec2(0.15, 0.85);
 
-        // 대각선 방향으로 회전 (-35도)
-        float angle = -0.6;
-        mat2 rot = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
-        vec2 rotP = rot * (p - vec2(0.2, 0.8));
+        // 대각선 회전 (-48도)
+        float angle = -0.8378;
+        float cosA = cos(angle);
+        float sinA = sin(angle);
 
-        // 여러 크기의 빛 조각/패치를 생성하기 위한 다중 스케일 노이즈
-        vec2 uv1 = vec2(rotP.x * 5.5, rotP.y * 1.6);
-        vec2 uv2 = vec2(rotP.x * 10.0 + 3.5, rotP.y * 3.2 - uTime * 0.012);
-        vec2 uv3 = vec2(rotP.x * 16.0 + 7.2, rotP.y * 5.0);
+        // rx: 빛 줄기의 폭/간격 (수직 방향)
+        // ry: 빛 줄기의 길이 방향
+        float rx = p.x * cosA - p.y * sinA;
+        float ry = p.x * sinA + p.y * cosA;
 
-        float n1 = noise(uv1);
-        float n2 = noise(uv2);
-        float n3 = noise(uv3);
+        // 1. 크기와 간격이 다양한 대각선 빛 줄기 패턴 생성
+        float ray1 = sin(rx * 16.0) * 0.5 + 0.5;
+        float ray2 = sin(rx * 32.0 + 1.5) * 0.5 + 0.5;
+        float ray3 = noise1D(rx * 14.0 + uTime * 0.015);
 
-        float rawNoise = n1 * 0.52 + n2 * 0.33 + n3 * 0.15;
+        float combinedRays = (ray1 * 0.45 + ray2 * 0.25 + ray3 * 0.30);
 
-        // ★ 핵심: 문턱값(Threshold)을 주어 빛이 쪼개진 독립된 여러 조각으로 형성되게 변경
-        float lightSpots = smoothstep(0.42, 0.72, rawNoise);
+        // 2. 높은 명암 대비 (줄기 사이 파란 배경이 명확히 노출되도록)
+        float sharpRays = pow(combinedRays, 2.4) * 2.0;
 
-        // 좌상단에서 발산되어 중앙 하단으로 가면서 거리가 멀어지면 은은하게 감쇄
-        float distFromOrigin = length(p - vec2(0.05, 0.95));
-        float fade = smoothstep(1.35, 0.25, distFromOrigin);
+        // 3. 좌상단 발산 및 하단 감쇄
+        float distFromOrigin = length(st - vec2(0.08, 0.92));
+        float fade = smoothstep(1.45, 0.1, distFromOrigin);
 
-        // 상단 코어 영역 부드러운 글로우
-        float mainGlow = smoothstep(0.7, 0.0, distFromOrigin) * 0.45;
+        // 좌상단 중심부 글로우
+        float coreGlow = smoothstep(0.7, 0.0, distFromOrigin) * 0.6;
 
-        // 최종 빛 강도
-        float finalIntensity = clamp(lightSpots * fade * 1.1 + mainGlow, 0.0, 1.0);
+        float finalRayIntensity = clamp((sharpRays * fade * 0.85) + coreGlow, 0.0, 1.0);
 
-        // 스카이블루와 따뜻한 햇빛 패치의 또렷한 합성
-        vec3 finalBg = mix(uBgBase, uSunColor, finalIntensity * 0.92);
+        // 배경 파란색과 따뜻한 햇살의 합성
+        vec3 finalBg = mix(uBgBase, uSunColor, finalRayIntensity);
 
         gl_FragColor = vec4(finalBg, 1.0);
       }
