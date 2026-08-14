@@ -352,7 +352,7 @@ export function initSectionObject(containerId, characterText) {
       const lineSegments = new THREE.LineSegments(edges, lineMat);
       letterGroup.add(lineSegments);
 
-      letterGroup.scale.setScalar(0.7);
+      letterGroup.scale.setScalar(1.3);
       scene.add(letterGroup);
 
       const clock = new THREE.Clock();
