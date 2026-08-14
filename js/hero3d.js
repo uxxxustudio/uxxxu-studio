@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Clean 3D Wireframe + Sequential Glass Specular Flash)
+   HERO THREE.JS (Clean 3D Wireframe + True Glass Fresnel & Mouse Specular)
 ========================================================= */
 
 export function initHero3D() {
@@ -90,22 +90,21 @@ export function initHero3D() {
   });
 
   /* =====================================================
-     FONT LOADER & 순차적 유리 반짝임(Glass Specular) 셰이더 설정
+     FONT LOADER & 진짜 유리 재질 셰이더 설정
   ===================================================== */
   const loader = new FontLoader();
 
   loader.load(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
-      // 파라미터: 문자, 폰트, x, y, 회전Y, 스케일, 순차 타이밍 지연(delay), 최대 밝기(opacity)
-      createGlassFlashLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0.0, 0.38);
-      createGlassFlashLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.8, 0.45);
-      createGlassFlashLetter("X", font, -2.3, 3.8, 0.35, 0.52, 3.6, 0.30);
-      createGlassFlashLetter("X", font, 5.3, -3.2, 0.45, 0.55, 5.4, 0.40);
+      createTrueGlassLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0.0);
+      createTrueGlassLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.5);
+      createTrueGlassLetter("X", font, -2.3, 3.8, 0.35, 0.52, 2.8);
+      createTrueGlassLetter("X", font, 5.3, -3.2, 0.45, 0.55, 0.9);
     }
   );
 
-  function createGlassFlashLetter(character, font, x, y, rotationY, scale, timeOffset, maxOpacity) {
+  function createTrueGlassLetter(character, font, x, y, rotationY, scale, phase) {
     const isU = character === "U";
     
     const geomOpts = isU
@@ -119,19 +118,20 @@ export function initHero3D() {
 
     const letterGroup = new THREE.Group();
 
-    // ★ 유리 면 위로 날렵한 하이라이트 반사광이 '반짝!' 하고 지나가는 셰이더
-    const sweepMaterial = new THREE.ShaderMaterial({
+    // ★ 형광펜 효과를 완전히 제거하고 프레넬 반사와 마우스 연동 글래스 스펙큘러를 적용한 셰이더
+    const glassMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
         uMouseX: { value: 0 },
         uMouseY: { value: 0 },
-        uOffset: { value: timeOffset },
-        uMaxAlpha: { value: maxOpacity },
+        uPhase: { value: phase },
       },
       vertexShader: `
         varying vec3 vPosition;
+        varying vec3 vNormal;
         void main() {
           vPosition = position;
+          vNormal = normal;
           gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }
       `,
@@ -139,27 +139,29 @@ export function initHero3D() {
         uniform float uTime;
         uniform float uMouseX;
         uniform float uMouseY;
-        uniform float uOffset;
-        uniform float uMaxAlpha;
+        uniform float uPhase;
         varying vec3 vPosition;
+        varying vec3 vNormal;
 
         void main() {
-          // 순차적으로 반짝임이 나타났다 사라지는 주기 (Fade in/out)
-          float cycle = sin(uTime * 0.7 + uOffset);
-          float trigger = smoothstep(0.3, 0.95, cycle);
+          // 아주 투명하고 맑은 유리 베이스 틴트 (거의 투명함)
+          vec3 baseColor = vec3(0.95, 0.98, 0.96);
+          vec3 tintGreen = vec3(0.15, 0.85, 0.45);
 
-          // 사선 방향으로 날렵하게 지나가는 유리 반사광(Specular Highlight) 계산
-          float specLine = (vPosition.x * 0.5 + vPosition.y * 0.5);
-          float flash = pow(clamp(1.0 - abs(specLine - (mod(uTime * 1.5 + uOffset, 6.0) - 3.0)), 0.0, 1.0), 12.0);
+          // 마우스 위치에 따른 입체 반사광(Specular Highlight) 계산
+          vec2 lightDir = normalize(vec2(uMouseX * 3.0, uMouseY * 3.0) - vPosition.xy);
+          float specular = max(0.0, dot(normalize(vPosition.xy), lightDir));
+          specular = pow(specular, 16.0) * 0.6; // 아주 날렵하고 선명한 하이라이트 포인트
 
-          // 기존의 싱그러운 그린 톤 유지하면서 투명한 유리 질감 부여
-          vec3 glassGreen = vec3(0.12, 0.88, 0.45);
-          
-          // 전체적인 은은한 바탕 투명도 + 날렵한 반사광(flash) 결합
-          float baseTint = (vPosition.x * 0.2 + vPosition.y * 0.2 + 0.5) * 0.15;
-          float alpha = (baseTint + flash * 0.85) * trigger * uMaxAlpha;
+          // 은은한 글래스 엣지 반사 (가장자리로 갈수록 맑은 그린빛이 살짝 맺힘)
+          float edgeGlow = pow(1.0 - abs(dot(vNormal, vec3(0.0, 0.0, 1.0))), 2.0);
 
-          gl_FragColor = vec4(glassGreen, alpha);
+          // 최종 투명도: 면 안쪽은 맑게 비치고, 마우스 반사광과 엣지 부근만 영롱하게 빛남
+          float alpha = 0.04 + edgeGlow * 0.25 + specular * 0.5;
+
+          vec3 finalColor = mix(baseColor, tintGreen, edgeGlow + specular);
+
+          gl_FragColor = vec4(finalColor, alpha);
         }
       `,
       transparent: true,
@@ -167,7 +169,7 @@ export function initHero3D() {
       depthWrite: false,
     });
 
-    const fillMesh = new THREE.Mesh(geometry, sweepMaterial);
+    const fillMesh = new THREE.Mesh(geometry, glassMaterial);
     letterGroup.add(fillMesh);
 
     // 기존의 깔끔한 단일 라인 와이어프레임 유지
@@ -179,7 +181,7 @@ export function initHero3D() {
     letterGroup.scale.setScalar(scale);
     letterGroup.rotation.y = rotationY;
     letterGroup.rotation.x = -0.08;
-    letterGroup.userData = { baseX: x, baseY: y, baseRotationY: rotationY, material: sweepMaterial };
+    letterGroup.userData = { baseX: x, baseY: y, baseRotationY: rotationY, phase: phase, material: glassMaterial };
     group.add(letterGroup);
   }
 
