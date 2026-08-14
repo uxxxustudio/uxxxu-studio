@@ -1424,68 +1424,66 @@ footer{
 }
 
 /* =========================================================
-   HERO CTA BUTTONS
+   HERO CTA — DESKTOP
 ========================================================= */
 
 .hero-action {
     display: flex !important;
+    flex-direction: row !important;
     align-items: center !important;
-    gap: 12px !important;
-    margin-top: 32px !important;
+    justify-content: flex-start !important;
+
+    gap: 10px !important;
+
+    margin-top: 30px !important;
+    margin-left: 0 !important;
+    padding: 0 !important;
 }
 
 .hero-action .hero-btn {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 10px !important;
 
-    height: 48px !important;
-    padding: 0 20px !important;
+    width: auto !important;
+    min-width: 0 !important;
+    height: 46px !important;
 
-    border: 1px solid #111 !important;
+    padding: 0 18px !important;
+
     border-radius: 999px !important;
+    border: 1px solid #111 !important;
 
     box-sizing: border-box !important;
 
     font-family: inherit !important;
-    font-size: 14px !important;
+    font-size: 13px !important;
     font-weight: 500 !important;
     line-height: 1 !important;
 
     text-decoration: none !important;
-
-    transition:
-        background-color .2s ease,
-        color .2s ease,
-        transform .2s ease !important;
+    white-space: nowrap !important;
 }
 
 .hero-action .hero-btn span {
-    font-size: 16px !important;
+    margin-left: 7px !important;
+    font-size: 15px !important;
     line-height: 1 !important;
 }
 
 /* Portfolio */
-
 .hero-action .hero-btn-primary {
     background: #111 !important;
     color: #fff !important;
 }
 
 /* Career */
-
 .hero-action .hero-btn-secondary {
     background: #fff !important;
     color: #111 !important;
 }
 
 /* Hover */
-
-.hero-action .hero-btn:hover {
-    transform: translateY(-2px) !important;
-}
-
 .hero-action .hero-btn-primary:hover {
     background: #333 !important;
 }
