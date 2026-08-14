@@ -478,6 +478,278 @@ nav a:hover {
 
 
 /* =========================================================
+   5. PORTFOLIO / SELECTED WORK
+========================================================= */
+
+#portfolio {
+    padding: 180px 64px;
+}
+
+#portfolio .container {
+    max-width: 1280px;
+    width: 100%;
+    margin: auto;
+}
+
+
+/* ---------------------------------------------------------
+   PORTFOLIO HEADER
+--------------------------------------------------------- */
+
+#portfolio .section-title {
+    margin: 0 0 42px;
+    font-size: 64px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -.055em;
+    color: #111;
+}
+
+#portfolio .section-title::after {
+    content: "20+ PROJECTS";
+    display: block;
+    float: right;
+    margin-top: -2px;
+    font-size: 28px;
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -.035em;
+}
+
+
+/* ---------------------------------------------------------
+   PORTFOLIO INTRO
+--------------------------------------------------------- */
+
+#portfolio .section-title + .portfolio-grid {
+    margin-top: 110px;
+}
+
+
+/* ---------------------------------------------------------
+   PROJECT LIST
+--------------------------------------------------------- */
+
+.portfolio-grid {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+
+/* ---------------------------------------------------------
+   PROJECT
+--------------------------------------------------------- */
+
+.project {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+
+    width: 100%;
+    max-width: 1120px;
+    min-height: 150px;
+
+    padding: 34px 0;
+
+    color: #111;
+
+    transition:
+        padding .45s cubic-bezier(.2,.7,.2,1),
+        opacity .35s ease;
+}
+
+.project + .project {
+    margin-top: 18px;
+}
+
+
+/* ---------------------------------------------------------
+   CATEGORY
+--------------------------------------------------------- */
+
+.project-category {
+    position: absolute;
+    left: 0;
+    top: 34px;
+
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 600;
+
+    color: #888;
+
+    letter-spacing: .04em;
+    text-transform: uppercase;
+
+    transition:
+        color .35s ease,
+        transform .4s cubic-bezier(.2,.7,.2,1);
+}
+
+
+/* ---------------------------------------------------------
+   PROJECT TITLE
+--------------------------------------------------------- */
+
+.project h2 {
+    margin: 28px 0 0;
+
+    font-size: clamp(34px, 4vw, 58px);
+    line-height: .98;
+
+    font-weight: 700;
+    letter-spacing: -.055em;
+
+    color: #111;
+
+    transition:
+        transform .5s cubic-bezier(.2,.7,.2,1),
+        letter-spacing .5s ease;
+}
+
+
+/* ---------------------------------------------------------
+   DESCRIPTION
+--------------------------------------------------------- */
+
+.project p {
+    grid-column: 1;
+
+    margin: 16px 0 0;
+
+    font-size: 15px;
+    line-height: 1.6;
+
+    color: #777;
+
+    letter-spacing: -.025em;
+
+    transition:
+        color .35s ease,
+        transform .45s cubic-bezier(.2,.7,.2,1);
+}
+
+
+/* ---------------------------------------------------------
+   VIEW LINK
+--------------------------------------------------------- */
+
+.project .arrow {
+    position: absolute;
+
+    right: 0;
+    bottom: 34px;
+
+    font-size: 14px;
+    line-height: 1;
+
+    font-weight: 600;
+
+    color: #111;
+
+    opacity: .75;
+
+    transition:
+        opacity .3s ease,
+        transform .45s cubic-bezier(.2,.7,.2,1);
+}
+
+
+/* ---------------------------------------------------------
+   HOVER INTERACTION
+--------------------------------------------------------- */
+
+.portfolio-grid:hover .project:not(:hover) {
+    opacity: .38;
+}
+
+.project:hover {
+    padding-left: 22px;
+    padding-right: 22px;
+}
+
+.project:hover h2 {
+    transform: translateX(10px);
+    letter-spacing: -.06em;
+}
+
+.project:hover .project-category {
+    color: #111;
+    transform: translateX(10px);
+}
+
+.project:hover p {
+    color: #444;
+    transform: translateX(10px);
+}
+
+.project:hover .arrow {
+    opacity: 1;
+    transform: translateX(8px);
+}
+
+
+/* ---------------------------------------------------------
+   HOVER LIGHT
+--------------------------------------------------------- */
+
+.project::after {
+    content: "";
+
+    position: absolute;
+
+    left: -30px;
+    top: 50%;
+
+    width: 70px;
+    height: 1px;
+
+    background: linear-gradient(
+        90deg,
+        rgba(80,255,160,0),
+        rgba(80,255,160,.95),
+        rgba(80,255,160,0)
+    );
+
+    opacity: 0;
+
+    transform: translate(-80px, -50%);
+
+    pointer-events: none;
+}
+
+.project:hover::after {
+    opacity: 1;
+
+    animation: portfolioLight .8s cubic-bezier(.4,0,.2,1) forwards;
+}
+
+@keyframes portfolioLight {
+
+    0% {
+        transform: translate(-80px, -50%);
+        opacity: 0;
+    }
+
+    25% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(
+            calc(100% + 1120px),
+            -50%
+        );
+        opacity: 0;
+    }
+}
+
+
+/* =========================================================
    5. ABOUT & CONTACT & FOOTER SECTIONS
 ========================================================= */
 .about-wrap {
@@ -947,5 +1219,87 @@ footer {
         top: 15vh;
         opacity: .45;
         filter: blur(45px);
+    }
+}
+
+
+/* =========================================================
+   PORTFOLIO MOBILE
+========================================================= */
+@media (max-width: 767px) {
+
+    #portfolio {
+        padding: 120px 26px;
+    }
+
+    #portfolio .section-title {
+        font-size: 48px;
+        margin-bottom: 32px;
+    }
+
+    #portfolio .section-title::after {
+        float: none;
+        display: block;
+        margin-top: 18px;
+        font-size: 20px;
+    }
+
+    #portfolio .section-title + .portfolio-grid {
+        margin-top: 70px;
+    }
+
+    .project {
+        display: block;
+        width: 100%;
+        min-height: 170px;
+        padding: 28px 0;
+    }
+
+    .project + .project {
+        margin-top: 12px;
+    }
+
+    .project-category {
+        position: static;
+        display: block;
+        margin-bottom: 22px;
+        font-size: 11px;
+    }
+
+    .project h2 {
+        margin: 0;
+        font-size: clamp(30px, 9vw, 46px);
+        line-height: 1;
+    }
+
+    .project p {
+        margin-top: 14px;
+        font-size: 14px;
+    }
+
+    .project .arrow {
+        position: static;
+        display: inline-block;
+        margin-top: 28px;
+        font-size: 13px;
+    }
+
+    .project:hover {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .project:hover h2,
+    .project:hover .project-category,
+    .project:hover p {
+        transform: none;
+    }
+
+    .portfolio-grid:hover .project:not(:hover) {
+        opacity: 1;
+    }
+
+    .project::after {
+        display: none;
     }
 }
