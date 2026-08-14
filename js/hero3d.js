@@ -361,13 +361,11 @@ function animate() {
         requestAnimationFrame(animate);
         const time = clock.getElapsedTime();
         
-        const rect = container.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
+        const scrollY = window.scrollY || window.pageYOffset;
         
-        let scrollProgress = (windowHeight - rect.top) / (windowHeight + rect.height);
-        scrollProgress = Math.max(0, Math.min(1, scrollProgress));
+        const scrollOffset = scrollY * 0.003;
 
-        const targetY = -1.0 + (scrollProgress * 2.5);
+        const targetY = -0.5 + scrollOffset; 
         letterGroup.position.y = targetY + Math.sin(time * 0.4) * 0.06;
 
         letterGroup.rotation.y += 0.005;
