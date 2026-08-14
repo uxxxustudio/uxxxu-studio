@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Short Multi-Ray Sunbeams)
+   HERO THREE.JS (HAOQI.DESIGN Streaky Ray Texture Background)
 ========================================================= */
 
 export function initHero3D() {
@@ -42,15 +42,15 @@ export function initHero3D() {
   container.appendChild(renderer.domElement);
 
   /* =====================================================
-     ★ SHORT MULTI-RAY SUNBEAMS (짧고 여러 갈래인 햇빛 셰이더)
+     ★ BACKGROUND: EXACT HAOQI-STYLE STREAKY SUNBEAM
   ===================================================== */
   const lightRayGeo = new THREE.PlaneGeometry(120, 120);
   const lightRayMat = new THREE.ShaderMaterial({
     uniforms: {
       uTime: { value: 0 },
       uMouse: { value: new THREE.Vector2(0, 0) },
-      uBgBase: { value: new THREE.Color(0xdce8f5) },   // 차분한 아이스 블루 베이스
-      uSunColor: { value: new THREE.Color(0xfffdf0) }, // 레퍼런스 느낌의 따뜻한 크림 옐로우/화이트
+      uBgBase: { value: new THREE.Color(0xc1d9f3) },   // 선명한 파스텔 라이트 블루
+      uSunColor: { value: new THREE.Color(0xfffeea) }, // 레퍼런스 스타일 따뜻한 크림/웜 옐로우
     },
     vertexShader: `
       varying vec2 vUv;
@@ -72,7 +72,7 @@ export function initHero3D() {
         return fract(p.x * p.y);
       }
 
-      float rayNoise(vec2 st) {
+      float smoothNoise(vec2 st) {
         vec2 i = floor(st);
         vec2 f = fract(st);
         f = f * f * (3.0 - 2.0 * f);
@@ -86,29 +86,30 @@ export function initHero3D() {
       void main() {
         vec2 st = vUv;
 
-        // 좌상단 발산 원점 (마우스에 따라 살짝 반응)
-        vec2 sunOrigin = vec2(0.1, 1.0) + uMouse * 0.04;
-        vec2 rayDir = st - sunOrigin;
-        
-        float angle = atan(rayDir.y, rayDir.x);
-        float dist = length(rayDir);
+        // 마우스 미세 반응
+        vec2 mouseOffset = uMouse * 0.03;
 
-        // 여러 갈래로 자잘하게 갈라지는 선명한 광선 패턴 (주파수 증가)
-        float n1 = rayNoise(vec2(angle * 18.0, uTime * 0.02));
-        float n2 = rayNoise(vec2(angle * 32.0 + 5.0, uTime * 0.015));
-        float multiRays = pow(n1 * 0.6 + n2 * 0.4, 2.5) * 2.2;
+        // 대각선 광선 축 생성 (좌상단 -> 우하단)
+        vec2 projUv = st + mouseOffset;
+        float diag = (projUv.x * 0.85 + projUv.y * 1.15);
 
-        // ★ 빛 길이를 짧게 제한 (상단~중간 지점에서 빠르게 감쇄)
-        float shortFade = smoothstep(0.9, 0.15, dist);
+        // 사선 흐름을 따라 거칠게 찢어지는 붓 자국/구름 느낌 노이즈
+        float streak1 = smoothNoise(vec2(diag * 12.0, projUv.x * 2.5 - uTime * 0.01));
+        float streak2 = smoothNoise(vec2(diag * 24.0 + 3.0, projUv.y * 4.0));
 
-        // 상단 코어의 은은한 원형 빛 폭발
-        float centerGlow = pow(smoothstep(0.5, 0.0, dist), 1.8) * 0.9;
+        // 굵고 뚜렷한 빛줄기 3~4개 형성
+        float rayPattern = pow(streak1 * 0.6 + streak2 * 0.4, 2.0) * 2.2;
 
-        // 최종 조합된 짧은 다중 광선
-        float finalBeam = clamp(multiRays * shortFade + centerGlow, 0.0, 1.0);
+        // 좌상단에서 들어와 중앙 근처까지만 뻗고 아래로 갈수록 감쇄 (짧은 길이)
+        float lengthFade = smoothstep(1.8, 0.7, projUv.x + projUv.y);
 
-        // 배경색과 따뜻한 햇살색의 자연스러운 블렌딩
-        vec3 finalBg = mix(uBgBase, uSunColor, finalBeam * 0.9);
+        // 좌상단 코어 하이라이트
+        float coreGlow = smoothstep(0.9, 0.2, length(st - vec2(0.0, 1.0))) * 1.2;
+
+        float finalBeam = clamp((rayPattern * 0.75 + coreGlow * 0.5) * lengthFade, 0.0, 1.0);
+
+        // 배경색과 햇빛색의 선명한 합성
+        vec3 finalBg = mix(uBgBase, uSunColor, finalBeam);
 
         gl_FragColor = vec4(finalBg, 1.0);
       }
