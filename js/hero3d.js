@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Single Laser Point per Letter, Opposite U Flow)
+   HERO THREE.JS (Unified Single Laser Point, Opposite U Flow)
 ========================================================= */
 
 export function initHero3D() {
@@ -90,7 +90,7 @@ export function initHero3D() {
   });
 
   /* =====================================================
-     FONT LOADER & 단일 빛 포인트 셰이더 설정
+     FONT LOADER & 단일 레이저 포인트 셰이더 설정
   ===================================================== */
   const loader = new FontLoader();
 
@@ -116,7 +116,6 @@ export function initHero3D() {
 
     const letterGroup = new THREE.Group();
 
-    // U는 양쪽 기둥에 각각 단 1개씩의 빛이 서로 반대 방향으로 흐르도록 제어
     const material = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
@@ -148,14 +147,14 @@ export function initHero3D() {
           float beam = 0.0;
 
           if (uIsU > 0.5) {
-            // U자: 좌우 기둥 분기 및 단일 빛 포인트 (스케일 조절로 겹침 현상 원천 차단)
-            float sideDir = (vPosition.x < 0.0) ? 1.0 : -1.0;
-            // 모듈러 연산을 통해 주기를 단 하나로 고정
-            float flow = mod((vPosition.y * 0.15) + (uTime * 0.4 * sideDir) + (uOffset * 0.2), 1.0);
-            float distFromCenter = abs(flow - 0.5);
-            beam = smoothstep(0.08, 0.0, distFromCenter);
+            // U자 형태: 좌우 기둥 위치를 판별하여 빛이 서로 반대 방향으로 흐르도록 설정 (개수도 단 1개로 고정)
+            float sideFactor = (vPosition.x < 0.0) ? 1.0 : -1.0;
+            float angle = atan(vPosition.y, vPosition.x);
+            float sweep = mod((angle / 6.28318) + (uTime * 0.15 * sideFactor) + (uOffset * 0.1), 1.0);
+            float distFromCenter = abs(sweep - 0.5);
+            beam = smoothstep(0.12, 0.0, distFromCenter);
           } else {
-            // X자: 외곽선을 따라 부드럽게 도는 단일 레이저 포인트
+            // X자 형태: 외곽선을 따라 도는 단일 레이저 포인트
             float angle = atan(vPosition.y, vPosition.x);
             float sweep = mod((angle / 6.28318) - (uTime * 0.15) + (uOffset * 0.1), 1.0);
             float distFromCenter = abs(sweep - 0.5);
