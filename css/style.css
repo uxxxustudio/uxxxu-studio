@@ -22,15 +22,15 @@ a {
 
 
 /* =========================================================
-   1. BACKGROUND 3D LAYER (스크롤 시에도 따라오되, 레이어 겹침 및 깨짐 방지)
+   1. BACKGROUND 3D LAYER (스크롤 연동형 배경 고정)
 ========================================================= */
 .hero-3d {
     position: fixed;
     inset: 0;
     width: 100vw;
     height: 100vh;
-    z-index: -1; /* 콘텐츠와 텍스트 뒤쪽 배경으로 완전히 격리 */
-    pointer-events: none !important; /* 필수: 3D 캔버스가 마우스 클릭을 가로채지 않고 아래로 통과시키도록 차단 */
+    z-index: -1; /* 컨텐츠 뒤쪽 배경으로 완전히 격리 */
+    pointer-events: none !important; /* 마우스 클릭이 캔버스를 통과해 아래 요소로 전달되도록 차단 */
     overflow: hidden;
     will-change: transform;
     opacity: 0.85;
@@ -110,20 +110,22 @@ nav a:hover {
 
 
 /* =========================================================
-   3. SECTIONS & HERO AREA (텍스트 깨짐 방지 및 레이어 정돈)
+   3. HERO SECTION & LAYOUT FIX (텍스트 겹침/깨짐 완벽 방지)
 ========================================================= */
 section {
     position: relative;
-    z-index: 2; /* 3D 배경(-1)보다 위에 오도록 설정하여 글씨가 묻히거나 깨지는 현상 방지 */
-    background: #fff; /* 콘텐츠 영역의 배경을 확실하게 잡아줌 */
+    z-index: 2;
+    background: #fff;
 }
 
 .hero {
     position: relative;
+    width: 100%;
     height: 100vh;
     min-height: 720px;
     padding: 0;
-    background: transparent; /* 히어로는 투명하게 유지하여 3D 배경이 보이도록 함 */
+    background: transparent;
+    overflow: hidden; /* 내부 요소가 바깥으로 튀어나가 겹치는 현상 방지 */
     isolation: isolate;
     z-index: 2;
 }
@@ -131,7 +133,9 @@ section {
 .hero-inner {
     position: relative;
     width: 100%;
+    max-width: 1440px;
     height: 100%;
+    margin: 0 auto;
     z-index: 3;
 }
 
@@ -160,18 +164,18 @@ section {
     filter: blur(28px);
 }
 
-/* Hero Typography & Content */
+/* Hero Typography & Content (깨짐 방지용 안전 좌표 적용) */
 .hero h1 {
     position: absolute;
     z-index: 4;
-    left: 2.5%;
-    top: 26%;
-    width: 95%;
+    left: 6%;
+    top: 22%;
+    width: 90%;
     margin: 0;
-    font-size: clamp(72px, 7vw, 118px);
+    font-size: clamp(52px, 6vw, 100px);
     font-weight: 900;
-    line-height: .90;
-    letter-spacing: -0.045em;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
     color: #111;
 }
 
@@ -183,11 +187,10 @@ section {
 .hero h1 .title-line-2 {
     display: block;
     position: relative;
-    left: -245px;
-    top: 26px;
+    left: 0;
+    top: 10px;
     width: max-content;
     text-align: left;
-    margin-left: 48%;
 }
 
 .hero-message {
@@ -198,25 +201,25 @@ section {
 }
 
 .hero-message h2 {
-    margin: 0 0 16px;
-    font-size: 22px;
-    line-height: 1.15;
+    margin: 0 0 12px;
+    font-size: 18px;
+    line-height: 1.4;
     font-weight: 700;
-    letter-spacing: -.04em;
+    letter-spacing: -.03em;
 }
 
 .hero-message p {
     margin: 0;
-    font-size: 14px;
-    line-height: 1.8;
+    font-size: 13px;
+    line-height: 1.6;
     color: #777;
-    letter-spacing: -.025em;
+    letter-spacing: -.02em;
 }
 
 .hero-message-ux {
-    left: 4%;
+    left: 6%;
     top: 58%;
-    width: 430px;
+    width: 420px;
 }
 
 /* Hero Action Buttons */
@@ -226,7 +229,15 @@ section {
     align-items: center !important;
     justify-content: flex-start !important;
     gap: 10px !important;
-    margin-top: 30px !important;
+    margin-top: 20px !important;
     margin-left: 0 !important;
     padding: 0 !important;
+}
+
+/* 아래쪽 콘텐츠 섹션들과 겹치지 않도록 여백 분리 */
+.content-section, section:not(.hero) {
+    position: relative;
+    z-index: 5;
+    background: #fff;
+    padding-top: 100px;
 }
