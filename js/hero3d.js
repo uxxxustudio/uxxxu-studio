@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Clean 3D Wireframe + Sequential Soft Morning Sun Glow)
+   HERO THREE.JS (Clean 3D Wireframe + Sequential Glass Specular Flash)
 ========================================================= */
 
 export function initHero3D() {
@@ -90,7 +90,7 @@ export function initHero3D() {
   });
 
   /* =====================================================
-     FONT LOADER & 순차적 아침 햇살 그라데이션 페이드 설정
+     FONT LOADER & 순차적 유리 반짝임(Glass Specular) 셰이더 설정
   ===================================================== */
   const loader = new FontLoader();
 
@@ -98,14 +98,14 @@ export function initHero3D() {
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
       // 파라미터: 문자, 폰트, x, y, 회전Y, 스케일, 순차 타이밍 지연(delay), 최대 밝기(opacity)
-      createSunlitLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0.0, 0.28); // 첫 번째 순서
-      createSunlitLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.8, 0.35); // 두 번째 순서 (가운데 X)
-      createSunlitLetter("X", font, -2.3, 3.8, 0.35, 0.52, 3.6, 0.22); // 세 번째 순서
-      createSunlitLetter("X", font, 5.3, -3.2, 0.45, 0.55, 5.4, 0.30); // 네 번째 순서
+      createGlassFlashLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0.0, 0.38);
+      createGlassFlashLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.8, 0.45);
+      createGlassFlashLetter("X", font, -2.3, 3.8, 0.35, 0.52, 3.6, 0.30);
+      createGlassFlashLetter("X", font, 5.3, -3.2, 0.45, 0.55, 5.4, 0.40);
     }
   );
 
-  function createSunlitLetter(character, font, x, y, rotationY, scale, timeOffset, maxOpacity) {
+  function createGlassFlashLetter(character, font, x, y, rotationY, scale, timeOffset, maxOpacity) {
     const isU = character === "U";
     
     const geomOpts = isU
@@ -119,7 +119,7 @@ export function initHero3D() {
 
     const letterGroup = new THREE.Group();
 
-    // ★ 아침 햇살처럼 은은하고 넓은 그라데이션이 순차적으로 들어오고 나가는 셰이더
+    // ★ 유리 면 위로 날렵한 하이라이트 반사광이 '반짝!' 하고 지나가는 셰이더
     const sweepMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
@@ -144,21 +144,22 @@ export function initHero3D() {
         varying vec3 vPosition;
 
         void main() {
-          // 오브젝트별로 완전히 다른 시간 주기를 주어 순차적으로 나타났다 사라짐 (Fade in/out)
-          float cycle = sin(uTime * 0.6 + uOffset);
-          float intensity = smoothstep(-0.2, 1.0, cycle); // 부드러운 전환 곡선
+          // 순차적으로 반짝임이 나타났다 사라지는 주기 (Fade in/out)
+          float cycle = sin(uTime * 0.7 + uOffset);
+          float trigger = smoothstep(0.3, 0.95, cycle);
 
-          // 대각선 방향으로 부드럽게 퍼지는 아침 햇살 그라데이션 톤
-          float sunGradient = (vPosition.x * 0.25 + vPosition.y * 0.25) + 0.5;
-          sunGradient = clamp(sunGradient, 0.0, 1.0);
+          // 사선 방향으로 날렵하게 지나가는 유리 반사광(Specular Highlight) 계산
+          float specLine = (vPosition.x * 0.5 + vPosition.y * 0.5);
+          float flash = pow(clamp(1.0 - abs(specLine - (mod(uTime * 1.5 + uOffset, 6.0) - 3.0)), 0.0, 1.0), 12.0);
 
-          // 맑고 싱그러운 아침 햇살 그린 컬러
-          vec3 sunGreen = vec3(0.15, 0.85, 0.48);
+          // 기존의 싱그러운 그린 톤 유지하면서 투명한 유리 질감 부여
+          vec3 glassGreen = vec3(0.12, 0.88, 0.45);
           
-          // 투명에서 그린 빛으로 부드럽게 비치고 사라짐
-          float alpha = sunGradient * intensity * uMaxAlpha;
+          // 전체적인 은은한 바탕 투명도 + 날렵한 반사광(flash) 결합
+          float baseTint = (vPosition.x * 0.2 + vPosition.y * 0.2 + 0.5) * 0.15;
+          float alpha = (baseTint + flash * 0.85) * trigger * uMaxAlpha;
 
-          gl_FragColor = vec4(sunGreen, alpha);
+          gl_FragColor = vec4(glassGreen, alpha);
         }
       `,
       transparent: true,
