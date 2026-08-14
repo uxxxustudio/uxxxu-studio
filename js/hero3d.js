@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (HAOQI.DESIGN Streaky Ray Texture Background)
+   HERO THREE.JS (HAOQI.DESIGN Multiple Discrete Sunbeam Patches)
 ========================================================= */
 
 export function initHero3D() {
@@ -42,15 +42,15 @@ export function initHero3D() {
   container.appendChild(renderer.domElement);
 
   /* =====================================================
-     ★ BACKGROUND: EXACT HAOQI-STYLE STREAKY SUNBEAM
+     ★ BACKGROUND: MULTIPLE DISCRETE LIGHT PATCHES SHADER
   ===================================================== */
   const lightRayGeo = new THREE.PlaneGeometry(120, 120);
   const lightRayMat = new THREE.ShaderMaterial({
     uniforms: {
       uTime: { value: 0 },
       uMouse: { value: new THREE.Vector2(0, 0) },
-      uBgBase: { value: new THREE.Color(0xc1d9f3) },   // 선명한 파스텔 라이트 블루
-      uSunColor: { value: new THREE.Color(0xfffeea) }, // 레퍼런스 스타일 따뜻한 크림/웜 옐로우
+      uBgBase: { value: new THREE.Color(0xbdd8f4) },   // 산뜻하고 세련된 라이트 스카이 블루
+      uSunColor: { value: new THREE.Color(0xfffeeb) }, // 따뜻한 웜 크림/파스텔 옐로우 햇살
     },
     vertexShader: `
       varying vec2 vUv;
@@ -72,9 +72,9 @@ export function initHero3D() {
         return fract(p.x * p.y);
       }
 
-      float smoothNoise(vec2 st) {
-        vec2 i = floor(st);
-        vec2 f = fract(st);
+      float noise(vec2 p) {
+        vec2 i = floor(p);
+        vec2 f = fract(p);
         f = f * f * (3.0 - 2.0 * f);
         return mix(
           mix(hash21(i), hash21(i + vec2(1.0, 0.0)), f.x),
@@ -85,31 +85,40 @@ export function initHero3D() {
 
       void main() {
         vec2 st = vUv;
+        vec2 mouseOffset = uMouse * 0.02;
+        vec2 p = st + mouseOffset;
 
-        // 마우스 미세 반응
-        vec2 mouseOffset = uMouse * 0.03;
+        // 대각선 방향으로 회전 (-35도)
+        float angle = -0.6;
+        mat2 rot = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
+        vec2 rotP = rot * (p - vec2(0.2, 0.8));
 
-        // 대각선 광선 축 생성 (좌상단 -> 우하단)
-        vec2 projUv = st + mouseOffset;
-        float diag = (projUv.x * 0.85 + projUv.y * 1.15);
+        // 여러 크기의 빛 조각/패치를 생성하기 위한 다중 스케일 노이즈
+        vec2 uv1 = vec2(rotP.x * 5.5, rotP.y * 1.6);
+        vec2 uv2 = vec2(rotP.x * 10.0 + 3.5, rotP.y * 3.2 - uTime * 0.012);
+        vec2 uv3 = vec2(rotP.x * 16.0 + 7.2, rotP.y * 5.0);
 
-        // 사선 흐름을 따라 거칠게 찢어지는 붓 자국/구름 느낌 노이즈
-        float streak1 = smoothNoise(vec2(diag * 12.0, projUv.x * 2.5 - uTime * 0.01));
-        float streak2 = smoothNoise(vec2(diag * 24.0 + 3.0, projUv.y * 4.0));
+        float n1 = noise(uv1);
+        float n2 = noise(uv2);
+        float n3 = noise(uv3);
 
-        // 굵고 뚜렷한 빛줄기 3~4개 형성
-        float rayPattern = pow(streak1 * 0.6 + streak2 * 0.4, 2.0) * 2.2;
+        float rawNoise = n1 * 0.52 + n2 * 0.33 + n3 * 0.15;
 
-        // 좌상단에서 들어와 중앙 근처까지만 뻗고 아래로 갈수록 감쇄 (짧은 길이)
-        float lengthFade = smoothstep(1.8, 0.7, projUv.x + projUv.y);
+        // ★ 핵심: 문턱값(Threshold)을 주어 빛이 쪼개진 독립된 여러 조각으로 형성되게 변경
+        float lightSpots = smoothstep(0.42, 0.72, rawNoise);
 
-        // 좌상단 코어 하이라이트
-        float coreGlow = smoothstep(0.9, 0.2, length(st - vec2(0.0, 1.0))) * 1.2;
+        // 좌상단에서 발산되어 중앙 하단으로 가면서 거리가 멀어지면 은은하게 감쇄
+        float distFromOrigin = length(p - vec2(0.05, 0.95));
+        float fade = smoothstep(1.35, 0.25, distFromOrigin);
 
-        float finalBeam = clamp((rayPattern * 0.75 + coreGlow * 0.5) * lengthFade, 0.0, 1.0);
+        // 상단 코어 영역 부드러운 글로우
+        float mainGlow = smoothstep(0.7, 0.0, distFromOrigin) * 0.45;
 
-        // 배경색과 햇빛색의 선명한 합성
-        vec3 finalBg = mix(uBgBase, uSunColor, finalBeam);
+        // 최종 빛 강도
+        float finalIntensity = clamp(lightSpots * fade * 1.1 + mainGlow, 0.0, 1.0);
+
+        // 스카이블루와 따뜻한 햇빛 패치의 또렷한 합성
+        vec3 finalBg = mix(uBgBase, uSunColor, finalIntensity * 0.92);
 
         gl_FragColor = vec4(finalBg, 1.0);
       }
