@@ -1988,115 +1988,87 @@ footer{
 
 
 /* =========================================================
-   PORTFOLIO GRID
+   PORTFOLIO
 ========================================================= */
 
-.portfolio-grid{
+.portfolio-header{
 
-    display:grid;
+    display:flex;
 
-    grid-template-columns:repeat(2,1fr);
+    justify-content:space-between;
 
-    gap:0;
+    align-items:flex-start;
 
-    border-top:1px solid #ddd;
+    margin-bottom:110px;
 
 }
 
-.project{
+.portfolio-heading h2{
 
-    position:relative;
+    margin:0 0 36px;
 
-    display:block;
+    font-size:64px;
 
-    min-height:320px;
+    line-height:1;
 
-    padding:42px 40px 46px;
+    font-weight:800;
 
-    border-bottom:1px solid #ddd;
+    letter-spacing:-.055em;
 
     color:#111;
 
-    text-decoration:none;
+}
 
-    transition:.3s ease;
+.portfolio-heading p{
+
+    margin:0;
+
+    font-size:18px;
+
+    line-height:1.8;
+
+    color:#555;
+
+    letter-spacing:-.025em;
 
 }
 
-.project:nth-child(odd){
+.portfolio-meta{
 
-    border-right:1px solid #ddd;
+    display:flex;
 
-}
+    flex-direction:column;
 
-.project-category{
+    align-items:flex-end;
 
-    margin-bottom:22px;
+    padding-top:2px;
 
-    font-size:13px;
-
-    font-weight:600;
-
-    letter-spacing:.08em;
-
-    color:#999;
+    color:#111;
 
 }
 
-.project h2{
+.portfolio-meta strong{
 
-    margin:0 0 16px;
-
-    font-size:32px;
+    font-size:28px;
 
     line-height:1.15;
 
     font-weight:700;
 
-    letter-spacing:-.045em;
+    letter-spacing:-.035em;
 
 }
 
-.project p{
+.portfolio-meta span{
 
-    margin:0;
+    margin-top:4px;
 
-    max-width:500px;
+    font-size:22px;
 
-    font-size:16px;
-
-    line-height:1.7;
-
-    color:#666;
-
-}
-
-.arrow{
-
-    position:absolute;
-
-    left:40px;
-
-    bottom:38px;
-
-    font-size:15px;
+    line-height:1.2;
 
     font-weight:600;
 
-    color:#111;
-
-    transition:.25s ease;
-
-}
-
-.project:hover{
-
-    background:#f7f7f7;
-
-}
-
-.project:hover .arrow{
-
-    transform:translateX(8px);
+    letter-spacing:-.035em;
 
 }
