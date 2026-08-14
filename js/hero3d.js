@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Kakao Tech Style - Smooth Grid Fade-out)
+   HERO THREE.JS (Crisp Glass Edge & Clear Form U)
 ========================================================= */
 
 export function initHero3D() {
@@ -15,33 +15,21 @@ export function initHero3D() {
   ===================================================== */
   const scene = new THREE.Scene();
 
-  const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
+  const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
   camera.position.set(0, 0, 15);
 
   /* =====================================================
-     LIGHTS (마우스 추적 하이라이트 + 오로라 광원)
+     LIGHTS
   ===================================================== */
-  const ambientLight = new THREE.AmbientLight(0xe0f2fe, 1.2);
+  const ambientLight = new THREE.AmbientLight(0xffffff, 2.5);
   scene.add(ambientLight);
 
-  // 마우스 추적 백색 핀 조명
-  const mouseLight = new THREE.PointLight(0xffffff, 18.0, 25);
+  const mainLight = new THREE.DirectionalLight(0xffffff, 6.0);
+  mainLight.position.set(-4, 8, 12);
+  scene.add(mainLight);
+
+  const mouseLight = new THREE.PointLight(0xffffff, 6.0, 25);
   scene.add(mouseLight);
-
-  // 우측 상단 스카이블루 광원
-  const skyLight = new THREE.DirectionalLight(0x0284c7, 6.0);
-  skyLight.position.set(12, 10, 8);
-  scene.add(skyLight);
-
-  // 좌측 하단 코랄 핑크 포인트 광원
-  const pinkLight = new THREE.DirectionalLight(0xf43f5e, 5.0);
-  pinkLight.position.set(-12, -10, 6);
-  scene.add(pinkLight);
-
-  // 상단 태양광
-  const sunLight = new THREE.DirectionalLight(0xfef08a, 4.0);
-  sunLight.position.set(0, 15, 5);
-  scene.add(sunLight);
 
   /* =====================================================
      RENDERER
@@ -64,37 +52,50 @@ export function initHero3D() {
   scene.add(group);
 
   /* =====================================================
-     KAKAO STYLE 2D LAYOUT GRID (Smooth Fade-out Applied)
+     CONCAVE CURVED GRID GENERATOR
+  ===================================================== */
+  function createConcaveGridGeometry(width, height, stepX, stepY, curveAmount = 0.01) {
+    const points = [];
+    const resolution = 30;
+
+    for (let x = -width / 2; x <= width / 2; x += stepX) {
+      for (let i = 0; i < resolution; i++) {
+        const t1 = i / resolution, t2 = (i + 1) / resolution;
+        const y1 = -height / 2 + t1 * height, y2 = -height / 2 + t2 * height;
+        const z1 = (x * x * 0.8 + y1 * y1) * curveAmount - 3.0;
+        const z2 = (x * x * 0.8 + y2 * y2) * curveAmount - 3.0;
+        points.push(x, y1, z1, x, y2, z2);
+      }
+    }
+
+    for (let y = -height / 2; y <= height / 2; y += stepY) {
+      for (let i = 0; i < resolution; i++) {
+        const t1 = i / resolution, t2 = (i + 1) / resolution;
+        const x1 = -width / 2 + t1 * width, x2 = -width / 2 + t2 * width;
+        const z1 = (x1 * x1 * 0.8 + y * y) * curveAmount - 3.0;
+        const z2 = (x2 * x2 * 0.8 + y * y) * curveAmount - 3.0;
+        points.push(x1, y, z1, x2, y, z2);
+      }
+    }
+
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute("position", new THREE.Float32BufferAttribute(points, 3));
+    return geometry;
+  }
+
+  /* =====================================================
+     BACKGROUND SPATIAL GRID
   ===================================================== */
   const gridGroup = new THREE.Group();
-  gridGroup.position.set(0, 0, -4); 
+  gridGroup.position.set(0, 0, -3);
 
-  const gridLines = [];
-  const width = 36;   
-  const height = 24;  // 전체 높이는 유지하되 하단 페이드 적용
-  const stepX = 2.4;  
-  const stepY = 2.4;  
+  const gridWidth = 36, gridHeight = 22, stepX = 2.4, stepY = 2.4, curveFactor = 0.01;
+  const curvedGridGeo = createConcaveGridGeometry(gridWidth, gridHeight, stepX, stepY, curveFactor);
 
-  // 1. 수직선 생성
-  for (let x = -width / 2; x <= width / 2; x += stepX) {
-    gridLines.push(x, -height / 2, 0, x, height / 2, 0);
-  }
-
-  // 2. 수평선 생성
-  for (let y = -height / 2; y <= height / 2; y += stepY) {
-    gridLines.push(-width / 2, y, 0, width / 2, y, 0);
-  }
-
-  const gridGeo = new THREE.BufferGeometry();
-  gridGeo.setAttribute('position', new THREE.Float32BufferAttribute(gridLines, 3));
-
-  // ★ [핵심 수정] 하단 뚝 끊김 방지 - 페이드아웃 ShaderMaterial 적용
-  const gridMat = new THREE.ShaderMaterial({
+  const gridMaterial = new THREE.ShaderMaterial({
     uniforms: {
-      color: { value: new THREE.Color(0x94a3b8) },
-      baseOpacity: { value: 0.22 },
-      fadeYStart: { value: -6.0 }, // 이 Y값부터 페이드 시작 (뷰포트 하단 근처)
-      fadeYEnd: { value: -12.0 }   // 이 Y값에서 완전히 투명해짐
+      color: { value: new THREE.Color(0xcbd5e1) },
+      baseOpacity: { value: 0.14 },
     },
     vertexShader: `
       varying vec3 vPosition;
@@ -106,78 +107,114 @@ export function initHero3D() {
     fragmentShader: `
       uniform vec3 color;
       uniform float baseOpacity;
-      uniform float fadeYStart;
-      uniform float fadeYEnd;
       varying vec3 vPosition;
 
       void main() {
-        // Y축 위치에 따른 투명도 계산 (아래로 갈수록 흐려짐)
-        float fade = 1.0 - smoothstep(fadeYStart, fadeYEnd, vPosition.y);
+        float fade = smoothstep(-11.0, -2.0, vPosition.y);
         gl_FragColor = vec4(color, baseOpacity * fade);
       }
     `,
     transparent: true,
-    depthWrite: false, // 다른 오브젝트와 겹칠 때 아티팩트 방지
-  });
-
-  const gridMesh = new THREE.LineSegments(gridGeo, gridMat);
-  gridGroup.add(gridMesh);
-
-  // 3. 교차점 (+) 십자 마크 시스템 (십자 마크도 동일하게 페이드 적용 필요)
-  const crossMaterial = new THREE.ShaderMaterial({
-    uniforms: {
-      color: { value: new THREE.Color(0x475569) },
-      baseOpacity: { value: 0.45 },
-      fadeYStart: { value: -6.0 }, 
-      fadeYEnd: { value: -12.0 }   
-    },
-    vertexShader: gridMat.vertexShader,
-    fragmentShader: gridMat.fragmentShader,
-    transparent: true,
     depthWrite: false,
   });
 
-  for (let x = -width / 2; x <= width / 2; x += stepX * 2) {
-    for (let y = -height / 2; y <= height / 2; y += stepY * 2) {
-      const crossGeo = new THREE.BufferGeometry();
-      const s = 0.16; 
-      const vertices = new Float32Array([
-        x - s, y, 0,  x + s, y, 0,
-        x, y - s, 0,  x, y + s, 0
-      ]);
-      crossGeo.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
-      const cross = new THREE.LineSegments(crossGeo, crossMaterial);
-      gridGroup.add(cross);
+  gridGroup.add(new THREE.LineSegments(curvedGridGeo, gridMaterial));
+
+  const nodeGeo = new THREE.BoxGeometry(0.035, 0.035, 0.035);
+  const nodeMat = new THREE.MeshBasicMaterial({ color: 0x64748b, transparent: true, opacity: 0.35 });
+
+  for (let x = -gridWidth / 2; x <= gridWidth / 2; x += stepX * 2) {
+    for (let y = -gridHeight / 2; y <= gridHeight / 2; y += stepY * 2) {
+      if (y > -8) {
+        const z = (x * x * 0.8 + y * y) * curveFactor - 3.0;
+        const node = new THREE.Mesh(nodeGeo, nodeMat);
+        node.position.set(x, y, z);
+        gridGroup.add(node);
+      }
     }
   }
   scene.add(gridGroup);
 
   /* =====================================================
-     MATERIALS
+     U CRISP GLASS SHADER (★ 형태 선명도 극대화)
   ===================================================== */
-  const tubeGlassMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0xbae6fd,
-    roughness: 0.02,
-    metalness: 0.05,
-    transmission: 0.88,
-    ior: 1.48,
-    thickness: 2.0,
-    attenuationColor: 0x38bdf8,
-    attenuationDistance: 2.0,
+  const cleanWhiteEdgeMaterial = new THREE.ShaderMaterial({
+    uniforms: {
+      topColor: { value: new THREE.Color(0xffffff) },
+      bottomColor: { value: new THREE.Color(0xcbd5e1) }, // 선명한 폼을 위한 미디엄 라이트 그레이
+      edgeColor: { value: new THREE.Color(0xffffff) },
+      fresnelPower: { value: 1.8 },                      // 빛 반사 범위를 넓혀 윤곽 또렷하게
+      baseOpacity: { value: 0.68 },                      // 투명하지만 흐리지 않은 알파
+      lightDirection: { value: new THREE.Vector3(-0.5, 0.8, 1.0).normalize() }
+    },
+    vertexShader: `
+      varying vec3 vNormal;
+      varying vec3 vViewPosition;
+      varying vec3 vWorldPosition;
+
+      void main() {
+        vNormal = normalize(normalMatrix * normal);
+        vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+        vWorldPosition = worldPosition.xyz;
+        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+        vViewPosition = -mvPosition.xyz;
+        gl_Position = projectionMatrix * mvPosition;
+      }
+    `,
+    fragmentShader: `
+      uniform vec3 topColor;
+      uniform vec3 bottomColor;
+      uniform vec3 edgeColor;
+      uniform float fresnelPower;
+      uniform float baseOpacity;
+      uniform vec3 lightDirection;
+
+      varying vec3 vNormal;
+      varying vec3 vViewPosition;
+      varying vec3 vWorldPosition;
+
+      void main() {
+        vec3 normal = normalize(vNormal);
+        vec3 viewDir = normalize(vViewPosition);
+
+        // 상하 그라데이션
+        float heightRatio = clamp((vWorldPosition.y + 2.0) / 4.0, 0.0, 1.0);
+        vec3 baseGradient = mix(bottomColor, topColor, heightRatio);
+
+        // 음영 콘트라스트를 살려 3D 입체감 명확히 표현
+        float NdotL = max(dot(normal, lightDirection), 0.0);
+        float lightIntensity = 0.75 + 0.25 * NdotL;
+        vec3 shadedColor = baseGradient * lightIntensity;
+
+        // ★ 모서리 윤곽 강조용 프레넬 (엣지에서 완전 선명한 White 맺힘)
+        float fresnel = 1.0 - max(dot(normal, viewDir), 0.0);
+        fresnel = pow(fresnel, fresnelPower);
+
+        vec3 finalColor = mix(shadedColor, edgeColor, fresnel * 0.95);
+        
+        // 중심부는 은은하게 비치고, 외곽으로 갈수록 또렷해지는 유기적 알파
+        float alpha = mix(baseOpacity, 0.9, fresnel);
+
+        gl_FragColor = vec4(finalColor, alpha);
+      }
+    `,
     transparent: true,
-    opacity: 0.45,
-    clearcoat: 1.0,
-    clearcoatRoughness: 0.0,
-    reflectivity: 1.0,
-    depthWrite: true,
-    side: THREE.DoubleSide,
+    depthWrite: true,  // 또렷한 전면 렌더링 유지
+    side: THREE.FrontSide
   });
 
-  // 또렷한 오브젝트 도면 라인
-  const lineMaterial = new THREE.LineBasicMaterial({
-    color: 0x0f172a,
+  // X 와이어프레임 재질
+  const xLineMaterial = new THREE.LineBasicMaterial({
+    color: 0x94a3b8,
     transparent: true,
-    opacity: 0.7,
+    opacity: 0.38,
+  });
+
+  const xNodeMaterial = new THREE.PointsMaterial({
+    color: 0x64748b,
+    size: 0.06,
+    transparent: true,
+    opacity: 0.6,
   });
 
   /* =====================================================
@@ -200,12 +237,25 @@ export function initHero3D() {
   ===================================================== */
   function createLetter(character, font, x, y, rotationY, scale, phase) {
     const isU = character === "U";
-    const geometryOptions = isU ? {
-      font: font, size: 4.1, depth: 0.4, curveSegments: 32, bevelEnabled: true,
-      bevelThickness: 0.38, bevelSize: 0.28, bevelOffset: 0, bevelSegments: 16,
-    } : {
-      font: font, size: 4.1, depth: 0.72, curveSegments: 1, bevelEnabled: false,
-    };
+    const geometryOptions = isU
+      ? {
+          font: font,
+          size: 4.1,
+          depth: 0.45,
+          curveSegments: 32,
+          bevelEnabled: true,
+          bevelThickness: 0.42,
+          bevelSize: 0.3,
+          bevelOffset: 0,
+          bevelSegments: 16,
+        }
+      : {
+          font: font,
+          size: 4.1,
+          depth: 0.72,
+          curveSegments: 1,
+          bevelEnabled: false,
+        };
 
     const geometry = new TextGeometry(character, geometryOptions);
     geometry.computeBoundingBox();
@@ -213,8 +263,15 @@ export function initHero3D() {
     geometry.translate(-(box.max.x + box.min.x) / 2, -(box.max.y + box.min.y) / 2, 0);
 
     const letterGroup = new THREE.Group();
-    if (isU) letterGroup.add(new THREE.Mesh(geometry, tubeGlassMaterial));
-    letterGroup.add(new THREE.LineSegments(new THREE.EdgesGeometry(geometry, 25), lineMaterial));
+
+    if (isU) {
+      letterGroup.add(new THREE.Mesh(geometry, cleanWhiteEdgeMaterial));
+    } else {
+      const edges = new THREE.EdgesGeometry(geometry, 25);
+      letterGroup.add(new THREE.LineSegments(edges, xLineMaterial));
+      const pointsMesh = new THREE.Points(geometry, xNodeMaterial);
+      letterGroup.add(pointsMesh);
+    }
 
     letterGroup.position.set(x, y, 0);
     letterGroup.scale.setScalar(scale);
@@ -230,37 +287,51 @@ export function initHero3D() {
   const target = { x: 0, y: 0 };
   const mouse = { x: 0, y: 0 };
 
-  window.addEventListener("mousemove", (e) => {
-    target.x = (e.clientX / window.innerWidth) * 2 - 1;
-    target.y = -(e.clientY / window.innerHeight) * 2 + 1;
-  }, { passive: true });
+  window.addEventListener(
+    "mousemove",
+    (e) => {
+      target.x = (e.clientX / window.innerWidth) * 2 - 1;
+      target.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    },
+    { passive: true }
+  );
 
   /* =====================================================
-     RESIZE & RESPONSIVE
+     RESIZE & RESPONSIVE SCALE
   ===================================================== */
   function resize() {
-    const width = container.clientWidth, height = container.clientHeight;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
     if (!width || !height) return;
+
     const isMobile = window.innerWidth < 768;
     camera.aspect = width / height;
     camera.position.z = isMobile ? 18.5 : 15;
     camera.updateProjectionMatrix();
+
     group.scale.setScalar(isMobile ? 0.68 : 1.0);
     renderer.setSize(width, height, false);
   }
+
   window.addEventListener("resize", resize);
 
   /* =====================================================
      ANIMATION LOOP
   ===================================================== */
   const clock = new THREE.Clock();
+
   function animate() {
     requestAnimationFrame(animate);
+
     const time = clock.getElapsedTime();
+
     mouse.x += (target.x - mouse.x) * 0.05;
     mouse.y += (target.y - mouse.y) * 0.05;
+
     mouseLight.position.set(mouse.x * 12, mouse.y * 8, 6);
-    gridGroup.position.set(-mouse.x * 0.3, -mouse.y * 0.2, -4);
+
+    gridGroup.position.x = -mouse.x * 0.3;
+    gridGroup.position.y = -mouse.y * 0.2;
 
     group.children.forEach((obj) => {
       const p = obj.userData;
@@ -269,8 +340,10 @@ export function initHero3D() {
       obj.rotation.y = p.baseRotationY + mouse.x * 0.2;
       obj.rotation.x = -0.08 - mouse.y * 0.1;
     });
+
     renderer.render(scene, camera);
   }
 
-  resize(); animate();
+  resize();
+  animate();
 }
