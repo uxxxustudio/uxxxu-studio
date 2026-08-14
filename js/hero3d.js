@@ -115,6 +115,8 @@ export function initHero3D() {
 
     const letterGroup = new THREE.Group();
 
+   letterGroup.position.x = -1.5;
+
     const material = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
@@ -363,10 +365,11 @@ function animate() {
         
         const scrollY = window.scrollY || window.pageYOffset;
         
-        const scrollOffset = scrollY * 0.003;
+        const scrollOffset = scrollY * 0.0025; 
+        const targetY = -2.5 + scrollOffset; 
 
-        const targetY = -0.5 + scrollOffset; 
         letterGroup.position.y = targetY + Math.sin(time * 0.4) * 0.06;
+        letterGroup.position.x = 0.0; // 여기서 X 위치를 강제 고정
 
         letterGroup.rotation.y += 0.005;
         material.uniforms.uTime.value = time;
