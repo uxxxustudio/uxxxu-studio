@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Natural Soft Sunbeams / HAOQI-Style)
+   HERO THREE.JS (Minimal White & Warm Red Glow)
 ========================================================= */
 
 export function initHero3D() {
@@ -27,7 +27,7 @@ export function initHero3D() {
   mainLight.position.set(-5, 9, 10);
   scene.add(mainLight);
 
-  const mouseLight = new THREE.PointLight(0xffffff, 5.0, 35);
+  const mouseLight = new THREE.PointLight(0xff5533, 4.0, 35); // 마우스 연동 따스한 빛
   scene.add(mouseLight);
 
   const renderer = new THREE.WebGLRenderer({
@@ -42,15 +42,15 @@ export function initHero3D() {
   container.appendChild(renderer.domElement);
 
   /* =====================================================
-     ★ BACKGROUND: 맑고 화사한 스카이블루 + 은은한 대각선 햇살 결
+     ★ BACKGROUND: 미니멀 화이트 베이스 + 측면 따스한 붉은빛 글로우
   ===================================================== */
   const lightRayGeo = new THREE.PlaneGeometry(120, 120);
   const lightRayMat = new THREE.ShaderMaterial({
     uniforms: {
       uTime: { value: 0 },
       uMouse: { value: new THREE.Vector2(0, 0) },
-      uBgBase: { value: new THREE.Color(0xa7cbf0) },   // 레퍼런스 스타일의 맑고 화사한 스카이블루
-      uSunColor: { value: new THREE.Color(0xffffff) }, // 순수 화이트 빛 결
+      uBgBase: { value: new THREE.Color(0xf4f6f9) },   // 깨끗한 미니멀 화이트/그레이 톤
+      uRedGlow: { value: new THREE.Color(0xff5c35) },  // 레퍼런스의 따스한 오렌지/레드 포인트 빛
     },
     vertexShader: `
       varying vec2 vUv;
@@ -63,44 +63,23 @@ export function initHero3D() {
       uniform float uTime;
       uniform vec2 uMouse;
       uniform vec3 uBgBase;
-      uniform vec3 uSunColor;
+      uniform vec3 uRedGlow;
       varying vec2 vUv;
-
-      float hash(float n) { return fract(sin(n) * 43758.5453123); }
-
-      float noise1D(float x) {
-        float i = floor(x);
-        float f = fract(x);
-        f = f * f * (3.0 - 2.0 * f);
-        return mix(hash(i), hash(i + 1.0), f);
-      }
 
       void main() {
         vec2 st = vUv;
-        vec2 mouseOffset = uMouse * 0.01;
-        vec2 p = st + mouseOffset - vec2(0.1, 0.9);
+        vec2 mouseOffset = uMouse * 0.02;
 
-        // 대각선 각도 (-45도)
-        float angle = -0.785;
-        float cosA = cos(angle);
-        float sinA = sin(angle);
+        // 좌측 하단에서 은은하게 피어오르는 붉은 빛 포인트 위치 설정
+        vec2 glowCenter = vec2(0.15 + mouseOffset.x, 0.2 + mouseOffset.y);
+        float dist = length(st - glowCenter);
 
-        float rx = p.x * cosA - p.y * sinA;
+        // 부드럽게 퍼지는 레디얼 그라데이션 글로우
+        float glow = smoothstep(0.75, 0.0, dist);
+        glow = pow(glow, 1.8) * 0.55; // 과하지 않고 은은한 강도
 
-        // 부드럽고 자연스러운 대각선 빛 결 생성
-        float rayPattern = sin(rx * 12.0 + uTime * 0.05) * 0.5 + 0.5;
-        float fineNoise = noise1D(rx * 24.0);
-        
-        float combinedLight = mix(rayPattern, fineNoise, 0.35);
-
-        // 좌상단에서 은은하게 퍼져나가는 부드러운 그라데이션 페이드
-        float dist = length(st - vec2(0.0, 1.0));
-        float fade = smoothstep(1.3, 0.0, dist);
-
-        float lightIntensity = combinedLight * fade * 0.35; // 과하지 않고 은은한 강도
-
-        // 기본 밝은 하늘색 배경 위에 빛을 부드럽게 얹음 (Additive Mix)
-        vec3 finalColor = uBgBase + (uSunColor * lightIntensity);
+        // 미니멀 베이스에 따스한 붉은 빛 블렌딩
+        vec3 finalColor = mix(uBgBase, uRedGlow, glow);
 
         gl_FragColor = vec4(finalColor, 1.0);
       }
@@ -116,7 +95,7 @@ export function initHero3D() {
   scene.add(group);
 
   /* =====================================================
-     GRID
+     GRID (미니멀 톤에 맞춘 은은한 그리드)
   ===================================================== */
   function createConcaveGridGeometry(width, height, stepX, stepY, curveAmount = 0.01) {
     const points = [];
@@ -154,15 +133,15 @@ export function initHero3D() {
   const curvedGridGeo = createConcaveGridGeometry(gridWidth, gridHeight, stepX, stepY, curveFactor);
 
   const gridMaterial = new THREE.LineBasicMaterial({
-    color: 0xffffff,
+    color: 0x94a3b8,
     transparent: true,
-    opacity: 0.45,
+    opacity: 0.18,
   });
 
   gridGroup.add(new THREE.LineSegments(curvedGridGeo, gridMaterial));
 
   const nodeGeo = new THREE.BoxGeometry(0.035, 0.035, 0.035);
-  const nodeMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 });
+  const nodeMat = new THREE.MeshBasicMaterial({ color: 0x64748b, transparent: true, opacity: 0.25 });
 
   for (let x = -gridWidth / 2; x <= gridWidth / 2; x += stepX * 2) {
     for (let y = -gridHeight / 2; y <= gridHeight / 2; y += stepY * 2) {
@@ -183,7 +162,7 @@ export function initHero3D() {
     uniforms: {
       uMouse: { value: new THREE.Vector2(0, 0) },
       topColor: { value: new THREE.Color(0xffffff) },
-      bottomColor: { value: new THREE.Color(0xdceeff) },
+      bottomColor: { value: new THREE.Color(0xe2e8f0) },
       edgeHighlight: { value: new THREE.Color(0xffffff) },
     },
     vertexShader: `
@@ -228,7 +207,7 @@ export function initHero3D() {
         vec3 shadedColor = baseGradient * (0.85 + 0.25 * NdotL);
         vec3 finalColor = mix(shadedColor, edgeHighlight, fresnel * 0.75) + edgeHighlight * spec * 0.75;
 
-        gl_FragColor = vec4(finalColor, 0.92);
+        gl_FragColor = vec4(finalColor, 0.94);
       }
     `,
     transparent: true,
@@ -240,9 +219,9 @@ export function initHero3D() {
      X 전용: CAD 스타일 미니멀 와이어프레임
   ===================================================== */
   const xWireframeMat = new THREE.LineBasicMaterial({
-    color: 0x64748b,
+    color: 0x94a3b8,
     transparent: true,
-    opacity: 0.35,
+    opacity: 0.3,
   });
 
   /* =====================================================
