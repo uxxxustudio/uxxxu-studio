@@ -33,7 +33,7 @@ export function initHero3D() {
 
   /* =====================================================
      1. 배경 공간 그리드 (실선)
-  ===================================================== */
+  ==================================================== */
   function createSolidGridGeometry(width, height, stepX, stepY, curveAmount = 0.01) {
     const points = [];
     const resolution = 30;
@@ -82,7 +82,7 @@ export function initHero3D() {
 
   /* =====================================================
      3D 오브젝트 라인 재질 (묵직한 블랙 외곽선)
-  ===================================================== */
+  ==================================================== */
   const lineMat = new THREE.LineBasicMaterial({
     color: 0x111111,
     transparent: false,
@@ -91,7 +91,7 @@ export function initHero3D() {
 
   /* =====================================================
      FONT LOADER & 오브젝트 생성
-  ===================================================== */
+  ==================================================== */
   const loader = new FontLoader();
 
   loader.load(
@@ -195,7 +195,7 @@ export function initHero3D() {
 
   /* =====================================================
      ANIMATION LOOP (마우스 + 스크롤 패럴랙스 연동)
-  ===================================================== */
+  ==================================================== */
   const target = { x: 0, y: 0 };
   const mouse = { x: 0, y: 0 };
 
@@ -209,7 +209,6 @@ export function initHero3D() {
   );
 
   function resize() {
-    // 윈도우 전체 크기 기준으로 렌더러와 카메라 맞춤
     const width = window.innerWidth;
     const height = window.innerHeight;
 
@@ -258,4 +257,114 @@ export function initHero3D() {
 
   resize();
   animate();
+}
+
+
+/* =========================================================
+   [추가] 다른 페이지(Experience 등) 섹션 전용 오브젝트 생성 함수
+========================================================= */
+export function initSectionObject(containerId, characterText) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 100);
+  camera.position.set(0, 0, 15);
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
+  container.appendChild(renderer.domElement);
+
+  const lineMat = new THREE.LineBasicMaterial({
+    color: 0x111111,
+    transparent: false,
+    opacity: 1.0,
+  });
+
+  const loader = new FontLoader();
+  loader.load(
+    "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
+    (font) => {
+      const isU = (characterText === "U");
+      const geomOpts = { font: font, size: 4.1, depth: 0.38, curveSegments: isU ? 24 : 6, bevelEnabled: false };
+
+      const geometry = new TextGeometry(characterText, geomOpts);
+      geometry.computeBoundingBox();
+      const box = geometry.boundingBox;
+      geometry.translate(-(box.max.x + box.min.x) / 2, -(box.max.y + box.min.y) / 2, 0);
+
+      const letterGroup = new THREE.Group();
+
+      const material = new THREE.ShaderMaterial({
+        uniforms: {
+          uTime: { value: 0 },
+          uOffset: { value: 1.0 },
+          uIsU: { value: isU ? 1.0 : 0.0 },
+        },
+        vertexShader: `
+          varying vec3 vPosition;
+          varying vec3 vNormal;
+          void main() {
+            vPosition = position;
+            vNormal = normal;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform float uTime;
+          uniform float uOffset;
+          uniform float uIsU;
+          varying vec3 vPosition;
+          varying vec3 vNormal;
+
+          void main() {
+            if (abs(vNormal.z) > 0.1) { discard; }
+            float beam = 0.0;
+            if (uIsU > 0.5) {
+              float sideDir = (vPosition.x < 0.0) ? 1.0 : -1.0;
+              float flow = mod((vPosition.y * 0.2) + (uTime * 0.3 * sideDir) + (uOffset * 0.2), 1.0);
+              beam = smoothstep(0.12, 0.0, abs(flow - 0.5));
+            } else {
+              float angle = atan(vPosition.y, vPosition.x);
+              float sweep = mod((angle / 6.28318) - (uTime * 0.15) + (uOffset * 0.1), 1.0);
+              beam = smoothstep(0.12, 0.0, abs(sweep - 0.5));
+            }
+            vec3 baseColor = vec3(0.04, 0.04, 0.04);
+            vec3 neonGreen = vec3(0.12, 0.95, 0.45);
+            vec3 finalColor = mix(baseColor, neonGreen, beam);
+            float alpha = 0.08 + beam * 0.92;
+            gl_FragColor = vec4(finalColor, alpha);
+          }
+        `,
+        transparent: true,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+      });
+
+      const fillMesh = new THREE.Mesh(geometry, material);
+      letterGroup.add(fillMesh);
+
+      const edges = new THREE.EdgesGeometry(geometry, isU ? 25 : 15);
+      const lineSegments = new THREE.LineSegments(edges, lineMat);
+      letterGroup.add(lineSegments);
+
+      letterGroup.scale.setScalar(0.7);
+      scene.add(letterGroup);
+
+      const clock = new THREE.Clock();
+
+      function animate() {
+        requestAnimationFrame(animate);
+        const time = clock.getElapsedTime();
+        letterGroup.rotation.y += 0.005;
+        material.uniforms.uTime.value = time;
+        renderer.render(scene, camera);
+      }
+      animate();
+    }
+  );
 }
