@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Clean Single-Line 3D Wireframe)
+   HERO THREE.JS (Clean 3D Wireframe + Sweeping Green Light Faces)
 ========================================================= */
 
 export function initHero3D() {
@@ -90,24 +90,23 @@ export function initHero3D() {
   });
 
   /* =====================================================
-     FONT LOADER & 단일 라인 3D 오브젝트 생성
+     FONT LOADER & 그린 빛 훑기 효과가 적용된 3D 오브젝트 생성
   ===================================================== */
   const loader = new FontLoader();
 
   loader.load(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
-      createClean3DLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0);
-      createClean3DLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.7);
-      createClean3DLetter("X", font, -2.3, 3.8, 0.35, 0.52, 0.8);
-      createClean3DLetter("X", font, 5.3, -3.2, 0.45, 0.55, 2.3);
+      createSweeping3DLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0);
+      createSweeping3DLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.7);
+      createSweeping3DLetter("X", font, -2.3, 3.8, 0.35, 0.52, 0.8);
+      createSweeping3DLetter("X", font, 5.3, -3.2, 0.45, 0.55, 2.3);
     }
   );
 
-  function createClean3DLetter(character, font, x, y, rotationY, scale, phase) {
+  function createSweeping3DLetter(character, font, x, y, rotationY, scale, phase) {
     const isU = character === "U";
     
-    // ★ U 글자의 하단 곡선이 완벽한 3D 입체 곡면 엣지를 가지도록 곡선 세그먼트를 높임
     const geomOpts = isU
       ? { font: font, size: 4.1, depth: 0.35, curveSegments: 24, bevelEnabled: false }
       : { font: font, size: 4.1, depth: 0.35, curveSegments: 6, bevelEnabled: false };
@@ -119,17 +118,60 @@ export function initHero3D() {
 
     const letterGroup = new THREE.Group();
 
-    // 임계각을 조정하여 U의 곡선부와 X의 엣지가 모두 정확히 입체로 연결되도록 설정
+    // 1. 투명 면 셰이더 머티리얼 (그린 빛이 훑고 지나가는 효과)
+    const sweepMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: { value: 0 },
+        uMouseX: { value: 0 },
+        uMouseY: { value: 0 },
+      },
+      vertexShader: `
+        varying vec3 vPosition;
+        varying vec3 vNormal;
+        void main() {
+          vPosition = position;
+          vNormal = normal;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform float uTime;
+        uniform float uMouseX;
+        uniform float uMouseY;
+        varying vec3 vPosition;
+        varying vec3 vNormal;
+
+        void main() {
+          // 좌표계 기반으로 초록빛 웨이브가 면을 훑고 지나가도록 계산
+          float sweep = sin(vPosition.x * 0.8 + vPosition.y * 0.8 - uTime * 2.5 + uMouseX * 2.0);
+          float glow = smoothstep(0.4, 0.95, sweep);
+
+          // 평소에는 거의 투명하고, 초록빛이 지나갈 때만 부드러운 그린 톤(Glow) 발생
+          vec3 greenColor = vec3(0.1, 0.85, 0.4);
+          float alpha = glow * 0.28; 
+
+          gl_FragColor = vec4(greenColor, alpha);
+        }
+      `,
+      transparent: true,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+    });
+
+    // 내부 채움 메쉬 생성
+    const fillMesh = new THREE.Mesh(geometry, sweepMaterial);
+    letterGroup.add(fillMesh);
+
+    // 2. 외곽선 와이어프레임 결합
     const edges = new THREE.EdgesGeometry(geometry, isU ? 25 : 15);
     const lineSegments = new THREE.LineSegments(edges, lineMat);
-    
     letterGroup.add(lineSegments);
 
     letterGroup.position.set(x, y, 0);
     letterGroup.scale.setScalar(scale);
     letterGroup.rotation.y = rotationY;
     letterGroup.rotation.x = -0.08;
-    letterGroup.userData = { baseX: x, baseY: y, baseRotationY: rotationY, phase: phase };
+    letterGroup.userData = { baseX: x, baseY: y, baseRotationY: rotationY, phase: phase, material: sweepMaterial };
     group.add(letterGroup);
   }
 
@@ -183,6 +225,13 @@ export function initHero3D() {
       obj.position.y = p.baseY + Math.cos(time * 0.7 + p.phase) * 0.1;
       obj.rotation.y = p.baseRotationY + mouse.x * 0.2;
       obj.rotation.x = -0.08 - mouse.y * 0.1;
+
+      // 각 오브젝트의 셰이더에 시간과 마우스 위치 전달하여 그린 빛 모션 업데이트
+      if (p.material) {
+        p.material.uniforms.uTime.value = time;
+        p.material.uniforms.uMouseX.value = mouse.x;
+        p.material.uniforms.uMouseY.value = mouse.y;
+      }
     });
 
     renderer.render(scene, camera);
