@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Luxury Warm-Cream & Narrow Sunbeam Rays)
+   HERO THREE.JS (Short Multi-Ray Sunbeams)
 ========================================================= */
 
 export function initHero3D() {
@@ -42,15 +42,15 @@ export function initHero3D() {
   container.appendChild(renderer.domElement);
 
   /* =====================================================
-     ★ BACKGROUND: NARROW SHARP SUNBEAM (고급 크림/은회색 톤)
+     ★ SHORT MULTI-RAY SUNBEAMS (짧고 여러 갈래인 햇빛 셰이더)
   ===================================================== */
   const lightRayGeo = new THREE.PlaneGeometry(120, 120);
   const lightRayMat = new THREE.ShaderMaterial({
     uniforms: {
       uTime: { value: 0 },
       uMouse: { value: new THREE.Vector2(0, 0) },
-      uBgBase: { value: new THREE.Color(0xdbe6f2) },   // 은은하고 차분한 쿨 그레이-아이스 톤 (촌스러운 블루 제거)
-      uSunColor: { value: new THREE.Color(0xfffdf7) }, // 맑고 따뜻한 퓨어 크림 화이트 햇살
+      uBgBase: { value: new THREE.Color(0xdce8f5) },   // 차분한 아이스 블루 베이스
+      uSunColor: { value: new THREE.Color(0xfffdf0) }, // 레퍼런스 느낌의 따뜻한 크림 옐로우/화이트
     },
     vertexShader: `
       varying vec2 vUv;
@@ -86,27 +86,29 @@ export function initHero3D() {
       void main() {
         vec2 st = vUv;
 
-        // 좌상단 집중 발산원
-        vec2 sunOrigin = vec2(-0.15, 1.15) + uMouse * 0.06;
+        // 좌상단 발산 원점 (마우스에 따라 살짝 반응)
+        vec2 sunOrigin = vec2(0.1, 1.0) + uMouse * 0.04;
         vec2 rayDir = st - sunOrigin;
         
         float angle = atan(rayDir.y, rayDir.x);
         float dist = length(rayDir);
 
-        // 좁고 명확하게 칼같이 갈라지는 선명한 빛줄기 (Ray Width Tightened)
-        float n = rayNoise(vec2(angle * 22.0, uTime * 0.02));
-        float rayPattern = pow(n, 3.8) * 2.8; // 제곱값을 높여 빛의 폭을 좁히고 날카롭게 설정
+        // 여러 갈래로 자잘하게 갈라지는 선명한 광선 패턴 (주파수 증가)
+        float n1 = rayNoise(vec2(angle * 18.0, uTime * 0.02));
+        float n2 = rayNoise(vec2(angle * 32.0 + 5.0, uTime * 0.015));
+        float multiRays = pow(n1 * 0.6 + n2 * 0.4, 2.5) * 2.2;
 
-        // 빛이 뭉개지지 않도록 범위 제한 감쇄
-        float attenuation = smoothstep(2.0, 0.2, dist);
+        // ★ 빛 길이를 짧게 제한 (상단~중간 지점에서 빠르게 감쇄)
+        float shortFade = smoothstep(0.9, 0.15, dist);
 
-        // 상단 코어 렌즈 플레어
-        float core = pow(smoothstep(0.65, 0.0, dist), 2.2) * 0.85;
+        // 상단 코어의 은은한 원형 빛 폭발
+        float centerGlow = pow(smoothstep(0.5, 0.0, dist), 1.8) * 0.9;
 
-        float finalBeam = clamp(rayPattern * attenuation + core, 0.0, 1.0);
+        // 최종 조합된 짧은 다중 광선
+        float finalBeam = clamp(multiRays * shortFade + centerGlow, 0.0, 1.0);
 
-        // 고급스러운 오프화이트 크림 ~ 파스텔 베이스 세련된 합성
-        vec3 finalBg = mix(uBgBase, uSunColor, finalBeam * 0.92);
+        // 배경색과 따뜻한 햇살색의 자연스러운 블렌딩
+        vec3 finalBg = mix(uBgBase, uSunColor, finalBeam * 0.9);
 
         gl_FragColor = vec4(finalBg, 1.0);
       }
