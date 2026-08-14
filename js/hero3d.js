@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Heavy Wireframe + Side-Only Sequential Sweep Glow)
+   HERO THREE.JS (Heavy Wireframe + Perimeter Laser Sweep)
 ========================================================= */
 
 export function initHero3D() {
@@ -85,27 +85,26 @@ export function initHero3D() {
   ===================================================== */
   const lineMat = new THREE.LineBasicMaterial({
     color: 0x111111,
-    transparent: true,
-    opacity: 0.9,
+    transparent: false,
+    opacity: 1.0,
   });
 
   /* =====================================================
-     FONT LOADER & 옆면(Side) 전용 순차적 컬러 훑기 셰이더 설정
+     FONT LOADER & 테두리를 따라 도는 레이저 스윕 셰이더
   ===================================================== */
   const loader = new FontLoader();
 
   loader.load(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
-      // 파라미터: 문자, 폰트, x, y, 회전Y, 스케일, 순차 지연 시간(delay)
-      createSideSweepLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0.0);
-      createSideSweepLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.8);
-      createSideSweepLetter("X", font, -2.3, 3.8, 0.35, 0.52, 3.6);
-      createSideSweepLetter("X", font, 5.3, -3.2, 0.45, 0.55, 5.4);
+      createPerimeterSweepLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0.0);
+      createPerimeterSweepLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.8);
+      createPerimeterSweepLetter("X", font, -2.3, 3.8, 0.35, 0.52, 3.6);
+      createPerimeterSweepLetter("X", font, 5.3, -3.2, 0.45, 0.55, 5.4);
     }
   );
 
-  function createSideSweepLetter(character, font, x, y, rotationY, scale, timeOffset) {
+  function createPerimeterSweepLetter(character, font, x, y, rotationY, scale, timeOffset) {
     const isU = character === "U";
     
     const geomOpts = isU
@@ -119,12 +118,10 @@ export function initHero3D() {
 
     const letterGroup = new THREE.Group();
 
-    // ★ 앞/뒷면은 완전히 비우고, 묵직한 두께를 가진 옆면(z축 방향 노멀)에만 컬러 빛이 순차적으로 훑는 셰이더
-    const sideSweepMaterial = new THREE.ShaderMaterial({
+    // ★ 큰 덩어리 마스크를 없애고, 옆면 테두리 경로를 따라 아주 짧고 강하게 도는 빛
+    const perimeterSweepMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
-        uMouseX: { value: 0 },
-        uMouseY: { value: 0 },
         uOffset: { value: timeOffset },
       },
       vertexShader: `
@@ -138,35 +135,40 @@ export function initHero3D() {
       `,
       fragmentShader: `
         uniform float uTime;
-        uniform float uMouseX;
-        uniform float uMouseY;
         uniform float uOffset;
         varying vec3 vPosition;
         varying vec3 vNormal;
 
         void main() {
-          // 앞면(Z > 0.1)과 뒷면(Z < -0.1)은 완전히 투명하게 비워둠 (오직 옆면만 채우기 위함)
-          float isSide = 1.0 - abs(vNormal.z);
-          if (isSide < 0.5) {
+          // 앞면과 뒷면(Z축 방향)은 완전히 투명하게 날림 -> 오직 옆면(두께)만 남음
+          if (abs(vNormal.z) > 0.1) {
             discard; 
           }
 
-          // 순차적으로 빛이 들어오고 나가는 타이밍 제어
-          float cycle = sin(uTime * 0.6 + uOffset);
-          float sweepIntensity = smoothstep(-0.1, 0.9, cycle);
+          // 1. 경로 추적: 오브젝트 중심(0,0)을 기준으로 한 극좌표 각도 계산 (-PI ~ PI)
+          // 이 각도를 이용해 외곽선을 따라 도는 완벽한 궤적을 만듭니다.
+          float angle = atan(vPosition.y, vPosition.x);
 
-          // 옆면을 따라 사선으로 부드럽게 지나가는 컬러 훑기 효과
-          float wave = sin((vPosition.x * 0.4 + vPosition.y * 0.4) - uTime * 1.5);
-          float glowBand = smoothstep(0.2, 1.0, wave) * sweepIntensity;
+          // 2. 스피드 및 방향 설정
+          float speed = 2.5; 
+          float sweep = angle - (uTime * speed) + uOffset;
 
-          // 무게감 있는 다크 그라파이트 베이스에 고급스러운 그린 컬러 빛 스침 믹스
-          vec3 baseColor = vec3(0.12, 0.14, 0.16);
-          vec3 sweepColor = vec3(0.15, 0.78, 0.42);
+          // 3. 짧고 강한 빛 생성 (큰 덩어리가 아님)
+          // pow 128.0을 주어 빛이 퍼지지 않고 날카로운 레이저 코어처럼 맺히게 함
+          float coreLight = pow(max(0.0, cos(sweep)), 128.0);
+          // 뒤따라오는 아주 짧고 은은한 잔상 꼬리
+          float tailLight = pow(max(0.0, cos(sweep)), 16.0) * 0.3;
+          
+          float beam = coreLight + tailLight;
 
-          vec3 finalColor = mix(baseColor, sweepColor, glowBand * 0.85);
+          // 4. 컬러 믹스 (무게감 유지를 위해 평소엔 딥 다크 톤, 빛이 올 때만 네온 그린)
+          vec3 baseColor = vec3(0.04, 0.04, 0.04);
+          vec3 neonGreen = vec3(0.12, 0.95, 0.45);
 
-          // 자연스럽고 은은한 투명도 부여
-          float alpha = 0.35 + glowBand * 0.55;
+          vec3 finalColor = mix(baseColor, neonGreen, beam);
+
+          // 빛이 지나가는 곳만 밝아지고, 평소엔 옆면이 살짝만 보이도록 알파 제어
+          float alpha = 0.08 + beam * 0.92;
 
           gl_FragColor = vec4(finalColor, alpha);
         }
@@ -176,10 +178,10 @@ export function initHero3D() {
       depthWrite: false,
     });
 
-    const fillMesh = new THREE.Mesh(geometry, sideSweepMaterial);
+    const fillMesh = new THREE.Mesh(geometry, perimeterSweepMaterial);
     letterGroup.add(fillMesh);
 
-    // 묵직하고 선명한 블랙 외곽선 와이어프레임
+    // 묵직하고 선명한 블랙 외곽선 와이어프레임 유지
     const edges = new THREE.EdgesGeometry(geometry, isU ? 25 : 15);
     const lineSegments = new THREE.LineSegments(edges, lineMat);
     letterGroup.add(lineSegments);
@@ -188,7 +190,7 @@ export function initHero3D() {
     letterGroup.scale.setScalar(scale);
     letterGroup.rotation.y = rotationY;
     letterGroup.rotation.x = -0.08;
-    letterGroup.userData = { baseX: x, baseY: y, baseRotationY: rotationY, material: sideSweepMaterial };
+    letterGroup.userData = { baseX: x, baseY: y, baseRotationY: rotationY, material: perimeterSweepMaterial };
     group.add(letterGroup);
   }
 
@@ -245,8 +247,6 @@ export function initHero3D() {
 
       if (p.material) {
         p.material.uniforms.uTime.value = time;
-        p.material.uniforms.uMouseX.value = mouse.x;
-        p.material.uniforms.uMouseY.value = mouse.y;
       }
     });
 
