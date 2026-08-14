@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Minimal White & Warm Red Glow)
+   HERO THREE.JS (Minimal Gray Tone + Warm Point Glow)
 ========================================================= */
 
 export function initHero3D() {
@@ -32,26 +32,26 @@ export function initHero3D() {
 
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
-    alpha: false, // 투명도를 없애고 아래 배경색을 강제 적용
+    alpha: false, // CSS 파란색 배경이 비치지 않도록 투명도 차단
     powerPreference: "high-performance",
   });
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  // ★ CSS 배경에 상관없이 강제로 깨끗한 미니멀 화이트/그레이 톤 적용
-  renderer.setClearColor(0xf4f6f9, 1);
+  // ★ CSS 스타일에 구애받지 않도록 캔버스 배경을 세련된 미니멀 그레이톤으로 강제 설정
+  renderer.setClearColor(0xeef0f4, 1);
 
   container.appendChild(renderer.domElement);
 
   /* =====================================================
-     ★ BACKGROUND: 미니멀 화이트 베이스 + 측면 따스한 붉은빛 글로우
+     ★ BACKGROUND: 세련된 그레이톤 베이스 + 측면 따스한 포인트 글로우
   ===================================================== */
   const lightRayGeo = new THREE.PlaneGeometry(120, 120);
   const lightRayMat = new THREE.ShaderMaterial({
     uniforms: {
       uTime: { value: 0 },
       uMouse: { value: new THREE.Vector2(0, 0) },
-      uBgBase: { value: new THREE.Color(0xf4f6f9) },   
-      uRedGlow: { value: new THREE.Color(0xff5c35) },  // 레퍼런스의 따스한 오렌지/레드 포인트 빛
+      uBgBase: { value: new THREE.Color(0xeef0f4) },   // 세련된 미니멀 그레이 베이스 톤
+      uWarmGlow: { value: new THREE.Color(0xff5c35) }, // 레퍼런스 느낌의 따스한 포인트 빛
     },
     vertexShader: `
       varying vec2 vUv;
@@ -64,21 +64,21 @@ export function initHero3D() {
       uniform float uTime;
       uniform vec2 uMouse;
       uniform vec3 uBgBase;
-      uniform vec3 uRedGlow;
+      uniform vec3 uWarmGlow;
       varying vec2 vUv;
 
       void main() {
         vec2 st = vUv;
         vec2 mouseOffset = uMouse * 0.02;
 
-        // 좌측 하단에서 은은하게 피어오르는 붉은 빛 포인트
-        vec2 glowCenter = vec2(0.15 + mouseOffset.x, 0.2 + mouseOffset.y);
+        // 좌측 하단에서 은은하게 피어오르는 따스한 빛 포인트
+        vec2 glowCenter = vec2(0.18 + mouseOffset.x, 0.22 + mouseOffset.y);
         float dist = length(st - glowCenter);
 
-        float glow = smoothstep(0.75, 0.0, dist);
-        glow = pow(glow, 1.8) * 0.5;
+        float glow = smoothstep(0.8, 0.0, dist);
+        glow = pow(glow, 1.6) * 0.35; // 과하지 않게 은은한 강도
 
-        vec3 finalColor = mix(uBgBase, uRedGlow, glow);
+        vec3 finalColor = mix(uBgBase, uWarmGlow, glow);
 
         gl_FragColor = vec4(finalColor, 1.0);
       }
@@ -94,7 +94,7 @@ export function initHero3D() {
   scene.add(group);
 
   /* =====================================================
-     GRID (미니멀 화이트 톤에 맞춘 은은한 라인)
+     GRID (그레이 톤에 어울리는 차분하고 정돈된 라인)
   ===================================================== */
   function createConcaveGridGeometry(width, height, stepX, stepY, curveAmount = 0.01) {
     const points = [];
@@ -132,7 +132,7 @@ export function initHero3D() {
   const curvedGridGeo = createConcaveGridGeometry(gridWidth, gridHeight, stepX, stepY, curveFactor);
 
   const gridMaterial = new THREE.LineBasicMaterial({
-    color: 0xcbced4,
+    color: 0xc4c9d4,
     transparent: true,
     opacity: 0.35,
   });
@@ -140,7 +140,7 @@ export function initHero3D() {
   gridGroup.add(new THREE.LineSegments(curvedGridGeo, gridMaterial));
 
   const nodeGeo = new THREE.BoxGeometry(0.035, 0.035, 0.035);
-  const nodeMat = new THREE.MeshBasicMaterial({ color: 0xa0a5b0, transparent: true, opacity: 0.4 });
+  const nodeMat = new THREE.MeshBasicMaterial({ color: 0x9499a6, transparent: true, opacity: 0.4 });
 
   for (let x = -gridWidth / 2; x <= gridWidth / 2; x += stepX * 2) {
     for (let y = -gridHeight / 2; y <= gridHeight / 2; y += stepY * 2) {
@@ -161,7 +161,7 @@ export function initHero3D() {
     uniforms: {
       uMouse: { value: new THREE.Vector2(0, 0) },
       topColor: { value: new THREE.Color(0xffffff) },
-      bottomColor: { value: new THREE.Color(0xe2e8f0) },
+      bottomColor: { value: new THREE.Color(0xd8dce6) },
       edgeHighlight: { value: new THREE.Color(0xffffff) },
     },
     vertexShader: `
@@ -206,7 +206,7 @@ export function initHero3D() {
         vec3 shadedColor = baseGradient * (0.85 + 0.25 * NdotL);
         vec3 finalColor = mix(shadedColor, edgeHighlight, fresnel * 0.75) + edgeHighlight * spec * 0.75;
 
-        gl_FragColor = vec4(finalColor, 0.96);
+        gl_FragColor = vec4(finalColor, 0.95);
       }
     `,
     transparent: true,
@@ -218,7 +218,7 @@ export function initHero3D() {
      X 전용: CAD 스타일 미니멀 와이어프레임
   ===================================================== */
   const xWireframeMat = new THREE.LineBasicMaterial({
-    color: 0x94a3b8,
+    color: 0x8b93a0,
     transparent: true,
     opacity: 0.4,
   });
