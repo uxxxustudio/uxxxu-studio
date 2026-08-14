@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Solid Grid & Clean 3D Solid Wireframe U/X)
+   HERO THREE.JS (Clean Single-Line 3D Wireframe)
 ========================================================= */
 
 export function initHero3D() {
@@ -24,7 +24,7 @@ export function initHero3D() {
   });
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setClearColor(0xffffff, 1); // 순백색 배경
+  renderer.setClearColor(0xffffff, 1);
 
   container.appendChild(renderer.domElement);
 
@@ -32,7 +32,7 @@ export function initHero3D() {
   scene.add(group);
 
   /* =====================================================
-     1. 배경 공간 그리드 (점선이 아닌 깔끔한 '실선' 그리드)
+     1. 배경 공간 그리드 (실선)
   ===================================================== */
   function createSolidGridGeometry(width, height, stepX, stepY, curveAmount = 0.01) {
     const points = [];
@@ -70,7 +70,6 @@ export function initHero3D() {
   const stepX = 1.2, stepY = 1.2, curveFactor = 0.01;
   const solidGridGeo = createSolidGridGeometry(gridWidth, gridHeight, stepX, stepY, curveFactor);
 
-  // ★ 점선 재질(LineDashedMaterial)을 배제하고 깨끗한 실선(LineBasicMaterial) 사용
   const gridMaterial = new THREE.LineBasicMaterial({
     color: 0xe5e7eb,
     transparent: true,
@@ -82,65 +81,48 @@ export function initHero3D() {
   scene.add(gridGroup);
 
   /* =====================================================
-     실선 3D 오브젝트 머티리얼 (단일선 엣지 표현)
+     3D 오브젝트 라인 재질
   ===================================================== */
-  const solid3DMat = new THREE.LineBasicMaterial({
+  const lineMat = new THREE.LineBasicMaterial({
     color: 0x111111,
     transparent: true,
     opacity: 0.85,
   });
 
   /* =====================================================
-     FONT LOADER & 3D 입체 실선 오브젝트 생성
+     FONT LOADER & 단일 라인 3D 오브젝트 생성
   ===================================================== */
   const loader = new FontLoader();
 
   loader.load(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
-      createSolid3DLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0, false);
-      createSolid3DLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.7, true);
-      createSolid3DLetter("X", font, -2.3, 3.8, 0.35, 0.52, 0.8, true);
-      createSolid3DLetter("X", font, 5.3, -3.2, 0.45, 0.55, 2.3, true);
+      createClean3DLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0, false);
+      createClean3DLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.7, true);
+      createClean3DLetter("X", font, -2.3, 3.8, 0.35, 0.52, 0.8, true);
+      createClean3DLetter("X", font, 5.3, -3.2, 0.45, 0.55, 2.3, true);
     }
   );
 
-  function createSolid3DLetter(character, font, x, y, rotationY, scale, phase, isRoundedX) {
+  function createClean3DLetter(character, font, x, y, rotationY, scale, phase, isRoundedX) {
     const isU = character === "U";
     
-    // 3D 입체감을 살리기 위한 두께(depth) 부여
-    const geometryOptions = isU
-      ? {
-          font: font,
-          size: 4.1,
-          depth: 0.4,
-          curveSegments: 4,
-          bevelEnabled: true,
-          bevelThickness: 0.06,
-          bevelSize: 0.04,
-          bevelSegments: 1,
-        }
-      : {
-          font: font,
-          size: 4.1,
-          depth: 0.4,
-          curveSegments: isRoundedX ? 4 : 2,
-          bevelEnabled: isRoundedX,
-          bevelThickness: 0.06,
-          bevelSize: 0.04,
-          bevelSegments: 1,
-        };
+    // 1. 입체 두께를 가진 임시 텍스트 지오메트리 생성
+    const geomOpts = isU
+      ? { font: font, size: 4.1, depth: 0.35, curveSegments: 4, bevelEnabled: false }
+      : { font: font, size: 4.1, depth: 0.35, curveSegments: isRoundedX ? 4 : 2, bevelEnabled: false };
 
-    const geometry = new TextGeometry(character, geometryOptions);
+    const geometry = new TextGeometry(character, geomOpts);
     geometry.computeBoundingBox();
     const box = geometry.boundingBox;
     geometry.translate(-(box.max.x + box.min.x) / 2, -(box.max.y + box.min.y) / 2, 0);
 
     const letterGroup = new THREE.Group();
 
-    // ★ 임계각(thresholdAngle)을 높여 앞/뒷면 외곽과 입체 모서리 선만 깔끔하게 추출 (이중선 방지)
-    const edges = new THREE.EdgesGeometry(geometry, 30);
-    const lineSegments = new THREE.LineSegments(edges, solid3DMat);
+    // ★ 2겹으로 겹치는 현상을 원천 차단하기 위해 
+    // 불필요한 내부 면 모서리를 제외하고, 외곽 윤곽선(Outline)만 단일선으로 추출
+    const edges = new THREE.EdgesGeometry(geometry, 60);
+    const lineSegments = new THREE.LineSegments(edges, lineMat);
     
     letterGroup.add(lineSegments);
 
