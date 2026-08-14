@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Clean 3D Wireframe + Individual Sweep/Glow Lights)
+   HERO THREE.JS (Clean 3D Wireframe + Sharp, Varied Sweep Lights)
 ========================================================= */
 
 export function initHero3D() {
@@ -90,22 +90,22 @@ export function initHero3D() {
   });
 
   /* =====================================================
-     FONT LOADER & 오브젝트별 개별 빛 크기 및 속도 설정
+     FONT LOADER & 오브젝트별 개별 속도, 방향, 좁은 빛줄기 설정
   ===================================================== */
   const loader = new FontLoader();
 
   loader.load(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
-      // 파라미터 순서: 문자, 폰트, x, y, 회전Y, 크기, 애니메이션위상, 빛속도배수, 빛크기(폭)
-      createSweeping3DLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0.0, 1.0, 0.65);
-      createSweeping3DLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.7, 1.4, 0.45);
-      createSweeping3DLetter("X", font, -2.3, 3.8, 0.35, 0.52, 0.8, 0.8, 0.85);
-      createSweeping3DLetter("X", font, 5.3, -3.2, 0.45, 0.55, 2.3, 1.2, 0.55);
+      // 파라미터: 문자, 폰트, x, y, 회전Y, 스케일, 위상(phase), 속도배수, 방향벡터(x, y)
+      createSharpSweepLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0.0, 0.8, 1.2, 0.8);
+      createSharpSweepLetter("X", font, 2.25, 0.55, 0.42, 0.88, 2.1, 1.3, -1.0, 1.1);
+      createSharpSweepLetter("X", font, -2.3, 3.8, 0.35, 0.52, 1.2, 0.6, 0.9, -0.7);
+      createSharpSweepLetter("X", font, 5.3, -3.2, 0.45, 0.55, 3.5, 1.1, -1.2, -0.9);
     }
   );
 
-  function createSweeping3DLetter(character, font, x, y, rotationY, scale, phase, speedMult, glowWidth) {
+  function createSharpSweepLetter(character, font, x, y, rotationY, scale, phase, speed, dirX, dirY) {
     const isU = character === "U";
     
     const geomOpts = isU
@@ -119,14 +119,16 @@ export function initHero3D() {
 
     const letterGroup = new THREE.Group();
 
-    // 개별 속도와 빛 크기(폭)가 반영된 셰이더 머티리얼
+    // ★ 빛의 면적을 넓지 않고 날렵한 선형 빛줄기로 좁히고 개별 속도/방향을 부여한 셰이더
     const sweepMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
         uMouseX: { value: 0 },
         uMouseY: { value: 0 },
-        uSpeedMult: { value: speedMult },
-        uGlowWidth: { value: glowWidth },
+        uPhase: { value: phase },
+        uSpeed: { value: speed },
+        uDirX: { value: dirX },
+        uDirY: { value: dirY },
       },
       vertexShader: `
         varying vec3 vPosition;
@@ -139,21 +141,25 @@ export function initHero3D() {
         uniform float uTime;
         uniform float uMouseX;
         uniform float uMouseY;
-        uniform float uSpeedMult;
-        uniform float uGlowWidth;
+        uniform float uPhase;
+        uniform float uSpeed;
+        uniform float uDirX;
+        uniform float uDirY;
         varying vec3 vPosition;
 
         void main() {
-          // 오브젝트별로 다른 속도(uSpeedMult)와 위상 적용
-          float sweep = sin(vPosition.x * 0.7 + vPosition.y * 0.7 - uTime * (2.0 * uSpeedMult) + uMouseX * 1.5);
+          // 개별 방향 벡터와 속도, 위상을 조합하여 고유한 빛줄기 모션 생성
+          float t = uTime * uSpeed + uPhase;
+          float coord = vPosition.x * uDirX + vPosition.y * uDirY;
           
-          // uGlowWidth에 따라 빛의 퍼짐 크기와 폭이 다르게 조절됨
-          float edge1 = max(0.1, 0.95 - uGlowWidth * 0.5);
-          float edge2 = min(0.99, 0.98 + uGlowWidth * 0.1);
-          float glow = smoothstep(edge1, edge2, sweep);
+          // sin wave를 활용해 아주 좁고 날렵한 빛 라인(Scanline) 추출
+          float wave = sin(coord * 1.8 - t * 2.2);
+          
+          // 임계값을 높여서 넓은 면적이 아니라 가느다란 빛줄기 형태로만 나타나도록 압축
+          float sharpGlow = smoothstep(0.85, 0.98, wave);
 
-          vec3 greenColor = vec3(0.1, 0.85, 0.4);
-          float alpha = glow * 0.32; 
+          vec3 greenColor = vec3(0.12, 0.9, 0.45);
+          float alpha = sharpGlow * 0.45; // 빛이 지나갈 때만 선명하게 포착
 
           gl_FragColor = vec4(greenColor, alpha);
         }
