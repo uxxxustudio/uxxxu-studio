@@ -3,7 +3,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 /* =========================================================
-   HERO THREE.JS (Heavy Matte Metallic Graphite Look)
+   HERO THREE.JS (Fixed Heavy Matte Metallic Graphite Look)
 ========================================================= */
 
 export function initHero3D() {
@@ -32,7 +32,7 @@ export function initHero3D() {
   scene.add(group);
 
   /* =====================================================
-     1. 배경 공간 그리드 (실선, 은은한 톤)
+     1. 배경 공간 그리드 (실선)
   ===================================================== */
   function createSolidGridGeometry(width, height, stepX, stepY, curveAmount = 0.01) {
     const points = [];
@@ -81,33 +81,30 @@ export function initHero3D() {
   scene.add(gridGroup);
 
   /* =====================================================
-     3D 오브젝트 기본 매트 머티리얼 (매트 블랙 베이스)
+     3D 오브젝트 라인 재질 (선명한 블랙 외곽선)
   ===================================================== */
-  const baseMat = new THREE.MeshPhysicalMaterial({
+  const lineMat = new THREE.LineBasicMaterial({
     color: 0x111111,
-    roughness: 0.88,
-    metalness: 0.95,
-    clearcoat: 0.3,
-    clearcoatRoughness: 0.5,
-    emissive: 0x000000,
+    transparent: false,
+    opacity: 1.0,
   });
 
   /* =====================================================
-     FONT LOADER & 묵직한 매트 그라파이트 머티리얼 설정
+     FONT LOADER & 묵직하고 선명한 매트 그라파이트 채우기
   ===================================================== */
   const loader = new FontLoader();
 
   loader.load(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
-      createHeavyMetallicLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0.0, 0.5);
-      createHeavyMetallicLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.8, 0.6); // 가운데 X
-      createHeavyMetallicLetter("X", font, -2.3, 3.8, 0.35, 0.52, 3.6, 0.4);
-      createHeavyMetallicLetter("X", font, 5.3, -3.2, 0.45, 0.55, 5.4, 0.5);
+      createHeavyMetallicLetter("U", font, -2.9, -0.65, -0.42, 0.92, 0.0);
+      createHeavyMetallicLetter("X", font, 2.25, 0.55, 0.42, 0.88, 1.8);
+      createHeavyMetallicLetter("X", font, -2.3, 3.8, 0.35, 0.52, 3.6);
+      createHeavyMetallicLetter("X", font, 5.3, -3.2, 0.45, 0.55, 5.4);
     }
   );
 
-  function createHeavyMetallicLetter(character, font, x, y, rotationY, scale, timeOffset, roughnessVal) {
+  function createHeavyMetallicLetter(character, font, x, y, rotationY, scale, timeOffset) {
     const isU = character === "U";
     
     const geomOpts = isU
@@ -121,14 +118,13 @@ export function initHero3D() {
 
     const letterGroup = new THREE.Group();
 
-    // ★ 무게감 있는 매트 그라파이트 재질 셰이더 (투명도 제거)
+    // ★ 투명해져서 사라지는 현상을 완전히 없애고, 묵직하고 선명한 매트 그라파이트 톤 유지
     const matteMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
         uMouseX: { value: 0 },
         uMouseY: { value: 0 },
         uOffset: { value: timeOffset },
-        uRoughness: { value: roughnessVal },
       },
       vertexShader: `
         varying vec3 vPosition;
@@ -144,46 +140,35 @@ export function initHero3D() {
         uniform float uMouseX;
         uniform float uMouseY;
         uniform float uOffset;
-        uniform float uRoughness;
         varying vec3 vPosition;
         varying vec3 vNormal;
 
         void main() {
-          // 묵직한 그라파이트 및 딥 매트 블랙 베이스 톤
-          vec3 graphiteColor = vec3(0.08, 0.09, 0.10);
-          vec3 deepBlack = vec3(0.03, 0.03, 0.03);
-          
-          // 미세한 매트 그라데이션 베이스
-          vec3 baseColor = mix(deepBlack, graphiteColor, length(vPosition.xy) * 0.05);
+          // 묵직하고 고급스러운 차콜 그라파이트 컬러
+          vec3 graphiteBase = vec3(0.90, 0.92, 0.94);
+          vec3 graphiteDark = vec3(0.78, 0.81, 0.84);
 
-          // 순차적인 페이드 인/아웃 (오브젝트가 어둠 속에서 묵직하게 떠오름)
-          float cycle = sin(uTime * 0.5 + uOffset);
-          float opacityVal = smoothstep(-0.3, 1.0, cycle) * 0.98 + 0.02;
+          // 미세한 그라데이션으로 입체감 부여
+          vec3 color = mix(graphiteBase, graphiteDark, vPosition.y * 0.1 + 0.5);
 
-          // 마우스 연동 미세 하이라이트 (형광펜 아님, 은은한 스펙큘러)
-          vec2 mousePos = vec2(uMouseX * 4.0, uMouseY * 4.0);
+          // 마우스 움직임에 따른 은은한 반사 포인트
+          vec2 mousePos = vec2(uMouseX * 5.0, uMouseY * 5.0);
           float dist = distance(vPosition.xy, mousePos);
-          float mouseHighlight = max(0.0, 1.0 - dist * 0.3) * 0.15 * (1.0 - uRoughness);
+          float highlight = max(0.0, 1.0 - dist * 0.25) * 0.08;
 
-          // 차가운 톤의 림 라이트 (깊이감 강조)
-          float rim = 1.0 - max(0.0, dot(vNormal, vec3(0.0, 0.0, 1.0)));
-          rim = pow(rim, 5.0) * 0.2;
+          color += highlight;
 
-          vec3 finalColor = baseColor + mouseHighlight + rim;
-          
-          // 불투명하게 설정하여 무게감 극대화
-          gl_FragColor = vec4(finalColor, opacityVal);
+          gl_FragColor = vec4(color, 1.0);
         }
       `,
-      transparent: true, // 순차적 등장을 위해 투명 모드는 유지하되 불투명도 높임
+      transparent: false,
       side: THREE.DoubleSide,
-      depthWrite: true,
     });
 
     const fillMesh = new THREE.Mesh(geometry, matteMaterial);
     letterGroup.add(fillMesh);
 
-    // 기존의 깔끔한 단일 라인 와이어프레임 유지 (윤곽을 묵직하게 잡아줌)
+    // 선명하고 묵직한 블랙 와이어프레임 윤곽선
     const edges = new THREE.EdgesGeometry(geometry, isU ? 25 : 15);
     const lineSegments = new THREE.LineSegments(edges, lineMat);
     letterGroup.add(lineSegments);
