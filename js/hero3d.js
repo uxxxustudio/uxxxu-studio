@@ -292,7 +292,7 @@ export function initSectionObject(containerId, characterText) {
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
       const isU = (characterText === "U");
-      const geomOpts = { font: font, size: 4.1, depth: 0.38, curveSegments: isU ? 24 : 6, bevelEnabled: false };
+      const geomOpts = { font: font, size: 4.1, depth: 0.6, curveSegments: isU ? 24 : 6, bevelEnabled: false };
 
       const geometry = new TextGeometry(characterText, geomOpts);
       geometry.computeBoundingBox();
