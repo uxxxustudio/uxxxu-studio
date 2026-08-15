@@ -127,8 +127,8 @@ window.addEventListener('scroll', () => {
     if (!objectElement) return;
 
     const rect = objectElement.getBoundingClientRect();
-    // 화면 하단에 오브젝트가 진입할 때 실행
-    if (rect.top < window.innerHeight * 0.85) {
+    
+    if (rect.top < window.innerHeight * 0.5) {
         objectElement.classList.add('is-visible');
     }
 });
