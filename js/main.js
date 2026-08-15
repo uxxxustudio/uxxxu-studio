@@ -122,22 +122,15 @@ window.addEventListener("scroll", () => {
    Mobile Menu
 ========================================================= */
 
-window.addEventListener("click", (e) => {
+window.addEventListener('scroll', () => {
+    const objectElement = document.getElementById('experience-object');
+    if (!objectElement) return;
 
-    const button =
-        document.querySelector(".menu-toggle");
-
-    const nav =
-        document.querySelector("header nav");
-
-    if (!button || !nav) return;
-
-    if (e.target.closest(".menu-toggle")) {
-
-        nav.classList.toggle("open");
-
+    const rect = objectElement.getBoundingClientRect();
+    // 화면 하단에 오브젝트가 진입할 때 실행
+    if (rect.top < window.innerHeight * 0.85) {
+        objectElement.classList.add('is-visible');
     }
-
 });
 
 
