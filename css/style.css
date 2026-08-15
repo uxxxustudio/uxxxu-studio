@@ -237,11 +237,15 @@ nav a:hover {
     letter-spacing: -.025em;
 }
 
-/* UX 영역 누락 없이 정상 노출되도록 복구된 스타일 */
+/* [수정 완료] UX 영역이 명확하게 보이도록 z-index와 가시성 설정 강화 */
 .hero-message-ux {
+    position: absolute;
+    z-index: 10;
     left: 4%;
     top: 58%;
     width: 430px;
+    display: block !important;
+    visibility: visible !important;
     opacity: 0;
     transform: translateY(30px);
     animation: fade .8s .35s forwards;
