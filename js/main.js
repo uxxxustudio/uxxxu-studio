@@ -55,8 +55,9 @@ window.addEventListener("DOMContentLoaded", async () => {
         "service",
         new URL("service.html", componentPath)
     );
-   /* =========================================================
-       [추가] Experience 섹션 로드 완료 후 3D 오브젝트 실행
+
+    /* =========================================================
+        [추가] Experience 섹션 로드 완료 후 3D 오브젝트 실행
     ========================================================= */
     import("./hero3d.js").then(({ initSectionObject }) => {
         initSectionObject("experience-object", "U"); // "U" 또는 원하는 글자 입력 가능
@@ -119,39 +120,27 @@ window.addEventListener("scroll", () => {
 
 
 /* =========================================================
-   Mobile Menu
+   Experience 3D 오브젝트 등장 모션 감지 (비동기 로드 대응)
 ========================================================= */
 
-window.addEventListener('scroll', () => {
+const checkExperienceObject = setInterval(() => {
     const objectElement = document.getElementById('experience-object');
-    if (!objectElement) return;
-
-    const rect = objectElement.getBoundingClientRect();
-    
-    if (rect.top < window.innerHeight * 0.5) {
-        objectElement.classList.add('is-visible');
-    }
-});
-
-
-// EXPERIENCE 섹션 3D 오브젝트 스크롤 등장 모션 감지
-document.addEventListener('DOMContentLoaded', () => {
-    const objectElement = document.getElementById('experience-object');
-    if (!objectElement) return;
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                objectElement.classList.add('is-visible');
-                observer.unobserve(entry.target); // 애니메이션이 한 번만 실행되도록 설정
-            }
-        });
-    }, {
-        threshold: 0.2 // 섹션이 화면에 20% 보일 때 작동
-    });
-
     const experienceSection = document.getElementById('experience');
-    if (experienceSection) {
+
+    if (objectElement && experienceSection) {
+        clearInterval(checkExperienceObject); // 엘리먼트를 찾으면 인터벌 중지
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    objectElement.classList.add('is-visible');
+                    observer.unobserve(entry.target); // 애니메이션이 한 번만 실행되도록 설정
+                }
+            });
+        }, {
+            threshold: 0.2 // 섹션이 화면에 20% 보일 때 작동
+        });
+
         observer.observe(experienceSection);
     }
-});
+}, 100); // 0.1초마다 엘리먼트가 생성되었는지 체크 후 바인딩
