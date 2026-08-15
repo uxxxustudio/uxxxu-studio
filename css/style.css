@@ -388,6 +388,7 @@ nav a:hover {
 .experience-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    position: relative; /* 자식 absolute 오브젝트 배치를 위한 기준점 */
 }
 
 .experience-item {
@@ -484,23 +485,24 @@ nav a:hover {
     line-height: 1;
 }
 
+/* 02번과 03번 사이 공간에 위치할 3D 오브젝트 */
 #experience-object {
     position: absolute;
-    top: -20px;       
-    left: -160px;     
-    width: 360px;     
-    height: 360px;    
-    z-index: 1; 
+    top: 50%;       
+    left: 62%;     
+    width: 280px;     
+    height: 280px;    
+    z-index: 2; 
     pointer-events: none;
     opacity: 0;
-    transform: translateY(50px);
+    transform: translate(-50%, -50%) translateY(50px);
     transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
                 transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 #experience-object.is-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(-50%, -50%) translateY(0);
 }
 
 
@@ -1024,6 +1026,21 @@ footer {
         margin-top: 70px;
     }
 
+    /* 모바일 환경일 때 3D 오브젝트 위치 대응 */
+    #experience-object {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        margin: 40px auto 0;
+        width: 200px;
+        height: 200px;
+    }
+
+    #experience-object.is-visible {
+        transform: none;
+    }
+
     .about-wrap {
         grid-template-columns: 1fr;
         gap: 40px;
@@ -1263,3 +1280,4 @@ footer {
         font-size: 24px;
     }
 }
+```[cite: 6]
