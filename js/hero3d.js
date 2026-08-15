@@ -277,7 +277,8 @@ export function initSectionObject(containerId, assetInput = "U") {
     loader.load(
       "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
       (font) => {
-        const geomOpts = { font: font, size: 5.5, depth: 0.45, curveSegments: 24, bevelEnabled: false };
+        // [수정됨] 글자 크기(size)와 옆 두께(depth)를 더 크게 확장
+        const geomOpts = { font: font, size: 7.2, depth: 1.2, curveSegments: 24, bevelEnabled: false };
         const geometry = new TextGeometry(assetInput, geomOpts);
         geometry.computeBoundingBox();
         const box = geometry.boundingBox;
@@ -372,7 +373,7 @@ export function initSectionObject(containerId, assetInput = "U") {
         paths.forEach((path) => {
           const shapes = SVGLoader.createShapes(path);
           shapes.forEach((shape) => {
-            const extrudeSettings = { depth: 0.6, bevelEnabled: false };
+            const extrudeSettings = { depth: 1.2, bevelEnabled: false };
             const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
 
             const material = new THREE.ShaderMaterial({
