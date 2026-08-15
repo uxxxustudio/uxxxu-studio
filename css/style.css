@@ -161,16 +161,15 @@ nav a:hover {
 }
 
 /* Hero 3D Graphic */
-
 .hero-3d {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1;                  /* 텍스트(z-index가 더 높은 요소들)보다 뒤로 가게 조정 */
-    pointer-events: none;        /* 마우스 클릭이 3D 요소를 통과해 아래 콘텐츠로 전달되도록 함 */
-    overflow: hidden;            /* 영역 밖으로 튀어나가는 3D 오브젝트 차단 */
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
     will-change: transform;
     animation: hero3dFloat 7s ease-in-out infinite alternate;
 }
@@ -238,6 +237,7 @@ nav a:hover {
     letter-spacing: -.025em;
 }
 
+/* UX 영역 누락 없이 정상 노출되도록 복구된 스타일 */
 .hero-message-ux {
     left: 4%;
     top: 58%;
@@ -318,6 +318,8 @@ nav a:hover {
 ========================================================= */
 #experience {
     padding: 180px 64px;
+    position: relative;
+    overflow: hidden;
 }
 
 .experience-wrap {
@@ -478,11 +480,30 @@ nav a:hover {
     line-height: 1;
 }
 
+/* Experience 3D Object Styling */
+#experience-object {
+    position: absolute;
+    top: -20px;       
+    left: -160px;     
+    width: 360px;     
+    height: 360px;    
+    z-index: 1; 
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#experience-object.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 
 /* =========================================================
    5. PORTFOLIO / SELECTED WORK
 ========================================================= */
-
 #portfolio {
     padding: 180px 64px;
 }
@@ -492,11 +513,6 @@ nav a:hover {
     width: 100%;
     margin: auto;
 }
-
-
-/* ---------------------------------------------------------
-   PORTFOLIO HEADER
---------------------------------------------------------- */
 
 #portfolio .section-title {
     margin: 0 0 42px;
@@ -518,19 +534,9 @@ nav a:hover {
     letter-spacing: -.035em;
 }
 
-
-/* ---------------------------------------------------------
-   PORTFOLIO INTRO
---------------------------------------------------------- */
-
 #portfolio .section-title + .portfolio-grid {
     margin-top: 110px;
 }
-
-
-/* ---------------------------------------------------------
-   PROJECT LIST
---------------------------------------------------------- */
 
 .portfolio-grid {
     position: relative;
@@ -540,131 +546,69 @@ nav a:hover {
     gap: 0;
 }
 
-
-/* ---------------------------------------------------------
-   PROJECT
---------------------------------------------------------- */
-
 .project {
     position: relative;
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-
     width: 100%;
     max-width: 1120px;
     min-height: 150px;
-
     padding: 34px 0;
-
     color: #111;
-
-    transition:
-        padding .45s cubic-bezier(.2,.7,.2,1),
-        opacity .35s ease;
+    transition: padding .45s cubic-bezier(.2,.7,.2,1), opacity .35s ease;
 }
 
 .project + .project {
     margin-top: 18px;
 }
 
-
-/* ---------------------------------------------------------
-   CATEGORY
---------------------------------------------------------- */
-
 .project-category {
     position: absolute;
     left: 0;
     top: 34px;
-
     font-size: 12px;
     line-height: 1;
     font-weight: 600;
-
     color: #888;
-
     letter-spacing: .04em;
     text-transform: uppercase;
-
-    transition:
-        color .35s ease,
-        transform .4s cubic-bezier(.2,.7,.2,1);
+    transition: color .35s ease, transform .4s cubic-bezier(.2,.7,.2,1);
 }
-
-
-/* ---------------------------------------------------------
-   PROJECT TITLE
---------------------------------------------------------- */
 
 .project h2 {
     margin: 28px 0 0;
-
     font-size: clamp(30px, 3vw, 44px);
     line-height: .98;
-
     font-weight: 700;
     letter-spacing: -.055em;
-
     color: #111;
-
-    transition:
-        transform .5s cubic-bezier(.2,.7,.2,1),
-        letter-spacing .5s ease;
+    transition: transform .5s cubic-bezier(.2,.7,.2,1), letter-spacing .5s ease;
 }
-
-
-/* ---------------------------------------------------------
-   DESCRIPTION
---------------------------------------------------------- */
 
 .project p {
     grid-column: 1;
-
     margin: 16px 0 0;
-
     font-size: 15px;
     line-height: 1.6;
-
     color: #777;
-
     letter-spacing: -.025em;
-
-    transition:
-        color .35s ease,
-        transform .45s cubic-bezier(.2,.7,.2,1);
+    transition: color .35s ease, transform .45s cubic-bezier(.2,.7,.2,1);
 }
-
-
-/* ---------------------------------------------------------
-   VIEW LINK
---------------------------------------------------------- */
 
 .project .arrow {
     position: absolute;
-
     right: 0;
     bottom: 34px;
-
     font-size: 14px;
     line-height: 1;
-
     font-weight: 600;
-
     color: #111;
-
     opacity: .75;
-
-    transition:
-        opacity .3s ease,
-        transform .45s cubic-bezier(.2,.7,.2,1);
+    transition: opacity .3s ease, transform .45s cubic-bezier(.2,.7,.2,1);
 }
 
-
-/* ---------------------------------------------------------
-   HOVER INTERACTION
---------------------------------------------------------- */
-
+/* Hover Interaction */
 .portfolio-grid:hover .project:not(:hover) {
     opacity: .38;
 }
@@ -695,64 +639,76 @@ nav a:hover {
 }
 
 
-/* ---------------------------------------------------------
-   HOVER LIGHT
---------------------------------------------------------- */
-
-.project::after {
-    content: "";
-
-    position: absolute;
-
-    left: -30px;
-    top: 50%;
-
-    width: 70px;
-    height: 1px;
-
-    background: linear-gradient(
-        90deg,
-        rgba(80,255,160,0),
-        rgba(80,255,160,.95),
-        rgba(80,255,160,0)
-    );
-
-    opacity: 0;
-
-    transform: translate(-80px, -50%);
-
-    pointer-events: none;
+/* =========================================================
+   6. PROJECT ARCHIVE STYLING
+========================================================= */
+.project-archive {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 180px;
+    padding: 20px 0;
+    color: #111;
+    text-decoration: none;
+    transition: transform .45s cubic-bezier(.2,.7,.2,1);
 }
 
-.project:hover::after {
-    opacity: 1;
-
-    animation: portfolioLight .8s cubic-bezier(.4,0,.2,1) forwards;
+.archive-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-@keyframes portfolioLight {
+.archive-content h3 {
+    margin: 0;
+    font-size: clamp(42px, 5vw, 68px);
+    line-height: .95;
+    font-weight: 700;
+    letter-spacing: -.055em;
+    transition: transform .45s cubic-bezier(.2,.7,.2,1);
+}
 
-    0% {
-        transform: translate(-80px, -50%);
-        opacity: 0;
-    }
+.archive-content p {
+    margin: 18px 0 0;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #888;
+    letter-spacing: -.02em;
+    transition: color .35s ease, transform .45s cubic-bezier(.2,.7,.2,1);
+}
 
-    25% {
-        opacity: 1;
-    }
+.archive-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 400;
+    color: #111;
+    transition: transform .45s cubic-bezier(.2,.7,.2,1), font-size .35s ease;
+}
 
-    100% {
-        transform: translate(
-            calc(100% + 1120px),
-            -50%
-        );
-        opacity: 0;
-    }
+.project-archive:hover {
+    transform: translateY(-4px);
+}
+
+.project-archive:hover .archive-content h3 {
+    transform: translateX(6px);
+}
+
+.project-archive:hover .archive-content p {
+    color: #555;
+}
+
+.project-archive:hover .archive-arrow {
+    transform: translate(6px, -5px);
+    font-size: 34px;
 }
 
 
 /* =========================================================
-   5. ABOUT & CONTACT & FOOTER SECTIONS
+   7. ABOUT & CONTACT & FOOTER SECTIONS
 ========================================================= */
 .about-wrap {
     display: grid;
@@ -858,21 +814,12 @@ footer {
 
 
 /* =========================================================
-   6. ANIMATIONS
+   8. ANIMATIONS
 ========================================================= */
 @keyframes fade {
     to {
         opacity: 1;
         transform: translateY(0);
-    }
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(8px);
     }
 }
 
@@ -917,7 +864,7 @@ footer {
 
 
 /* =========================================================
-   7. RESPONSIVE (TABLET & MOBILE)
+   9. RESPONSIVE (TABLET & MOBILE)
 ========================================================= */
 @media (max-width: 980px) {
     .hero-light {
@@ -974,6 +921,7 @@ footer {
     .hero-message-ux {
         left: 26px;
         top: 58%;
+        width: calc(100% - 52px);
     }
 
     .hero-message h2 {
@@ -1122,7 +1070,7 @@ footer {
 
 
 /* =========================================================
-   8. MOBILE HERO & REDUCED MOTION (스마트폰 최적화)
+   10. MOBILE HERO & REDUCED MOTION
 ========================================================= */
 @media (prefers-reduced-motion: reduce) {
     .hero-light,
@@ -1222,14 +1170,8 @@ footer {
         opacity: .45;
         filter: blur(45px);
     }
-}
 
-
-/* =========================================================
-   PORTFOLIO MOBILE
-========================================================= */
-@media (max-width: 767px) {
-
+    /* Portfolio & Archive Mobile */
     #portfolio {
         padding: 120px 26px;
     }
@@ -1301,316 +1243,6 @@ footer {
         opacity: 1;
     }
 
-    .project::after {
-        display: none;
-    }
-}
-
-<!-- =========================
-PORTFOLIO
-========================= -->
-
-<section id="portfolio">
-
-<div class="container">
-
-
-<div class="portfolio-header">
-
-    <div class="portfolio-heading">
-
-        <h2>Project</h2>
-
-        <p>
-            디지털 서비스부터 AI·R&amp;D까지<br>
-            다양한 프로젝트의 UX/UI를 설계하고 디자인했습니다.
-        </p>
-
-    </div>
-
-   <!-- <div class="portfolio-meta">
-
-        <strong>20+ PROJECTS</strong>
-        <span>UX/UI DESIGN</span>
-
-    </div>-->
-
-</div>
-
-
-<div class="portfolio-grid">
-
-
-<!-- 01. AI SPACE -->
-
-<a href="case/seedN.html" class="project">
-
-<div class="project-category">
-    AI SERVICE
-</div>
-
-<h2>
-    AI Space Temperature Control
-</h2>
-
-<p>
-    AI 기반 공간 온도 제어 플랫폼 UX/UI
-</p>
-
-<div class="arrow">
-    View Project →
-</div>
-
-</a>
-
-
-
-<!-- 02. AI SMART GLASSES -->
-
-<a href="case/wearable.html" class="project">
-
-<div class="project-category">
-    WEARABLE
-</div>
-
-<h2>
-    AI Smart Glasses
-</h2>
-
-<p>
-    시청각 장애인을 위한 AI 웨어러블 스마트 글래스 UX/UI
-</p>
-
-<div class="arrow">
-    View Case Study →
-</div>
-
-</a>
-
-
-
-<!-- 03. GOVERNMENT R&D -->
-
-<a href="#" class="project">
-
-<div class="project-category">
-    GOVERNMENT R&amp;D
-</div>
-
-<h2>
-    Government Projects
-</h2>
-
-<p>
-    정부 R&amp;D UX/UI 및 서비스 설계
-</p>
-
-<div class="arrow">
-    View Project →
-</div>
-
-</a>
-
-
-
-<!-- 04. PRODUCT -->
-
-<a href="#" class="project">
-
-<div class="project-category">
-    PRODUCT
-</div>
-
-<h2>
-    Product Experience
-</h2>
-
-<p>
-    제품 서비스 UX/UI 및 디자인 시스템
-</p>
-
-<div class="arrow">
-    View Project →
-</div>
-
-</a>
-
-
-
-<!-- 05. WEB / APP -->
-
-<a href="#" class="project">
-
-<div class="project-category">
-    WEB / APP
-</div>
-
-<h2>
-    Digital Service
-</h2>
-
-<p>
-    웹·앱 서비스 UX/UI 디자인
-</p>
-
-<div class="arrow">
-    View Project →
-</div>
-
-</a>
-
-
-
-<!-- 06. EXHIBITION / CONTENTS -->
-
-<a href="case/jeju-exhibition.html" class="project">
-
-<div class="project-category">
-    EXHIBITION / CONTENTS
-</div>
-
-<h2>
-    Jeju Seolmundaehalmang
-</h2>
-
-<p>
-    전시 콘텐츠 UX/UI 및 인터랙티브 콘텐츠 디자인
-</p>
-
-<div class="arrow">
-    View Project →
-</div>
-
-</a>
-
-
-</div>
-
-
-
-
-<!-- =========================
-PROJECT ARCHIVE
-========================= -->
-
-<a href="#" class="project-archive">
-
-<div class="archive-content">
-
-    <h3>
-        PROJECT ARCHIVE
-    </h3>
-
-    <p>
-        20+ Projects across UX · UI · AI · R&amp;D
-    </p>
-
-</div>
-
-<span class="archive-arrow">
-    ↗
-</span>
-
-</a>
-
-
-
-/* =========================================================
-   PROJECT ARCHIVE
-========================================================= */
-
-.project-archive {
-    position: relative;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 100%;
-
-    margin-top: 180px;
-    padding: 20px 0;
-
-    color: #111;
-    text-decoration: none;
-
-    transition: transform .45s cubic-bezier(.2,.7,.2,1);
-}
-
-.archive-content {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.archive-content h3 {
-    margin: 0;
-
-    font-size: clamp(42px, 5vw, 68px);
-    line-height: .95;
-
-    font-weight: 700;
-    letter-spacing: -.055em;
-
-    transition: transform .45s cubic-bezier(.2,.7,.2,1);
-}
-
-.archive-content p {
-    margin: 18px 0 0;
-
-    font-size: 15px;
-    line-height: 1.5;
-
-    color: #888;
-    letter-spacing: -.02em;
-
-    transition:
-        color .35s ease,
-        transform .45s cubic-bezier(.2,.7,.2,1);
-}
-
-.archive-arrow {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 28px;
-    font-weight: 400;
-
-    color: #111;
-
-    transition:
-        transform .45s cubic-bezier(.2,.7,.2,1),
-        font-size .35s ease;
-}
-
-
-/* HOVER */
-
-.project-archive:hover {
-    transform: translateY(-4px);
-}
-
-.project-archive:hover .archive-content h3 {
-    transform: translateX(6px);
-}
-
-.project-archive:hover .archive-content p {
-    color: #555;
-}
-
-.project-archive:hover .archive-arrow {
-    transform: translate(6px, -5px);
-    font-size: 34px;
-}
-
-
-/* =========================================================
-   PROJECT ARCHIVE MOBILE
-========================================================= */
-
-@media (max-width: 767px) {
-
     .project-archive {
         margin-top: 100px;
         padding: 10px 0;
@@ -1628,42 +1260,4 @@ PROJECT ARCHIVE
     .archive-arrow {
         font-size: 24px;
     }
-
-}
-
-/* =========================================================
-   PROJECT HOVER LIGHT OFF
-========================================================= */
-.project::after {
-    display: none !important;
-}
-
-/* =========================================================
-   Experience Section 3D Object Styling & Animation
-========================================================= */
-#experience {
-    position: relative;
-    overflow: hidden;
-}
-
-#experience-object {
-    position: absolute;
-    top: -20px;       
-    left: -160px;     /* 오른쪽으로 이동시킨 위치 유지 */
-    width: 360px;     
-    height: 360px;    
-    z-index: 1; 
-    pointer-events: none;
-    
-    /* ▼ 아래에서 위로 올라오는 등장 모션 초기 설정 */
-    opacity: 0;
-    transform: translateY(50px);
-    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
-                transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* 스크롤되어 화면에 들어왔을 때 적용될 클래스 */
-#experience-object.is-visible {
-    opacity: 1;
-    transform: translateY(0);
 }
