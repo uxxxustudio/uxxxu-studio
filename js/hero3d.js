@@ -461,7 +461,7 @@ export function initSectionObject(containerId, assetInput = "U") {
 
 
 /* =========================================================
-   PROFILE SECTION 3D OBJECT (initProfile3D) - 일러스트 텍스처 방식
+   PROFILE SECTION 3D OBJECT (initProfile3D) - 비율 유지 및 우측 배치, 3D 입체 효과 적용
 ========================================================= */
 
 export function initProfile3D(containerId) {
@@ -475,7 +475,7 @@ export function initProfile3D(containerId) {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
-  camera.position.set(0, 0, 20);
+  camera.position.set(0, 0, 22);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(width, height);
@@ -484,36 +484,76 @@ export function initProfile3D(containerId) {
   container.appendChild(renderer.domElement);
 
   const textureLoader = new THREE.TextureLoader();
-  
+
   textureLoader.load(
-    "./assets/images/ne.svg", 
+    "./assets/images/ne.svg",
     (texture) => {
       texture.generateMipmaps = true;
       texture.minFilter = THREE.LinearFilter;
       texture.magFilter = THREE.LinearFilter;
 
-      const geometry = new THREE.PlaneGeometry(4, 4);
-      const material = new THREE.MeshBasicMaterial({
-        map: texture,
-        transparent: true,
-        side: THREE.DoubleSide,
-      });
+      // 이미지의 원래 비율(가로/세로)을 계산하여 찌그러짐 방지
+      const imageAspect = texture.image ? (texture.image.width / texture.image.height) : 1;
+      const baseHeight = 3.8;
+      const baseWidth = baseHeight * (isNaN(imageAspect) ? 1 : imageAspect);
 
-      const baseMesh = new THREE.Mesh(geometry, material);
+      const geometry = new THREE.PlaneGeometry(baseWidth, baseHeight, 32, 32);
 
-      // 1. 큰 캐릭터 (좌측 하단)
-      const largeChar = baseMesh.clone();
-      largeChar.scale.set(1.2, 1.2, 1.2);
-      largeChar.position.set(-1.2, -0.8, 0);
+      // 히어로 섹션처럼 네온/입체 질감이 살아나는 커스텀 셰이더 머티리얼 적용
+      const createCustomMaterial = (isMain) => {
+        return new THREE.ShaderMaterial({
+          uniforms: {
+            uTime: { value: 0 },
+            uTexture: { value: texture },
+            uAlpha: { value: isMain ? 1.0 : 0.85 }
+          },
+          vertexShader: `
+            varying vec2 vUv;
+            varying vec3 vPosition;
+            void main() {
+              vUv = uv;
+              vPosition = position;
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+          `,
+          fragmentShader: `
+            uniform sampler2D uTexture;
+            uniform float uTime;
+            uniform float uAlpha;
+            varying vec2 vUv;
+            varying vec3 vPosition;
 
-      // 2. 작은 캐릭터 (우측 상단)
-      const smallChar = baseMesh.clone();
-      smallChar.scale.set(0.7, 0.7, 0.7);
-      smallChar.position.set(1.2, 0.8, 0.5);
+            void main() {
+              vec4 texColor = texture2D(uTexture, vUv);
+              
+              // 은은한 빛 흐름(입체 3D 셰이더 효과) 추가
+              float flow = mod(vPosition.y * 0.3 + uTime * 0.4, 1.0);
+              float beam = smoothstep(0.1, 0.0, abs(flow - 0.5)) * 0.25;
+
+              vec3 finalColor = texColor.rgb + vec3(beam);
+              gl_FragColor = vec4(finalColor, texColor.a * uAlpha);
+            }
+          `,
+          transparent: true,
+          side: THREE.DoubleSide,
+        });
+      };
+
+      const largeMesh = new THREE.Mesh(geometry, createCustomMaterial(true));
+      const smallMesh = new THREE.Mesh(geometry, createCustomMaterial(false));
 
       const profileGroup = new THREE.Group();
-      profileGroup.add(largeChar);
-      profileGroup.add(smallChar);
+
+      // 1. 큰 캐릭터 (왼쪽 배치 & 앞으로 살짝 튀어나오게)
+      largeMesh.scale.set(1.0, 1.0, 1.0);
+      largeMesh.position.set(-1.4, -0.5, 0.5);
+      profileGroup.add(largeMesh);
+
+      // 2. 작은 캐릭터 (요청하신 대로 오른쪽으로 분산 배치 & 뒤로 배치해 깊이감 부여)
+      smallMesh.scale.set(0.65, 0.65, 0.65);
+      smallMesh.position.set(1.6, 0.8, -1.0);
+      profileGroup.add(smallMesh);
+
       scene.add(profileGroup);
 
       const clock = new THREE.Clock();
@@ -536,8 +576,16 @@ export function initProfile3D(containerId) {
         mouse.x += (target.x - mouse.x) * 0.08;
         mouse.y += (target.y - mouse.y) * 0.08;
 
-        profileGroup.rotation.y = mouse.x * 0.3 + Math.sin(time * 0.3) * 0.1;
-        profileGroup.rotation.x = -mouse.y * 0.2 + Math.cos(time * 0.4) * 0.05;
+        // 마우스 움직임에 따라 두 캐릭터가 서로 다른 깊이감으로 입체 회전
+        profileGroup.rotation.y = mouse.x * 0.35 + Math.sin(time * 0.3) * 0.08;
+        profileGroup.rotation.x = -mouse.y * 0.25 + Math.cos(time * 0.4) * 0.05;
+
+        // 셰이더 내부의 3D 빛 흐름 애니메이션 업데이트
+        profileGroup.traverse((child) => {
+          if (child.material && child.material.uniforms && child.material.uniforms.uTime) {
+            child.material.uniforms.uTime.value = time;
+          }
+        });
 
         renderer.render(scene, camera);
       }
