@@ -244,15 +244,15 @@ export function initHero3D() {
 
 
 /* =========================================================
-   [수정됨] Experience 섹션 오브젝트 생성 함수 (문자 "U" 또는 SVG 파일 경로 모두 대응)
+   EXPERIENCE SECTION OBJECT (initSectionObject)
 ========================================================= */
+
 export function initSectionObject(containerId, assetInput = "U") {
   const container = document.getElementById(containerId);
   if (!container) return;
 
   container.innerHTML = "";
 
-  // 컨테이너 크기가 0일 경우 대비 기본값 설정
   const width = container.clientWidth || 300;
   const height = container.clientHeight || 300;
 
@@ -272,13 +272,12 @@ export function initSectionObject(containerId, assetInput = "U") {
     opacity: 1.0,
   });
 
-  // 입력값이 한 글자(예: "U")이거나 파일 확장자가 svg가 아닌 경우 폰트 텍스트로 처리
   if (assetInput.length <= 2 && !assetInput.includes(".")) {
     const loader = new FontLoader();
     loader.load(
       "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
       (font) => {
-        const geomOpts = { font: font, size: 4.1, depth: 0.38, curveSegments: 24, bevelEnabled: false };
+        const geomOpts = { font: font, size: 5.5, depth: 0.45, curveSegments: 24, bevelEnabled: false };
         const geometry = new TextGeometry(assetInput, geomOpts);
         geometry.computeBoundingBox();
         const box = geometry.boundingBox;
@@ -344,8 +343,11 @@ export function initSectionObject(containerId, assetInput = "U") {
           const time = clock.getElapsedTime();
           const scrollY = window.scrollY || window.pageYOffset;
 
+          const basePosY = -1.0; 
+          const scrollOffset = scrollY * 0.0015;
+
           wrapperGroup.position.x = 0;
-          wrapperGroup.position.y = Math.sin(time * 0.4) * 0.1;
+          wrapperGroup.position.y = basePosY + scrollOffset + Math.sin(time * 0.4) * 0.12;
           wrapperGroup.rotation.y += 0.005;
 
           wrapperGroup.traverse((child) => {
@@ -360,7 +362,6 @@ export function initSectionObject(containerId, assetInput = "U") {
       }
     );
   } else {
-    // SVG 파일 로드 로직
     const svgLoader = new SVGLoader();
     svgLoader.load(
       assetInput,
@@ -431,7 +432,7 @@ export function initSectionObject(containerId, assetInput = "U") {
 
         const wrapperGroup = new THREE.Group();
         wrapperGroup.add(characterGroup);
-        wrapperGroup.scale.setScalar(0.05);
+        wrapperGroup.scale.setScalar(0.08);
         scene.add(wrapperGroup);
 
         const clock = new THREE.Clock();
@@ -439,7 +440,9 @@ export function initSectionObject(containerId, assetInput = "U") {
         function animate() {
           requestAnimationFrame(animate);
           const time = clock.getElapsedTime();
+          const scrollY = window.scrollY || window.pageYOffset;
 
+          wrapperGroup.position.y = -1.0 + (scrollY * 0.0015) + Math.sin(time * 0.4) * 0.12;
           wrapperGroup.rotation.y += 0.005;
 
           wrapperGroup.traverse((child) => {
