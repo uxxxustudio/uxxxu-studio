@@ -461,7 +461,7 @@ export function initSectionObject(containerId, assetInput = "U") {
 
 
 /* =========================================================
-   PROFILE SECTION 3D OBJECT (initProfile3D) - 완전 분리 좌우 배치 및 3D 입체감 강화
+   PROFILE SECTION 3D OBJECT (initProfile3D) - 우측 단일 캐릭터 배치 및 입체 효과
 ========================================================= */
 
 export function initProfile3D(containerId) {
@@ -475,7 +475,7 @@ export function initProfile3D(containerId) {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
-  camera.position.set(0, 0, 24);
+  camera.position.set(0, 0, 20);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(width, height);
@@ -493,108 +493,67 @@ export function initProfile3D(containerId) {
       texture.magFilter = THREE.LinearFilter;
 
       const imageAspect = texture.image ? (texture.image.width / texture.image.height) : 1;
-      const baseHeight = 3.5;
+      const baseHeight = 5.5; // 크기를 더 키웠습니다
       const baseWidth = baseHeight * (isNaN(imageAspect) ? 1 : imageAspect);
 
-      // 입체적인 굴곡(3D 웨이브)을 주기 위해 세분화(Segments)를 높임
       const geometry = new THREE.PlaneGeometry(baseWidth, baseHeight, 32, 32);
 
-      // 3D 입체감과 빛 흐름이 느껴지는 셰이더 머티리얼
-      const create3DMaterial = () => {
-        return new THREE.ShaderMaterial({
-          uniforms: {
-            uTime: { value: 0 },
-            uTexture: { value: texture },
-          },
-          vertexShader: `
-            uniform float uTime;
-            varying vec2 vUv;
-            varying vec3 vPosition;
-            void main() {
-              vUv = uv;
-              vec3 pos = position;
-              // 정면에 볼록한 입체 굴곡 및 웨이브 효과 부여
-              pos.z += sin(pos.x * 1.2 + uTime * 1.5) * 0.25 + cos(pos.y * 1.2 + uTime * 1.2) * 0.25;
-              vPosition = pos;
-              gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-            }
-          `,
-          fragmentShader: `
-            uniform sampler2D uTexture;
-            uniform float uTime;
-            varying vec2 vUv;
-            varying vec3 vPosition;
-            void main() {
-              vec4 texColor = texture2D(uTexture, vUv);
-              if (texColor.a < 0.1) discard;
+      // 3D 굴곡과 은은한 빛 반사가 있는 셰이더
+      const material = new THREE.ShaderMaterial({
+        uniforms: {
+          uTime: { value: 0 },
+          uTexture: { value: texture },
+        },
+        vertexShader: `
+          uniform float uTime;
+          varying vec2 vUv;
+          varying vec3 vPosition;
+          void main() {
+            vUv = uv;
+            vec3 pos = position;
+            // 앞뒤로 볼록한 3D 입체 굴곡
+            pos.z += sin(pos.x * 0.8 + uTime) * 0.3;
+            vPosition = pos;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform sampler2D uTexture;
+          uniform float uTime;
+          varying vec2 vUv;
+          varying vec3 vPosition;
+          void main() {
+            vec4 texColor = texture2D(uTexture, vUv);
+            if (texColor.a < 0.1) discard;
+            // 3D 입체 하이라이트
+            float light = sin(vPosition.x * 0.5 + uTime) * 0.2 + 0.8;
+            gl_FragColor = vec4(texColor.rgb * light, texColor.a);
+          }
+        `,
+        transparent: true,
+        side: THREE.DoubleSide,
+      });
 
-              // 3D 표면에 비치는 은은한 하이라이트 효과
-              float highlight = smoothstep(0.0, 1.0, sin(vPosition.x + uTime * 2.0));
-              vec3 finalColor = mix(texColor.rgb, texColor.rgb + vec3(0.15), highlight);
+      const mesh = new THREE.Mesh(geometry, material);
 
-              gl_FragColor = vec4(finalColor, texColor.a);
-            }
-          `,
-          transparent: true,
-          side: THREE.DoubleSide,
-        });
-      };
-
-      // 개별 메시 생성
-      const leftMesh = new THREE.Mesh(geometry, create3DMaterial());
-      const rightMesh = new THREE.Mesh(geometry, create3DMaterial());
-
-      // 1. 왼쪽 캐릭터 배치 (좌측 하단)
-      leftMesh.scale.set(1.0, 1.0, 1.0);
-      leftMesh.position.set(-2.2, -0.6, 0);
-      scene.add(leftMesh);
-
-      // 2. 오른쪽 캐릭터 배치 (요청하신 대로 화면 오른쪽 영역으로 완전히 분리)
-      rightMesh.scale.set(0.65, 0.65, 0.65);
-      rightMesh.position.set(2.6, 1.0, -1.5);
-      scene.add(rightMesh);
+      // [핵심] 화면 오른쪽으로 크게 배치
+      mesh.position.set(2.5, 0, 0); 
+      scene.add(mesh);
 
       const clock = new THREE.Clock();
-      const target = { x: 0, y: 0 };
-      const mouse = { x: 0, y: 0 };
-
-      window.addEventListener(
-        "mousemove",
-        (e) => {
-          target.x = (e.clientX / window.innerWidth) * 2 - 1;
-          target.y = -(e.clientY / window.innerHeight) * 2 + 1;
-        },
-        { passive: true }
-      );
-
+      
       function animate() {
         requestAnimationFrame(animate);
         const time = clock.getElapsedTime();
+        
+        // 마우스와 시간 연동 애니메이션
+        mesh.rotation.y = Math.sin(time * 0.5) * 0.2;
+        mesh.rotation.x = Math.cos(time * 0.3) * 0.1;
 
-        mouse.x += (target.x - mouse.x) * 0.08;
-        mouse.y += (target.y - mouse.y) * 0.08;
-
-        // 마우스 움직임에 따라 좌우 캐릭터가 각기 다른 각도로 입체 회전
-        leftMesh.rotation.y = mouse.x * 0.4 + Math.sin(time * 0.4) * 0.15;
-        leftMesh.rotation.x = -mouse.y * 0.3 + Math.cos(time * 0.5) * 0.1;
-
-        rightMesh.rotation.y = -mouse.x * 0.3 + Math.cos(time * 0.3) * 0.12;
-        rightMesh.rotation.x = mouse.y * 0.2 + Math.sin(time * 0.4) * 0.08;
-
-        // 셰이더 시간 업데이트 (입체 웨이브 및 하이라이트 애니메이션)
-        [leftMesh, rightMesh].forEach(mesh => {
-          if (mesh.material.uniforms && mesh.material.uniforms.uTime) {
-            mesh.material.uniforms.uTime.value = time;
-          }
-        });
-
+        mesh.material.uniforms.uTime.value = time;
         renderer.render(scene, camera);
       }
       animate();
-    },
-    undefined,
-    (error) => {
-      console.error("Profile image load error:", error);
     }
   );
 }
