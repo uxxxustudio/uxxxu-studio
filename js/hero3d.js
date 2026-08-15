@@ -500,31 +500,31 @@ export function initProfile3D(containerId) {
 
   // 1. 소문자 "ne" 필기체 커브 패스 좌표 설정
   const curvePoints = [
-    new THREE.Vector3(-55, -25, 0), // n 시작점
+    new THREE.Vector3(-55, -25, 0),
     new THREE.Vector3(-45, 25, 0),
     new THREE.Vector3(-35, -15, 0),
     new THREE.Vector3(-25, 25, 0),
     new THREE.Vector3(-15, -15, 0),
-    new THREE.Vector3(0, 10, 0),    // n에서 e로 이어지는 연결부
-    new THREE.Vector3(25, 35, 0),   // e 상단 루프
+    new THREE.Vector3(0, 10, 0),
+    new THREE.Vector3(25, 35, 0),
     new THREE.Vector3(45, 10, 0),
-    new THREE.Vector3(25, -20, 0),  // e 하단 루프
-    new THREE.Vector3(45, -22, 0)   // e 꼬리
+    new THREE.Vector3(25, -20, 0),
+    new THREE.Vector3(45, -22, 0)
   ];
 
   const curve = new THREE.CatmullRomCurve3(curvePoints);
   
-  // 2. TubeGeometry로 볼륨감 있는 통통한 튜브 형태 생성 (시안의 볼륨감 반영)
+  // 2. TubeGeometry로 볼륨감 있는 통통한 튜브 형태 생성
   const geometry = new THREE.TubeGeometry(curve, 120, 14, 32, false);
 
   // 3. 투명하고 반짝이는 글래스/벌룬 재질 (MeshPhysicalMaterial)
   const glassMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0xdaf2ff,          // 맑은 스카이 블루 틴트
+    color: 0xdaf2ff,
     metalness: 0.1,
-    roughness: 0.05,          // 표면 반사가 매끄럽도록 낮게 설정
-    transmission: 0.85,       // 반투명 유리/벌룬 느낌
-    thickness: 15.0,          // 내부 굴절 볼륨감
-    clearcoat: 1.0,           // 표면 코팅광 추가
+    roughness: 0.05,
+    transmission: 0.85,
+    thickness: 15.0,
+    clearcoat: 1.0,
     clearcoatRoughness: 0.05,
     specularIntensity: 1.0,
     transparent: true,
@@ -558,11 +558,18 @@ export function initProfile3D(containerId) {
     mouse.x += (target.x - mouse.x) * 0.08;
     mouse.y += (target.y - mouse.y) * 0.08;
 
-    // 마우스 움직임에 따른 입체 회전
     profileGroup.rotation.y = mouse.x * 0.2 + Math.sin(time * 0.2) * 0.05 + (-Math.PI / 16);
     profileGroup.rotation.x = -mouse.y * 0.15 + Math.cos(time * 0.3) * 0.03 + (Math.PI / 12);
 
     renderer.render(scene, camera);
   }
   animate();
+
+  window.addEventListener("resize", () => {
+    const newWidth = container.clientWidth || 400;
+    const newHeight = container.clientHeight || 450;
+    camera.aspect = newWidth / newHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(newWidth, newHeight);
+  });
 }
