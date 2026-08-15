@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
+import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
 
 /* =========================================================
    HERO THREE.JS (Scroll-reactive U & X Parallax Effect)
@@ -115,7 +116,7 @@ export function initHero3D() {
 
     const letterGroup = new THREE.Group();
 
-   letterGroup.position.x = -1.5;
+    letterGroup.position.x = -1.5;
 
     const material = new THREE.ShaderMaterial({
       uniforms: {
@@ -263,9 +264,9 @@ export function initHero3D() {
 
 
 /* =========================================================
-   [추가] 다른 페이지(Experience 등) 섹션 전용 오브젝트 생성 함수
+   [수정됨] 프로필 섹션 전용 SVG 오브젝트 생성 함수 (ne.svg 적용)
 ========================================================= */
-export function initSectionObject(containerId, characterText) {
+export function initSectionObject(containerId, svgPath = "../assets/images/ne.svg") {
   const container = document.getElementById(containerId);
   if (!container) return;
 
@@ -287,99 +288,111 @@ export function initSectionObject(containerId, characterText) {
     opacity: 1.0,
   });
 
-  const loader = new FontLoader();
-  loader.load(
-    "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
-    (font) => {
-      const isU = (characterText === "U");
-      const geomOpts = { font: font, size: 4.1, depth: 0.6, curveSegments: isU ? 24 : 6, bevelEnabled: false };
+  const svgLoader = new SVGLoader();
+  svgLoader.load(
+    svgPath,
+    (data) => {
+      const paths = data.paths;
+      const characterGroup = new THREE.Group();
 
-      const geometry = new TextGeometry(characterText, geomOpts);
-      geometry.computeBoundingBox();
-      const box = geometry.boundingBox;
-      geometry.translate(-(box.max.x + box.min.x) / 2, -(box.max.y + box.min.y) / 2, 0);
+      paths.forEach((path) => {
+        const shapes = SVGLoader.createShapes(path);
 
-      const letterGroup = new THREE.Group();
+        shapes.forEach((shape) => {
+          const extrudeSettings = {
+            depth: 0.6, // 두께 설정 (U와 비슷하게 통통한 입체감)
+            bevelEnabled: false,
+          };
 
-      const material = new THREE.ShaderMaterial({
-        uniforms: {
-          uTime: { value: 0 },
-          uOffset: { value: 1.0 },
-          uIsU: { value: isU ? 1.0 : 0.0 },
-        },
-        vertexShader: `
-          varying vec3 vPosition;
-          varying vec3 vNormal;
-          void main() {
-            vPosition = position;
-            vNormal = normal;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-          }
-        `,
-        fragmentShader: `
-          uniform float uTime;
-          uniform float uOffset;
-          uniform float uIsU;
-          varying vec3 vPosition;
-          varying vec3 vNormal;
+          const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
 
-          void main() {
-            if (abs(vNormal.z) > 0.1) { discard; }
-            float beam = 0.0;
-            if (uIsU > 0.5) {
-              float sideDir = (vPosition.x < 0.0) ? 1.0 : -1.0;
-              float flow = mod((vPosition.y * 0.2) + (uTime * 0.3 * sideDir) + (uOffset * 0.2), 1.0);
-              beam = smoothstep(0.12, 0.0, abs(flow - 0.5));
-            } else {
-              float angle = atan(vPosition.y, vPosition.x);
-              float sweep = mod((angle / 6.28318) - (uTime * 0.15) + (uOffset * 0.1), 1.0);
-              beam = smoothstep(0.12, 0.0, abs(sweep - 0.5));
-            }
-            vec3 baseColor = vec3(0.04, 0.04, 0.04);
-            vec3 neonGreen = vec3(0.12, 0.95, 0.45);
-            vec3 finalColor = mix(baseColor, neonGreen, beam);
-            float alpha = 0.08 + beam * 0.92;
-            gl_FragColor = vec4(finalColor, alpha);
-          }
-        `,
-        transparent: true,
-        side: THREE.DoubleSide,
-        depthWrite: false,
+          const material = new THREE.ShaderMaterial({
+            uniforms: {
+              uTime: { value: 0 },
+              uOffset: { value: 1.0 },
+              uIsU: { value: 1.0 },
+            },
+            vertexShader: `
+              varying vec3 vPosition;
+              varying vec3 vNormal;
+              void main() {
+                vPosition = position;
+                vNormal = normal;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+              }
+            `,
+            fragmentShader: `
+              uniform float uTime;
+              uniform float uOffset;
+              uniform float uIsU;
+              varying vec3 vPosition;
+              varying vec3 vNormal;
+
+              void main() {
+                if (abs(vNormal.z) > 0.1) { discard; }
+                float beam = 0.0;
+                float sideDir = (vPosition.x < 0.0) ? 1.0 : -1.0;
+                float flow = mod((vPosition.y * 0.2) + (uTime * 0.3 * sideDir) + (uOffset * 0.2), 1.0);
+                beam = smoothstep(0.12, 0.0, abs(flow - 0.5));
+
+                vec3 baseColor = vec3(0.04, 0.04, 0.04);
+                vec3 neonGreen = vec3(0.12, 0.95, 0.45);
+                vec3 finalColor = mix(baseColor, neonGreen, beam);
+                float alpha = 0.08 + beam * 0.92;
+                gl_FragColor = vec4(finalColor, alpha);
+              }
+            `,
+            transparent: true,
+            side: THREE.DoubleSide,
+            depthWrite: false,
+          });
+
+          const fillMesh = new THREE.Mesh(geometry, material);
+          characterGroup.add(fillMesh);
+
+          const edges = new THREE.EdgesGeometry(geometry, 20);
+          const lineSegments = new THREE.LineSegments(edges, lineMat);
+          characterGroup.add(lineSegments);
+        });
       });
 
-      const fillMesh = new THREE.Mesh(geometry, material);
-      letterGroup.add(fillMesh);
+      // SVG 좌표계 특성상 위아래가 뒤집히므로 Y축 반전 및 중앙 정렬, 크기 조절
+      characterGroup.scale.y = -1;
+      
+      // 중심점 정렬을 위한 계산
+      const box = new THREE.Box3().setFromObject(characterGroup);
+      const center = box.getCenter(new THREE.Vector3());
+      characterGroup.position.x = -center.x;
+      characterGroup.position.y = -center.y;
 
-      const edges = new THREE.EdgesGeometry(geometry, isU ? 25 : 15);
-      const lineSegments = new THREE.LineSegments(edges, lineMat);
-      letterGroup.add(lineSegments);
-
-      letterGroup.scale.setScalar(1.3);
-      scene.add(letterGroup);
+      const wrapperGroup = new THREE.Group();
+      wrapperGroup.add(characterGroup);
+      wrapperGroup.scale.setScalar(0.05); // SVG 크기에 따라 조절 필요
+      scene.add(wrapperGroup);
 
       const clock = new THREE.Clock();
 
       function animate() {
         requestAnimationFrame(animate);
         const time = clock.getElapsedTime();
-        
         const scrollY = window.scrollY || window.pageYOffset;
-        
-        // 1. X축 위치: 02와 03 사이로 가도록 고정값 부여 (필요하면 이 숫자만 -3.5 ~ -1.5 사이로 조절하세요)
-        const targetX = -2.5; 
-        
-        // 2. Y축 모션: 아래(-2.5)에서 시작해 스크롤할수록 위로 올라오게 설정
+
+        const targetX = -2.5;
         const targetY = -2.5 + (scrollY * 0.002);
 
-        letterGroup.position.x = targetX;
-        letterGroup.position.y = targetY + Math.sin(time * 0.4) * 0.06;
-        letterGroup.rotation.y += 0.005;
+        wrapperGroup.position.x = targetX;
+        wrapperGroup.position.y = targetY + Math.sin(time * 0.4) * 0.06;
+        wrapperGroup.rotation.y += 0.005;
 
-        material.uniforms.uTime.value = time;
+        wrapperGroup.traverse((child) => {
+          if (child.material && child.material.uniforms && child.material.uniforms.uTime) {
+            child.material.uniforms.uTime.value = time;
+          }
+        });
+
         renderer.render(scene, camera);
       }
       animate();
     }
   );
 }
-
