@@ -1493,20 +1493,20 @@ PORTFOLIO
 
 
 /* =========================================================
-   Experience Section 3D Object Styling (볼륨감 있게 키운 버전)
+   Experience Section 3D Object Styling
 ========================================================= */
 #experience {
     position: relative;
     overflow: hidden;
 }
 
-
 #experience-object {
     position: absolute;
-    top: 280px;      /* 위치를 조금 더 위로 붙이려면 조절 */
-    left: 55%;    
-    width: 480px;   /* 300px -> 480px로 키우기 */
-    height: 480px;  /* 300px -> 480px로 키우기 */
+    /* 03번 카드 안에서 위치를 미세 조정하세요 */
+    top: -20px;       /* 위아래 이동 */
+    left: -240px;     /* 좌우 이동 (02번과 03번 사이로 위치 조절) */
+    width: 360px;     /* 크기 조정 */
+    height: 360px;    /* 크기 조정 */
     z-index: 1; 
     pointer-events: none;
 }
