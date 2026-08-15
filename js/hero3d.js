@@ -277,7 +277,6 @@ export function initSectionObject(containerId, assetInput = "U") {
     loader.load(
       "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
       (font) => {
-        // [수정됨] 글자 크기(size)와 옆 두께(depth)를 더 크게 확장
         const geomOpts = { font: font, size: 7.2, depth: 1.2, curveSegments: 24, bevelEnabled: false };
         const geometry = new TextGeometry(assetInput, geomOpts);
         geometry.computeBoundingBox();
@@ -458,4 +457,154 @@ export function initSectionObject(containerId, assetInput = "U") {
       }
     );
   }
+}
+
+
+/* =========================================================
+   PROFILE SECTION 3D OBJECT (initProfile3D)
+   - 큰 캐릭터(좌측 하단)와 작은 캐릭터(우측 상단) 2개 배치
+========================================================= */
+
+export function initProfile3D(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  const width = container.clientWidth || 400;
+  const height = container.clientHeight || 450;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
+  camera.position.set(0, 0, 22);
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
+  container.appendChild(renderer.domElement);
+
+  const lineMat = new THREE.LineBasicMaterial({
+    color: 0x111111,
+    transparent: false,
+    opacity: 1.0,
+  });
+
+  const svgLoader = new SVGLoader();
+  svgLoader.load("assets/images/ne.svg", (data) => {
+    const paths = data.paths;
+    
+    // SVG 기본 그룹 생성
+    const baseCharacterGroup = new THREE.Group();
+    paths.forEach((path) => {
+      const shapes = SVGLoader.createShapes(path);
+      shapes.forEach((shape) => {
+        const extrudeSettings = { depth: 1.2, bevelEnabled: false };
+        const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+
+        const material = new THREE.ShaderMaterial({
+          uniforms: {
+            uTime: { value: 0 },
+            uOffset: { value: 1.0 },
+            uIsU: { value: 1.0 },
+          },
+          vertexShader: `
+            varying vec3 vPosition;
+            varying vec3 vNormal;
+            void main() {
+              vPosition = position;
+              vNormal = normal;
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+          `,
+          fragmentShader: `
+            uniform float uTime;
+            uniform float uOffset;
+            uniform float uIsU;
+            varying vec3 vPosition;
+            varying vec3 vNormal;
+
+            void main() {
+              if (abs(vNormal.z) > 0.1) { discard; }
+              float sideDir = (vPosition.x < 0.0) ? 1.0 : -1.0;
+              float flow = mod((vPosition.y * 0.2) + (uTime * 0.3 * sideDir) + (uOffset * 0.2), 1.0);
+              float beam = smoothstep(0.12, 0.0, abs(flow - 0.5));
+
+              vec3 baseColor = vec3(0.04, 0.04, 0.04);
+              vec3 neonGreen = vec3(0.12, 0.95, 0.45);
+              vec3 finalColor = mix(baseColor, neonGreen, beam);
+              float alpha = 0.08 + beam * 0.92;
+              gl_FragColor = vec4(finalColor, alpha);
+            }
+          `,
+          transparent: true,
+          side: THREE.DoubleSide,
+          depthWrite: false,
+        });
+
+        const fillMesh = new THREE.Mesh(geometry, material);
+        baseCharacterGroup.add(fillMesh);
+
+        const edges = new THREE.EdgesGeometry(geometry, 20);
+        const lineSegments = new THREE.LineSegments(edges, lineMat);
+        baseCharacterGroup.add(lineSegments);
+      });
+    });
+
+    baseCharacterGroup.scale.y = -1;
+    const box = new THREE.Box3().setFromObject(baseCharacterGroup);
+    const center = box.getCenter(new THREE.Vector3());
+    baseCharacterGroup.position.x = -center.x;
+    baseCharacterGroup.position.y = -center.y;
+
+    // 1. 큰 캐릭터 (좌측 하단 배치)
+    const largeChar = baseCharacterGroup.clone(true);
+    largeChar.scale.setScalar(0.095); // 크기 조절
+    largeChar.position.set(-2.8, -1.8, 0); // 위치 좌표 (원 시안 위치 대응)
+
+    // 2. 작은 캐릭터 (우측 상단 배치)
+    const smallChar = baseCharacterGroup.clone(true);
+    smallChar.scale.setScalar(0.06); // 크기 조절
+    smallChar.position.set(2.2, 1.2, 0); // 위치 좌표 (원 시안 위치 대응)
+
+    const profileGroup = new THREE.Group();
+    profileGroup.add(largeChar);
+    profileGroup.add(smallChar);
+    scene.add(profileGroup);
+
+    const clock = new THREE.Clock();
+    const target = { x: 0, y: 0 };
+    const mouse = { x: 0, y: 0 };
+
+    window.addEventListener(
+      "mousemove",
+      (e) => {
+        target.x = (e.clientX / window.innerWidth) * 2 - 1;
+        target.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      },
+      { passive: true }
+    );
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const time = clock.getElapsedTime();
+
+      mouse.x += (target.x - mouse.x) * 0.08;
+      mouse.y += (target.y - mouse.y) * 0.08;
+
+      // 전체 프로필 오브젝트 부드러운 회전 및 마우스 인터랙션
+      profileGroup.rotation.y = mouse.x * 0.3 + Math.sin(time * 0.3) * 0.1;
+      profileGroup.rotation.x = -mouse.y * 0.2 + Math.cos(time * 0.4) * 0.05;
+
+      // 셰이더 시간 업데이트
+      profileGroup.traverse((child) => {
+        if (child.material && child.material.uniforms && child.material.uniforms.uTime) {
+          child.material.uniforms.uTime.value = time;
+        }
+      });
+
+      renderer.render(scene, camera);
+    }
+    animate();
+  });
 }
