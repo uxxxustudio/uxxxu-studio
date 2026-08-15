@@ -18,6 +18,11 @@ async function loadComponent(id, file) {
     if (id === "service") {
         initExperienceFeature();
     }
+
+    // [추가] about 섹션이 DOM에 로드되는 순간 Profile 3D 캐릭터 초기화
+    if (id === "about") {
+        initProfileFeature();
+    }
 }
 
 
@@ -130,5 +135,18 @@ async function initExperienceFeature() {
         observer.observe(experienceSection);
     } catch (error) {
         console.error("Experience 3D object initialization failed:", error);
+    }
+}
+
+
+/* =========================================================
+   [추가] Profile 섹션 3D 캐릭터 초기화
+========================================================= */
+async function initProfileFeature() {
+    try {
+        const { initProfile3D } = await import("./hero3d.js");
+        initProfile3D("profile-object");
+    } catch (error) {
+        console.error("Profile 3D object initialization failed:", error);
     }
 }
