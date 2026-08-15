@@ -212,6 +212,7 @@ nav a:hover {
     width: max-content;
     text-align: left;
     margin-left: 48%;
+    font-weight: 900;
 }
 
 .hero-message {
@@ -237,7 +238,6 @@ nav a:hover {
     letter-spacing: -.025em;
 }
 
-/* [수정 완료] UX 영역이 명확하게 보이도록 z-index와 가시성 설정 강화 */
 .hero-message-ux {
     position: absolute;
     z-index: 10;
@@ -484,7 +484,6 @@ nav a:hover {
     line-height: 1;
 }
 
-/* Experience 3D Object Styling */
 #experience-object {
     position: absolute;
     top: -20px;       
@@ -612,7 +611,6 @@ nav a:hover {
     transition: opacity .3s ease, transform .45s cubic-bezier(.2,.7,.2,1);
 }
 
-/* Hover Interaction */
 .portfolio-grid:hover .project:not(:hover) {
     opacity: .38;
 }
@@ -1123,6 +1121,7 @@ footer {
         margin-left: 0;
         width: calc(100% - 36%);
         text-align: left;
+        font-weight: 900;
     }
 
     .hero-3d {
@@ -1175,7 +1174,6 @@ footer {
         filter: blur(45px);
     }
 
-    /* Portfolio & Archive Mobile */
     #portfolio {
         padding: 120px 26px;
     }
