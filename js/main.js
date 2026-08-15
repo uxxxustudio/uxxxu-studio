@@ -139,3 +139,26 @@ window.addEventListener("click", (e) => {
     }
 
 });
+
+
+// EXPERIENCE 섹션 3D 오브젝트 스크롤 등장 모션 감지
+document.addEventListener('DOMContentLoaded', () => {
+    const objectElement = document.getElementById('experience-object');
+    if (!objectElement) return;
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                objectElement.classList.add('is-visible');
+                observer.unobserve(entry.target); // 애니메이션이 한 번만 실행되도록 설정
+            }
+        });
+    }, {
+        threshold: 0.2 // 섹션이 화면에 20% 보일 때 작동
+    });
+
+    const experienceSection = document.getElementById('experience');
+    if (experienceSection) {
+        observer.observe(experienceSection);
+    }
+});
