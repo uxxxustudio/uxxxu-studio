@@ -461,7 +461,7 @@ export function initSectionObject(containerId, assetInput = "U") {
 
 
 /* =========================================================
-   PROFILE SECTION 3D OBJECT (initProfile3D) - 우측 단일 캐릭터 배치 및 입체 효과
+   PROFILE SECTION 3D OBJECT (initProfile3D) - SVG 패스 기반 진짜 3D 입체 렌더링
 ========================================================= */
 
 export function initProfile3D(containerId) {
@@ -475,7 +475,7 @@ export function initProfile3D(containerId) {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
-  camera.position.set(0, 0, 20);
+  camera.position.set(0, 0, 25);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(width, height);
@@ -483,77 +483,127 @@ export function initProfile3D(containerId) {
   renderer.setClearColor(0x000000, 0);
   container.appendChild(renderer.domElement);
 
-  const textureLoader = new THREE.TextureLoader();
+  // 깔끔한 외곽선 스타일을 위한 머티리얼
+  const lineMat = new THREE.LineBasicMaterial({
+    color: 0x111111,
+    transparent: false,
+    opacity: 1.0,
+  });
 
-  textureLoader.load(
+  const svgLoader = new SVGLoader();
+
+  svgLoader.load(
     "./assets/images/ne.svg",
-    (texture) => {
-      texture.generateMipmaps = true;
-      texture.minFilter = THREE.LinearFilter;
-      texture.magFilter = THREE.LinearFilter;
+    (data) => {
+      const paths = data.paths;
+      const profileGroup = new THREE.Group();
 
-      const imageAspect = texture.image ? (texture.image.width / texture.image.height) : 1;
-      const baseHeight = 5.5; // 크기를 더 키웠습니다
-      const baseWidth = baseHeight * (isNaN(imageAspect) ? 1 : imageAspect);
+      paths.forEach((path) => {
+        const shapes = SVGLoader.createShapes(path);
+        shapes.forEach((shape) => {
+          // 입체 두께(depth)를 주어 진짜 3D 오브젝트로 변환
+          const extrudeSettings = { depth: 1.5, bevelEnabled: false };
+          const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
 
-      const geometry = new THREE.PlaneGeometry(baseWidth, baseHeight, 32, 32);
+          // 히어로 섹션과 같은 느낌의 3D 셰이더 머티리얼 적용
+          const material = new THREE.ShaderMaterial({
+            uniforms: {
+              uTime: { value: 0 },
+            },
+            vertexShader: `
+              varying vec3 vPosition;
+              varying vec3 vNormal;
+              void main() {
+                vPosition = position;
+                vNormal = normal;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+              }
+            `,
+            fragmentShader: `
+              uniform float uTime;
+              varying vec3 vPosition;
+              varying vec3 vNormal;
 
-      // 3D 굴곡과 은은한 빛 반사가 있는 셰이더
-      const material = new THREE.ShaderMaterial({
-        uniforms: {
-          uTime: { value: 0 },
-          uTexture: { value: texture },
-        },
-        vertexShader: `
-          uniform float uTime;
-          varying vec2 vUv;
-          varying vec3 vPosition;
-          void main() {
-            vUv = uv;
-            vec3 pos = position;
-            // 앞뒤로 볼록한 3D 입체 굴곡
-            pos.z += sin(pos.x * 0.8 + uTime) * 0.3;
-            vPosition = pos;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-          }
-        `,
-        fragmentShader: `
-          uniform sampler2D uTexture;
-          uniform float uTime;
-          varying vec2 vUv;
-          varying vec3 vPosition;
-          void main() {
-            vec4 texColor = texture2D(uTexture, vUv);
-            if (texColor.a < 0.1) discard;
-            // 3D 입체 하이라이트
-            float light = sin(vPosition.x * 0.5 + uTime) * 0.2 + 0.8;
-            gl_FragColor = vec4(texColor.rgb * light, texColor.a);
-          }
-        `,
-        transparent: true,
-        side: THREE.DoubleSide,
+              void main() {
+                if (abs(vNormal.z) > 0.1) { discard; }
+                float flow = mod((vPosition.y * 0.2) + (uTime * 0.2), 1.0);
+                float beam = smoothstep(0.12, 0.0, abs(flow - 0.5));
+
+                vec3 baseColor = vec3(0.06, 0.06, 0.06);
+                vec3 neonAccent = vec3(0.12, 0.85, 0.45);
+                vec3 finalColor = mix(baseColor, neonAccent, beam);
+                float alpha = 0.15 + beam * 0.85;
+                gl_FragColor = vec4(finalColor, alpha);
+              }
+            `,
+            transparent: true,
+            side: THREE.DoubleSide,
+            depthWrite: false,
+          });
+
+          const fillMesh = new THREE.Mesh(geometry, material);
+          profileGroup.add(fillMesh);
+
+          // 3D 입체 테두리선(Edges) 추가
+          const edges = new THREE.EdgesGeometry(geometry, 20);
+          const lineSegments = new THREE.LineSegments(edges, lineMat);
+          profileGroup.add(lineSegments);
+        });
       });
 
-      const mesh = new THREE.Mesh(geometry, material);
+      // SVG 좌표계 반전 및 중앙 정렬
+      profileGroup.scale.y = -1;
+      const box = new THREE.Box3().setFromObject(profileGroup);
+      const center = box.getCenter(new THREE.Vector3());
+      profileGroup.position.x = -center.x;
+      profileGroup.position.y = -center.y;
 
-      // [핵심] 화면 오른쪽으로 크게 배치
-      mesh.position.set(2.5, 0, 0); 
-      scene.add(mesh);
+      // 전체 그룹을 적절한 크기로 스케일 조정 후 오른쪽 영역에 배치
+      profileGroup.scale.setScalar(0.09);
+      profileGroup.position.set(0, 0, 0);
+
+      const mainGroup = new THREE.Group();
+      mainGroup.add(profileGroup);
+      scene.add(mainGroup);
 
       const clock = new THREE.Clock();
-      
+      const target = { x: 0, y: 0 };
+      const mouse = { x: 0, y: 0 };
+
+      window.addEventListener(
+        "mousemove",
+        (e) => {
+          target.x = (e.clientX / window.innerWidth) * 2 - 1;
+          target.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        },
+        { passive: true }
+      );
+
       function animate() {
         requestAnimationFrame(animate);
         const time = clock.getElapsedTime();
-        
-        // 마우스와 시간 연동 애니메이션
-        mesh.rotation.y = Math.sin(time * 0.5) * 0.2;
-        mesh.rotation.x = Math.cos(time * 0.3) * 0.1;
 
-        mesh.material.uniforms.uTime.value = time;
+        mouse.x += (target.x - mouse.x) * 0.08;
+        mouse.y += (target.y - mouse.y) * 0.08;
+
+        // 마우스 움직임과 시간에 따라 입체적으로 회전
+        mainGroup.rotation.y = mouse.x * 0.35 + Math.sin(time * 0.3) * 0.1;
+        mainGroup.rotation.x = -mouse.y * 0.25 + Math.cos(time * 0.4) * 0.08;
+
+        // 셰이더 빛 흐름 애니메이션 업데이트
+        mainGroup.traverse((child) => {
+          if (child.material && child.material.uniforms && child.material.uniforms.uTime) {
+            child.material.uniforms.uTime.value = time;
+          }
+        });
+
         renderer.render(scene, camera);
       }
       animate();
+    },
+    undefined,
+    (error) => {
+      console.error("SVG 3D Load Error:", error);
     }
   );
 }
