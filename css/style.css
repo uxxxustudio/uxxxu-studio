@@ -406,7 +406,11 @@ nav a:hover {
 
 /* 1번과 2번 사이, 그리고 2번과 3번 사이에 모두 세로선이 들어가도록 설정 */
 .experience-item + .experience-item {
-    position: relative;
+    border-left: 1px solid #dcdcdc;
+    padding-left: 64px;
+}
+
+#experience-object + .experience-item {
     border-left: 1px solid #dcdcdc;
     padding-left: 64px;
 }
