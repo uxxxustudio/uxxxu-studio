@@ -1511,7 +1511,7 @@ PORTFOLIO
     
     /* ▼ 아래에서 위로 올라오는 등장 모션 초기 설정 */
     opacity: 0;
-    transform: translateY(50px);
+    transform: translateY(50px);*/
     transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
                 transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
