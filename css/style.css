@@ -705,7 +705,8 @@ nav a:hover {
     font-weight: 400;
     color: #111;
     transform: translateY(-18px);
-    transition: transform .45s cubic-bezier(.2,.7,.2,1), font-size .35s ease;
+    transition: transform .45s cubic-bezier(.2,.7,.2,1);
+
 }
 
 .project-archive:hover {
@@ -722,8 +723,7 @@ nav a:hover {
 }
 
 .project-archive:hover .archive-arrow {
-    transform: translate(6px, -18px);
-    font-size: 31px;
+    transform: translate(6px, -24px);
 }
 
 
