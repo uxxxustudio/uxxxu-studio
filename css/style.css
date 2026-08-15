@@ -1493,7 +1493,7 @@ PORTFOLIO
 
 
 /* =========================================================
-   Experience Section 3D Object Styling
+   Experience Section 3D Object Styling & Animation
 ========================================================= */
 #experience {
     position: relative;
@@ -1502,11 +1502,22 @@ PORTFOLIO
 
 #experience-object {
     position: absolute;
-    /* 03번 카드 안에서 위치를 미세 조정하세요 */
-    top: -20px;       /* 위아래 이동 */
-    left: -160px;     /* 좌우 이동 (02번과 03번 사이로 위치 조절) */
-    width: 360px;     /* 크기 조정 */
-    height: 360px;    /* 크기 조정 */
+    top: -20px;       
+    left: -160px;     /* 오른쪽으로 이동시킨 위치 유지 */
+    width: 360px;     
+    height: 360px;    
     z-index: 1; 
     pointer-events: none;
+    
+    /* ▼ 아래에서 위로 올라오는 등장 모션 초기 설정 */
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 스크롤되어 화면에 들어왔을 때 적용될 클래스 */
+#experience-object.is-visible {
+    opacity: 1;
+    transform: translateY(0);
 }
