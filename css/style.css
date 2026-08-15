@@ -1306,7 +1306,215 @@ footer {
     }
 }
 
+<!-- =========================
+PORTFOLIO
+========================= -->
 
+<section id="portfolio">
+
+<div class="container">
+
+
+<div class="portfolio-header">
+
+    <div class="portfolio-heading">
+
+        <h2>Project</h2>
+
+        <p>
+            디지털 서비스부터 AI·R&amp;D까지<br>
+            다양한 프로젝트의 UX/UI를 설계하고 디자인했습니다.
+        </p>
+
+    </div>
+
+   <!-- <div class="portfolio-meta">
+
+        <strong>20+ PROJECTS</strong>
+        <span>UX/UI DESIGN</span>
+
+    </div>-->
+
+</div>
+
+
+<div class="portfolio-grid">
+
+
+<!-- 01. AI SPACE -->
+
+<a href="case/seedN.html" class="project">
+
+<div class="project-category">
+    AI SERVICE
+</div>
+
+<h2>
+    AI Space Temperature Control
+</h2>
+
+<p>
+    AI 기반 공간 온도 제어 플랫폼 UX/UI
+</p>
+
+<div class="arrow">
+    View Project →
+</div>
+
+</a>
+
+
+
+<!-- 02. AI SMART GLASSES -->
+
+<a href="case/wearable.html" class="project">
+
+<div class="project-category">
+    WEARABLE
+</div>
+
+<h2>
+    AI Smart Glasses
+</h2>
+
+<p>
+    시청각 장애인을 위한 AI 웨어러블 스마트 글래스 UX/UI
+</p>
+
+<div class="arrow">
+    View Case Study →
+</div>
+
+</a>
+
+
+
+<!-- 03. GOVERNMENT R&D -->
+
+<a href="#" class="project">
+
+<div class="project-category">
+    GOVERNMENT R&amp;D
+</div>
+
+<h2>
+    Government Projects
+</h2>
+
+<p>
+    정부 R&amp;D UX/UI 및 서비스 설계
+</p>
+
+<div class="arrow">
+    View Project →
+</div>
+
+</a>
+
+
+
+<!-- 04. PRODUCT -->
+
+<a href="#" class="project">
+
+<div class="project-category">
+    PRODUCT
+</div>
+
+<h2>
+    Product Experience
+</h2>
+
+<p>
+    제품 서비스 UX/UI 및 디자인 시스템
+</p>
+
+<div class="arrow">
+    View Project →
+</div>
+
+</a>
+
+
+
+<!-- 05. WEB / APP -->
+
+<a href="#" class="project">
+
+<div class="project-category">
+    WEB / APP
+</div>
+
+<h2>
+    Digital Service
+</h2>
+
+<p>
+    웹·앱 서비스 UX/UI 디자인
+</p>
+
+<div class="arrow">
+    View Project →
+</div>
+
+</a>
+
+
+
+<!-- 06. EXHIBITION / CONTENTS -->
+
+<a href="case/jeju-exhibition.html" class="project">
+
+<div class="project-category">
+    EXHIBITION / CONTENTS
+</div>
+
+<h2>
+    Jeju Seolmundaehalmang
+</h2>
+
+<p>
+    전시 콘텐츠 UX/UI 및 인터랙티브 콘텐츠 디자인
+</p>
+
+<div class="arrow">
+    View Project →
+</div>
+
+</a>
+
+
+</div>
+
+
+<!-- =========================
+PROJECT ARCHIVE
+========================= -->
+
+<a href="#" class="project-archive">
+
+    <div class="archive-content">
+
+        <h3>
+            PROJECT ARCHIVE
+        </h3>
+
+        <p>
+            20+ projects across UX · UI · AI · R&amp;D
+        </p>
+
+    </div>
+
+    <span class="archive-arrow">
+        ↗
+    </span>
+
+</a>
+
+
+</div>
+
+</section>
 
 
 
