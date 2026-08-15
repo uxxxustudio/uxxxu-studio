@@ -461,7 +461,7 @@ export function initSectionObject(containerId, assetInput = "U") {
 
 
 /* =========================================================
-   PROFILE SECTION 3D OBJECT (initProfile3D) - SVG 패스 기반 진짜 3D 입체 렌더링
+   PROFILE SECTION 3D OBJECT (initProfile3D) - 글래시 벌룬 튜브 "ne"
 ========================================================= */
 
 export function initProfile3D(containerId) {
@@ -474,8 +474,8 @@ export function initProfile3D(containerId) {
   const height = container.clientHeight || 450;
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
-  camera.position.set(0, 0, 25);
+  const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
+  camera.position.set(0, 0, 250);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(width, height);
@@ -483,127 +483,86 @@ export function initProfile3D(containerId) {
   renderer.setClearColor(0x000000, 0);
   container.appendChild(renderer.domElement);
 
-  // 깔끔한 외곽선 스타일을 위한 머티리얼
-  const lineMat = new THREE.LineBasicMaterial({
-    color: 0x111111,
-    transparent: false,
-    opacity: 1.0,
+  // 입체감과 반사광을 극대화하기 위한 다중 조명 세팅
+  const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+  scene.add(ambientLight);
+
+  const pointLight1 = new THREE.PointLight(0xffffff, 2.5, 500);
+  pointLight1.position.set(100, 150, 200);
+  scene.add(pointLight1);
+
+  const pointLight2 = new THREE.PointLight(0x88ccff, 1.5, 500);
+  pointLight2.position.set(-100, -100, 150);
+  scene.add(pointLight2);
+
+  const profileGroup = new THREE.Group();
+  scene.add(profileGroup);
+
+  // 1. 소문자 "ne" 필기체 커브 패스 좌표 설정
+  const curvePoints = [
+    new THREE.Vector3(-55, -25, 0), // n 시작점
+    new THREE.Vector3(-45, 25, 0),
+    new THREE.Vector3(-35, -15, 0),
+    new THREE.Vector3(-25, 25, 0),
+    new THREE.Vector3(-15, -15, 0),
+    new THREE.Vector3(0, 10, 0),    // n에서 e로 이어지는 연결부
+    new THREE.Vector3(25, 35, 0),   // e 상단 루프
+    new THREE.Vector3(45, 10, 0),
+    new THREE.Vector3(25, -20, 0),  // e 하단 루프
+    new THREE.Vector3(45, -22, 0)   // e 꼬리
+  ];
+
+  const curve = new THREE.CatmullRomCurve3(curvePoints);
+  
+  // 2. TubeGeometry로 볼륨감 있는 통통한 튜브 형태 생성 (시안의 볼륨감 반영)
+  const geometry = new THREE.TubeGeometry(curve, 120, 14, 32, false);
+
+  // 3. 투명하고 반짝이는 글래스/벌룬 재질 (MeshPhysicalMaterial)
+  const glassMaterial = new THREE.MeshPhysicalMaterial({
+    color: 0xdaf2ff,          // 맑은 스카이 블루 틴트
+    metalness: 0.1,
+    roughness: 0.05,          // 표면 반사가 매끄럽도록 낮게 설정
+    transmission: 0.85,       // 반투명 유리/벌룬 느낌
+    thickness: 15.0,          // 내부 굴절 볼륨감
+    clearcoat: 1.0,           // 표면 코팅광 추가
+    clearcoatRoughness: 0.05,
+    specularIntensity: 1.0,
+    transparent: true,
+    opacity: 0.95
   });
 
-  const svgLoader = new SVGLoader();
+  const tubeMesh = new THREE.Mesh(geometry, glassMaterial);
+  profileGroup.add(tubeMesh);
 
-  svgLoader.load(
-    "./assets/images/ne.svg",
-    (data) => {
-      const paths = data.paths;
-      const profileGroup = new THREE.Group();
+  // 4. 자연스러운 각도 배치
+  profileGroup.rotation.x = Math.PI / 12;
+  profileGroup.rotation.y = -Math.PI / 16;
 
-      paths.forEach((path) => {
-        const shapes = SVGLoader.createShapes(path);
-        shapes.forEach((shape) => {
-          // 입체 두께(depth)를 주어 진짜 3D 오브젝트로 변환
-          const extrudeSettings = { depth: 1.5, bevelEnabled: false };
-          const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+  const clock = new THREE.Clock();
+  const target = { x: 0, y: 0 };
+  const mouse = { x: 0, y: 0 };
 
-          // 히어로 섹션과 같은 느낌의 3D 셰이더 머티리얼 적용
-          const material = new THREE.ShaderMaterial({
-            uniforms: {
-              uTime: { value: 0 },
-            },
-            vertexShader: `
-              varying vec3 vPosition;
-              varying vec3 vNormal;
-              void main() {
-                vPosition = position;
-                vNormal = normal;
-                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-              }
-            `,
-            fragmentShader: `
-              uniform float uTime;
-              varying vec3 vPosition;
-              varying vec3 vNormal;
-
-              void main() {
-                if (abs(vNormal.z) > 0.1) { discard; }
-                float flow = mod((vPosition.y * 0.2) + (uTime * 0.2), 1.0);
-                float beam = smoothstep(0.12, 0.0, abs(flow - 0.5));
-
-                vec3 baseColor = vec3(0.06, 0.06, 0.06);
-                vec3 neonAccent = vec3(0.12, 0.85, 0.45);
-                vec3 finalColor = mix(baseColor, neonAccent, beam);
-                float alpha = 0.15 + beam * 0.85;
-                gl_FragColor = vec4(finalColor, alpha);
-              }
-            `,
-            transparent: true,
-            side: THREE.DoubleSide,
-            depthWrite: false,
-          });
-
-          const fillMesh = new THREE.Mesh(geometry, material);
-          profileGroup.add(fillMesh);
-
-          // 3D 입체 테두리선(Edges) 추가
-          const edges = new THREE.EdgesGeometry(geometry, 20);
-          const lineSegments = new THREE.LineSegments(edges, lineMat);
-          profileGroup.add(lineSegments);
-        });
-      });
-
-      // SVG 좌표계 반전 및 중앙 정렬
-      profileGroup.scale.y = -1;
-      const box = new THREE.Box3().setFromObject(profileGroup);
-      const center = box.getCenter(new THREE.Vector3());
-      profileGroup.position.x = -center.x;
-      profileGroup.position.y = -center.y;
-
-      // 전체 그룹을 적절한 크기로 스케일 조정 후 오른쪽 영역에 배치
-      profileGroup.scale.setScalar(0.09);
-      profileGroup.position.set(0, 0, 0);
-
-      const mainGroup = new THREE.Group();
-      mainGroup.add(profileGroup);
-      scene.add(mainGroup);
-
-      const clock = new THREE.Clock();
-      const target = { x: 0, y: 0 };
-      const mouse = { x: 0, y: 0 };
-
-      window.addEventListener(
-        "mousemove",
-        (e) => {
-          target.x = (e.clientX / window.innerWidth) * 2 - 1;
-          target.y = -(e.clientY / window.innerHeight) * 2 + 1;
-        },
-        { passive: true }
-      );
-
-      function animate() {
-        requestAnimationFrame(animate);
-        const time = clock.getElapsedTime();
-
-        mouse.x += (target.x - mouse.x) * 0.08;
-        mouse.y += (target.y - mouse.y) * 0.08;
-
-        // 마우스 움직임과 시간에 따라 입체적으로 회전
-        mainGroup.rotation.y = mouse.x * 0.35 + Math.sin(time * 0.3) * 0.1;
-        mainGroup.rotation.x = -mouse.y * 0.25 + Math.cos(time * 0.4) * 0.08;
-
-        // 셰이더 빛 흐름 애니메이션 업데이트
-        mainGroup.traverse((child) => {
-          if (child.material && child.material.uniforms && child.material.uniforms.uTime) {
-            child.material.uniforms.uTime.value = time;
-          }
-        });
-
-        renderer.render(scene, camera);
-      }
-      animate();
+  window.addEventListener(
+    "mousemove",
+    (e) => {
+      target.x = (e.clientX / window.innerWidth) * 2 - 1;
+      target.y = -(e.clientY / window.innerHeight) * 2 + 1;
     },
-    undefined,
-    (error) => {
-      console.error("SVG 3D Load Error:", error);
-    }
+    { passive: true }
   );
+
+  function animate() {
+    requestAnimationFrame(animate);
+    const time = clock.getElapsedTime();
+
+    mouse.x += (target.x - mouse.x) * 0.08;
+    mouse.y += (target.y - mouse.y) * 0.08;
+
+    // 마우스 움직임에 따른 입체 회전
+    profileGroup.rotation.y = mouse.x * 0.2 + Math.sin(time * 0.2) * 0.05 + (-Math.PI / 16);
+    profileGroup.rotation.x = -mouse.y * 0.15 + Math.cos(time * 0.3) * 0.03 + (Math.PI / 12);
+
+    renderer.render(scene, camera);
+  }
+  animate();
 }
