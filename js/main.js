@@ -55,11 +55,12 @@ window.addEventListener("DOMContentLoaded", async () => {
         "service",
         new URL("service.html", componentPath)
     );
-   /* =========================================================
-       [추가] Experience 섹션 로드 완료 후 3D 오브젝트 실행
+
+    /* =========================================================
+        Experience 섹션 3D 오브젝트 실행 (U 유지)
     ========================================================= */
     import("./hero3d.js").then(({ initSectionObject }) => {
-        initSectionObject("experience-object", "U"); // "U" 또는 원하는 글자 입력 가능
+        initSectionObject("experience-object", "U"); 
     });
 
     await loadComponent(
@@ -71,6 +72,14 @@ window.addEventListener("DOMContentLoaded", async () => {
         "about",
         new URL("about.html", componentPath)
     );
+
+    /* =========================================================
+        [추가] About(프로필) 섹션 로드 완료 후 SVG 캐릭터 3D 실행
+        * 프로필 HTML 파일 안에 id="profile-object"인 태그가 있어야 합니다.
+    ========================================================= */
+    import("./hero3d.js").then(({ initSectionObject }) => {
+        initSectionObject("profile-object", "../assets/images/ne.svg");
+    });
 
     await loadComponent(
         "contact",
