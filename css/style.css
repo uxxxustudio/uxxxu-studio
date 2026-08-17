@@ -1955,42 +1955,31 @@ footer {
     padding: 100px 26px;
 }
 
-/* PC에서 사용하는 .container의 폭 제한 제거 */
-#portfolio .container {
-    width: 100%;
-    max-width: none;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-#portfolio .portfolio-heading {
-    width: 100%;
-    max-width: none;
-}
+/*--   
+#portfolio {
+    padding: 100px 26px;
+}--*/
 
 #portfolio .portfolio-heading h2 {
-    margin: 0 0 10px;
-
     font-size: 48px;
     line-height: .94;
     font-weight: 800;
     letter-spacing: -.06em;
+    margin: 0 0 10px;
 }
 
 #portfolio .portfolio-heading p {
-    width: 100%;
-    max-width: none;
-
     margin: 0;
-
     line-height: 1.6;
 }
 
-
-/* =====================================================
-   PROJECT LIST
-===================================================== */
+/* 설명 → 첫 번째 카드 
+#portfolio .portfolio-heading + .portfolio-grid {
+    width: 100%;
+    margin-top: 16px;
+    margin-left: 0;
+    margin-right: 0;
+}*/
 
 #portfolio .portfolio-grid {
     width: 100%;
@@ -2000,21 +1989,27 @@ footer {
     margin-left: 0;
     margin-right: 0;
 
-    padding: 0 !important;
-
-    box-sizing: border-box;
+    padding-top: 0 !important;
+    padding-left: 0;
+    padding-right: 0;
 }
+/*    
+#portfolio .portfolio-grid {
+    margin-top: 28px !important;
+    padding-top: 0 !important;
+}*/
 
-
-/* =====================================================
-   PROJECT CARD
-===================================================== */
+#portfolio .section-title::after {
+    float: none;
+    display: block;
+    margin-top: 18px;
+    font-size: 20px;
+}
 
 .project {
     display: block;
 
     width: 100%;
-    max-width: none;
     min-height: auto;
 
     padding: 30px 26px;
@@ -2030,9 +2025,6 @@ footer {
     margin-top: 16px;
 }
 
-
-/* CATEGORY */
-
 .project-category {
     position: static;
 
@@ -2043,9 +2035,6 @@ footer {
     font-size: 11px;
 }
 
-
-/* TITLE */
-
 .project h2 {
     margin: 0;
 
@@ -2054,18 +2043,12 @@ footer {
     letter-spacing: -.055em;
 }
 
-
-/* DESCRIPTION */
-
 .project p {
     margin-top: 16px;
 
     font-size: 14px;
     line-height: 1.35;
 }
-
-
-/* VIEW PROJECT */
 
 .project .arrow {
     position: static;
@@ -2076,11 +2059,6 @@ footer {
 
     font-size: 13px;
 }
-
-
-/* =====================================================
-   MOBILE — HOVER EFFECT RESET
-===================================================== */
 
 .project:hover {
     padding-left: 26px;
@@ -2103,12 +2081,8 @@ footer {
 ===================================================== */
 
 .project-archive {
-    width: 100%;
-
     margin-top: 60px;
     padding: 10px 0;
-
-    box-sizing: border-box;
 }
 
 .archive-content h3 {
@@ -2117,7 +2091,6 @@ footer {
 
 .archive-content p {
     margin-top: 12px;
-
     font-size: 13px;
 }
 
