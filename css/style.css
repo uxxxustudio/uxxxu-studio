@@ -591,6 +591,11 @@ nav a:hover {
    DESKTOP CAREER
 ========================================================= */
 
+/* 상단 Experience 헤더에 중복 노출되는 Career만 숨김 */
+.experience-header .experience-career {
+    display: none;
+}
+
 .experience-career {
     display: flex;
     justify-content: flex-end;
