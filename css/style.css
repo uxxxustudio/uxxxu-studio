@@ -393,7 +393,7 @@ nav a:hover {
 
 .experience-item {
     min-width: 0;
-    padding: 0 42px; /* 좌우 패딩을 살짝 조정하여 선 간격을 맞춤 */
+    padding: 0 42px; /* 醫뚯슦 �⑤뵫�� �댁쭩 議곗젙�섏뿬 �� 媛꾧꺽�� 留욎땄 */
 }
 
 .experience-item:first-child {
@@ -404,13 +404,13 @@ nav a:hover {
     padding-right: 0;
 }
 
-/* 1번과 2번 사이, 그리고 2번과 3번 사이에 모두 세로선이 들어가도록 설정 */
+/* 1踰덇낵 2踰� �ъ씠, 洹몃━怨� 2踰덇낵 3踰� �ъ씠�� 紐⑤몢 �몃줈�좎씠 �ㅼ뼱媛��꾨줉 �ㅼ젙 */
 .experience-item + .experience-item {
     border-left: 1px solid #dcdcdc;
-    padding-left: 64px; /* 선 기준 왼쪽 여백 복원 */
+    padding-left: 64px; /* �� 湲곗� �쇱そ �щ갚 蹂듭썝 */
 }
 
-/* 02번과 03번 사이 세로선 */
+/* 02踰덇낵 03踰� �ъ씠 �몃줈�� */
 #experience-object + .experience-item {
     border-left: 1px solid #dcdcdc;
     padding-left: 64px;
@@ -493,7 +493,7 @@ nav a:hover {
     line-height: 1;
 }
 
-/* 02번과 03번 사이 공간에 위치할 3D 오브젝트 */
+/* 02踰덇낵 03踰� �ъ씠 怨듦컙�� �꾩튂�� 3D �ㅻ툕�앺듃 */
 #experience-object {
     position: absolute;
     top: 50%;      
@@ -1043,7 +1043,7 @@ footer {
         margin-top: 70px;
     }
 
-    /* 모바일 환경일 때 3D 오브젝트 위치 대응 */
+    /* 紐⑤컮�� �섍꼍�� �� 3D �ㅻ툕�앺듃 �꾩튂 ���� */
     #experience-object {
         position: relative;
         top: auto;
@@ -1307,34 +1307,38 @@ footer {
 }
 
 /* =========================================================
-   ABOUT
-   ========================================================= */
+   ABOUT �� PROFILE / CONTACT
+   湲곗〈 �ㅻⅨ �뱀뀡�먮뒗 �곹뼢 �놁씠 #about �대�留� �쒖뼱
+========================================================= */
 
 #about {
     position: relative;
     overflow: hidden;
+    padding: 170px 64px 120px;
 }
 
 #about .about-wrap {
     position: relative;
-    min-height: 900px;
-    padding-top: 120px;
-    padding-bottom: 100px;
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: 80px;
+    width: 100%;
+    max-width: 1280px;
+    min-height: 720px;
+    margin: 0 auto;
+    padding: 0;
 }
 
-
-/* -----------------------------------------
-   About Title
------------------------------------------ */
-
 #about .section-title {
-    position: absolute;
-    top: 120px;
-    left: 0;
-    font-size: 16px;
-    font-weight: 400;
+    position: static;
+    align-self: start;
+    margin: 8px 0 0;
+    font-size: 14px;
+    font-weight: 500;
     line-height: 1;
-    color: #111;
+    letter-spacing: .08em;
+    color: #777;
+    text-transform: uppercase;
 }
 
 
@@ -1345,56 +1349,51 @@ footer {
 #about .about-main {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 360px;
-    column-gap: 100px;
-    padding-left: 150px;
-    padding-top: 40px;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    column-gap: 80px;
+    align-items: start;
+    padding: 0;
 }
 
-
-/* -----------------------------------------
-   Main Copy
------------------------------------------ */
-
 #about .about-copy {
-    max-width: 760px;
+    max-width: 720px;
 }
 
 #about .about-copy h2 {
     margin: 0;
-    font-size: clamp(58px, 6vw, 96px);
-    font-weight: 600;
-    line-height: 0.98;
-    letter-spacing: -0.055em;
+    max-width: 680px;
+    font-size: clamp(46px, 4.6vw, 72px);
+    font-weight: 650;
+    line-height: .98;
+    letter-spacing: -.055em;
+    color: #111;
 }
 
-#about .about-copy h2 span {
-    font-family: Georgia, "Times New Roman", serif;
-    font-style: italic;
-    font-weight: 400;
-}
-
-#about .about-copy h3 {
-    margin: 80px 0 0;
-    font-size: clamp(48px, 5vw, 78px);
-    font-weight: 600;
-    line-height: 0.98;
-    letter-spacing: -0.05em;
-}
-
+#about .about-copy h2 span,
 #about .about-copy h3 span {
     font-family: Georgia, "Times New Roman", serif;
     font-style: italic;
     font-weight: 400;
 }
 
+#about .about-copy h3 {
+    margin: 14px 0 0;
+    max-width: 620px;
+    font-size: clamp(42px, 4vw, 62px);
+    font-weight: 650;
+    line-height: 1;
+    letter-spacing: -.05em;
+    color: #111;
+}
+
 #about .about-copy p {
-    margin: 70px 0 0;
-    max-width: 520px;
-    font-size: 18px;
-    line-height: 1.75;
-    color: #777;
-    letter-spacing: -0.02em;
+    margin: 54px 0 0;
+    max-width: 560px;
+    font-size: 17px;
+    line-height: 1.8;
+    font-weight: 400;
+    color: #666;
+    letter-spacing: -.025em;
 }
 
 
@@ -1405,22 +1404,24 @@ footer {
 #about .about-timeline {
     position: relative;
     align-self: end;
-    margin-top: 190px;
     width: 100%;
+    margin-top: 0;
+    padding-top: 4px;
 }
 
 #about .about-timeline-label {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 22px;
+    margin-bottom: 18px;
 }
 
 #about .about-timeline-label span {
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 500;
-    letter-spacing: 0.16em;
-    color: #111;
+    line-height: 1;
+    letter-spacing: .18em;
+    color: #888;
 }
 
 #about .about-timeline-line {
@@ -1434,12 +1435,12 @@ footer {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: #111;
     transform: translate(-50%, -50%);
-    transition: transform 0.35s ease;
+    transition: transform .35s ease;
 }
 
 #about .about-timeline-line::before,
@@ -1447,8 +1448,8 @@ footer {
     content: "";
     position: absolute;
     top: 50%;
-    width: 5px;
-    height: 5px;
+    width: 4px;
+    height: 4px;
     border-radius: 50%;
     background: #d8d8d8;
     transform: translateY(-50%);
@@ -1463,15 +1464,15 @@ footer {
 }
 
 #about .about-statement {
-    margin-top: 42px;
-    text-align: center;
-    font-size: 19px;
+    margin: 28px 0 0;
+    text-align: left;
+    font-size: 14px;
     line-height: 1.7;
-    color: #555;
+    color: #777;
 }
 
 #about .about-timeline:hover .about-timeline-point {
-    transform: translate(-50%, -50%) scale(1.5);
+    transform: translate(-50%, -50%) scale(1.45);
 }
 
 
@@ -1482,68 +1483,58 @@ footer {
 #about .about-bottom {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 100px;
-    margin-top: 150px;
-    padding-left: 150px;
-    padding-top: 55px;
+    gap: 80px;
+    margin: 120px 0 0;
+    padding: 34px 0 0 150px;
     border-top: 1px solid #e5e5e5;
 }
 
-
-/* -----------------------------------------
-   Meta
------------------------------------------ */
-
 #about .about-meta strong {
     display: block;
-    margin-bottom: 18px;
-    font-size: 15px;
+    margin-bottom: 12px;
+    font-size: 14px;
     font-weight: 500;
-    letter-spacing: -0.02em;
+    line-height: 1.3;
+    letter-spacing: -.02em;
+    color: #111;
 }
 
 #about .about-meta p {
     margin: 0;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.6;
     color: #888;
-    letter-spacing: 0.02em;
+    letter-spacing: .01em;
 }
-
-
-/* -----------------------------------------
-   Links
------------------------------------------ */
 
 #about .about-links {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 28px;
+    gap: 22px;
 }
 
 #about .about-links a {
     display: inline-flex;
     align-items: center;
-    gap: 18px;
-    padding-bottom: 12px;
+    gap: 12px;
+    padding-bottom: 8px;
     border-bottom: 1px solid #111;
     color: #111;
-    font-size: 19px;
+    font-size: 16px;
     line-height: 1.2;
+    font-weight: 500;
     text-decoration: none;
-    transition:
-        transform 0.3s ease,
-        opacity 0.3s ease;
+    transition: transform .3s ease, opacity .3s ease;
 }
 
 #about .about-links a span {
     display: inline-block;
-    transition: transform 0.3s ease;
+    transition: transform .3s ease;
 }
 
 #about .about-links a:hover {
-    transform: translateX(6px);
+    transform: translateX(5px);
 }
 
 #about .about-links a:hover span {
@@ -1552,61 +1543,108 @@ footer {
 
 
 /* =========================================================
-   ABOUT — Mobile
-   ========================================================= */
+   ABOUT �� Mobile
+========================================================= */
 
-@media (max-width: 768px) {
+@media (max-width: 980px) {
+    #about {
+        padding: 120px 26px 90px;
+    }
 
     #about .about-wrap {
+        grid-template-columns: 1fr;
+        gap: 50px;
         min-height: auto;
-        padding-top: 90px;
-        padding-bottom: 70px;
     }
 
     #about .section-title {
-        position: static;
-        margin-bottom: 70px;
-        font-size: 14px;
+        margin: 0;
     }
 
     #about .about-main {
-        display: block;
-        padding-left: 0;
-        padding-top: 0;
+        grid-template-columns: 1fr;
+        row-gap: 80px;
+    }
+
+    #about .about-copy {
+        max-width: 720px;
     }
 
     #about .about-copy h2 {
-        font-size: clamp(48px, 13vw, 68px);
+        font-size: clamp(44px, 8vw, 68px);
     }
 
     #about .about-copy h3 {
-        margin-top: 60px;
-        font-size: clamp(42px, 11vw, 60px);
-    }
-
-    #about .about-copy p {
-        margin-top: 55px;
-        font-size: 16px;
+        font-size: clamp(40px, 7vw, 58px);
     }
 
     #about .about-timeline {
-        margin-top: 100px;
+        width: min(100%, 560px);
+        margin-top: 0;
+    }
+
+    #about .about-bottom {
+        grid-template-columns: 1fr 1fr;
+        gap: 50px;
+        margin-top: 90px;
+        padding-left: 0;
+    }
+}
+
+@media (max-width: 767px) {
+    #about {
+        padding: 100px 26px 70px;
+    }
+
+    #about .about-wrap {
+        gap: 42px;
+    }
+
+    #about .about-copy h2 {
+        font-size: clamp(40px, 11vw, 58px);
+        line-height: 1;
+    }
+
+    #about .about-copy h3 {
+        margin-top: 12px;
+        font-size: clamp(36px, 10vw, 52px);
+    }
+
+    #about .about-copy p {
+        margin-top: 42px;
+        font-size: 15px;
+        line-height: 1.75;
+    }
+
+    #about .about-main {
+        row-gap: 64px;
+    }
+
+    #about .about-timeline-label {
+        margin-bottom: 15px;
+    }
+
+    #about .about-timeline-label span {
+        font-size: 10px;
     }
 
     #about .about-statement {
-        font-size: 16px;
+        margin-top: 22px;
+        font-size: 13px;
     }
 
     #about .about-bottom {
         grid-template-columns: 1fr;
-        gap: 55px;
-        margin-top: 100px;
-        padding-left: 0;
-        padding-top: 40px;
+        gap: 42px;
+        margin-top: 70px;
+        padding-top: 28px;
+    }
+
+    #about .about-links {
+        gap: 18px;
     }
 
     #about .about-links a {
-        font-size: 17px;
+        font-size: 15px;
     }
-
 }
