@@ -702,6 +702,54 @@ nav a:hover {
 
 
 /* =========================================================
+   MOBILE EXPERIENCE — SPACING
+   간격만 조정
+========================================================= */
+
+.experience-mobile-intro {
+    margin-bottom: 48px;
+}
+
+.experience-mobile-label {
+    margin-bottom: 20px;
+}
+
+.experience-mobile-years strong {
+    line-height: 1.05;
+}
+
+.experience-mobile-years span {
+    margin-top: 5px;
+    line-height: 1.1;
+}
+
+.experience-mobile-intro p {
+    margin-top: 24px;
+    line-height: 1.65;
+}
+
+.experience-mobile-item {
+    padding: 38px 0 44px;
+}
+
+.experience-mobile-item:first-child {
+    padding-top: 0;
+}
+
+.experience-mobile-number {
+    margin-bottom: 18px;
+}
+
+.experience-mobile-line {
+    margin: 24px 0 26px;
+}
+
+.experience-mobile-keywords {
+    gap: 8px;
+    margin-bottom: 28px;
+}
+
+/* =========================================================
    MOBILE 3D OBJECT
 ========================================================= */
 
