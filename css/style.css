@@ -1951,9 +1951,13 @@ footer {
     padding: 100px 26px;
 }
 
+/* Experience와 동일한 모바일 타이틀 기준 */
 #portfolio .portfolio-heading h2 {
-    font-size: 40px;
-    margin-bottom: 32px;
+    font-size: 48px;
+    line-height: .94;
+    font-weight: 800;
+    letter-spacing: -.06em;
+    margin: 0 0 32px;
 }
 
 #portfolio .section-title::after {
@@ -1963,8 +1967,9 @@ footer {
     font-size: 20px;
 }
 
+/* Project 설명과 첫 카드 사이 여백 축소 */
 #portfolio .section-title + .portfolio-grid {
-    margin-top: 70px;
+    margin-top: 36px;
 }
 
 .project {
