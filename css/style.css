@@ -1943,43 +1943,27 @@ footer {
         font-size: 23px;
     }
 
-    /* =====================================================
-   PORTFOLIO MOBILE
+/* =====================================================
+   PORTFOLIO MOBILE — PROJECT CARD
 ===================================================== */
 
 #portfolio {
     padding: 100px 26px;
 }
 
-/* Experience와 동일한 왼쪽 정렬 기준 */
-#portfolio > .container {
-    width: 100%;
-    max-width: none;
-    margin: 0;
-    padding: 0;
-}
-
 #portfolio .portfolio-heading h2 {
-    margin: 0 0 32px;
-
-    /* Experience 타이틀과 동일한 크기 */
-    font-size: 52px;
-    line-height: .94;
-    font-weight: 800;
-    letter-spacing: -.06em;
+    font-size: 40px;
+    margin-bottom: 32px;
 }
 
-/* HTML에 section-title이 없으므로 기존 규칙은 제거 */
-
-#portfolio .portfolio-heading p {
-    margin: 0;
-
-    font-size: 17px;
-    line-height: 1.75;
-    letter-spacing: -.025em;
+#portfolio .section-title::after {
+    float: none;
+    display: block;
+    margin-top: 18px;
+    font-size: 20px;
 }
 
-#portfolio .portfolio-grid {
+#portfolio .section-title + .portfolio-grid {
     margin-top: 70px;
 }
 
@@ -1987,13 +1971,19 @@ footer {
     display: block;
 
     width: 100%;
-    min-height: 170px;
+    min-height: auto;
 
-    padding: 28px 0;
+    padding: 30px 26px;
+
+    background: #f7f7f7;
+    border: 1px solid #eeeeee;
+    border-radius: 18px;
+
+    box-sizing: border-box;
 }
 
 .project + .project {
-    margin-top: 12px;
+    margin-top: 16px;
 }
 
 .project-category {
@@ -2001,7 +1991,7 @@ footer {
 
     display: block;
 
-    margin-bottom: 22px;
+    margin-bottom: 20px;
 
     font-size: 11px;
 }
@@ -2009,17 +1999,16 @@ footer {
 .project h2 {
     margin: 0;
 
-    /* 기존보다 작게 */
-    font-size: clamp(30px, 7vw, 40px);
-    line-height: .98;
-    font-weight: 800;
-    letter-spacing: -.06em;
+    font-size: 30px;
+    line-height: 1.02;
+    letter-spacing: -.055em;
 }
 
 .project p {
-    margin-top: 14px;
+    margin-top: 16px;
 
     font-size: 14px;
+    line-height: 1.6;
 }
 
 .project .arrow {
@@ -2027,14 +2016,14 @@ footer {
 
     display: inline-block;
 
-    margin-top: 28px;
+    margin-top: 26px;
 
     font-size: 13px;
 }
 
 .project:hover {
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 26px;
+    padding-right: 26px;
 }
 
 .project:hover h2,
@@ -2053,7 +2042,7 @@ footer {
 ===================================================== */
 
 .project-archive {
-    margin-top: 80px;
+    margin-top: 60px;
     padding: 10px 0;
 }
 
@@ -2079,7 +2068,6 @@ footer {
     transform: translate(5px, -15px);
     font-size: 26px;
 }
-
 
 /* =====================================================
    ABOUT MOBILE
