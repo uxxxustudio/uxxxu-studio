@@ -321,7 +321,7 @@ nav a:hover {
    4. EXPERIENCE / SERVICE SECTION
 ========================================================= */
 #experience {
-    padding: 160px 64px;
+    padding: 220px 64px 160px;
     position: relative;
     overflow: hidden;
 }
