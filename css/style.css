@@ -381,7 +381,19 @@ nav a:hover {
 }
 
 .experience-mobile {
+    display: block;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.experience-mobile > * {
     display: none;
+}
+
+.experience-mobile-list,
+.experience-mobile-list > #experience-object {
+    display: block;
 }
 
 
@@ -1634,8 +1646,19 @@ footer {
 
     /* MOBILE EXPERIENCE 표시 */
     .experience-mobile {
+        position: static;
+        inset: auto;
         display: block !important;
         width: 100%;
+        pointer-events: auto;
+    }
+
+    .experience-mobile > * {
+        display: block;
+    }
+
+    .experience-mobile-list {
+        position: relative;
     }
 
 
@@ -1780,12 +1803,14 @@ footer {
 
 
     /* MOBILE 3D
-       02와 03 사이 배경처럼 겹쳐 표시
-       레이아웃 공간은 차지하지 않음 */
-    #experience-object-mobile {
+       기존 experience-object를 02와 03 사이 배경에 겹쳐 표시 */
+    #experience-object {
         display: block !important;
 
         position: relative;
+
+        top: auto;
+        left: auto;
 
         width: 180px;
         height: 180px;
