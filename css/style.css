@@ -321,7 +321,7 @@ nav a:hover {
    4. EXPERIENCE / SERVICE SECTION
 ========================================================= */
 #experience {
-    padding: 100px 64px 160px;
+    padding: 120px 64px;
     position: relative;
     overflow: hidden;
 }
@@ -517,7 +517,7 @@ nav a:hover {
    5. PORTFOLIO / SELECTED WORK
 ========================================================= */
 #portfolio {
-    padding: 160px 64px;
+    padding: 120px 64px;
 }
 
 #portfolio .container {
@@ -547,7 +547,7 @@ nav a:hover {
 }
 
 #portfolio .section-title + .portfolio-grid {
-    margin-top: 110px;
+    margin-top: 60px;
 }
 
 .portfolio-grid {
@@ -659,7 +659,7 @@ nav a:hover {
     align-items: center;
     justify-content: center;
     width: 100%;
-    margin-top: 80px;
+    margin-top: 70px;
     padding: 20px 0;
     color: #111;
     text-decoration: none;
