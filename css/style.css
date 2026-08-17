@@ -1973,9 +1973,22 @@ footer {
 }*/
 
 #portfolio .portfolio-grid {
+    width: 100%;
+    max-width: none;
+
+    margin-top: 28px !important;
+    margin-left: 0;
+    margin-right: 0;
+
+    padding-top: 0 !important;
+    padding-left: 0;
+    padding-right: 0;
+}
+/*    
+#portfolio .portfolio-grid {
     margin-top: 28px !important;
     padding-top: 0 !important;
-}
+}*/
 
 #portfolio .section-title::after {
     float: none;
