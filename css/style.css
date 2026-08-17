@@ -727,8 +727,8 @@ nav a:hover {
     margin: auto;
 }
 
-#portfolio .section-title {
-    margin: 0 0 42px;
+#portfolio .portfolio-heading h2 {
+    margin: 0 0 36px;
 
     font-size: 64px;
     line-height: 1;
@@ -737,22 +737,17 @@ nav a:hover {
     color: #111;
 }
 
-#portfolio .section-title::after {
-    content: "20+ PROJECTS";
+#portfolio .portfolio-heading p {
+    margin: 0;
 
-    display: block;
-    float: right;
-
-    margin-top: -2px;
-
-    font-size: 28px;
-    line-height: 1.15;
-    font-weight: 700;
-    letter-spacing: -.035em;
+    font-size: 18px;
+    line-height: 1.8;
+    color: #555;
+    letter-spacing: -.025em;
 }
 
-#portfolio .section-title + .portfolio-grid {
-    margin-top: 60px;
+#portfolio .portfolio-grid {
+    margin-top: 110px;
 }
 
 .portfolio-grid {
