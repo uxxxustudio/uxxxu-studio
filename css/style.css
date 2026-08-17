@@ -536,7 +536,7 @@ nav a:hover {
 
 /* =========================================================
    DESKTOP 3D OBJECT
-   위치 기존 그대로 유지
+   PC에서 02와 03 사이 배경에 표시
 ========================================================= */
 
 #experience-object {
@@ -548,20 +548,23 @@ nav a:hover {
     width: 280px;
     height: 280px;
 
-    z-index: 5;
+    z-index: 0;
     pointer-events: none;
 
-    opacity: 0;
+    /* PC에서 항상 표시 */
+    opacity: 1;
 
     transform:
         translate(-50%, -50%)
-        translateY(50px);
+        translateY(0);
 
     transition:
         opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
         transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+
+/* JS에서 is-visible이 붙어도 기존 위치 유지 */
 #experience-object.is-visible {
     opacity: 1;
 
