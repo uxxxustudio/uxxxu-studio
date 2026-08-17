@@ -1677,7 +1677,7 @@ footer {
     .experience-mobile-label {
         margin-bottom: 28px;
 
-        font-size: 52px;
+        font-size: 48px;
         line-height: .94;
         font-weight: 800;
         letter-spacing: -.06em;
@@ -1693,7 +1693,7 @@ footer {
     }
 
     .experience-mobile-years strong {
-        font-size: 34px;
+        font-size: 30px;
         line-height: 1;
         font-weight: 700;
         letter-spacing: -.035em;
@@ -1766,7 +1766,7 @@ footer {
     .experience-mobile-item h3 {
         margin: 0;
 
-        font-size: clamp(32px, 9vw, 46px);
+        font-size: 30px;
         line-height: .96;
         font-weight: 800;
         letter-spacing: -.06em;
