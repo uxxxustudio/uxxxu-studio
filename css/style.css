@@ -1713,23 +1713,17 @@ footer {
         border-top: 1px solid #dedede;
     }
 
-    /* 01 */
-    .experience-mobile-item:nth-child(1) {
-        padding-right: 8%;
-    }
+/* =====================================================
+   MOBILE EXPERIENCE ITEM ALIGNMENT
+   모든 항목 동일한 왼쪽 기준
+===================================================== */
 
-    /* 02 */
-    .experience-mobile-item:nth-child(2) {
-        padding-left: 8%;
-        padding-right: 4%;
-    }
-
-    /* 03
-       3D가 child 3이므로 03은 child 4 */
-    .experience-mobile-item:nth-child(4) {
-        padding-left: 16%;
-        padding-right: 0;
-    }
+.experience-mobile-item:nth-child(1),
+.experience-mobile-item:nth-child(2),
+.experience-mobile-item:nth-child(4) {
+    padding-left: 0;
+    padding-right: 0;
+}
 
     .experience-mobile-number {
         margin-bottom: 22px;
