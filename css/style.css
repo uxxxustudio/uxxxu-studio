@@ -1728,6 +1728,19 @@ footer {
         width: 100%;
     }
 
+    /* 기존 PC용 숨김 규칙으로 모바일 Experience 항목이 사라지는 문제만 수정 */
+    .experience-mobile-list > .experience-mobile-item {
+        display: block;
+    }
+
+    .experience-mobile-list > #experience-object {
+        display: block !important;
+    }
+
+    .experience-mobile-list > .experience-mobile-career {
+        display: flex;
+    }
+
     .experience-mobile-item {
         position: relative;
 
