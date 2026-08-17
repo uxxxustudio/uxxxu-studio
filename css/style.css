@@ -385,105 +385,219 @@ nav a:hover {
     letter-spacing: -.035em;
 }
 
-.experience-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    position: relative;
+/* =========================================================
+   MOBILE EXPERIENCE
+   PC 레이아웃을 1열로 축소하지 않고
+   모바일 전용 구조로 재구성
+========================================================= */
+
+.experience-mobile {
+    display: none;
 }
 
-.experience-item {
-    min-width: 0;
-    padding: 0 42px;
-}
 
-.experience-item:first-child {
-    padding-left: 0;
-}
+@media (max-width: 767px) {
 
-.experience-item:last-child {
-    padding-right: 0;
-}
+    /* PC Experience 숨김 */
+    #experience .experience-header,
+    #experience .experience-grid,
+    #experience .experience-career,
+    #experience #experience-object {
+        display: none !important;
+    }
 
-.experience-item + .experience-item {
-    border-left: 1px solid #dcdcdc;
-    padding-left: 64px;
-}
 
-#experience-object + .experience-item {
-    border-left: 1px solid #dcdcdc;
-    padding-left: 64px;
-}
+    /* Experience 섹션 */
+    #experience {
+        padding: 96px 26px 110px;
+        overflow: hidden;
+    }
 
-.experience-number {
-    margin-bottom: 26px;
-    font-size: 15px;
-    line-height: 1;
-    font-weight: 600;
-    color: #111;
-}
 
-.experience-item h3 {
-    margin: 0;
-    font-size: 30px;
-    line-height: 1.1;
-    font-weight: 700;
-    letter-spacing: -.045em;
-    color: #111;
-}
+    .experience-mobile {
+        display: block;
+        width: 100%;
+    }
 
-.experience-line {
-    width: 58px;
-    height: 1px;
-    margin: 32px 0 34px;
-    background: #111;
-}
 
-.experience-keywords {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 38px;
-}
+    /* -------------------------
+       INTRO
+    ------------------------- */
 
-.experience-keywords span {
-    font-size: 16px;
-    line-height: 1.4;
-    color: #222;
-    letter-spacing: -.025em;
-}
+    .experience-mobile-intro {
+        margin-bottom: 92px;
+    }
 
-.experience-item p {
-    margin: 0;
-    font-size: 15px;
-    line-height: 1.85;
-    color: #777;
-    letter-spacing: -.025em;
-}
 
-.experience-career {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 100px;
-    padding-top: 32px;
-    border-top: 1px solid #e2e2e2;
-}
+    .experience-mobile-label {
+        margin-bottom: 46px;
 
-.experience-career a {
-    display: inline-flex;
-    align-items: center;
-    gap: 24px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #111;
-    color: #111;
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: -.025em;
-    text-decoration: none;
-    transition: .25s;
-}
+        font-size: 12px;
+        line-height: 1;
+        font-weight: 500;
+        letter-spacing: .14em;
+        color: #777;
+    }
 
-.experience-career a:hover {
-    gap: 32px;
+
+    .experience-mobile-years {
+        margin-bottom: 32px;
+    }
+
+
+    .experience-mobile-years strong {
+        display: block;
+
+        font-size: 38px;
+        line-height: .95;
+        font-weight: 800;
+        letter-spacing: -.055em;
+        color: #111;
+    }
+
+
+    .experience-mobile-years span {
+        display: block;
+        margin-top: 8px;
+
+        font-size: 20px;
+        line-height: 1;
+        font-weight: 700;
+        letter-spacing: -.045em;
+        color: #111;
+    }
+
+
+    .experience-mobile-intro p {
+        max-width: 520px;
+        margin: 0;
+
+        font-size: 17px;
+        line-height: 1.75;
+        letter-spacing: -.035em;
+        color: #666;
+    }
+
+
+    /* -------------------------
+       EXPERIENCE ITEMS
+    ------------------------- */
+
+    .experience-mobile-list {
+        width: 100%;
+    }
+
+
+    .experience-mobile-item {
+        position: relative;
+
+        padding: 46px 0 58px;
+
+        border-top: 1px solid #dedede;
+    }
+
+
+    .experience-mobile-item:last-child {
+        border-bottom: 1px solid #dedede;
+    }
+
+
+    .experience-mobile-number {
+        margin-bottom: 22px;
+
+        font-size: 13px;
+        line-height: 1;
+        font-weight: 600;
+        letter-spacing: .02em;
+        color: #777;
+    }
+
+
+    .experience-mobile-item h3 {
+        margin: 0;
+
+        font-size: clamp(32px, 9vw, 44px);
+        line-height: .98;
+        font-weight: 800;
+        letter-spacing: -.06em;
+        color: #111;
+    }
+
+
+    .experience-mobile-line {
+        width: 48px;
+        height: 1px;
+
+        margin: 28px 0 30px;
+
+        background: #111;
+    }
+
+
+    .experience-mobile-keywords {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        margin-bottom: 34px;
+    }
+
+
+    .experience-mobile-keywords span {
+        font-size: 16px;
+        line-height: 1.45;
+        letter-spacing: -.03em;
+        color: #222;
+    }
+
+
+    .experience-mobile-item p {
+        max-width: 430px;
+        margin: 0;
+
+        font-size: 15px;
+        line-height: 1.8;
+        letter-spacing: -.03em;
+        color: #777;
+    }
+
+
+    /* -------------------------
+       CAREER
+    ------------------------- */
+
+    .experience-mobile-career {
+        display: flex;
+        justify-content: flex-end;
+
+        padding-top: 42px;
+    }
+
+
+    .experience-mobile-career a {
+        display: inline-flex;
+        align-items: center;
+        gap: 18px;
+
+        padding-bottom: 9px;
+
+        border-bottom: 1px solid #111;
+
+        color: #111;
+
+        font-size: 17px;
+        line-height: 1;
+        font-weight: 600;
+        letter-spacing: -.025em;
+        text-decoration: none;
+    }
+
+
+    .experience-mobile-career .career-arrow {
+        font-size: 23px;
+        line-height: 1;
+    }
+
 }
 
 .career-arrow {
