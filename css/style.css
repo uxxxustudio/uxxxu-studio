@@ -1964,12 +1964,17 @@ footer {
     line-height: 1.6;
 }
 
-/* 설명 → 첫 번째 카드 */
+/* 설명 → 첫 번째 카드 
 #portfolio .portfolio-heading + .portfolio-grid {
     width: 100%;
     margin-top: 16px;
     margin-left: 0;
     margin-right: 0;
+}*/
+
+#portfolio .portfolio-grid {
+    margin-top: 28px !important;
+    padding-top: 0 !important;
 }
 
 #portfolio .section-title::after {
