@@ -1951,13 +1951,16 @@ footer {
     padding: 100px 26px;
 }
 
-/* Experience와 동일한 모바일 타이틀 기준 */
 #portfolio .portfolio-heading h2 {
     font-size: 48px;
     line-height: .94;
     font-weight: 800;
     letter-spacing: -.06em;
-    margin: 0 0 32px;
+    margin: 0 0 20px;
+}
+
+#portfolio .portfolio-heading p {
+    margin: 0;
 }
 
 #portfolio .section-title::after {
@@ -1967,8 +1970,8 @@ footer {
     font-size: 20px;
 }
 
-/* Project 설명과 첫 카드 사이 여백 축소 */
-#portfolio .section-title + .portfolio-grid {
+/* 설명 → 첫 번째 카드 */
+#portfolio .portfolio-heading + .portfolio-grid {
     margin-top: 36px;
 }
 
@@ -2073,7 +2076,6 @@ footer {
     transform: translate(5px, -15px);
     font-size: 26px;
 }
-
 /* =====================================================
    ABOUT MOBILE
 ===================================================== */
