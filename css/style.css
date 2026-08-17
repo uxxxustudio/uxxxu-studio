@@ -137,8 +137,6 @@ nav a:hover {
     z-index: 3;
 }
 
-
-/* Background Light Effect */
 .hero-light {
     position: absolute;
     z-index: 0;
@@ -187,8 +185,6 @@ nav a:hover {
     animation: heroLightPulse 6s ease-in-out infinite alternate;
 }
 
-
-/* Hero 3D Graphic */
 .hero-3d {
     position: absolute;
     top: 0;
@@ -209,8 +205,6 @@ nav a:hover {
     opacity: .78;
 }
 
-
-/* Hero Typography */
 .hero h1 {
     position: absolute;
     z-index: 4;
@@ -246,8 +240,6 @@ nav a:hover {
     font-weight: 900;
 }
 
-
-/* Hero Message */
 .hero-message {
     position: absolute;
     z-index: 4;
@@ -286,8 +278,6 @@ nav a:hover {
     animation: fade .8s .35s forwards;
 }
 
-
-/* Hero Action Buttons */
 .hero-action {
     display: flex !important;
     flex-direction: row !important;
@@ -365,7 +355,7 @@ nav a:hover {
 
 
 /* =========================================================
-   4. EXPERIENCE / SERVICE SECTION
+   4. EXPERIENCE
 ========================================================= */
 
 #experience {
@@ -383,10 +373,9 @@ nav a:hover {
 
 
 /* =========================================================
-   EXPERIENCE PC / MOBILE DISPLAY
+   PC / MOBILE DISPLAY
 ========================================================= */
 
-/* PC 기본 */
 .experience-desktop {
     display: block;
 }
@@ -396,9 +385,9 @@ nav a:hover {
 }
 
 
-/* -------------------------
-   EXPERIENCE HEADER
-------------------------- */
+/* =========================================================
+   DESKTOP EXPERIENCE
+========================================================= */
 
 .experience-header {
     display: flex;
@@ -452,9 +441,7 @@ nav a:hover {
 }
 
 
-/* -------------------------
-   EXPERIENCE GRID
-------------------------- */
+/* EXPERIENCE GRID */
 
 .experience-grid {
     position: relative;
@@ -538,9 +525,10 @@ nav a:hover {
 }
 
 
-/* -------------------------
-   EXPERIENCE 3D OBJECT — PC
-------------------------- */
+/* =========================================================
+   DESKTOP 3D OBJECT
+   위치 기존 그대로 유지
+========================================================= */
 
 #experience-object {
     position: absolute;
@@ -574,9 +562,9 @@ nav a:hover {
 }
 
 
-/* -------------------------
-   EXPERIENCE CAREER
-------------------------- */
+/* =========================================================
+   DESKTOP CAREER
+========================================================= */
 
 .experience-career {
     display: flex;
@@ -611,7 +599,7 @@ nav a:hover {
 
 
 /* =========================================================
-   MOBILE EXPERIENCE DEFAULT STYLES
+   MOBILE EXPERIENCE
 ========================================================= */
 
 .experience-mobile-intro {
@@ -689,7 +677,7 @@ nav a:hover {
 
 
 /* =========================================================
-   MOBILE U 3D OBJECT
+   MOBILE 3D OBJECT
 ========================================================= */
 
 #experience-object-mobile {
@@ -1071,9 +1059,6 @@ nav a:hover {
     letter-spacing: -.025em;
 }
 
-
-/* THEN / NOW */
-
 #about .about-timeline {
     position: relative;
 
@@ -1169,9 +1154,6 @@ nav a:hover {
         scale(1.45);
 }
 
-
-/* Bottom */
-
 #about .about-bottom {
     grid-column: 2;
 
@@ -1249,9 +1231,6 @@ nav a:hover {
 #about .about-links a:hover span {
     transform: translate(4px, -4px);
 }
-
-
-/* Footer */
 
 footer {
     padding: 40px 64px;
@@ -1383,9 +1362,6 @@ footer {
         display: block;
     }
 
-
-    /* HERO */
-
     .hero {
         padding: 0 26px;
         min-height: 720px;
@@ -1440,17 +1416,9 @@ footer {
         transform: none;
     }
 
-
-    /* COMMON */
-
     section {
         padding: 120px 26px;
     }
-
-
-    /* =====================================================
-       PORTFOLIO TABLET
-    ===================================================== */
 
     #portfolio {
         padding: 120px 26px;
@@ -1464,11 +1432,6 @@ footer {
     .project {
         max-width: 100%;
     }
-
-
-    /* =====================================================
-       ABOUT TABLET
-    ===================================================== */
 
     #about {
         padding: 120px 26px;
@@ -1515,9 +1478,6 @@ footer {
         margin-top: 90px;
     }
 
-
-    /* FOOTER */
-
     footer {
         padding: 30px 26px;
     }
@@ -1536,9 +1496,7 @@ footer {
 
 @media (max-width: 767px) {
 
-    /* =====================================================
-       HERO
-    ===================================================== */
+    /* HERO */
 
     .hero {
         height: 100svh;
@@ -1594,9 +1552,6 @@ footer {
         font-weight: 900;
     }
 
-
-    /* HERO 3D */
-
     .hero-3d {
         position: absolute;
         inset: 0;
@@ -1618,9 +1573,6 @@ footer {
 
         opacity: .72;
     }
-
-
-    /* HERO MESSAGE */
 
     .hero-message-ux {
         left: 26px;
@@ -1662,10 +1614,7 @@ footer {
 
 
     /* =====================================================
-       EXPERIENCE — MOBILE
-       
-       PC 구조는 완전히 숨김.
-       모바일 전용 구조만 표시.
+       EXPERIENCE MOBILE
     ===================================================== */
 
     #experience {
@@ -1678,16 +1627,12 @@ footer {
         max-width: none;
     }
 
-
-    /* PC EXPERIENCE 완전히 숨김 */
-
+    /* PC EXPERIENCE 숨김 */
     .experience-desktop {
         display: none !important;
     }
 
-
     /* MOBILE EXPERIENCE 표시 */
-
     .experience-mobile {
         display: block !important;
         width: 100%;
@@ -1745,11 +1690,10 @@ footer {
     }
 
 
-    /* MOBILE EXPERIENCE LIST */
+    /* MOBILE LIST */
 
     .experience-mobile-list {
         display: block;
-
         width: 100%;
     }
 
@@ -1769,29 +1713,23 @@ footer {
         border-top: 1px solid #dedede;
     }
 
-
     /* 01 */
-
     .experience-mobile-item:nth-child(1) {
         padding-right: 8%;
     }
 
-
     /* 02 */
-
     .experience-mobile-item:nth-child(2) {
         padding-left: 8%;
         padding-right: 4%;
     }
 
-
-    /* 03 */
-
+    /* 03
+       3D가 child 3이므로 03은 child 4 */
     .experience-mobile-item:nth-child(4) {
         padding-left: 16%;
         padding-right: 0;
     }
-
 
     .experience-mobile-number {
         margin-bottom: 22px;
@@ -1847,12 +1785,8 @@ footer {
     }
 
 
-    /* =====================================================
-       MOBILE U 3D OBJECT
-       
-       02와 03 사이
-    ===================================================== */
-
+    /* MOBILE 3D
+       02와 03 사이 */
     #experience-object-mobile {
         display: block !important;
 
@@ -1904,7 +1838,7 @@ footer {
 
 
     /* =====================================================
-       PORTFOLIO — MOBILE
+       PORTFOLIO MOBILE
     ===================================================== */
 
     #portfolio {
@@ -1996,7 +1930,6 @@ footer {
 
     .project-archive {
         margin-top: 80px;
-
         padding: 10px 0;
     }
 
@@ -2006,7 +1939,6 @@ footer {
 
     .archive-content p {
         margin-top: 12px;
-
         font-size: 13px;
     }
 
@@ -2021,13 +1953,12 @@ footer {
 
     .project-archive:hover .archive-arrow {
         transform: translate(5px, -15px);
-
         font-size: 26px;
     }
 
 
     /* =====================================================
-       ABOUT — MOBILE
+       ABOUT MOBILE
     ===================================================== */
 
     #about {
@@ -2045,7 +1976,6 @@ footer {
 
     #about .about-copy h3 {
         margin-top: 12px;
-
         font-size: clamp(36px, 10vw, 52px);
     }
 
@@ -2070,7 +2000,6 @@ footer {
 
     #about .about-statement {
         margin-top: 22px;
-
         font-size: 13px;
     }
 
