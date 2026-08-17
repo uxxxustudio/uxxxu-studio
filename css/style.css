@@ -1948,8 +1948,17 @@ footer {
 ===================================================== */
 
 #portfolio {
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+
     padding: 100px 26px;
 }
+
+/*--   
+#portfolio {
+    padding: 100px 26px;
+}--*/
 
 #portfolio .portfolio-heading h2 {
     font-size: 48px;
