@@ -809,9 +809,9 @@ nav a:hover {
 .project h2 {
     margin: 28px 0 0;
 
-    font-size: clamp(30px, 3vw, 44px);
-    line-height: .98;
-    font-weight: 700;
+    font-size: 64px;
+    line-height: 1;
+    font-weight: 800;
     letter-spacing: -.055em;
     color: #111;
 
