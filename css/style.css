@@ -64,7 +64,11 @@ header {
     justify-content: space-between;
     align-items: center;
     z-index: 999;
-    transition: background .35s ease, backdrop-filter .35s ease, -webkit-backdrop-filter .35s ease, border-color .35s ease;
+    transition:
+        background .35s ease,
+        backdrop-filter .35s ease,
+        -webkit-backdrop-filter .35s ease,
+        border-color .35s ease;
 }
 
 header.active {
@@ -133,6 +137,7 @@ nav a:hover {
     z-index: 3;
 }
 
+
 /* Background Light Effect */
 .hero-light {
     position: absolute;
@@ -145,9 +150,23 @@ nav a:hover {
     opacity: .82;
     filter: blur(52px);
     transform: translate3d(4%, 0, 0) scale(1);
-    background: 
-        radial-gradient(ellipse 30% 36% at 70% 44%, rgba(63,84,72,.095) 0%, rgba(63,84,72,.065) 25%, rgba(63,84,72,.025) 48%, rgba(63,84,72,0) 72%),
-        radial-gradient(ellipse 60% 54% at 62% 48%, rgba(125,130,128,.095) 0%, rgba(145,148,146,.065) 30%, rgba(170,173,171,.035) 50%, rgba(255,255,255,0) 76%);
+
+    background:
+        radial-gradient(
+            ellipse 30% 36% at 70% 44%,
+            rgba(63,84,72,.095) 0%,
+            rgba(63,84,72,.065) 25%,
+            rgba(63,84,72,.025) 48%,
+            rgba(63,84,72,0) 72%
+        ),
+        radial-gradient(
+            ellipse 60% 54% at 62% 48%,
+            rgba(125,130,128,.095) 0%,
+            rgba(145,148,146,.065) 30%,
+            rgba(170,173,171,.035) 50%,
+            rgba(255,255,255,0) 76%
+        );
+
     animation: heroLightFlow 8s ease-in-out infinite alternate;
 }
 
@@ -155,10 +174,19 @@ nav a:hover {
     content: "";
     position: absolute;
     inset: -18%;
-    background: radial-gradient(ellipse 30% 42% at 76% 52%, rgba(255,255,255,.36) 0%, rgba(255,255,255,.15) 30%, rgba(255,255,255,0) 70%);
+
+    background:
+        radial-gradient(
+            ellipse 30% 42% at 76% 52%,
+            rgba(255,255,255,.36) 0%,
+            rgba(255,255,255,.15) 30%,
+            rgba(255,255,255,0) 70%
+        );
+
     filter: blur(28px);
     animation: heroLightPulse 6s ease-in-out infinite alternate;
 }
+
 
 /* Hero 3D Graphic */
 .hero-3d {
@@ -181,7 +209,8 @@ nav a:hover {
     opacity: .78;
 }
 
-/* Hero Typography & Content */
+
+/* Hero Typography */
 .hero h1 {
     position: absolute;
     z-index: 4;
@@ -189,11 +218,13 @@ nav a:hover {
     top: 26%;
     width: 95%;
     margin: 0;
+
     font-size: clamp(72px, 7vw, 118px);
     font-weight: 900;
     line-height: .90;
     letter-spacing: -0.045em;
     color: #111;
+
     opacity: 0;
     transform: translateY(40px);
     animation: fade .8s .15s forwards;
@@ -215,6 +246,8 @@ nav a:hover {
     font-weight: 900;
 }
 
+
+/* Hero Message */
 .hero-message {
     position: absolute;
     z-index: 4;
@@ -244,12 +277,15 @@ nav a:hover {
     left: 4%;
     top: 58%;
     width: 430px;
+
     display: block !important;
     visibility: visible !important;
+
     opacity: 0;
     transform: translateY(30px);
     animation: fade .8s .35s forwards;
 }
+
 
 /* Hero Action Buttons */
 .hero-action {
@@ -258,6 +294,7 @@ nav a:hover {
     align-items: center !important;
     justify-content: flex-start !important;
     gap: 10px !important;
+
     margin-top: 30px !important;
     margin-left: 0 !important;
     padding: 0 !important;
@@ -267,20 +304,30 @@ nav a:hover {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
+
     width: auto !important;
     min-width: 0 !important;
     height: 46px !important;
+
     padding: 0 18px !important;
+
     border-radius: 999px !important;
     border: 1px solid #111 !important;
+
     box-sizing: border-box !important;
+
     font-family: inherit !important;
     font-size: 13px !important;
     font-weight: 500 !important;
     line-height: 1 !important;
+
     text-decoration: none !important;
     white-space: nowrap !important;
-    transition: transform .2s ease, background .2s ease, color .2s ease;
+
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        color .2s ease;
 }
 
 .hero-action .hero-btn:hover {
@@ -320,29 +367,35 @@ nav a:hover {
 /* =========================================================
    4. EXPERIENCE / SERVICE SECTION
 ========================================================= */
+
 #experience {
-    padding: 300px 64px 120px;
     position: relative;
+    padding: 300px 64px 120px;
     overflow: hidden;
 }
 
 .experience-wrap {
+    position: relative;
     max-width: 1280px;
     width: 100%;
-    margin: auto;
+    margin: 0 auto;
 }
 
-.experience-header,
-.portfolio-header {
+
+/* -------------------------
+   EXPERIENCE HEADER
+------------------------- */
+
+.experience-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 110px;
 }
 
-.experience-heading h2,
-.portfolio-heading h2 {
+.experience-heading h2 {
     margin: 0 0 36px;
+
     font-size: 64px;
     line-height: 1;
     font-weight: 800;
@@ -350,272 +403,155 @@ nav a:hover {
     color: #111;
 }
 
-.experience-heading p,
-.portfolio-heading p {
+.experience-heading p {
     margin: 0;
+
     font-size: 18px;
     line-height: 1.8;
     color: #555;
     letter-spacing: -.025em;
 }
 
-.experience-years,
-.portfolio-meta {
+.experience-years {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+
     padding-top: 2px;
     color: #111;
 }
 
-.experience-years strong,
-.portfolio-meta strong {
+.experience-years strong {
     font-size: 28px;
     line-height: 1.15;
     font-weight: 700;
     letter-spacing: -.035em;
 }
 
-.experience-years span,
-.portfolio-meta span {
+.experience-years span {
     margin-top: 4px;
+
     font-size: 22px;
     line-height: 1.2;
     font-weight: 600;
     letter-spacing: -.035em;
 }
 
-/* =========================================================
-   MOBILE EXPERIENCE
-   PC 레이아웃을 1열로 축소하지 않고
-   모바일 전용 구조로 재구성
-========================================================= */
 
-.experience-mobile {
-    display: none;
+/* -------------------------
+   EXPERIENCE GRID
+------------------------- */
+
+.experience-grid {
+    position: relative;
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    width: 100%;
 }
 
+.experience-item {
+    position: relative;
+    min-width: 0;
 
-@media (max-width: 767px) {
-
-    /* PC Experience 숨김 */
-    #experience .experience-header,
-    #experience .experience-grid,
-    #experience .experience-career,
-    #experience #experience-object {
-        display: none !important;
-    }
-
-
-    /* Experience 섹션 */
-    #experience {
-        padding: 96px 26px 110px;
-        overflow: hidden;
-    }
-
-
-    .experience-mobile {
-        display: block;
-        width: 100%;
-    }
-
-
-    /* -------------------------
-       INTRO
-    ------------------------- */
-
-    .experience-mobile-intro {
-        margin-bottom: 92px;
-    }
-
-
-    .experience-mobile-label {
-        margin-bottom: 46px;
-
-        font-size: 12px;
-        line-height: 1;
-        font-weight: 500;
-        letter-spacing: .14em;
-        color: #777;
-    }
-
-
-    .experience-mobile-years {
-        margin-bottom: 32px;
-    }
-
-
-    .experience-mobile-years strong {
-        display: block;
-
-        font-size: 38px;
-        line-height: .95;
-        font-weight: 800;
-        letter-spacing: -.055em;
-        color: #111;
-    }
-
-
-    .experience-mobile-years span {
-        display: block;
-        margin-top: 8px;
-
-        font-size: 20px;
-        line-height: 1;
-        font-weight: 700;
-        letter-spacing: -.045em;
-        color: #111;
-    }
-
-
-    .experience-mobile-intro p {
-        max-width: 520px;
-        margin: 0;
-
-        font-size: 17px;
-        line-height: 1.75;
-        letter-spacing: -.035em;
-        color: #666;
-    }
-
-
-    /* -------------------------
-       EXPERIENCE ITEMS
-    ------------------------- */
-
-    .experience-mobile-list {
-        width: 100%;
-    }
-
-
-    .experience-mobile-item {
-        position: relative;
-
-        padding: 46px 0 58px;
-
-        border-top: 1px solid #dedede;
-    }
-
-
-    .experience-mobile-item:last-child {
-        border-bottom: 1px solid #dedede;
-    }
-
-
-    .experience-mobile-number {
-        margin-bottom: 22px;
-
-        font-size: 13px;
-        line-height: 1;
-        font-weight: 600;
-        letter-spacing: .02em;
-        color: #777;
-    }
-
-
-    .experience-mobile-item h3 {
-        margin: 0;
-
-        font-size: clamp(32px, 9vw, 44px);
-        line-height: .98;
-        font-weight: 800;
-        letter-spacing: -.06em;
-        color: #111;
-    }
-
-
-    .experience-mobile-line {
-        width: 48px;
-        height: 1px;
-
-        margin: 28px 0 30px;
-
-        background: #111;
-    }
-
-
-    .experience-mobile-keywords {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-
-        margin-bottom: 34px;
-    }
-
-
-    .experience-mobile-keywords span {
-        font-size: 16px;
-        line-height: 1.45;
-        letter-spacing: -.03em;
-        color: #222;
-    }
-
-
-    .experience-mobile-item p {
-        max-width: 430px;
-        margin: 0;
-
-        font-size: 15px;
-        line-height: 1.8;
-        letter-spacing: -.03em;
-        color: #777;
-    }
-
-
-    /* -------------------------
-       CAREER
-    ------------------------- */
-
-    .experience-mobile-career {
-        display: flex;
-        justify-content: flex-end;
-
-        padding-top: 42px;
-    }
-
-
-    .experience-mobile-career a {
-        display: inline-flex;
-        align-items: center;
-        gap: 18px;
-
-        padding-bottom: 9px;
-
-        border-bottom: 1px solid #111;
-
-        color: #111;
-
-        font-size: 17px;
-        line-height: 1;
-        font-weight: 600;
-        letter-spacing: -.025em;
-        text-decoration: none;
-    }
-
-
-    .experience-mobile-career .career-arrow {
-        font-size: 23px;
-        line-height: 1;
-    }
-
+    padding: 0 40px;
 }
 
-.career-arrow {
-    font-size: 24px;
+.experience-item:first-child {
+    padding-left: 0;
+}
+
+.experience-item:last-child {
+    padding-right: 0;
+}
+
+.experience-item + .experience-item {
+    border-left: 1px solid #dcdcdc;
+}
+
+.experience-number {
+    margin-bottom: 22px;
+
+    font-size: 13px;
     line-height: 1;
+    font-weight: 600;
+    letter-spacing: .02em;
+    color: #777;
 }
 
-/* 02와 03 사이 공간에 위치한 3D 오브젝트 */
+.experience-item h3 {
+    margin: 0;
+
+    font-size: 30px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -.055em;
+    color: #111;
+}
+
+.experience-line {
+    width: 48px;
+    height: 1px;
+
+    margin: 28px 0 30px;
+
+    background: #111;
+}
+
+.experience-keywords {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    margin-bottom: 34px;
+}
+
+.experience-keywords span {
+    font-size: 16px;
+    line-height: 1.45;
+    color: #222;
+    letter-spacing: -.03em;
+}
+
+.experience-item p {
+    margin: 0;
+
+    font-size: 15px;
+    line-height: 1.8;
+    color: #777;
+    letter-spacing: -.03em;
+}
+
+
+/* -------------------------
+   EXPERIENCE 3D OBJECT
+
+   PC:
+   02와 03 사이 공간
+
+   Mobile:
+   02와 03 사이 독립 영역
+------------------------- */
+
 #experience-object {
     position: absolute;
+
     top: 50%;
     left: 62%;
+
     width: 280px;
     height: 280px;
-    z-index: 2;
+
+    z-index: 5;
     pointer-events: none;
+
     opacity: 0;
-    transform: translate(-50%, -50%) translateY(50px);
+
+    transform:
+        translate(-50%, -50%)
+        translateY(50px);
+
     transition:
         opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
         transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -623,13 +559,53 @@ nav a:hover {
 
 #experience-object.is-visible {
     opacity: 1;
-    transform: translate(-50%, -50%) translateY(0);
+
+    transform:
+        translate(-50%, -50%)
+        translateY(0);
+}
+
+
+/* -------------------------
+   EXPERIENCE CAREER
+------------------------- */
+
+.experience-career {
+    display: flex;
+    justify-content: flex-end;
+
+    margin-top: 110px;
+    padding-top: 34px;
+
+    border-top: 1px solid #e5e5e5;
+}
+
+.experience-career a {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+
+    padding-bottom: 9px;
+
+    border-bottom: 1px solid #111;
+
+    font-size: 17px;
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: -.025em;
+    color: #111;
+}
+
+.career-arrow {
+    font-size: 24px;
+    line-height: 1;
 }
 
 
 /* =========================================================
    5. PORTFOLIO / SELECTED WORK
 ========================================================= */
+
 #portfolio {
     padding: 120px 64px;
 }
@@ -642,6 +618,7 @@ nav a:hover {
 
 #portfolio .section-title {
     margin: 0 0 42px;
+
     font-size: 64px;
     line-height: 1;
     font-weight: 800;
@@ -651,9 +628,12 @@ nav a:hover {
 
 #portfolio .section-title::after {
     content: "20+ PROJECTS";
+
     display: block;
     float: right;
+
     margin-top: -2px;
+
     font-size: 28px;
     line-height: 1.15;
     font-weight: 700;
@@ -666,7 +646,9 @@ nav a:hover {
 
 .portfolio-grid {
     position: relative;
+
     width: 100%;
+
     display: flex;
     flex-direction: column;
     gap: 0;
@@ -674,15 +656,22 @@ nav a:hover {
 
 .project {
     position: relative;
+
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
+
     width: 100%;
     max-width: 1120px;
     min-height: 150px;
+
     padding: 34px 0;
+
     color: #111;
-    transition: padding .45s cubic-bezier(.2,.7,.2,1), opacity .35s ease;
+
+    transition:
+        padding .45s cubic-bezier(.2,.7,.2,1),
+        opacity .35s ease;
 }
 
 .project + .project {
@@ -693,45 +682,62 @@ nav a:hover {
     position: absolute;
     left: 0;
     top: 34px;
+
     font-size: 12px;
     line-height: 1;
     font-weight: 600;
     color: #888;
     letter-spacing: .04em;
     text-transform: uppercase;
-    transition: color .35s ease, transform .4s cubic-bezier(.2,.7,.2,1);
+
+    transition:
+        color .35s ease,
+        transform .4s cubic-bezier(.2,.7,.2,1);
 }
 
 .project h2 {
     margin: 28px 0 0;
+
     font-size: clamp(30px, 3vw, 44px);
     line-height: .98;
     font-weight: 700;
     letter-spacing: -.055em;
     color: #111;
-    transition: transform .5s cubic-bezier(.2,.7,.2,1), letter-spacing .5s ease;
+
+    transition:
+        transform .5s cubic-bezier(.2,.7,.2,1),
+        letter-spacing .5s ease;
 }
 
 .project p {
     grid-column: 1;
+
     margin: 16px 0 0;
+
     font-size: 15px;
     line-height: 1.6;
     color: #777;
     letter-spacing: -.025em;
-    transition: color .35s ease, transform .45s cubic-bezier(.2,.7,.2,1);
+
+    transition:
+        color .35s ease,
+        transform .45s cubic-bezier(.2,.7,.2,1);
 }
 
 .project .arrow {
     position: absolute;
     right: 0;
     bottom: 34px;
+
     font-size: 14px;
     line-height: 1;
     font-weight: 600;
     color: #111;
     opacity: .75;
-    transition: opacity .3s ease, transform .45s cubic-bezier(.2,.7,.2,1);
+
+    transition:
+        opacity .3s ease,
+        transform .45s cubic-bezier(.2,.7,.2,1);
 }
 
 .portfolio-grid:hover .project:not(:hover) {
@@ -767,18 +773,25 @@ nav a:hover {
 /* =========================================================
    6. PROJECT ARCHIVE STYLING
 ========================================================= */
+
 .project-archive {
     position: relative;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     width: 100%;
+
     margin-top: 60px;
     padding: 20px 0;
+
     color: #111;
     text-decoration: none;
     text-align: center;
-    transition: transform .45s cubic-bezier(.2,.7,.2,1);
+
+    transition:
+        transform .45s cubic-bezier(.2,.7,.2,1);
 }
 
 .archive-content {
@@ -790,35 +803,48 @@ nav a:hover {
 
 .archive-content h3 {
     margin: 0;
+
     font-size: 32px;
     line-height: 1;
     font-weight: 700;
     letter-spacing: -.045em;
-    transition: transform .45s cubic-bezier(.2,.7,.2,1);
+
+    transition:
+        transform .45s cubic-bezier(.2,.7,.2,1);
 }
 
 .archive-content p {
     margin: 16px 0 0;
+
     font-size: 15px;
     line-height: 1.5;
     color: #888;
     letter-spacing: -.02em;
-    transition: color .35s ease, transform .45s cubic-bezier(.2,.7,.2,1);
+
+    transition:
+        color .35s ease,
+        transform .45s cubic-bezier(.2,.7,.2,1);
 }
 
 .archive-arrow {
     position: absolute;
+
     left: calc(50% + 155px);
     top: 50%;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
     font-size: 26px;
     line-height: 1;
     font-weight: 400;
     color: #111;
+
     transform: translateY(-18px);
-    transition: transform .45s cubic-bezier(.2,.7,.2,1);
+
+    transition:
+        transform .45s cubic-bezier(.2,.7,.2,1);
 }
 
 .project-archive:hover {
@@ -846,17 +872,21 @@ nav a:hover {
 #about {
     position: relative;
     overflow: hidden;
+
     padding: 120px 64px;
 }
 
 #about .about-wrap {
     position: relative;
+
     display: grid;
     grid-template-columns: 150px minmax(0, 1fr);
     gap: 80px;
+
     width: 100%;
     max-width: 1280px;
-    min-height: 0px;
+    min-height: 0;
+
     margin: 0 auto;
     padding: 0;
 }
@@ -864,13 +894,17 @@ nav a:hover {
 #about .section-title {
     position: sticky;
     top: 140px;
+
     align-self: start;
+
     margin: 0;
+
     font-size: 13px;
     font-weight: 500;
     line-height: 1;
     letter-spacing: .14em;
     color: #777;
+
     writing-mode: vertical-rl;
     text-orientation: mixed;
     text-transform: uppercase;
@@ -878,10 +912,12 @@ nav a:hover {
 
 #about .about-main {
     position: relative;
+
     display: grid;
     grid-template-columns: minmax(0, 1fr) 300px;
     column-gap: 80px;
     align-items: start;
+
     padding: 0;
 }
 
@@ -892,6 +928,7 @@ nav a:hover {
 #about .about-copy h2 {
     margin: 0;
     max-width: 680px;
+
     font-size: clamp(46px, 4.6vw, 72px);
     font-weight: 650;
     line-height: .98;
@@ -909,6 +946,7 @@ nav a:hover {
 #about .about-copy h3 {
     margin: 14px 0 0;
     max-width: 620px;
+
     font-size: clamp(42px, 4vw, 62px);
     font-weight: 650;
     line-height: 1;
@@ -919,6 +957,7 @@ nav a:hover {
 #about .about-copy p {
     margin: 54px 0 0;
     max-width: 560px;
+
     font-size: 17px;
     line-height: 1.8;
     font-weight: 400;
@@ -927,14 +966,15 @@ nav a:hover {
 }
 
 
-/* -----------------------------------------
-   THEN / NOW
------------------------------------------ */
+/* THEN / NOW */
 
 #about .about-timeline {
     position: relative;
+
     align-self: end;
+
     width: 100%;
+
     margin-top: 150px;
     padding-top: 4px;
 }
@@ -943,6 +983,7 @@ nav a:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     margin-bottom: 18px;
 }
 
@@ -956,32 +997,45 @@ nav a:hover {
 
 #about .about-timeline-line {
     position: relative;
+
     width: 100%;
     height: 1px;
+
     background: #d8d8d8;
 }
 
 #about .about-timeline-point {
     position: absolute;
+
     top: 50%;
     left: 50%;
+
     width: 10px;
     height: 10px;
+
     border-radius: 50%;
     background: #111;
+
     transform: translate(-50%, -50%);
-    transition: transform .35s ease;
+
+    transition:
+        transform .35s ease;
 }
 
 #about .about-timeline-line::before,
 #about .about-timeline-line::after {
     content: "";
+
     position: absolute;
+
     top: 50%;
+
     width: 4px;
     height: 4px;
+
     border-radius: 50%;
     background: #d8d8d8;
+
     transform: translateY(-50%);
 }
 
@@ -995,34 +1049,41 @@ nav a:hover {
 
 #about .about-statement {
     margin: 28px 0 0;
+
     text-align: left;
+
     font-size: 14px;
     line-height: 1.7;
     color: #777;
 }
 
 #about .about-timeline:hover .about-timeline-point {
-    transform: translate(-50%, -50%) scale(1.45);
+    transform:
+        translate(-50%, -50%)
+        scale(1.45);
 }
 
 
-/* -----------------------------------------
-   Bottom
------------------------------------------ */
+/* Bottom */
 
 #about .about-bottom {
     grid-column: 2;
+
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 80px;
+
     margin: 120px 0 0;
     padding: 34px 0 0;
+
     border-top: 1px solid #e5e5e5;
 }
 
 #about .about-meta strong {
     display: block;
+
     margin-bottom: 12px;
+
     font-size: 14px;
     font-weight: 500;
     line-height: 1.3;
@@ -1032,6 +1093,7 @@ nav a:hover {
 
 #about .about-meta p {
     margin: 0;
+
     font-size: 13px;
     line-height: 1.6;
     color: #888;
@@ -1049,19 +1111,29 @@ nav a:hover {
     display: inline-flex;
     align-items: center;
     gap: 12px;
+
     padding-bottom: 8px;
+
     border-bottom: 1px solid #111;
+
     color: #111;
+
     font-size: 16px;
     line-height: 1.2;
     font-weight: 500;
+
     text-decoration: none;
-    transition: transform .3s ease, opacity .3s ease;
+
+    transition:
+        transform .3s ease,
+        opacity .3s ease;
 }
 
 #about .about-links a span {
     display: inline-block;
-    transition: transform .3s ease;
+
+    transition:
+        transform .3s ease;
 }
 
 #about .about-links a:hover {
@@ -1073,12 +1145,11 @@ nav a:hover {
 }
 
 
-/* -----------------------------------------
-   Footer
------------------------------------------ */
+/* Footer */
 
 footer {
     padding: 40px 64px;
+
     border-top: 1px solid #ececec;
 }
 
@@ -1086,9 +1157,11 @@ footer {
     max-width: 1280px;
     width: 100%;
     margin: auto;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     font-size: 14px;
     color: #888;
 }
@@ -1152,7 +1225,7 @@ footer {
 
 
 /* =========================================================
-   9. RESPONSIVE (TABLET & MOBILE)
+   9. TABLET
 ========================================================= */
 
 @media (max-width: 980px) {
@@ -1172,18 +1245,27 @@ footer {
 
     nav {
         display: none;
+
         position: fixed;
         top: 92px;
         left: 0;
+
         width: 100%;
+
         background: rgba(248, 248, 248, .72);
+
         backdrop-filter: blur(20px) saturate(180%);
         -webkit-backdrop-filter: blur(20px) saturate(180%);
+
         box-shadow: 0 10px 30px rgba(0, 0, 0, .06);
+
         padding: 24px 26px;
+
         flex-direction: column;
         gap: 20px;
+
         border-top: 1px solid rgba(0, 0, 0, .05);
+
         z-index: 998;
     }
 
@@ -1195,6 +1277,9 @@ footer {
         display: block;
     }
 
+
+    /* HERO */
+
     .hero {
         padding: 0 26px;
         min-height: 720px;
@@ -1203,6 +1288,7 @@ footer {
     .hero h1 {
         left: 26px;
         top: 28%;
+
         font-size: clamp(52px, 13vw, 72px);
         line-height: .95;
         letter-spacing: -0.04em;
@@ -1211,6 +1297,7 @@ footer {
     .hero-message-ux {
         left: 26px;
         top: 58%;
+
         width: calc(100% - 52px);
     }
 
@@ -1225,7 +1312,9 @@ footer {
     .hero-action {
         flex-direction: column !important;
         align-items: flex-start !important;
+
         gap: 18px !important;
+
         margin-top: 36px !important;
     }
 
@@ -1235,102 +1324,45 @@ footer {
 
     .hero-3d {
         inset: 0;
+
         width: 100%;
         height: 100%;
+
         right: auto;
         top: auto;
+
         transform: none;
     }
+
+
+    /* COMMON */
 
     section {
         padding: 120px 26px;
     }
 
-    #experience {
+
+    /* =====================================================
+       PORTFOLIO TABLET
+    ===================================================== */
+
+    #portfolio {
         padding: 120px 26px;
     }
 
-    .experience-header,
-    .portfolio-header {
-        flex-direction: column;
-        gap: 40px;
-        margin-bottom: 70px;
-    }
-
-    .experience-heading h2,
-    .portfolio-heading h2 {
+    #portfolio .section-title {
         font-size: 48px;
-        margin-bottom: 26px;
+        margin-bottom: 32px;
     }
 
-    .experience-heading p,
-    .portfolio-heading p {
-        font-size: 16px;
-    }
-
-    .experience-years,
-    .portfolio-meta {
-        align-items: flex-start;
-    }
-
-    .experience-years strong,
-    .portfolio-meta strong {
-        font-size: 24px;
-    }
-
-    .experience-years span,
-    .portfolio-meta span {
-        font-size: 19px;
-    }
-
-    .experience-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .experience-item {
-        padding: 50px 0;
-    }
-
-    .experience-item:first-child {
-        padding-top: 0;
-    }
-
-    .experience-item:last-child {
-        padding-bottom: 0;
-    }
-
-    .experience-item + .experience-item {
-        border-left: 0;
-        border-top: 1px solid #dcdcdc;
-        padding-left: 0;
-    }
-
-    .experience-item h3 {
-        font-size: 30px;
-    }
-
-    .experience-career {
-        margin-top: 70px;
-    }
-
-    #experience-object {
-        position: relative;
-        top: auto;
-        left: auto;
-        transform: none;
-        margin: 40px auto 0;
-        width: 200px;
-        height: 200px;
-    }
-
-    #experience-object.is-visible {
-        transform: none;
+    .project {
+        max-width: 100%;
     }
 
 
-    /* -----------------------------------------
-       ABOUT — TABLET
-    ----------------------------------------- */
+    /* =====================================================
+       ABOUT TABLET
+    ===================================================== */
 
     #about {
         padding: 120px 26px;
@@ -1370,11 +1402,15 @@ footer {
 
     #about .about-bottom {
         grid-column: auto;
+
         grid-template-columns: 1fr 1fr;
         gap: 50px;
+
         margin-top: 90px;
     }
 
+
+    /* FOOTER */
 
     footer {
         padding: 30px 26px;
@@ -1389,19 +1425,14 @@ footer {
 
 
 /* =========================================================
-   10. MOBILE HERO & REDUCED MOTION
+   10. MOBILE
 ========================================================= */
 
-@media (prefers-reduced-motion: reduce) {
-
-    .hero-light,
-    .hero-light::after,
-    .hero-3d {
-        animation: none;
-    }
-}
-
 @media (max-width: 767px) {
+
+    /* =====================================================
+       HERO
+    ===================================================== */
 
     .hero {
         height: 100svh;
@@ -1417,53 +1448,78 @@ footer {
     .hero h1 {
         left: 26px;
         top: 23%;
+
         width: calc(100% - 52px);
+
         font-size: clamp(48px, 13vw, 64px);
         line-height: .94;
         letter-spacing: -0.045em;
+
         z-index: 4;
     }
 
     .hero h1 .title-line-1 {
         display: block;
+
         position: relative;
+
         left: 0;
         margin: 0;
+
         width: 100%;
+
         text-align: left;
     }
 
     .hero h1 .title-line-2 {
         display: block;
+
         position: relative;
+
         left: 36%;
         top: 16px;
+
         margin-left: 0;
+
         width: calc(100% - 36%);
+
         text-align: left;
+
         font-weight: 900;
     }
+
+
+    /* HERO 3D */
 
     .hero-3d {
         position: absolute;
         inset: 0;
+
         width: 100%;
         height: 100%;
+
         transform: scale(.40);
         transform-origin: center center;
+
         z-index: 2;
+
         overflow: visible;
     }
 
     .hero-3d canvas {
         width: 100% !important;
         height: 100% !important;
+
         opacity: .72;
     }
+
+
+    /* HERO MESSAGE */
 
     .hero-message-ux {
         left: 26px;
         top: 53%;
+
         width: calc(100% - 52px);
     }
 
@@ -1479,20 +1535,240 @@ footer {
 
     .hero-message-ux .hero-action {
         margin-top: 90px;
+
         display: flex;
         flex-direction: column !important;
         align-items: flex-start !important;
+
         gap: 18px !important;
     }
 
     .hero-light {
         width: 120vw;
         height: 70vh;
+
         right: -45vw;
         top: 15vh;
+
         opacity: .45;
         filter: blur(45px);
     }
+
+
+    /* =====================================================
+       EXPERIENCE — MOBILE 전용
+       
+       PC 3열을 단순히 1열로 축소하지 않음.
+       HTML 구조를 유지하면서
+       01 / 02 / U 3D / 03 순서로 구성.
+    ===================================================== */
+
+    #experience {
+        padding: 110px 26px 100px;
+        overflow: hidden;
+    }
+
+    .experience-wrap {
+        width: 100%;
+        max-width: none;
+    }
+
+
+    /* HEADER */
+
+    .experience-header {
+        display: block;
+
+        margin-bottom: 78px;
+    }
+
+    .experience-heading h2 {
+        margin: 0 0 28px;
+
+        font-size: 52px;
+        line-height: .94;
+        font-weight: 800;
+        letter-spacing: -.06em;
+    }
+
+    .experience-heading p {
+        max-width: 100%;
+
+        font-size: 17px;
+        line-height: 1.75;
+    }
+
+    .experience-years {
+        align-items: flex-start;
+
+        margin-top: 46px;
+        padding: 0;
+    }
+
+    .experience-years strong {
+        font-size: 34px;
+        line-height: 1;
+    }
+
+    .experience-years span {
+        margin-top: 8px;
+
+        font-size: 20px;
+        line-height: 1;
+    }
+
+
+    /* EXPERIENCE LIST */
+
+    .experience-grid {
+        display: block;
+
+        width: 100%;
+    }
+
+    .experience-item {
+        position: relative;
+
+        width: 100%;
+        min-height: 0;
+
+        padding: 56px 0 64px;
+    }
+
+    .experience-item:first-child {
+        padding-top: 0;
+    }
+
+    .experience-item + .experience-item {
+        border-left: 0;
+        border-top: 1px solid #dedede;
+    }
+
+    .experience-item:last-of-type {
+        border-bottom: 1px solid #dedede;
+    }
+
+
+    /* 01 */
+
+    .experience-item:nth-of-type(1) {
+        padding-right: 8%;
+    }
+
+
+    /* 02 */
+
+    .experience-item:nth-of-type(2) {
+        padding-left: 8%;
+        padding-right: 4%;
+    }
+
+
+    /* 03 */
+
+    .experience-item:nth-of-type(3) {
+        padding-left: 16%;
+        padding-right: 0;
+    }
+
+
+    .experience-number {
+        margin-bottom: 22px;
+
+        font-size: 13px;
+        line-height: 1;
+    }
+
+    .experience-item h3 {
+        font-size: clamp(32px, 9vw, 46px);
+        line-height: .96;
+        letter-spacing: -.06em;
+    }
+
+    .experience-line {
+        width: 48px;
+
+        margin: 28px 0 30px;
+    }
+
+    .experience-keywords {
+        gap: 9px;
+
+        margin-bottom: 34px;
+    }
+
+    .experience-keywords span {
+        font-size: 16px;
+        line-height: 1.45;
+    }
+
+    .experience-item p {
+        font-size: 15px;
+        line-height: 1.8;
+    }
+
+
+    /* =====================================================
+       U 3D OBJECT
+
+       ★ 절대 display:none 하지 않음
+       ★ 02와 03 사이에 위치
+    ===================================================== */
+
+    #experience-object {
+        display: block !important;
+
+        position: relative;
+
+        top: auto;
+        left: auto;
+
+        width: 180px;
+        height: 180px;
+
+        margin: 10px auto 18px;
+
+        z-index: 5;
+
+        opacity: 1;
+
+        transform: none !important;
+
+        pointer-events: none;
+    }
+
+    #experience-object.is-visible {
+        opacity: 1;
+
+        transform: none !important;
+    }
+
+
+    /* EXPERIENCE CAREER */
+
+    .experience-career {
+        justify-content: flex-end;
+
+        margin-top: 0;
+        padding-top: 42px;
+
+        border-top: 0;
+    }
+
+    .experience-career a {
+        gap: 16px;
+
+        font-size: 17px;
+    }
+
+    .career-arrow {
+        font-size: 23px;
+    }
+
+
+    /* =====================================================
+       PORTFOLIO — MOBILE
+    ===================================================== */
 
     #portfolio {
         padding: 100px 64px;
@@ -1505,8 +1781,11 @@ footer {
 
     #portfolio .section-title::after {
         float: none;
+
         display: block;
+
         margin-top: 18px;
+
         font-size: 20px;
     }
 
@@ -1516,8 +1795,10 @@ footer {
 
     .project {
         display: block;
+
         width: 100%;
         min-height: 170px;
+
         padding: 28px 0;
     }
 
@@ -1527,26 +1808,34 @@ footer {
 
     .project-category {
         position: static;
+
         display: block;
+
         margin-bottom: 22px;
+
         font-size: 11px;
     }
 
     .project h2 {
         margin: 0;
+
         font-size: clamp(30px, 9vw, 46px);
         line-height: 1;
     }
 
     .project p {
         margin-top: 14px;
+
         font-size: 14px;
     }
 
     .project .arrow {
         position: static;
+
         display: inline-block;
+
         margin-top: 28px;
+
         font-size: 13px;
     }
 
@@ -1565,8 +1854,12 @@ footer {
         opacity: 1;
     }
 
+
+    /* PROJECT ARCHIVE */
+
     .project-archive {
         margin-top: 80px;
+
         padding: 10px 0;
     }
 
@@ -1576,25 +1869,29 @@ footer {
 
     .archive-content p {
         margin-top: 12px;
+
         font-size: 13px;
     }
 
     .archive-arrow {
         left: calc(50% + 128px);
         top: 50%;
+
         font-size: 22px;
+
         transform: translateY(-15px);
     }
 
     .project-archive:hover .archive-arrow {
         transform: translate(5px, -15px);
+
         font-size: 26px;
     }
 
 
-    /* -----------------------------------------
+    /* =====================================================
        ABOUT — MOBILE
-    ----------------------------------------- */
+    ===================================================== */
 
     #about {
         padding: 100px 64px;
@@ -1611,11 +1908,13 @@ footer {
 
     #about .about-copy h3 {
         margin-top: 12px;
+
         font-size: clamp(36px, 10vw, 52px);
     }
 
     #about .about-copy p {
         margin-top: 42px;
+
         font-size: 15px;
         line-height: 1.75;
     }
@@ -1634,12 +1933,15 @@ footer {
 
     #about .about-statement {
         margin-top: 22px;
+
         font-size: 13px;
     }
 
     #about .about-bottom {
         grid-template-columns: 1fr;
+
         gap: 42px;
+
         margin-top: 70px;
         padding-top: 28px;
     }
@@ -1650,5 +1952,19 @@ footer {
 
     #about .about-links a {
         font-size: 15px;
+    }
+}
+
+
+/* =========================================================
+   11. REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .hero-light,
+    .hero-light::after,
+    .hero-3d {
+        animation: none;
     }
 }
