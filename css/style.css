@@ -750,14 +750,18 @@ nav a:hover {
 }
 
 #about .section-title {
-    position: static;
+    position: sticky;
+    top: 140px;
     align-self: start;
-    margin: 8px 0 0;
-    font-size: 14px;
+
+    margin: 0;
+    font-size: 13px;
     font-weight: 500;
     line-height: 1;
-    letter-spacing: .08em;
+    letter-spacing: .14em;
     color: #777;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
     text-transform: uppercase;
 }
 
