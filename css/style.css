@@ -2064,3 +2064,29 @@ footer {
         animation: none;
     }
 }
+
+/* =====================================================
+   EXPERIENCE DESKTOP / MOBILE VISIBILITY
+   ===================================================== */
+
+.experience-desktop {
+    display: block !important;
+}
+
+.experience-mobile {
+    display: none !important;
+}
+
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+    .experience-desktop {
+        display: none !important;
+    }
+
+    .experience-mobile {
+        display: block !important;
+    }
+
+}
