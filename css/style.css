@@ -40,7 +40,7 @@ img {
 }
 
 section {
-    padding: 180px 64px;
+    padding: 160px 64px;
 }
 
 .container {
@@ -321,7 +321,7 @@ nav a:hover {
    4. EXPERIENCE / SERVICE SECTION
 ========================================================= */
 #experience {
-    padding: 180px 64px;
+    padding: 160px 64px;
     position: relative;
     overflow: hidden;
 }
@@ -393,7 +393,7 @@ nav a:hover {
 
 .experience-item {
     min-width: 0;
-    padding: 0 42px; /* 醫뚯슦 �⑤뵫�� �댁쭩 議곗젙�섏뿬 �� 媛꾧꺽�� 留욎땄 */
+    padding: 0 42px;
 }
 
 .experience-item:first-child {
@@ -404,13 +404,11 @@ nav a:hover {
     padding-right: 0;
 }
 
-/* 1踰덇낵 2踰� �ъ씠, 洹몃━怨� 2踰덇낵 3踰� �ъ씠�� 紐⑤몢 �몃줈�좎씠 �ㅼ뼱媛��꾨줉 �ㅼ젙 */
 .experience-item + .experience-item {
     border-left: 1px solid #dcdcdc;
-    padding-left: 64px; /* �� 湲곗� �쇱そ �щ갚 蹂듭썝 */
+    padding-left: 64px;
 }
 
-/* 02踰덇낵 03踰� �ъ씠 �몃줈�� */
 #experience-object + .experience-item {
     border-left: 1px solid #dcdcdc;
     padding-left: 64px;
@@ -493,19 +491,20 @@ nav a:hover {
     line-height: 1;
 }
 
-/* 02踰덇낵 03踰� �ъ씠 怨듦컙�� �꾩튂�� 3D �ㅻ툕�앺듃 */
+/* 02와 03 사이 공간에 위치한 3D 오브젝트 */
 #experience-object {
     position: absolute;
-    top: 50%;      
-    left: 62%;    
-    width: 280px;    
-    height: 280px;    
-    z-index: 2; 
+    top: 50%;
+    left: 62%;
+    width: 280px;
+    height: 280px;
+    z-index: 2;
     pointer-events: none;
     opacity: 0;
     transform: translate(-50%, -50%) translateY(50px);
-    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
-                transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transition:
+        opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 #experience-object.is-visible {
@@ -518,7 +517,7 @@ nav a:hover {
    5. PORTFOLIO / SELECTED WORK
 ========================================================= */
 #portfolio {
-    padding: 180px 64px;
+    padding: 160px 64px;
 }
 
 #portfolio .container {
@@ -660,7 +659,7 @@ nav a:hover {
     align-items: center;
     justify-content: center;
     width: 100%;
-    margin-top: 100px;
+    margin-top: 80px;
     padding: 20px 0;
     color: #111;
     text-decoration: none;
@@ -706,7 +705,6 @@ nav a:hover {
     color: #111;
     transform: translateY(-18px);
     transition: transform .45s cubic-bezier(.2,.7,.2,1);
-
 }
 
 .project-archive:hover {
@@ -734,7 +732,7 @@ nav a:hover {
 #about {
     position: relative;
     overflow: hidden;
-    padding: 170px 64px 120px;
+    padding: 160px 64px;
 }
 
 #about .about-wrap {
@@ -753,7 +751,6 @@ nav a:hover {
     position: sticky;
     top: 140px;
     align-self: start;
-
     margin: 0;
     font-size: 13px;
     font-weight: 500;
@@ -1202,7 +1199,6 @@ footer {
         margin-top: 70px;
     }
 
-    /* 모바일 환경에서 섹션용 3D 오브젝트 위치 조정 */
     #experience-object {
         position: relative;
         top: auto;
@@ -1223,7 +1219,7 @@ footer {
     ----------------------------------------- */
 
     #about {
-        padding: 120px 26px 90px;
+        padding: 120px 26px;
     }
 
     #about .about-wrap {
@@ -1380,7 +1376,7 @@ footer {
         height: 70vh;
         right: -45vw;
         top: 15vh;
-      (` opacity: .45;
+        opacity: .45;
         filter: blur(45px);
     }
 
@@ -1456,7 +1452,7 @@ footer {
     }
 
     .project-archive {
-        margin-top: 100px;
+        margin-top: 80px;
         padding: 10px 0;
     }
 
@@ -1487,7 +1483,7 @@ footer {
     ----------------------------------------- */
 
     #about {
-        padding: 100px 26px 70px;
+        padding: 120px 26px;
     }
 
     #about .about-wrap {
