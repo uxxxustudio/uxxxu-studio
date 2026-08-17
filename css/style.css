@@ -1728,11 +1728,11 @@ footer {
 
     .experience-mobile-intro {
         width: 100%;
-        margin-bottom: 78px;
+        margin-bottom: 42px;
     }
 
     .experience-mobile-label {
-        margin-bottom: 28px;
+        margin-bottom: 20px;
 
         font-size: 48px;
         line-height: .94;
@@ -1757,7 +1757,7 @@ footer {
     }
 
     .experience-mobile-years span {
-        margin-top: 8px;
+        margin-top: 5px;
 
         font-size: 20px;
         line-height: 1;
@@ -1766,10 +1766,10 @@ footer {
     }
 
     .experience-mobile-intro p {
-        margin-top: 32px;
+        margin-top: 24px;
 
         font-size: 17px;
-        line-height: 1.75;
+        line-height: 1.65;
         color: #555;
         letter-spacing: -.025em;
     }
@@ -1800,7 +1800,7 @@ footer {
 
         width: 100%;
 
-        padding: 56px 0 64px;
+        padding: 34px 0 38px;
     }
 
     .experience-mobile-item:first-child {
@@ -1810,6 +1810,13 @@ footer {
     .experience-mobile-item + .experience-mobile-item {
         border-top: 1px solid #dedede;
     }
+
+    /* 3D 오브젝트 때문에 + 선택자가 끊기는 02 / 03 구분선 */
+    .experience-mobile-list > .experience-mobile-item:nth-child(2),
+    .experience-mobile-list > .experience-mobile-item:nth-child(4) {
+        border-top: 1px solid #dedede;
+    }
+
 
 /* =====================================================
    MOBILE EXPERIENCE ITEM ALIGNMENT
@@ -1824,7 +1831,7 @@ footer {
 }
 
     .experience-mobile-number {
-        margin-bottom: 22px;
+        margin-bottom: 16px;
 
         font-size: 13px;
         line-height: 1;
@@ -1847,7 +1854,7 @@ footer {
         width: 48px;
         height: 1px;
 
-        margin: 28px 0 30px;
+        margin: 20px 0 22px;
 
         background: #111;
     }
@@ -1855,9 +1862,9 @@ footer {
     .experience-mobile-keywords {
         display: flex;
         flex-direction: column;
-        gap: 9px;
+        gap: 6px;
 
-        margin-bottom: 34px;
+        margin-bottom: 24px;
     }
 
     .experience-mobile-keywords span {
@@ -1871,7 +1878,7 @@ footer {
         margin: 0;
 
         font-size: 15px;
-        line-height: 1.8;
+        line-height: 1.7;
         color: #777;
         letter-spacing: -.03em;
     }
@@ -1935,7 +1942,6 @@ footer {
     .experience-mobile-career .career-arrow {
         font-size: 23px;
     }
-
 
     /* =====================================================
    PORTFOLIO MOBILE
