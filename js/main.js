@@ -70,11 +70,11 @@ window.addEventListener("DOMContentLoaded", async () => {
         "about",
         new URL("about.html", componentPath)
     );
-
+/*--
     await loadComponent(
         "contact",
         new URL("contact.html", componentPath)
-    );
+    );--*/
 
     await loadComponent(
         "footer",
