@@ -1961,6 +1961,15 @@ footer {
 
 #portfolio .portfolio-heading p {
     margin: 0;
+    line-height: 1.6;
+}
+
+/* 설명 → 첫 번째 카드 */
+#portfolio .portfolio-heading + .portfolio-grid {
+    width: 100%;
+    margin-top: 28px;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 #portfolio .section-title::after {
@@ -1970,19 +1979,13 @@ footer {
     font-size: 20px;
 }
 
-/* 설명 → 첫 번째 카드 */
-#portfolio .portfolio-heading + .portfolio-grid {
-    margin-top: 36px;
-}
-
 .project {
     display: block;
 
     width: 100%;
     min-height: auto;
 
-    /* Project 타이틀과 동일한 왼쪽 기준 */
-    padding: 30px 0;
+    padding: 30px 26px;
 
     background: #f7f7f7;
     border: 1px solid #eeeeee;
@@ -2031,8 +2034,8 @@ footer {
 }
 
 .project:hover {
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 26px;
+    padding-right: 26px;
 }
 
 .project:hover h2,
