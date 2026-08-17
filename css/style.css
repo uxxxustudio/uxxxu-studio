@@ -393,7 +393,15 @@ nav a:hover {
     display: none;
 }
 
-.experience-mobile-list,
+.experience-mobile-list {
+    display: block;
+}
+
+/* PC에서는 모바일 리스트 내용은 숨기고 3D 오브젝트만 유지 */
+.experience-mobile-list > * {
+    display: none;
+}
+
 .experience-mobile-list > #experience-object {
     display: block;
 }
