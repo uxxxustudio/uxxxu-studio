@@ -382,6 +382,20 @@ nav a:hover {
 }
 
 
+/* =========================================================
+   EXPERIENCE PC / MOBILE DISPLAY
+========================================================= */
+
+/* PC 기본 */
+.experience-desktop {
+    display: block;
+}
+
+.experience-mobile {
+    display: none;
+}
+
+
 /* -------------------------
    EXPERIENCE HEADER
 ------------------------- */
@@ -525,13 +539,7 @@ nav a:hover {
 
 
 /* -------------------------
-   EXPERIENCE 3D OBJECT
-
-   PC:
-   02와 03 사이 공간
-
-   Mobile:
-   02와 03 사이 독립 영역
+   EXPERIENCE 3D OBJECT — PC
 ------------------------- */
 
 #experience-object {
@@ -599,6 +607,104 @@ nav a:hover {
 .career-arrow {
     font-size: 24px;
     line-height: 1;
+}
+
+
+/* =========================================================
+   MOBILE EXPERIENCE DEFAULT STYLES
+========================================================= */
+
+.experience-mobile-intro {
+    width: 100%;
+}
+
+.experience-mobile-label {
+    color: #111;
+}
+
+.experience-mobile-years {
+    color: #111;
+}
+
+.experience-mobile-years strong {
+    font-weight: 700;
+}
+
+.experience-mobile-years span {
+    font-weight: 600;
+}
+
+.experience-mobile-intro p {
+    color: #555;
+}
+
+.experience-mobile-list {
+    width: 100%;
+}
+
+.experience-mobile-item {
+    position: relative;
+}
+
+.experience-mobile-item + .experience-mobile-item {
+    border-top: 1px solid #dedede;
+}
+
+.experience-mobile-number {
+    color: #777;
+}
+
+.experience-mobile-item h3 {
+    color: #111;
+}
+
+.experience-mobile-line {
+    background: #111;
+}
+
+.experience-mobile-keywords {
+    display: flex;
+    flex-direction: column;
+}
+
+.experience-mobile-keywords span {
+    color: #222;
+}
+
+.experience-mobile-item p {
+    color: #777;
+}
+
+.experience-mobile-career {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.experience-mobile-career a {
+    display: inline-flex;
+    align-items: center;
+    color: #111;
+    border-bottom: 1px solid #111;
+}
+
+
+/* =========================================================
+   MOBILE U 3D OBJECT
+========================================================= */
+
+#experience-object-mobile {
+    position: relative;
+
+    width: 180px;
+    height: 180px;
+
+    margin: 10px auto 18px;
+
+    z-index: 5;
+
+    pointer-events: none;
+
+    opacity: 1;
 }
 
 
@@ -1556,11 +1662,10 @@ footer {
 
 
     /* =====================================================
-       EXPERIENCE — MOBILE 전용
+       EXPERIENCE — MOBILE
        
-       PC 3열을 단순히 1열로 축소하지 않음.
-       HTML 구조를 유지하면서
-       01 / 02 / U 3D / 03 순서로 구성.
+       PC 구조는 완전히 숨김.
+       모바일 전용 구조만 표시.
     ===================================================== */
 
     #experience {
@@ -1574,91 +1679,107 @@ footer {
     }
 
 
-    /* HEADER */
+    /* PC EXPERIENCE 완전히 숨김 */
 
-    .experience-header {
-        display: block;
+    .experience-desktop {
+        display: none !important;
+    }
 
+
+    /* MOBILE EXPERIENCE 표시 */
+
+    .experience-mobile {
+        display: block !important;
+        width: 100%;
+    }
+
+
+    /* MOBILE INTRO */
+
+    .experience-mobile-intro {
+        width: 100%;
         margin-bottom: 78px;
     }
 
-    .experience-heading h2 {
-        margin: 0 0 28px;
+    .experience-mobile-label {
+        margin-bottom: 28px;
 
         font-size: 52px;
         line-height: .94;
         font-weight: 800;
         letter-spacing: -.06em;
+        color: #111;
     }
 
-    .experience-heading p {
-        max-width: 100%;
-
-        font-size: 17px;
-        line-height: 1.75;
-    }
-
-    .experience-years {
+    .experience-mobile-years {
+        display: flex;
+        flex-direction: column;
         align-items: flex-start;
 
-        margin-top: 46px;
-        padding: 0;
+        margin-top: 0;
     }
 
-    .experience-years strong {
+    .experience-mobile-years strong {
         font-size: 34px;
         line-height: 1;
+        font-weight: 700;
+        letter-spacing: -.035em;
     }
 
-    .experience-years span {
+    .experience-mobile-years span {
         margin-top: 8px;
 
         font-size: 20px;
         line-height: 1;
+        font-weight: 600;
+        letter-spacing: -.035em;
+    }
+
+    .experience-mobile-intro p {
+        margin-top: 32px;
+
+        font-size: 17px;
+        line-height: 1.75;
+        color: #555;
+        letter-spacing: -.025em;
     }
 
 
-    /* EXPERIENCE LIST */
+    /* MOBILE EXPERIENCE LIST */
 
-    .experience-grid {
+    .experience-mobile-list {
         display: block;
 
         width: 100%;
     }
 
-    .experience-item {
+    .experience-mobile-item {
         position: relative;
 
         width: 100%;
-        min-height: 0;
 
         padding: 56px 0 64px;
     }
 
-    .experience-item:first-child {
+    .experience-mobile-item:first-child {
         padding-top: 0;
     }
 
-    .experience-item + .experience-item {
-        border-left: 0;
+    .experience-mobile-item + .experience-mobile-item {
         border-top: 1px solid #dedede;
-    }
-
-    .experience-item:last-of-type {
-        border-bottom: 1px solid #dedede;
     }
 
 
     /* 01 */
 
-    .experience-item:nth-of-type(1) {
+    .experience-mobile-item:nth-child(1) {
         padding-right: 8%;
     }
 
 
     /* 02 */
 
-    .experience-item:nth-of-type(2) {
+    .experience-mobile-item:nth-child(2) {
         padding-left: 8%;
         padding-right: 4%;
     }
@@ -1666,62 +1787,76 @@ footer {
 
     /* 03 */
 
-    .experience-item:nth-of-type(3) {
+    .experience-mobile-item:nth-child(4) {
         padding-left: 16%;
         padding-right: 0;
     }
 
 
-    .experience-number {
+    .experience-mobile-number {
         margin-bottom: 22px;
 
         font-size: 13px;
         line-height: 1;
+        font-weight: 600;
+        letter-spacing: .02em;
+        color: #777;
     }
 
-    .experience-item h3 {
+    .experience-mobile-item h3 {
+        margin: 0;
+
         font-size: clamp(32px, 9vw, 46px);
         line-height: .96;
+        font-weight: 800;
         letter-spacing: -.06em;
+        color: #111;
     }
 
-    .experience-line {
+    .experience-mobile-line {
         width: 48px;
+        height: 1px;
 
         margin: 28px 0 30px;
+
+        background: #111;
     }
 
-    .experience-keywords {
+    .experience-mobile-keywords {
+        display: flex;
+        flex-direction: column;
         gap: 9px;
 
         margin-bottom: 34px;
     }
 
-    .experience-keywords span {
+    .experience-mobile-keywords span {
         font-size: 16px;
         line-height: 1.45;
+        color: #222;
+        letter-spacing: -.03em;
     }
 
-    .experience-item p {
+    .experience-mobile-item p {
+        margin: 0;
+
         font-size: 15px;
         line-height: 1.8;
+        color: #777;
+        letter-spacing: -.03em;
     }
 
 
     /* =====================================================
-       U 3D OBJECT
-
-       ★ 절대 display:none 하지 않음
-       ★ 02와 03 사이에 위치
+       MOBILE U 3D OBJECT
+       
+       02와 03 사이
     ===================================================== */
 
-    #experience-object {
+    #experience-object-mobile {
         display: block !important;
 
         position: relative;
-
-        top: auto;
-        left: auto;
 
         width: 180px;
         height: 180px;
@@ -1737,31 +1872,33 @@ footer {
         pointer-events: none;
     }
 
-    #experience-object.is-visible {
-        opacity: 1;
 
-        transform: none !important;
-    }
+    /* MOBILE CAREER */
 
-
-    /* EXPERIENCE CAREER */
-
-    .experience-career {
+    .experience-mobile-career {
+        display: flex;
         justify-content: flex-end;
 
         margin-top: 0;
         padding-top: 42px;
-
-        border-top: 0;
     }
 
-    .experience-career a {
+    .experience-mobile-career a {
+        display: inline-flex;
+        align-items: center;
         gap: 16px;
 
+        padding-bottom: 9px;
+
+        border-bottom: 1px solid #111;
+
         font-size: 17px;
+        line-height: 1;
+        font-weight: 600;
+        color: #111;
     }
 
-    .career-arrow {
+    .experience-mobile-career .career-arrow {
         font-size: 23px;
     }
 
