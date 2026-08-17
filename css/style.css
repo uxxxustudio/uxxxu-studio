@@ -707,11 +707,11 @@ nav a:hover {
 ========================================================= */
 
 .experience-mobile-intro {
-    margin-bottom: 48px;
+    margin-bottom: 36px;
 }
 
 .experience-mobile-label {
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 .experience-mobile-years strong {
@@ -719,34 +719,40 @@ nav a:hover {
 }
 
 .experience-mobile-years span {
-    margin-top: 5px;
+    margin-top: 4px;
     line-height: 1.1;
 }
 
 .experience-mobile-intro p {
-    margin-top: 24px;
+    margin-top: 22px;
     line-height: 1.65;
 }
 
 .experience-mobile-item {
-    padding: 38px 0 44px;
+    padding: 28px 0 32px;
+    border-bottom: 1px solid #dedede;
 }
+
 
 .experience-mobile-item:first-child {
     padding-top: 0;
 }
-
-.experience-mobile-number {
-    margin-bottom: 18px;
+.experience-mobile-item + .experience-mobile-item {
+    border-top: 0;
 }
 
+.experience-mobile-number {
+    margin-bottom: 14px;
+}
+
+
 .experience-mobile-line {
-    margin: 24px 0 26px;
+    margin: 18px 0 22px;
 }
 
 .experience-mobile-keywords {
-    gap: 8px;
-    margin-bottom: 28px;
+    gap: 6px;
+    margin-bottom: 22px;
 }
 
 /* =========================================================
