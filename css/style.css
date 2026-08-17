@@ -1868,123 +1868,141 @@ footer {
 
 
     /* =====================================================
-       PORTFOLIO MOBILE
-    ===================================================== */
+   PORTFOLIO MOBILE
+===================================================== */
 
-    #portfolio {
-        padding: 100px 24px;
-    }
+#portfolio {
+    padding: 100px 26px;
+}
 
-    #portfolio .portfolio-heading h2 {
-        font-size: 40px;
-        margin-bottom: 32px;
-    }
+/* Experience와 동일한 왼쪽 정렬 기준 */
+#portfolio > .container {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+}
 
-    #portfolio .section-title::after {
-        float: none;
+#portfolio .portfolio-heading h2 {
+    margin: 0 0 32px;
 
-        display: block;
+    /* Experience 타이틀과 동일한 크기 */
+    font-size: 52px;
+    line-height: .94;
+    font-weight: 800;
+    letter-spacing: -.06em;
+}
 
-        margin-top: 18px;
+/* HTML에 section-title이 없으므로 기존 규칙은 제거 */
 
-        font-size: 20px;
-    }
+#portfolio .portfolio-heading p {
+    margin: 0;
 
-    #portfolio .section-title + .portfolio-grid {
-        margin-top: 70px;
-    }
+    font-size: 17px;
+    line-height: 1.75;
+    letter-spacing: -.025em;
+}
 
-    .project {
-        display: block;
+#portfolio .portfolio-grid {
+    margin-top: 70px;
+}
 
-        width: 100%;
-        min-height: 170px;
+.project {
+    display: block;
 
-        padding: 28px 0;
-    }
+    width: 100%;
+    min-height: 170px;
 
-    .project + .project {
-        margin-top: 12px;
-    }
+    padding: 28px 0;
+}
 
-    .project-category {
-        position: static;
+.project + .project {
+    margin-top: 12px;
+}
 
-        display: block;
+.project-category {
+    position: static;
 
-        margin-bottom: 22px;
+    display: block;
 
-        font-size: 11px;
-    }
+    margin-bottom: 22px;
 
-    .project h2 {
-        margin: 0;
+    font-size: 11px;
+}
 
-        font-size: clamp(30px, 7vw, 46px);
-        line-height: 1;
-    }
+.project h2 {
+    margin: 0;
 
-    .project p {
-        margin-top: 14px;
+    /* 기존보다 작게 */
+    font-size: clamp(30px, 7vw, 40px);
+    line-height: .98;
+    font-weight: 800;
+    letter-spacing: -.06em;
+}
 
-        font-size: 14px;
-    }
+.project p {
+    margin-top: 14px;
 
-    .project .arrow {
-        position: static;
+    font-size: 14px;
+}
 
-        display: inline-block;
+.project .arrow {
+    position: static;
 
-        margin-top: 28px;
+    display: inline-block;
 
-        font-size: 13px;
-    }
+    margin-top: 28px;
 
-    .project:hover {
-        padding-left: 0;
-        padding-right: 0;
-    }
+    font-size: 13px;
+}
 
-    .project:hover h2,
-    .project:hover .project-category,
-    .project:hover p {
-        transform: none;
-    }
+.project:hover {
+    padding-left: 0;
+    padding-right: 0;
+}
 
-    .portfolio-grid:hover .project:not(:hover) {
-        opacity: 1;
-    }
+.project:hover h2,
+.project:hover .project-category,
+.project:hover p {
+    transform: none;
+}
+
+.portfolio-grid:hover .project:not(:hover) {
+    opacity: 1;
+}
 
 
-    /* PROJECT ARCHIVE */
+/* =====================================================
+   PROJECT ARCHIVE
+===================================================== */
 
-    .project-archive {
-        margin-top: 80px;
-        padding: 10px 0;
-    }
+.project-archive {
+    margin-top: 80px;
+    padding: 10px 0;
+}
 
-    .archive-content h3 {
-        font-size: 26px;
-    }
+.archive-content h3 {
+    font-size: 26px;
+}
 
-    .archive-content p {
-        margin-top: 12px;
-        font-size: 13px;
-    }
+.archive-content p {
+    margin-top: 12px;
+    font-size: 13px;
+}
 
-    .archive-arrow {
-        left: calc(50% + 128px);
-        top: 50%;
+.archive-arrow {
+    left: calc(50% + 128px);
+    top: 50%;
 
-        font-size: 22px;
+    font-size: 22px;
 
-        transform: translateY(-15px);
-    }
+    transform: translateY(-15px);
+}
 
-    .project-archive:hover .archive-arrow {
-        transform: translate(5px, -15px);
-        font-size: 26px;
-    }
+.project-archive:hover .archive-arrow {
+    transform: translate(5px, -15px);
+    font-size: 26px;
+}
 
 
     /* =====================================================
