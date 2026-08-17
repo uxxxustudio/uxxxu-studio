@@ -1875,8 +1875,8 @@ footer {
         padding: 100px 24px;
     }
 
-    #portfolio .section-title {
-        font-size: 48px;
+    #portfolio .portfolio-heading h2 {
+        font-size: 40px;
         margin-bottom: 32px;
     }
 
@@ -1920,7 +1920,7 @@ footer {
     .project h2 {
         margin: 0;
 
-        font-size: clamp(30px, 9vw, 46px);
+        font-size: clamp(30px, 7vw, 46px);
         line-height: 1;
     }
 
