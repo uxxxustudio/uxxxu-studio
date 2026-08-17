@@ -380,8 +380,13 @@ nav a:hover {
     display: block;
 }
 
+/* PC에서는 모바일 콘텐츠는 숨기되
+   3D 오브젝트만 PC 배경 레이어로 유지 */
 .experience-mobile {
-    display: none;
+    display: block;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
 }
 
 .experience-mobile > * {
@@ -548,15 +553,15 @@ nav a:hover {
     width: 280px;
     height: 280px;
 
-    z-index: 0;
+    z-index: 5;
     pointer-events: none;
 
-    /* PC에서 항상 표시 */
-    opacity: 1;
+    /* 아래에서 위로 올라오며 등장 */
+    opacity: 0;
 
     transform:
         translate(-50%, -50%)
-        translateY(0);
+        translateY(50px);
 
     transition:
         opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
@@ -564,7 +569,7 @@ nav a:hover {
 }
 
 
-/* JS에서 is-visible이 붙어도 기존 위치 유지 */
+/* JS에서 is-visible이 붙으면 위로 올라오며 표시 */
 #experience-object.is-visible {
     opacity: 1;
 
