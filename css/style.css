@@ -1955,6 +1955,14 @@ footer {
     padding: 100px 26px;
 }
 
+#portfolio .container {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 /*--   
 #portfolio {
     padding: 100px 26px;
