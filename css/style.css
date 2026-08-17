@@ -1956,7 +1956,7 @@ footer {
     line-height: .94;
     font-weight: 800;
     letter-spacing: -.06em;
-    margin: 0 0 20px;
+    margin: 0 0 10px;
 }
 
 #portfolio .portfolio-heading p {
@@ -1967,7 +1967,7 @@ footer {
 /* 설명 → 첫 번째 카드 */
 #portfolio .portfolio-heading + .portfolio-grid {
     width: 100%;
-    margin-top: 28px;
+    margin-top: 16px;
     margin-left: 0;
     margin-right: 0;
 }
