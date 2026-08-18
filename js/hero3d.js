@@ -461,7 +461,7 @@ export function initSectionObject(containerId, assetInput = "U") {
 
 
 /* =========================================================
-   PORTFOLIO SECTION 3D OBJECT (initPortfolio3D) - "W"
+   PORTFOLIO SECTION 3D OBJECT (initPortfolio3D) - "W" (모션 및 잘림 수정 버전)
 ========================================================= */
 export function initPortfolio3D(containerId) {
   const container = document.getElementById(containerId);
@@ -469,12 +469,13 @@ export function initPortfolio3D(containerId) {
 
   container.innerHTML = "";
 
-  const width = container.clientWidth || 300;
-  const height = container.clientHeight || 300;
+  const width = container.clientWidth || 400;
+  const height = container.clientHeight || 400;
 
   const scene = new THREE.Scene();
+  // 카메라 거리를 18 -> 22로 멀게 해서 윗부분이 잘리지 않도록 여유를 줌
   const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
-  camera.position.set(0, 0, 18);
+  camera.position.set(0, 0, 22);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(width, height);
@@ -551,19 +552,31 @@ export function initPortfolio3D(containerId) {
       wrapperGroup.add(characterGroup);
       scene.add(wrapperGroup);
 
+      // 마우스 인터랙션 좌표 변수
+      let mouseX = 0;
+      let mouseY = 0;
+      window.addEventListener("mousemove", (e) => {
+        mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+        mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+      });
+
       const clock = new THREE.Clock();
 
       function animate() {
         requestAnimationFrame(animate);
         const time = clock.getElapsedTime();
         const scrollY = window.scrollY || window.pageYOffset;
+        const scrollOffset = scrollY * 0.0010;
 
-        const basePosY = 0.0; 
-        const scrollOffset = scrollY * 0.0015;
+        // 뱅뱅 돌지 않고, 마우스 움직임과 부드러운 호흡(상하/좌우 미세한 틸트)만 주도록 변경
+        const targetRotationY = mouseX * 0.3; // 마우스 방향으로 살짝개 고개 돌림
+        const targetRotationX = mouseY * 0.3;
 
-        wrapperGroup.position.x = 0;
-        wrapperGroup.position.y = basePosY + scrollOffset + Math.sin(time * 0.4) * 0.12;
-        wrapperGroup.rotation.y += 0.005;
+        wrapperGroup.rotation.y += (targetRotationY - wrapperGroup.rotation.y) * 0.05;
+        wrapperGroup.rotation.x += (targetRotationX - wrapperGroup.rotation.x) * 0.05;
+
+        // 위아래로 은은하게 떠있는 모션 (숨쉬듯 부드럽게)
+        wrapperGroup.position.y = scrollOffset + Math.sin(time * 1.2) * 0.15;
 
         wrapperGroup.traverse((child) => {
           if (child.material && child.material.uniforms && child.material.uniforms.uTime) {
@@ -578,8 +591,8 @@ export function initPortfolio3D(containerId) {
   );
 
   window.addEventListener("resize", () => {
-    const newWidth = container.clientWidth || 300;
-    const newHeight = container.clientHeight || 300;
+    const newWidth = container.clientWidth || 400;
+    const newHeight = container.clientHeight || 400;
     camera.aspect = newWidth / newHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(newWidth, newHeight);
