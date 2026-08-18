@@ -7,6 +7,7 @@ async function loadComponent(id, file) {
     if (!target) return;
 
     const res = await fetch(file);
+
     if (!res.ok) {
         console.error(file + " load failed");
         return;
@@ -52,34 +53,88 @@ window.addEventListener("DOMContentLoaded", async () => {
         new URL("header.html", componentPath)
     );
 
+
+    /* =====================================================
+       Mobile Menu
+    ===================================================== */
+
+    const menuToggle = document.querySelector(".menu-toggle");
+    const nav = document.querySelector("#header > header nav");
+
+    if (menuToggle && nav) {
+
+        menuToggle.addEventListener("click", () => {
+
+            nav.classList.toggle("open");
+
+            const isOpen = nav.classList.contains("open");
+
+            menuToggle.setAttribute(
+                "aria-expanded",
+                isOpen ? "true" : "false"
+            );
+
+        });
+
+
+        /* 모바일 메뉴 클릭 시 자동으로 닫기 */
+
+        nav.querySelectorAll("a").forEach(link => {
+
+            link.addEventListener("click", () => {
+
+                nav.classList.remove("open");
+
+                menuToggle.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+            });
+
+        });
+
+    }
+
+
     await loadComponent(
         "hero",
         new URL("hero.html", componentPath)
     );
 
+
     /* Hero가 DOM에 들어온 뒤 3D 실행 */
+
     const { initHero3D } = await import("./hero3d.js");
+
     initHero3D();
+
 
     await loadComponent(
         "service",
         new URL("service.html", componentPath)
     );
 
+
     await loadComponent(
         "portfolio",
         new URL("portfolio.html", componentPath)
     );
 
+
     await loadComponent(
         "about",
         new URL("about.html", componentPath)
     );
-/*--
+
+
+    /*
     await loadComponent(
         "contact",
         new URL("contact.html", componentPath)
-    );--*/
+    );
+    */
+
 
     await loadComponent(
         "footer",
@@ -94,10 +149,12 @@ window.addEventListener("DOMContentLoaded", async () => {
 ========================================================= */
 
 window.addEventListener("scroll", () => {
+
     const header = document.querySelector("#header > header");
-    const nav = document.querySelector("header nav");
+    const nav = document.querySelector("#header > header nav");
 
     if (!header) return;
+
 
     if (window.scrollY > 30) {
         header.classList.add("active");
@@ -105,66 +162,149 @@ window.addEventListener("scroll", () => {
         header.classList.remove("active");
     }
 
+
+    /*
+       스크롤하면 모바일 메뉴 닫기
+    */
+
     if (nav) {
         nav.classList.remove("open");
+
+        const menuToggle =
+            document.querySelector(".menu-toggle");
+
+        if (menuToggle) {
+            menuToggle.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+        }
     }
+
 });
 
 
 /* =========================================================
    Experience 섹션 3D 오브젝트 초기화 및 스크롤 등장 감지
 ========================================================= */
+
 async function initExperienceFeature() {
+
     try {
+
         // 1. 3D 오브젝트 생성 함수 호출
-        const { initSectionObject } = await import("./hero3d.js");
-        initSectionObject("experience-object", "U");
+
+        const { initSectionObject } =
+            await import("./hero3d.js");
+
+        initSectionObject(
+            "experience-object",
+            "U"
+        );
+
 
         // 2. 스크롤 위치 감지하여 .is-visible 클래스 추가
-        const objectElement = document.getElementById('experience-object');
-        const experienceSection = document.getElementById('experience');
+
+        const objectElement =
+            document.getElementById("experience-object");
+
+        const experienceSection =
+            document.getElementById("experience");
+
 
         if (!objectElement || !experienceSection) return;
 
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    objectElement.classList.add('is-visible');
-                    observer.unobserve(entry.target); // 한 번만 실행
+
+        const observer =
+            new IntersectionObserver(
+                (entries, observer) => {
+
+                    entries.forEach(entry => {
+
+                        if (entry.isIntersecting) {
+
+                            objectElement.classList.add(
+                                "is-visible"
+                            );
+
+                            observer.unobserve(
+                                entry.target
+                            );
+
+                        }
+
+                    });
+
+                },
+                {
+                    threshold: 0.2
                 }
-            });
-        }, {
-            threshold: 0.2 // 섹션이 20% 보일 때 작동
-        });
+            );
+
 
         observer.observe(experienceSection);
+
     } catch (error) {
-        console.error("Experience 3D object initialization failed:", error);
+
+        console.error(
+            "Experience 3D object initialization failed:",
+            error
+        );
+
     }
+
 }
 
 
 /* =========================================================
    Portfolio 섹션 3D 오브젝트 ("W") 초기화
 ========================================================= */
+
 async function initPortfolioFeature() {
+
     try {
-        // hero3d_w.js 대신 기존의 hero3d.js에서 불러오도록 수정
-        const { initPortfolio3D } = await import("./hero3d.js");
-        initPortfolio3D("portfolio-object");
+
+        const { initPortfolio3D } =
+            await import("./hero3d.js");
+
+        initPortfolio3D(
+            "portfolio-object"
+        );
+
     } catch (error) {
-        console.error("Portfolio 3D object initialization failed:", error);
+
+        console.error(
+            "Portfolio 3D object initialization failed:",
+            error
+        );
+
     }
+
 }
+
 
 /* =========================================================
    Profile 섹션 3D 캐릭터 초기화
 ========================================================= */
+
 async function initProfileFeature() {
+
     try {
-        const { initProfile3D } = await import("./hero3d.js");
-        initProfile3D("profile-object");
+
+        const { initProfile3D } =
+            await import("./hero3d.js");
+
+        initProfile3D(
+            "profile-object"
+        );
+
     } catch (error) {
-        console.error("Profile 3D object initialization failed:", error);
+
+        console.error(
+            "Profile 3D object initialization failed:",
+            error
+        );
+
     }
+
 }
