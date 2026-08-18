@@ -781,6 +781,7 @@ nav a:hover {
 
 #portfolio {
     padding: 120px 64px;
+    position: relative;
 }
 
 #portfolio .container {
@@ -788,7 +789,15 @@ nav a:hover {
     width: 100%;
     margin: auto;
 }
-
+#portfolio-w-container {
+    position: absolute;
+    top: 100px; /* 헤더와의 간격 조절 */
+    right: 64px; /* 우측 여백 맞춤 */
+    width: 380px;
+    height: 380px;
+    pointer-events: none; /* 마우스 클릭이 텍스트나 카드로 통과되도록 설정 */
+    z-index: 2;
+}
 #portfolio-object {
     position: absolute;
     top: 220px; /* 프로젝트 헤더 아래, 카드 영역 높이에 맞춤 */
@@ -1991,7 +2000,9 @@ footer {
     margin: 0;
     line-height: 1.6;
 }
-
+#portfolio-w-container {
+        display: none; /* 모바일 레이아웃 보호를 위해 숨김 처리 또는 별도 위치 지정 */
+    }
 
 /* =====================================================
    PROJECT LIST
