@@ -584,13 +584,20 @@ section {
 .final-concept-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 60px;
-    max-width: 700px;
+    gap: 40px;
+
+    max-width: 720px;
     margin-left: 0;
     margin-right: auto;
+
     margin-bottom: 50px;
 }
 
+.final-concept-grid + .ui-image {
+    max-width: 720px;
+    margin-left: 0;
+    margin-right: auto;
+}
 
 .ui-item h3 {
     margin: 18px 0 4px;
@@ -642,6 +649,11 @@ section {
     .final-concept-grid {
         grid-template-columns: 1fr;
         gap: 28px;
+        max-width: 100%;
+        margin-bottom: 40px;
+    }
+
+    .final-concept-grid + .ui-image {
         max-width: 100%;
     }
 
