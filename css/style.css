@@ -361,7 +361,7 @@ nav a:hover {
 #experience {
     position: relative;
     padding: 300px 64px 120px;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .experience-wrap {
