@@ -2140,6 +2140,19 @@ footer {
 }
 
 
+/* =====================================================
+   PORTFOLIO MOBILE — CONTAINER WIDTH FIX
+===================================================== */
+
+#portfolio > .container {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box;
+}
+   
    
 /* =====================================================
    ABOUT MOBILE
