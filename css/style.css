@@ -1430,8 +1430,8 @@ footer {
 
         width: 100%;
 
-        background: rgba(248, 248, 248, .72);
-
+        background: transparent;
+       
         backdrop-filter: blur(20px) saturate(180%);
         -webkit-backdrop-filter: blur(20px) saturate(180%);
 
@@ -1450,7 +1450,8 @@ footer {
     nav.open {
         display: flex;
 
-         background: rgba(248, 248, 248, .72);
+        background: transparent;
+       
         backdrop-filter: blur(20px) saturate(180%);
         -webkit-backdrop-filter: blur(20px) saturate(180%);
     }
