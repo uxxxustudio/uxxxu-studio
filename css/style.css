@@ -2017,7 +2017,9 @@ footer {
     max-width: none;
     min-height: auto;
 
-    padding: 30px 26px;
+    /* 변경 전: padding: 30px 26px; (카드가 안쪽으로 밀려 보임) */
+    /* 변경 후: 카드가 섹션 양끝(26px)까지 꽉 차도록 좌우 패딩을 조정하거나 박스 구조 맞춤 */
+    padding: 32px 24px; 
 
     background: #f7f7f7;
     border: 1px solid #eeeeee;
@@ -2025,43 +2027,41 @@ footer {
 
     box-sizing: border-box;
 }
-
+   
 #portfolio .project + .project {
     margin-top: 16px;
 }
 
 
 /* CATEGORY */
-
 #portfolio .project-category {
     position: static;
-
     display: block;
-
-    margin-bottom: 20px;
-
+    margin-bottom: 16px;
     font-size: 11px;
+    text-align: left; /* 왼쪽 정렬 강제 */
 }
+
 
 
 /* TITLE */
 
 #portfolio .project h2 {
     margin: 0;
-
-    font-size: 30px;
-    line-height: 1.02;
+    font-size: 28px; /* 모바일에서 글자가 너무 크면 여백이 좁아 보일 수 있어 살짝 조절 가능 */
+    line-height: 1.05;
     letter-spacing: -.055em;
+    text-align: left;
 }
 
 
 /* DESCRIPTION */
 
 #portfolio .project p {
-    margin-top: 16px;
-
+    margin-top: 14px;
     font-size: 14px;
-    line-height: 1.35;
+    line-height: 1.5;
+    text-align: left;
 }
 
 
@@ -2069,14 +2069,11 @@ footer {
 
 #portfolio .project .arrow {
     position: static;
-
     display: inline-block;
-
-    margin-top: 26px;
-
+    margin-top: 22px;
     font-size: 13px;
+    text-align: left;
 }
-
 
 /* =====================================================
    MOBILE HOVER RESET
