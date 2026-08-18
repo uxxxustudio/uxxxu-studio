@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>uxxxu.studio</title>
+
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    background:#fff;
+    color:#111;
+    font-family:"Pretendard",-apple-system,BlinkMacSystemFont,sans-serif;
+}
+
+.container{
+    text-align:center;
+}
+
+h1{
+    font-size:clamp(64px,8vw,92px);
+    font-weight:800;
+    letter-spacing:-0.05em;
+    margin-bottom:22px;
+
+    opacity:0;
+    animation:fadeUp .8s ease forwards;
+}
+
+a{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+
+    text-decoration:none;
+    color:#111;
+
+    font-size:22px;
+    font-weight:500;
+
+    opacity:0;
+    animation:fadeUp .8s ease forwards;
+    animation-delay:.25s;
+
+    transition:all .25s ease;
+}
+
+a:hover{
+    opacity:.6;
+    transform:translateX(6px);
+}
+
+a span{
+    display:inline-block;
+    transition:transform .25s ease;
+}
+
+a:hover span{
+    transform:translateX(6px);
+}
+
+@keyframes fadeUp{
+
+    from{
+        opacity:0;
+        transform:translateY(18px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>uxxxu.studio</h1>
+
+<a href="https://psychedelic-decimal-282.notion.site/PORTFOLIO-15fbb729673a4b218efac2ce73e56788"
+target="_blank"
+rel="noopener noreferrer">
+
+View Portfolio
+<span>→</span>
+
+</a>
+
+</div>
+
+</body>
+
+</html>
