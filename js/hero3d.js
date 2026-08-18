@@ -573,3 +573,133 @@ export function initProfile3D(containerId) {
     renderer.setSize(newWidth, newHeight);
   });
 }
+
+
+/* =========================================================
+   PORTFOLIO SECTION 3D OBJECT (initPortfolio3D)
+========================================================= */
+
+export function initPortfolio3D(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  const width = container.clientWidth || 300;
+  const height = container.clientHeight || 300;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
+  camera.position.set(0, 0, 18);
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
+  container.appendChild(renderer.domElement);
+
+  const lineMat = new THREE.LineBasicMaterial({
+    color: 0x111111,
+    transparent: false,
+    opacity: 1.0,
+  });
+
+  const loader = new FontLoader();
+  loader.load(
+    "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
+    (font) => {
+      // "W" 글자 생성 (U와 동일한 옵션 적용)
+      const geomOpts = { font: font, size: 7.2, depth: 1.2, curveSegments: 24, bevelEnabled: false };
+      const geometry = new TextGeometry("W", geomOpts);
+      geometry.computeBoundingBox();
+      const box = geometry.boundingBox;
+      geometry.translate(-(box.max.x + box.min.x) / 2, -(box.max.y + box.min.y) / 2, 0);
+
+      const characterGroup = new THREE.Group();
+
+      // 네온 빔 셰이더 Material (U 오브젝트와 동일)
+      const material = new THREE.ShaderMaterial({
+        uniforms: {
+          uTime: { value: 0 },
+          uOffset: { value: 1.5 },
+          uIsU: { value: 1.0 },
+        },
+        vertexShader: `
+          varying vec3 vPosition;
+          varying vec3 vNormal;
+          void main() {
+            vPosition = position;
+            vNormal = normal;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform float uTime;
+          uniform float uOffset;
+          uniform float uIsU;
+          varying vec3 vPosition;
+          varying vec3 vNormal;
+
+          void main() {
+            if (abs(vNormal.z) > 0.1) { discard; }
+            float sideDir = (vPosition.x < 0.0) ? 1.0 : -1.0;
+            float flow = mod((vPosition.y * 0.2) + (uTime * 0.3 * sideDir) + (uOffset * 0.2), 1.0);
+            float beam = smoothstep(0.12, 0.0, abs(flow - 0.5));
+
+            vec3 baseColor = vec3(0.04, 0.04, 0.04);
+            vec3 neonGreen = vec3(0.12, 0.95, 0.45);
+            vec3 finalColor = mix(baseColor, neonGreen, beam);
+            float alpha = 0.08 + beam * 0.92;
+            gl_FragColor = vec4(finalColor, alpha);
+          }
+        `,
+        transparent: true,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+      });
+
+      const fillMesh = new THREE.Mesh(geometry, material);
+      characterGroup.add(fillMesh);
+
+      const edges = new THREE.EdgesGeometry(geometry, 25);
+      const lineSegments = new THREE.LineSegments(edges, lineMat);
+      characterGroup.add(lineSegments);
+
+      const wrapperGroup = new THREE.Group();
+      wrapperGroup.add(characterGroup);
+      scene.add(wrapperGroup);
+
+      const clock = new THREE.Clock();
+
+      function animate() {
+        requestAnimationFrame(animate);
+        const time = clock.getElapsedTime();
+        const scrollY = window.scrollY || window.pageYOffset;
+
+        const basePosY = 0.0; 
+        const scrollOffset = scrollY * 0.0015;
+
+        wrapperGroup.position.x = 0;
+        wrapperGroup.position.y = basePosY + scrollOffset + Math.sin(time * 0.4) * 0.12;
+        wrapperGroup.rotation.y += 0.005; // 회전 애니메이션
+
+        wrapperGroup.traverse((child) => {
+          if (child.material && child.material.uniforms && child.material.uniforms.uTime) {
+            child.material.uniforms.uTime.value = time;
+          }
+        });
+
+        renderer.render(scene, camera);
+      }
+      animate();
+    }
+  );
+
+  window.addEventListener("resize", () => {
+    const newWidth = container.clientWidth || 300;
+    const newHeight = container.clientHeight || 300;
+    camera.aspect = newWidth / newHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(newWidth, newHeight);
+  });
+}
