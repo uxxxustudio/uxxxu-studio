@@ -1955,24 +1955,25 @@ footer {
     padding: 100px 26px;
 }
 
-#portfolio .container {
+/* EXPERIENCE의 .experience-wrap과 동일한 구조 */
+#portfolio .portfolio-wrap {
+    position: relative;
+
     width: 100%;
     max-width: none;
+
     margin: 0;
     padding: 0;
+
     box-sizing: border-box;
 }
-
-/*--   
-#portfolio {
-    padding: 100px 26px;
-}--*/
 
 #portfolio .portfolio-heading h2 {
     font-size: 48px;
     line-height: .94;
     font-weight: 800;
     letter-spacing: -.06em;
+
     margin: 0 0 10px;
 }
 
@@ -1981,15 +1982,17 @@ footer {
     line-height: 1.6;
 }
 
-/* 설명 → 첫 번째 카드 
-#portfolio .portfolio-heading + .portfolio-grid {
-    width: 100%;
-    margin-top: 16px;
-    margin-left: 0;
-    margin-right: 0;
-}*/
+
+/* =====================================================
+   PROJECT LIST
+===================================================== */
 
 #portfolio .portfolio-grid {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
     width: 100%;
     max-width: none;
 
@@ -1997,27 +2000,21 @@ footer {
     margin-left: 0;
     margin-right: 0;
 
-    padding-top: 0 !important;
-    padding-left: 0;
-    padding-right: 0;
-}
-/*    
-#portfolio .portfolio-grid {
-    margin-top: 28px !important;
-    padding-top: 0 !important;
-}*/
+    padding: 0 !important;
 
-#portfolio .section-title::after {
-    float: none;
-    display: block;
-    margin-top: 18px;
-    font-size: 20px;
+    box-sizing: border-box;
 }
 
-.project {
+
+/* =====================================================
+   PROJECT CARD
+===================================================== */
+
+#portfolio .project {
     display: block;
 
     width: 100%;
+    max-width: none;
     min-height: auto;
 
     padding: 30px 26px;
@@ -2029,11 +2026,14 @@ footer {
     box-sizing: border-box;
 }
 
-.project + .project {
+#portfolio .project + .project {
     margin-top: 16px;
 }
 
-.project-category {
+
+/* CATEGORY */
+
+#portfolio .project-category {
     position: static;
 
     display: block;
@@ -2043,7 +2043,10 @@ footer {
     font-size: 11px;
 }
 
-.project h2 {
+
+/* TITLE */
+
+#portfolio .project h2 {
     margin: 0;
 
     font-size: 30px;
@@ -2051,14 +2054,20 @@ footer {
     letter-spacing: -.055em;
 }
 
-.project p {
+
+/* DESCRIPTION */
+
+#portfolio .project p {
     margin-top: 16px;
 
     font-size: 14px;
     line-height: 1.35;
 }
 
-.project .arrow {
+
+/* VIEW PROJECT */
+
+#portfolio .project .arrow {
     position: static;
 
     display: inline-block;
@@ -2068,18 +2077,23 @@ footer {
     font-size: 13px;
 }
 
-.project:hover {
+
+/* =====================================================
+   MOBILE HOVER RESET
+===================================================== */
+
+#portfolio .project:hover {
     padding-left: 26px;
     padding-right: 26px;
 }
 
-.project:hover h2,
-.project:hover .project-category,
-.project:hover p {
+#portfolio .project:hover h2,
+#portfolio .project:hover .project-category,
+#portfolio .project:hover p {
     transform: none;
 }
 
-.portfolio-grid:hover .project:not(:hover) {
+#portfolio .portfolio-grid:hover .project:not(:hover) {
     opacity: 1;
 }
 
@@ -2088,21 +2102,32 @@ footer {
    PROJECT ARCHIVE
 ===================================================== */
 
-.project-archive {
+#portfolio .project-archive {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+
     margin-top: 60px;
     padding: 10px 0;
+
+    box-sizing: border-box;
 }
 
-.archive-content h3 {
+#portfolio .archive-content h3 {
     font-size: 26px;
 }
 
-.archive-content p {
+#portfolio .archive-content p {
     margin-top: 12px;
+
     font-size: 13px;
 }
 
-.archive-arrow {
+#portfolio .archive-arrow {
     left: calc(50% + 128px);
     top: 50%;
 
@@ -2111,7 +2136,7 @@ footer {
     transform: translateY(-15px);
 }
 
-.project-archive:hover .archive-arrow {
+#portfolio .project-archive:hover .archive-arrow {
     transform: translate(5px, -15px);
     font-size: 26px;
 }
