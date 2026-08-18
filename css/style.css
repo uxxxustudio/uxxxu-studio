@@ -1948,22 +1948,14 @@ footer {
 ===================================================== */
 
 #portfolio {
-    width: 100%;
-    max-width: none;
-    box-sizing: border-box;
-
-    padding: 110px 0px 100px;
+        padding: 110px 26px 100px;
+        overflow: hidden;
 }
 
 /* EXPERIENCE의 .experience-wrap과 동일한 구조 */
 #portfolio .portfolio-wrap {
-    position: relative;
-
-    width: 100%;
-    max-width: none;
-
-    margin: 0;
-    padding: 0;
+        width: 100%;
+        max-width: none;
 
     box-sizing: border-box;
 }
