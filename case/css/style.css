@@ -563,7 +563,7 @@ section {
     width: 100%;
     overflow: hidden;
     border-radius: 18px;
-    background: #f5f5f5;
+    background: transparent;
 }
 
 .ui-image img {
