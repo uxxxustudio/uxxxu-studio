@@ -789,6 +789,16 @@ nav a:hover {
     margin: auto;
 }
 
+#portfolio-object {
+    position: absolute;
+    top: 220px; /* 프로젝트 헤더 아래, 카드 영역 높이에 맞춤 */
+    right: 60px; /* 우측 여백 맞춤 */
+    width: 420px; /* 회색박스 크기 정도의 너비 */
+    height: 320px; /* 회색박스 크기 정도의 높이 */
+    pointer-events: none; /* 마우스 이벤트 방해 금지 */
+    z-index: 2;
+}
+
 #portfolio .portfolio-heading h2 {
     margin: 0 0 36px;
 
