@@ -578,6 +578,14 @@ section {
     margin-right: auto;
 }
 
+
+/* Final Concept 5inch - 2열 배열 */
+
+.final-concept-grid {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+
 .ui-item h3 {
     margin: 18px 0 4px;
     font-size: 16px;
