@@ -192,7 +192,7 @@ export function initHero3D() {
     { passive: true }
   );
 
-  function resize() {
+ function resize() {
     const width = window.innerWidth;
     const height = window.innerHeight;
     const isMobile = window.innerWidth < 768;
@@ -200,9 +200,9 @@ export function initHero3D() {
     camera.aspect = width / height;
 
     if (isMobile) {
-        camera.fov = 60;
+        camera.fov = 55;
         camera.position.z = 18.5;
-        group.scale.setScalar(0.58);
+        group.scale.setScalar(0.68);
     } else {
         camera.fov = 35;
         camera.position.z = 15;
@@ -212,7 +212,6 @@ export function initHero3D() {
     camera.updateProjectionMatrix();
     renderer.setSize(width, height);
 }
-
   window.addEventListener("resize", resize);
 
   const clock = new THREE.Clock();
