@@ -72,7 +72,7 @@ export function initHero3D() {
   const solidGridGeo = createSolidGridGeometry(gridWidth, gridHeight, stepX, stepY, curveFactor);
 
   const gridMaterial = new THREE.LineBasicMaterial({
-    color: 0xe5e7eb,
+    color: 0xB8B8B8,
     transparent: true,
     opacity: 0.5,
   });
