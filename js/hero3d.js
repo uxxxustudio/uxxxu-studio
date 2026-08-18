@@ -277,7 +277,7 @@ export function initSectionObject(containerId, assetInput = "U") {
     loader.load(
       "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
       (font) => {
-        const geomOpts = { font: font, size: 7.2, depth: 1.2, curveSegments: 24, bevelEnabled: false };
+        const geomOpts = { font: font, size: 8.6, depth: 1.2, curveSegments: 24, bevelEnabled: false };
         const geometry = new TextGeometry(assetInput, geomOpts);
         geometry.computeBoundingBox();
         const box = geometry.boundingBox;
