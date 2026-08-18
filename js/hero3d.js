@@ -461,122 +461,7 @@ export function initSectionObject(containerId, assetInput = "U") {
 
 
 /* =========================================================
-   PROFILE SECTION 3D OBJECT (initProfile3D) - 글래시 벌룬 튜브 "ne"
-========================================================= */
-
-export function initProfile3D(containerId) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-
-  container.innerHTML = "";
-
-  const width = container.clientWidth || 400;
-  const height = container.clientHeight || 450;
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
-  camera.position.set(0, 0, 250);
-
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setSize(width, height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setClearColor(0x000000, 0);
-  container.appendChild(renderer.domElement);
-
-  // 입체감과 반사광을 극대화하기 위한 다중 조명 세팅
-  const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
-  scene.add(ambientLight);
-
-  const pointLight1 = new THREE.PointLight(0xffffff, 2.5, 500);
-  pointLight1.position.set(100, 150, 200);
-  scene.add(pointLight1);
-
-  const pointLight2 = new THREE.PointLight(0x88ccff, 1.5, 500);
-  pointLight2.position.set(-100, -100, 150);
-  scene.add(pointLight2);
-
-  const profileGroup = new THREE.Group();
-  scene.add(profileGroup);
-
-  // 1. 소문자 "ne" 필기체 커브 패스 좌표 설정
-  const curvePoints = [
-    new THREE.Vector3(-55, -25, 0),
-    new THREE.Vector3(-45, 25, 0),
-    new THREE.Vector3(-35, -15, 0),
-    new THREE.Vector3(-25, 25, 0),
-    new THREE.Vector3(-15, -15, 0),
-    new THREE.Vector3(0, 10, 0),
-    new THREE.Vector3(25, 35, 0),
-    new THREE.Vector3(45, 10, 0),
-    new THREE.Vector3(25, -20, 0),
-    new THREE.Vector3(45, -22, 0)
-  ];
-
-  const curve = new THREE.CatmullRomCurve3(curvePoints);
-  
-  // 2. TubeGeometry로 볼륨감 있는 통통한 튜브 형태 생성
-  const geometry = new THREE.TubeGeometry(curve, 120, 14, 32, false);
-
-  // 3. 투명하고 반짝이는 글래스/벌룬 재질 (MeshPhysicalMaterial)
-  const glassMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0xdaf2ff,
-    metalness: 0.1,
-    roughness: 0.05,
-    transmission: 0.85,
-    thickness: 15.0,
-    clearcoat: 1.0,
-    clearcoatRoughness: 0.05,
-    specularIntensity: 1.0,
-    transparent: true,
-    opacity: 0.95
-  });
-
-  const tubeMesh = new THREE.Mesh(geometry, glassMaterial);
-  profileGroup.add(tubeMesh);
-
-  // 4. 자연스러운 각도 배치
-  profileGroup.rotation.x = Math.PI / 12;
-  profileGroup.rotation.y = -Math.PI / 16;
-
-  const clock = new THREE.Clock();
-  const target = { x: 0, y: 0 };
-  const mouse = { x: 0, y: 0 };
-
-  window.addEventListener(
-    "mousemove",
-    (e) => {
-      target.x = (e.clientX / window.innerWidth) * 2 - 1;
-      target.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    },
-    { passive: true }
-  );
-
-  function animate() {
-    requestAnimationFrame(animate);
-    const time = clock.getElapsedTime();
-
-    mouse.x += (target.x - mouse.x) * 0.08;
-    mouse.y += (target.y - mouse.y) * 0.08;
-
-    profileGroup.rotation.y = mouse.x * 0.2 + Math.sin(time * 0.2) * 0.05 + (-Math.PI / 16);
-    profileGroup.rotation.x = -mouse.y * 0.15 + Math.cos(time * 0.3) * 0.03 + (Math.PI / 12);
-
-    renderer.render(scene, camera);
-  }
-  animate();
-
-  window.addEventListener("resize", () => {
-    const newWidth = container.clientWidth || 400;
-    const newHeight = container.clientHeight || 450;
-    camera.aspect = newWidth / newHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(newWidth, newHeight);
-  });
-}
-
-
-/* =========================================================
-   PORTFOLIO SECTION 3D OBJECT (initPortfolio3D)
+   PORTFOLIO SECTION 3D OBJECT (initPortfolio3D) - "W"
 ========================================================= */
 
 export function initPortfolio3D(containerId) {
@@ -608,7 +493,7 @@ export function initPortfolio3D(containerId) {
   loader.load(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
-      // "W" 글자 생성 (U와 동일한 옵션 적용)
+      // "W" 글자 생성 (U와 동일한 셰이더 및 옵션 적용)
       const geomOpts = { font: font, size: 7.2, depth: 1.2, curveSegments: 24, bevelEnabled: false };
       const geometry = new TextGeometry("W", geomOpts);
       geometry.computeBoundingBox();
@@ -617,7 +502,6 @@ export function initPortfolio3D(containerId) {
 
       const characterGroup = new THREE.Group();
 
-      // 네온 빔 셰이더 Material (U 오브젝트와 동일)
       const material = new THREE.ShaderMaterial({
         uniforms: {
           uTime: { value: 0 },
@@ -681,7 +565,7 @@ export function initPortfolio3D(containerId) {
 
         wrapperGroup.position.x = 0;
         wrapperGroup.position.y = basePosY + scrollOffset + Math.sin(time * 0.4) * 0.12;
-        wrapperGroup.rotation.y += 0.005; // 회전 애니메이션
+        wrapperGroup.rotation.y += 0.005;
 
         wrapperGroup.traverse((child) => {
           if (child.material && child.material.uniforms && child.material.uniforms.uTime) {
