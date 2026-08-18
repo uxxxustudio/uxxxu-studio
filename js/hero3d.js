@@ -196,13 +196,22 @@ export function initHero3D() {
     const width = window.innerWidth;
     const height = window.innerHeight;
     const isMobile = window.innerWidth < 768;
-    camera.aspect = width / height;
-    camera.position.z = isMobile ? 18.5 : 15;
-    camera.updateProjectionMatrix();
 
-    group.scale.setScalar(isMobile ? 0.68 : 1.0);
+    camera.aspect = width / height;
+
+    if (isMobile) {
+        camera.fov = 60;
+        camera.position.z = 18.5;
+        group.scale.setScalar(0.58);
+    } else {
+        camera.fov = 35;
+        camera.position.z = 15;
+        group.scale.setScalar(1.0);
+    }
+
+    camera.updateProjectionMatrix();
     renderer.setSize(width, height);
-  }
+}
 
   window.addEventListener("resize", resize);
 
