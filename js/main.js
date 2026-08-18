@@ -149,14 +149,13 @@ async function initExperienceFeature() {
 ========================================================= */
 async function initPortfolioFeature() {
     try {
-        // W 오브젝트 함수가 들어있는 파일 경로 (필요에 따라 hero3d.js 혹은 hero3d_w.js로 확인)
-        const { initPortfolio3D } = await import("./hero3d_w.js");
+        // hero3d_w.js 대신 기존의 hero3d.js에서 불러오도록 수정
+        const { initPortfolio3D } = await import("./hero3d.js");
         initPortfolio3D("portfolio-object");
     } catch (error) {
         console.error("Portfolio 3D object initialization failed:", error);
     }
 }
-
 
 /* =========================================================
    Profile 섹션 3D 캐릭터 초기화
