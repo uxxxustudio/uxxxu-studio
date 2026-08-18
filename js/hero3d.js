@@ -460,9 +460,6 @@ export function initSectionObject(containerId, assetInput = "U") {
 }
 
 
-/* =========================================================
-   PORTFOLIO SECTION 3D OBJECT (initPortfolio3D) - "W"
-========================================================= */
 export function initPortfolio3D(containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -481,6 +478,30 @@ export function initPortfolio3D(containerId) {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setClearColor(0x000000, 0);
   container.appendChild(renderer.domElement);
+
+  // 기본 렌더 루프를 먼저 실행해서 캔버스가 살아있게 만듦
+  const clock = new THREE.Clock();
+  let wrapperGroup = new THREE.Group();
+  scene.add(wrapperGroup);
+
+  function animate() {
+    requestAnimationFrame(animate);
+    const time = clock.getElapsedTime();
+    const scrollY = window.scrollY || window.pageYOffset;
+    const scrollOffset = scrollY * 0.0015;
+
+    wrapperGroup.position.y = scrollOffset + Math.sin(time * 0.4) * 0.12;
+    wrapperGroup.rotation.y += 0.005;
+
+    wrapperGroup.traverse((child) => {
+      if (child.material && child.material.uniforms && child.material.uniforms.uTime) {
+        child.material.uniforms.uTime.value = time;
+      }
+    });
+
+    renderer.render(scene, camera);
+  }
+  animate();
 
   const lineMat = new THREE.LineBasicMaterial({
     color: 0x111111,
@@ -547,33 +568,11 @@ export function initPortfolio3D(containerId) {
       const lineSegments = new THREE.LineSegments(edges, lineMat);
       characterGroup.add(lineSegments);
 
-      const wrapperGroup = new THREE.Group();
       wrapperGroup.add(characterGroup);
-      scene.add(wrapperGroup);
-
-      const clock = new THREE.Clock();
-
-      function animate() {
-        requestAnimationFrame(animate);
-        const time = clock.getElapsedTime();
-        const scrollY = window.scrollY || window.pageYOffset;
-
-        const basePosY = 0.0; 
-        const scrollOffset = scrollY * 0.0015;
-
-        wrapperGroup.position.x = 0;
-        wrapperGroup.position.y = basePosY + scrollOffset + Math.sin(time * 0.4) * 0.12;
-        wrapperGroup.rotation.y += 0.005;
-
-        wrapperGroup.traverse((child) => {
-          if (child.material && child.material.uniforms && child.material.uniforms.uTime) {
-            child.material.uniforms.uTime.value = time;
-          }
-        });
-
-        renderer.render(scene, camera);
-      }
-      animate();
+    },
+    undefined,
+    (error) => {
+      console.error("폰트 로드 실패:", error);
     }
   );
 
