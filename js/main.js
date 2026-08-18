@@ -54,12 +54,13 @@ window.addEventListener("DOMContentLoaded", async () => {
     );
 
 
-    /* =====================================================
+/* =====================================================
        Mobile Menu
-    ===================================================== */
+===================================================== */
 
     const menuToggle = document.querySelector(".menu-toggle");
     const nav = document.querySelector("#header > header nav");
+    const header = document.querySelector("#header > header");
 
     if (menuToggle && nav) {
 
@@ -73,6 +74,23 @@ window.addEventListener("DOMContentLoaded", async () => {
                 "aria-expanded",
                 isOpen ? "true" : "false"
             );
+
+
+            /* 메뉴가 열리면 헤더도 반투명 상태 */
+
+            if (header) {
+
+                if (isOpen) {
+
+                    header.classList.add("active");
+
+                } else if (window.scrollY <= 30) {
+
+                    header.classList.remove("active");
+
+                }
+
+            }
 
         });
 
@@ -89,6 +107,14 @@ window.addEventListener("DOMContentLoaded", async () => {
                     "aria-expanded",
                     "false"
                 );
+
+
+                /* 최상단에서는 메뉴를 닫으면
+                   헤더도 원래 상태로 복귀 */
+
+                if (header && window.scrollY <= 30) {
+                    header.classList.remove("active");
+                }
 
             });
 
