@@ -463,7 +463,6 @@ export function initSectionObject(containerId, assetInput = "U") {
 /* =========================================================
    PORTFOLIO SECTION 3D OBJECT (initPortfolio3D) - "W"
 ========================================================= */
-
 export function initPortfolio3D(containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -493,7 +492,6 @@ export function initPortfolio3D(containerId) {
   loader.load(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
     (font) => {
-      // "W" 글자 생성 (U와 동일한 셰이더 및 옵션 적용)
       const geomOpts = { font: font, size: 7.2, depth: 1.2, curveSegments: 24, bevelEnabled: false };
       const geometry = new TextGeometry("W", geomOpts);
       geometry.computeBoundingBox();
