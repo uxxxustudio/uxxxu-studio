@@ -1952,7 +1952,7 @@ footer {
     max-width: none;
     box-sizing: border-box;
 
-    padding: 110px 26px 100px;
+    padding: 110px 0px 100px;
 }
 
 /* EXPERIENCE의 .experience-wrap과 동일한 구조 */
