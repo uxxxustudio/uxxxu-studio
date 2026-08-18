@@ -72,10 +72,22 @@ header {
 }
 
 header.active {
-    background: rgba(255, 255, 255, .72);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: transparent;
     border-bottom: 1px solid rgba(0, 0, 0, .05);
+}
+
+header.active::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: rgba(255, 255, 255, .72);
+
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+
+    pointer-events: none;
+    z-index: -1;
 }
 
 .logo {
@@ -380,8 +392,6 @@ nav a:hover {
     display: block;
 }
 
-/* PC에서는 모바일 콘텐츠는 숨기되
-   3D 오브젝트만 PC 배경 레이어로 유지 */
 .experience-mobile {
     display: block;
     position: absolute;
@@ -397,7 +407,6 @@ nav a:hover {
     display: block;
 }
 
-/* PC에서는 모바일 리스트 내용은 숨기고 3D 오브젝트만 유지 */
 .experience-mobile-list > * {
     display: none;
 }
@@ -549,7 +558,6 @@ nav a:hover {
 
 /* =========================================================
    DESKTOP 3D OBJECT
-   PC에서 02와 03 사이 배경에 표시
 ========================================================= */
 
 #experience-object {
@@ -564,7 +572,6 @@ nav a:hover {
     z-index: 5;
     pointer-events: none;
 
-    /* 아래에서 위로 올라오며 등장 */
     opacity: 0;
 
     transform:
@@ -576,8 +583,6 @@ nav a:hover {
         transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-
-/* JS에서 is-visible이 붙으면 위로 올라오며 표시 */
 #experience-object.is-visible {
     opacity: 1;
 
@@ -703,7 +708,6 @@ nav a:hover {
 
 /* =========================================================
    MOBILE EXPERIENCE — SPACING
-   간격만 조정
 ========================================================= */
 
 .experience-mobile-intro {
@@ -733,10 +737,10 @@ nav a:hover {
     border-bottom: 1px solid #dedede;
 }
 
-
 .experience-mobile-item:first-child {
     padding-top: 0;
 }
+
 .experience-mobile-item + .experience-mobile-item {
     border-top: 0;
 }
@@ -744,7 +748,6 @@ nav a:hover {
 .experience-mobile-number {
     margin-bottom: 14px;
 }
-
 
 .experience-mobile-line {
     margin: 18px 0 22px;
@@ -754,6 +757,7 @@ nav a:hover {
     gap: 6px;
     margin-bottom: 22px;
 }
+
 
 /* =========================================================
    MOBILE 3D OBJECT
@@ -789,22 +793,24 @@ nav a:hover {
     width: 100%;
     margin: auto;
 }
+
 #portfolio-w-container {
     position: absolute;
-    top: 100px; /* 헤더와의 간격 조절 */
-    right: 64px; /* 우측 여백 맞춤 */
+    top: 100px;
+    right: 64px;
     width: 380px;
     height: 380px;
-    pointer-events: none; /* 마우스 클릭이 텍스트나 카드로 통과되도록 설정 */
+    pointer-events: none;
     z-index: 2;
 }
+
 #portfolio-object {
     position: absolute;
-    top: 220px; /* 프로젝트 헤더 아래, 카드 영역 높이에 맞춤 */
-    right: 60px; /* 우측 여백 맞춤 */
-    width: 420px; /* 회색박스 크기 정도의 너비 */
-    height: 320px; /* 회색박스 크기 정도의 높이 */
-    pointer-events: none; /* 마우스 이벤트 방해 금지 */
+    top: 220px;
+    right: 60px;
+    width: 420px;
+    height: 320px;
+    pointer-events: none;
     z-index: 2;
 }
 
@@ -1725,12 +1731,10 @@ footer {
         max-width: none;
     }
 
-    /* PC EXPERIENCE 숨김 */
     .experience-desktop {
         display: none !important;
     }
 
-    /* MOBILE EXPERIENCE 표시 */
     .experience-mobile {
         position: static;
         inset: auto;
@@ -1806,7 +1810,6 @@ footer {
         width: 100%;
     }
 
-    /* 기존 PC용 숨김 규칙으로 모바일 Experience 항목이 사라지는 문제만 수정 */
     .experience-mobile-list > .experience-mobile-item {
         display: block;
     }
@@ -1835,7 +1838,6 @@ footer {
         border-top: 1px solid #dedede;
     }
 
-    /* 3D 오브젝트 때문에 + 선택자가 끊기는 02 / 03 구분선 */
     .experience-mobile-list > .experience-mobile-item:nth-child(2),
     .experience-mobile-list > .experience-mobile-item:nth-child(4) {
         border-top: 1px solid #dedede;
@@ -1844,7 +1846,6 @@ footer {
 
 /* =====================================================
    MOBILE EXPERIENCE ITEM ALIGNMENT
-   모든 항목 동일한 왼쪽 기준
 ===================================================== */
 
 .experience-mobile-item:nth-child(1),
@@ -1908,8 +1909,8 @@ footer {
     }
 
 
-    /* MOBILE 3D
-       기존 experience-object를 02와 03 사이 배경에 겹쳐 표시 */
+    /* MOBILE 3D */
+
     #experience-object {
         display: block !important;
 
@@ -1967,6 +1968,7 @@ footer {
         font-size: 23px;
     }
 
+
 /* =====================================================
    PORTFOLIO MOBILE — PROJECT CARD
 ===================================================== */
@@ -1979,7 +1981,6 @@ footer {
     padding: 110px 16px 100px;
 }
 
-/* EXPERIENCE의 .experience-wrap과 동일한 구조 */
 #portfolio .portfolio-wrap {
     position: relative;
 
@@ -2005,9 +2006,11 @@ footer {
     margin: 0;
     line-height: 1.6;
 }
+
 #portfolio-w-container {
-        display: none; /* 모바일 레이아웃 보호를 위해 숨김 처리 또는 별도 위치 지정 */
-    }
+    display: none;
+}
+
 
 /* =====================================================
    PROJECT LIST
@@ -2029,7 +2032,6 @@ footer {
     padding: 0 !important;
 
     box-sizing: border-box;
-
 }
 
 
@@ -2044,9 +2046,7 @@ footer {
     max-width: none;
     min-height: auto;
 
-    /* 변경 전: padding: 30px 26px; (카드가 안쪽으로 밀려 보임) */
-    /* 변경 후: 카드가 섹션 양끝(26px)까지 꽉 차도록 좌우 패딩을 조정하거나 박스 구조 맞춤 */
-    padding: 32px 24px; 
+    padding: 32px 24px;
 
     background: #f7f7f7;
     border: 1px solid #eeeeee;
@@ -2054,28 +2054,28 @@ footer {
 
     box-sizing: border-box;
 }
-   
+
 #portfolio .project + .project {
     margin-top: 16px;
 }
 
 
 /* CATEGORY */
+
 #portfolio .project-category {
     position: static;
     display: block;
     margin-bottom: 16px;
     font-size: 11px;
-    text-align: left; /* 왼쪽 정렬 강제 */
+    text-align: left;
 }
-
 
 
 /* TITLE */
 
 #portfolio .project h2 {
     margin: 0;
-    font-size: 28px; /* 모바일에서 글자가 너무 크면 여백이 좁아 보일 수 있어 살짝 조절 가능 */
+    font-size: 28px;
     line-height: 1.05;
     letter-spacing: -.055em;
     text-align: left;
@@ -2101,6 +2101,7 @@ footer {
     font-size: 13px;
     text-align: left;
 }
+
 
 /* =====================================================
    MOBILE HOVER RESET
@@ -2178,8 +2179,8 @@ footer {
     padding-right: 0 !important;
     box-sizing: border-box;
 }
-   
-   
+
+
 /* =====================================================
    ABOUT MOBILE
 ===================================================== */
@@ -2190,7 +2191,7 @@ footer {
 
 #about .about-wrap {
     position: relative;
-   
+
     display: block;
 
     width: 100%;
@@ -2202,26 +2203,28 @@ footer {
 
 
 /* 세로 ABOUT 타이틀 */
+
 #about .section-title {
-        position: absolute;
+    position: absolute;
 
-        top: -50px;
-        left: 0;
+    top: -50px;
+    left: 0;
 
-        transform: translateX(-25px);
+    transform: translateX(-25px);
 
-        margin: 0;
+    margin: 0;
 
-        font-size: 13px;
-        line-height: 1;
-        letter-spacing: .14em;
+    font-size: 13px;
+    line-height: 1;
+    letter-spacing: .14em;
 
-        writing-mode: vertical-rl;
-        text-orientation: mixed;
-    }
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+}
 
 
 /* 메인 콘텐츠 */
+
 #about .about-main {
     width: 100%;
     max-width: 460px;
@@ -2236,6 +2239,7 @@ footer {
 
 
 /* 메인 카피 */
+
 #about .about-copy {
     width: 100%;
     max-width: none;
@@ -2261,6 +2265,7 @@ footer {
 
 
 /* Timeline */
+
 #about .about-timeline {
     width: 100%;
 
@@ -2283,6 +2288,7 @@ footer {
 
 
 /* 하단 정보 */
+
 #about .about-bottom {
     display: grid;
     grid-template-columns: 1fr;
@@ -2315,9 +2321,10 @@ footer {
     }
 }
 
+
 /* =====================================================
    EXPERIENCE DESKTOP / MOBILE VISIBILITY
-   ===================================================== */
+===================================================== */
 
 .experience-desktop {
     display: block !important;
@@ -2329,6 +2336,7 @@ footer {
 
 
 /* MOBILE */
+
 @media (max-width: 768px) {
 
     .experience-desktop {
