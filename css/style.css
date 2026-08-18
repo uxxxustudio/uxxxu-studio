@@ -2116,7 +2116,7 @@ footer {
 }
 
 #portfolio .archive-content h3 {
-    font-size: 26px;
+    font-size: 24px;
 }
 
 #portfolio .archive-content p {
@@ -2126,17 +2126,17 @@ footer {
 }
 
 #portfolio .archive-arrow {
-    left: calc(50% + 128px);
+    left: calc(50% + 105px);
     top: 50%;
 
-    font-size: 22px;
+    font-size: 20px;
 
     transform: translateY(-15px);
 }
 
 #portfolio .project-archive:hover .archive-arrow {
     transform: translate(5px, -15px);
-    font-size: 26px;
+    font-size: 24px;
 }
 
 
