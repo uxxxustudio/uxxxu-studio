@@ -1,1 +1,691 @@
-sodyd
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Enough Media — UX/UI Design | uxxxu</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+
+        /* =========================================================
+           CASE STUDY — ENOUGH MEDIA
+        ========================================================= */
+
+        .case-page {
+            background: #fff;
+            color: #111;
+        }
+
+        .case-header {
+            padding: 180px 64px 100px;
+        }
+
+        .case-header-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .case-category {
+            margin-bottom: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #777;
+            letter-spacing: .04em;
+        }
+
+        .case-title {
+            margin: 0;
+            font-size: clamp(48px, 6vw, 88px);
+            line-height: .95;
+            letter-spacing: -.055em;
+            font-weight: 700;
+        }
+
+        .case-intro {
+            max-width: 700px;
+            margin-top: 32px;
+            font-size: 18px;
+            line-height: 1.7;
+            color: #666;
+        }
+
+        .case-meta {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-top: 80px;
+            padding-top: 24px;
+            border-top: 1px solid #ddd;
+        }
+
+        .case-meta-item span {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 12px;
+            color: #888;
+            letter-spacing: .04em;
+        }
+
+        .case-meta-item strong {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+
+        /* =========================================================
+           HERO IMAGE
+        ========================================================= */
+
+        .case-hero {
+            padding: 0 64px;
+        }
+
+        .case-hero img {
+            display: block;
+            width: 100%;
+            max-width: 1440px;
+            height: auto;
+            margin: 0 auto;
+        }
+
+
+        /* =========================================================
+           CONTENT
+        ========================================================= */
+
+        .case-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 140px 40px;
+        }
+
+        .case-section {
+            margin-bottom: 140px;
+        }
+
+        .case-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .case-section-label {
+            margin-bottom: 24px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #888;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .case-section h2 {
+            margin: 0 0 24px;
+            font-size: clamp(32px, 4vw, 52px);
+            line-height: 1.05;
+            letter-spacing: -.04em;
+        }
+
+        .case-section p {
+            max-width: 760px;
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #666;
+        }
+
+
+        /* =========================================================
+           TEXT GRID
+        ========================================================= */
+
+        .case-text-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 80px;
+        }
+
+        .case-text-block h3 {
+            margin: 0 0 18px;
+            font-size: 20px;
+            letter-spacing: -.02em;
+        }
+
+        .case-text-block p {
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+
+        /* =========================================================
+           IMAGE GRID
+        ========================================================= */
+
+        .case-image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 60px;
+        }
+
+        .case-image-grid img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .case-image-full {
+            margin-top: 60px;
+        }
+
+        .case-image-full img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        .case-mobile-title {
+            margin-top: 100px;
+            padding-top: 40px;
+            border-top: 1px solid #ddd;
+        }
+
+
+        /* =========================================================
+           FOOTER LINK
+        ========================================================= */
+
+        .case-next {
+            padding: 100px 64px 160px;
+            border-top: 1px solid #ddd;
+        }
+
+        .case-next-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .case-next a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #111;
+            text-decoration: none;
+        }
+
+        .case-next-label {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 12px;
+        }
+
+        .case-next-title {
+            font-size: clamp(36px, 5vw, 64px);
+            font-weight: 700;
+            letter-spacing: -.05em;
+        }
+
+        .case-next-arrow {
+            font-size: 32px;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 980px) {
+
+            .case-header {
+                padding: 140px 40px 80px;
+            }
+
+            .case-hero {
+                padding: 0 40px;
+            }
+
+            .case-meta {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .case-content {
+                padding: 100px 40px;
+            }
+
+            .case-next {
+                padding: 80px 40px 120px;
+            }
+        }
+
+
+        @media (max-width: 767px) {
+
+            .case-header {
+                padding: 120px 26px 70px;
+            }
+
+            .case-title {
+                font-size: 48px;
+            }
+
+            .case-intro {
+                margin-top: 24px;
+                font-size: 15px;
+            }
+
+            .case-meta {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 32px 20px;
+                margin-top: 60px;
+            }
+
+            .case-hero {
+                padding: 0 16px;
+            }
+
+            .case-content {
+                padding: 80px 26px;
+            }
+
+            .case-section {
+                margin-bottom: 90px;
+            }
+
+            .case-section h2 {
+                font-size: 36px;
+            }
+
+            .case-text-grid {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+
+            .case-image-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                margin-top: 40px;
+            }
+
+            .case-image-full {
+                margin-top: 40px;
+            }
+
+            .case-next {
+                padding: 70px 26px 100px;
+            }
+
+            .case-next a {
+                align-items: flex-end;
+            }
+
+            .case-next-title {
+                font-size: 40px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body class="case-page">
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<div id="header"></div>
+
+
+<main>
+
+
+<!-- =========================================================
+     CASE HEADER
+========================================================= -->
+
+<section class="case-header">
+
+    <div class="case-header-inner">
+
+        <div class="case-category">
+            WEB / UI·UX DESIGN
+        </div>
+
+        <h1 class="case-title">
+            enough media<br>
+            website
+        </h1>
+
+        <p class="case-intro">
+            다양한 프로젝트를 직관적으로 탐색할 수 있도록
+            정보 구조와 비주얼 시스템을 재구성한
+            이너프미디어 웹사이트 리뉴얼 프로젝트입니다.
+        </p>
+
+
+        <div class="case-meta">
+
+            <div class="case-meta-item">
+                <span>CLIENT</span>
+                <strong>Enough Media</strong>
+            </div>
+
+            <div class="case-meta-item">
+                <span>CATEGORY</span>
+                <strong>UI/UX Design</strong>
+            </div>
+
+            <div class="case-meta-item">
+                <span>TOOLS</span>
+                <strong>Figma · Photoshop · Illustrator · VS Code</strong>
+            </div>
+
+            <div class="case-meta-item">
+                <span>CONTRIBUTION</span>
+                <strong>100%</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="case-hero">
+
+    <img
+        src="images/em/EnoughM_main_korean.png"
+        alt="Enough Media website"
+    >
+
+</section>
+
+
+
+<!-- =========================================================
+     PROJECT OVERVIEW
+========================================================= -->
+
+<section class="case-content">
+
+    <div class="case-section">
+
+        <div class="case-section-label">
+            Overview
+        </div>
+
+        <h2>
+            프로젝트를<br>
+            경험처럼 전달하다.
+        </h2>
+
+        <p>
+            이너프미디어는 전시, 인터랙티브, VR/AR 등
+            다양한 프로젝트를 수행하는 콘텐츠 기업입니다.
+            기존 웹사이트의 방대한 프로젝트 정보를 보다
+            직관적으로 탐색할 수 있도록 정보 구조와
+            시각적 체계를 새롭게 설계했습니다.
+        </p>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         DESIGN CONCEPT
+    ===================================================== -->
+
+    <div class="case-section">
+
+        <div class="case-section-label">
+            Design Concept
+        </div>
+
+        <div class="case-text-grid">
+
+            <div class="case-text-block">
+
+                <h3>
+                    콘텐츠 중심의 정보 구조
+                </h3>
+
+                <p>
+                    다양한 체험형 프로젝트를 효과적으로
+                    분류하고 전달할 수 있도록 콘텐츠 중심으로
+                    정보 구조를 재구성했습니다.
+                </p>
+
+            </div>
+
+
+            <div class="case-text-block">
+
+                <h3>
+                    시각적 카테고리 시스템
+                </h3>
+
+                <p>
+                    전시, 인터랙션, 앱, 교육 등 각 사업 영역을
+                    아이콘 시스템으로 시각화해 프로젝트의
+                    성격을 빠르게 파악할 수 있도록 설계했습니다.
+                </p>
+
+            </div>
+
+
+            <div class="case-text-block">
+
+                <h3>
+                    브랜드와 실용성의 균형
+                </h3>
+
+                <p>
+                    여백 중심의 화면 구성과 간결한 UI를 통해
+                    이너프미디어의 전문성과 확장성을
+                    동시에 표현했습니다.
+                </p>
+
+            </div>
+
+
+            <div class="case-text-block">
+
+                <h3>
+                    몰입감 있는 인터랙션
+                </h3>
+
+                <p>
+                    풀스크린 비주얼과 부드러운 전환 효과를 통해
+                    프로젝트를 단순한 목록이 아닌
+                    하나의 경험으로 전달하도록 구성했습니다.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         DESIGN POINT
+    ===================================================== -->
+
+    <div class="case-section">
+
+        <div class="case-section-label">
+            Design Point
+        </div>
+
+        <h2>
+            프로젝트를 빠르게<br>
+            이해할 수 있도록.
+        </h2>
+
+        <p>
+            프로젝트의 성격을 빠르게 파악할 수 있도록
+            카테고리 기반 콘텐츠 분류와 시각적 필터링을
+            구성하고, 각 사업 영역에 맞춘 아이콘 시스템을
+            직접 제작했습니다.
+        </p>
+
+
+        <div class="case-image-full">
+
+            <img
+                src="images/em/EnoughM_work_video.png"
+                alt="Enough Media website interaction"
+            >
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         WEBSITE
+    ===================================================== -->
+
+    <div class="case-section">
+
+        <div class="case-section-label">
+            Website
+        </div>
+
+        <div class="case-image-grid">
+
+            <img
+                src="images/em/EnoughM_work_img.png"
+                alt="Enough Media website design"
+            >
+
+            <img
+                src="images/em/image.png"
+                alt="Enough Media website screen"
+            >
+
+        </div>
+
+        <div class="case-image-full">
+
+            <img
+                src="images/em/image 1.png"
+                alt="Enough Media website screen"
+            >
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         MOBILE
+    ===================================================== -->
+
+    <div class="case-section">
+
+        <div class="case-mobile-title">
+
+            <div class="case-section-label">
+                Mobile
+            </div>
+
+            <h2>
+                Responsive Experience
+            </h2>
+
+        </div>
+
+
+        <div class="case-image-grid">
+
+            <img
+                src="images/em/image 2.png"
+                alt="Enough Media mobile design"
+            >
+
+            <img
+                src="images/em/image 3.png"
+                alt="Enough Media mobile design"
+            >
+
+            <img
+                src="images/em/image 4.png"
+                alt="Enough Media mobile design"
+            >
+
+            <img
+                src="images/em/image 5.png"
+                alt="Enough Media mobile design"
+            >
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     NEXT PROJECT
+========================================================= -->
+
+<section class="case-next">
+
+    <div class="case-next-inner">
+
+        <a href="wearable.html">
+
+            <div>
+
+                <div class="case-next-label">
+                    NEXT PROJECT
+                </div>
+
+                <div class="case-next-title">
+                    AI Smart Glasses
+                </div>
+
+            </div>
+
+            <div class="case-next-arrow">
+                →
+            </div>
+
+        </a>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+<!-- =========================================================
+     COMMON JS
+========================================================= -->
+
+<script type="module" src="../js/main.js"></script>
+
+</body>
+</html>
