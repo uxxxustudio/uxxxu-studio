@@ -2159,7 +2159,7 @@ footer {
 ===================================================== */
 
 #about {
-    padding: 100px 26px;
+    padding: 60px 26px 100px;
 }
 
 #about .about-wrap {
@@ -2179,7 +2179,7 @@ footer {
 #about .section-title {
         position: absolute;
 
-        top: 0;
+        top: -32px;
         left: 0;
 
         transform: translateX(-30px);
