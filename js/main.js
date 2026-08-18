@@ -19,12 +19,12 @@ async function loadComponent(id, file) {
         initExperienceFeature();
     }
 
-    // [추가] portfolio 섹션이 DOM에 로드되는 순간 Portfolio 3D 오브젝트 초기화
+    // portfolio 섹션이 DOM에 로드되는 순간 Portfolio W 3D 오브젝트 초기화
     if (id === "portfolio") {
         initPortfolioFeature();
     }
 
-    // [추가] about 섹션이 DOM에 로드되는 순간 Profile 3D 캐릭터 초기화
+    // about 섹션이 DOM에 로드되는 순간 Profile 3D 캐릭터 초기화
     if (id === "about") {
         initProfileFeature();
     }
@@ -145,11 +145,11 @@ async function initExperienceFeature() {
 
 
 /* =========================================================
-   [추가] Portfolio 섹션 3D 오브젝트 ("W") 초기화
+   Portfolio 섹션 3D 오브젝트 ("W") 초기화
 ========================================================= */
 async function initPortfolioFeature() {
     try {
-        // 만약 함수가 hero3d_w.js에 있다면 경로를 수정해 주세요. (예: "./hero3d_w.js" 또는 "./hero3d.js")
+        // W 오브젝트 함수가 들어있는 파일 경로 (필요에 따라 hero3d.js 혹은 hero3d_w.js로 확인)
         const { initPortfolio3D } = await import("./hero3d_w.js");
         initPortfolio3D("portfolio-object");
     } catch (error) {
@@ -159,7 +159,7 @@ async function initPortfolioFeature() {
 
 
 /* =========================================================
-   [추가] Profile 섹션 3D 캐릭터 초기화
+   Profile 섹션 3D 캐릭터 초기화
 ========================================================= */
 async function initProfileFeature() {
     try {
