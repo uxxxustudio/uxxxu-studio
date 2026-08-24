@@ -11,6 +11,7 @@
     <title>Enough Media — UX/UI Design | uxxxu</title>
 
     <link rel="stylesheet" href="css/style.css">
+
     <style>
 
         /* =========================================================
@@ -21,6 +22,66 @@
             background: #fff;
             color: #111;
         }
+
+
+        /* =========================================================
+           CASE STUDY HEADER
+        ========================================================= */
+
+        .case-site-header {
+
+            height: 140px;
+
+            padding: 0 64px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            border-bottom: 1px solid #eee;
+
+            background: #fff;
+
+        }
+
+        .case-site-logo {
+
+            font-size: 30px;
+
+            font-weight: 900;
+
+            letter-spacing: -.04em;
+
+            color: #111;
+
+        }
+
+        .case-site-back {
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+            color: #666;
+
+            text-decoration: none;
+
+            transition: color .2s ease;
+
+        }
+
+        .case-site-back:hover {
+
+            color: #111;
+
+        }
+
+
+        /* =========================================================
+           CASE HEADER
+        ========================================================= */
 
         .case-header {
             padding: 180px 64px 100px;
@@ -224,6 +285,14 @@
 
         @media (max-width: 980px) {
 
+            .case-site-header {
+
+                height: 100px;
+
+                padding: 0 40px;
+
+            }
+
             .case-header {
                 padding: 140px 40px 80px;
             }
@@ -239,10 +308,31 @@
             .case-content {
                 padding: 100px 40px;
             }
+
         }
 
 
         @media (max-width: 767px) {
+
+            .case-site-header {
+
+                height: 80px;
+
+                padding: 0 26px;
+
+            }
+
+            .case-site-logo {
+
+                font-size: 24px;
+
+            }
+
+            .case-site-back {
+
+                font-size: 13px;
+
+            }
 
             .case-header {
                 padding: 120px 26px 70px;
@@ -308,10 +398,26 @@
 
 
 <!-- =========================================================
-     HEADER
+     CASE STUDY HEADER
 ========================================================= -->
 
-<div id="header"></div>
+<header class="case-site-header">
+
+    <a
+        href="../index.html"
+        class="case-site-logo"
+    >
+        uxxxu
+    </a>
+
+    <a
+        href="../index.html"
+        class="case-site-back"
+    >
+        ← Back to Portfolio
+    </a>
+
+</header>
 
 
 <main>
@@ -678,15 +784,6 @@
 
 
 </main>
-
-
-
-<!-- =========================================================
-     COMMON JS
-========================================================= -->
-
-<script type="module" src="../js/main.js"></script>
-
 
 </body>
 
