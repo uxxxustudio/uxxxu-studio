@@ -2357,14 +2357,19 @@ footer {
     position: relative;
 }
 
-.portfolio-preview {
-    position: absolute;
+/* =========================================================
+   PORTFOLIO HOVER THUMBNAIL
+   PC ONLY
+========================================================= */
 
-    top: 180px;
-    right: 0;
+.portfolio-preview {
+    position: fixed;
 
     width: 320px;
     height: 210px;
+
+    right: 80px;
+    top: 50%;
 
     overflow: hidden;
 
@@ -2375,9 +2380,9 @@ footer {
 
     pointer-events: none;
 
-    transform: translateY(12px);
+    transform: translateY(-50%) translateY(12px);
 
-    z-index: 20;
+    z-index: 9999;
 
     transition:
         opacity .3s ease,
@@ -2388,7 +2393,7 @@ footer {
     opacity: 1;
     visibility: visible;
 
-    transform: translateY(0);
+    transform: translateY(-50%) translateY(0);
 }
 
 .portfolio-preview img {
@@ -2398,6 +2403,15 @@ footer {
     height: 100%;
 
     object-fit: cover;
+}
 
-    opacity: 1;
+
+/* 모바일에서는 썸네일 사용하지 않음 */
+
+@media (max-width: 900px) {
+
+    .portfolio-preview {
+        display: none;
+    }
+
 }
