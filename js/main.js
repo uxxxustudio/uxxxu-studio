@@ -387,7 +387,7 @@ function initPortfolioHoverThumbnail() {
 
         preview.appendChild(image);
        
-        portfolio.querySelector(".portfolio-grid").appendChild(preview);
+        document.body.appendChild(preview);
 
     }
 
