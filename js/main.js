@@ -334,3 +334,147 @@ async function initProfileFeature() {
     }
 
 }
+
+/* =========================================================
+   Portfolio Hover Thumbnail
+========================================================= */
+
+function initPortfolioHoverThumbnail() {
+
+    const portfolio =
+        document.getElementById("portfolio");
+
+    if (!portfolio) return;
+
+
+    const projects =
+        portfolio.querySelectorAll(".project");
+
+    if (!projects.length) return;
+
+
+    /* 기존 preview가 있으면 중복 생성하지 않음 */
+
+    let preview =
+        document.querySelector(".portfolio-preview");
+
+    if (!preview) {
+
+        preview =
+            document.createElement("div");
+
+        preview.className =
+            "portfolio-preview";
+
+        preview.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+
+        const image =
+            document.createElement("img");
+
+        image.id =
+            "portfolio-preview-image";
+
+        image.alt = "";
+
+
+        preview.appendChild(image);
+
+        document.body.appendChild(preview);
+
+    }
+
+
+    const image =
+        preview.querySelector(
+            "#portfolio-preview-image"
+        );
+
+
+    projects.forEach((project) => {
+
+        project.addEventListener(
+            "mouseenter",
+            () => {
+
+                const thumb =
+                    project.dataset.thumb;
+
+                if (!thumb) return;
+
+
+                image.src = thumb;
+
+                preview.classList.add(
+                    "is-visible"
+                );
+
+            }
+        );
+
+
+        project.addEventListener(
+            "mouseleave",
+            () => {
+
+                preview.classList.remove(
+                    "is-visible"
+                );
+
+            }
+        );
+
+    });
+
+}
+
+
+/* =========================================================
+   Portfolio Hover Thumbnail Initialize
+========================================================= */
+
+window.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        const observer =
+            new MutationObserver(
+                () => {
+
+                    const portfolio =
+                        document.getElementById(
+                            "portfolio"
+                        );
+
+                    if (!portfolio) return;
+
+
+                    const projects =
+                        portfolio.querySelectorAll(
+                            ".project"
+                        );
+
+                    if (!projects.length) return;
+
+
+                    initPortfolioHoverThumbnail();
+
+                    observer.disconnect();
+
+                }
+            );
+
+
+        observer.observe(
+            document.body,
+            {
+                childList: true,
+                subtree: true
+            }
+        );
+
+    }
+);
