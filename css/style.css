@@ -2368,8 +2368,8 @@ footer {
     width: 320px;
     height: 210px;
 
-    right: 80px;
     top: 50%;
+    right: 80px;
 
     overflow: hidden;
 
@@ -2404,9 +2404,6 @@ footer {
 
     object-fit: cover;
 }
-
-
-/* 모바일에서는 썸네일 사용하지 않음 */
 
 @media (max-width: 900px) {
 
