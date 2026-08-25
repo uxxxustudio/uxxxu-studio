@@ -22,7 +22,11 @@ async function loadComponent(id, file) {
 
     // portfolio 섹션이 DOM에 로드되는 순간 Portfolio W 3D 오브젝트 초기화
     if (id === "portfolio") {
-        initPortfolioFeature();
+
+    initPortfolioFeature();
+
+    initPortfolioHoverThumbnail();
+
     }
 
     // about 섹션이 DOM에 로드되는 순간 Profile 3D 캐릭터 초기화
@@ -432,49 +436,4 @@ function initPortfolioHoverThumbnail() {
 }
 
 
-/* =========================================================
-   Portfolio Hover Thumbnail Initialize
-========================================================= */
 
-window.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        const observer =
-            new MutationObserver(
-                () => {
-
-                    const portfolio =
-                        document.getElementById(
-                            "portfolio"
-                        );
-
-                    if (!portfolio) return;
-
-
-                    const projects =
-                        portfolio.querySelectorAll(
-                            ".project"
-                        );
-
-                    if (!projects.length) return;
-
-
-                    initPortfolioHoverThumbnail();
-
-                    observer.disconnect();
-
-                }
-            );
-
-
-        observer.observe(
-            document.body,
-            {
-                childList: true,
-                subtree: true
-            }
-        );
-
-    }
-);
