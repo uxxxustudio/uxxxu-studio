@@ -438,7 +438,7 @@ function initPortfolioHoverThumbnail() {
                 const left =
                 projectRect.right -
                 gridRect.left -
-                230;
+                480;
                   
                 const top =
                 projectRect.top -
