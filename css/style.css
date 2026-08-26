@@ -2453,3 +2453,24 @@ body > .portfolio-preview img {
 
     object-fit: cover;
 }
+
+body > .portfolio-preview {
+    position: fixed !important;
+    width: 320px !important;
+    height: 210px !important;
+    top: 50% !important;
+    right: 80px !important;
+    bottom: auto !important;
+    left: auto !important;
+    z-index: 99999 !important;
+    overflow: hidden !important;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-50%);
+}
+
+body > .portfolio-preview.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
