@@ -437,15 +437,14 @@ function initPortfolioHoverThumbnail() {
 
 
                 const left =
-                    projectRect.right -
-                    gridRect.left -
-                    190;
-
-
+                titleRect.right -
+                gridRect.left +
+                80;
+            
                 const top =
-                    projectRect.top -
-                    gridRect.top +
-                    20;
+                titleRect.top -
+                gridRect.top -
+                60;
 
 
                 preview.style.left =
