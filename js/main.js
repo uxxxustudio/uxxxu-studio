@@ -412,63 +412,37 @@ function initPortfolioHoverThumbnail() {
     projects.forEach((project) => {
 
         project.addEventListener(
-            "mouseenter",
-            () => {
-
-                const thumb =
-                    project.dataset.thumb;
-
-                if (!thumb) return;
-
-
-                image.src = thumb;
-
-
-                /*
-                   portfolio-grid를 기준으로
-                   현재 프로젝트의 오른쪽에 배치
-                */
-
-                const projectRect =
-                project.getBoundingClientRect();
-               
-                const gridRect =
-                grid.getBoundingClientRect();
-                  
-                const left =
-                projectRect.right -
-                gridRect.left -
-                480;
-                  
-                const top =
-                projectRect.top -
-                gridRect.top +
-                20;
-                  
+             "mouseenter",
+             () => {
+         
+                 const thumb =
+                     project.dataset.thumb;
+         
+                 if (!thumb) return;
+         
+                 image.src = thumb;
+         
+                 const grid =
+                     portfolio.querySelector(".portfolio-grid");
+         
+                 const projectRect =
+                     project.getBoundingClientRect();
+         
+                 const gridRect =
+                     grid.getBoundingClientRect();
+         
                  preview.style.left =
-                  `${left}px`;
-                  
+                     (projectRect.right - gridRect.left - 380) + "px";
+         
                  preview.style.top =
-                  `${top}px`;
-                  
-                  preview.classList.add(
-                   "is-visible"
-                  );
-
-
-                preview.style.left =
-                    `${left}px`;
-
-                preview.style.top =
-                    `${top}px`;
-
-
-                preview.classList.add(
-                    "is-visible"
-                );
-
-            }
-        );
+                     (projectRect.top - gridRect.top + 20) + "px";
+         
+                 preview.classList.add(
+                     "is-visible"
+                 );
+         
+             }
+         );
 
 
         project.addEventListener(
