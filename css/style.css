@@ -2276,7 +2276,7 @@ footer {
     opacity: 1;
     visibility: visible;
 
-    transform: translateY(-50%) translateY(0);
+    transform: translateY(0);
 }
 
 .portfolio-preview img {
