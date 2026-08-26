@@ -430,21 +430,30 @@ function initPortfolioHoverThumbnail() {
                 */
 
                 const projectRect =
-                    project.getBoundingClientRect();
-
+                project.getBoundingClientRect();
+               
                 const gridRect =
-                    grid.getBoundingClientRect();
-
-
+                grid.getBoundingClientRect();
+                  
                 const left =
-                titleRect.right -
-                gridRect.left +
-                80;
-            
+                projectRect.right -
+                gridRect.left -
+                230;
+                  
                 const top =
-                titleRect.top -
-                gridRect.top -
-                60;
+                projectRect.top -
+                gridRect.top +
+                20;
+                  
+                 preview.style.left =
+                  `${left}px`;
+                  
+                 preview.style.top =
+                  `${top}px`;
+                  
+                  preview.classList.add(
+                   "is-visible"
+                  );
 
 
                 preview.style.left =
