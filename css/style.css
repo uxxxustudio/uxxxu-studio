@@ -2250,10 +2250,10 @@ footer {
 .portfolio-preview {
     position: fixed !important;
 
-    width: 280px !important;
-    height: 180px !important;
+    width: 190px !important;
+    height: 120px !important;
 
-    right: 150px !important;
+    right: 190px !important;
     top: 50% !important;
 
     bottom: auto !important;
