@@ -2253,8 +2253,8 @@ footer {
     width: 190px !important;
     height: 120px !important;
 
-    right: 190px !important;
-    top: 80% !important;
+    left: 100px !important;
+    top: 60% !important;
 
     bottom: auto !important;
     left: auto !important;
