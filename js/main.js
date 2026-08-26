@@ -23,9 +23,9 @@ async function loadComponent(id, file) {
     // portfolio 섹션이 DOM에 로드되는 순간 Portfolio W 3D 오브젝트 초기화
     if (id === "portfolio") {
 
-    initPortfolioFeature();
+        initPortfolioFeature();
 
-    initPortfolioHoverThumbnail();
+        initPortfolioHoverThumbnail();
 
     }
 
@@ -339,6 +339,7 @@ async function initProfileFeature() {
 
 }
 
+
 /* =========================================================
    Portfolio Hover Thumbnail
 ========================================================= */
@@ -386,7 +387,7 @@ function initPortfolioHoverThumbnail() {
 
 
         preview.appendChild(image);
-       
+
         document.body.appendChild(preview);
 
     }
@@ -412,6 +413,48 @@ function initPortfolioHoverThumbnail() {
 
                 image.src = thumb;
 
+
+                /*
+                   썸네일을 현재 프로젝트 행 기준으로 배치.
+                   viewport가 아니라 문서 좌표를 사용하므로
+                   스크롤해도 화면을 따라다니지 않음.
+                */
+
+                const rect =
+                    project.getBoundingClientRect();
+
+
+                const left =
+                    rect.right - 190;
+
+
+                const top =
+                    rect.top +
+                    window.scrollY +
+                    20;
+
+
+                preview.style.setProperty(
+                    "position",
+                    "absolute",
+                    "important"
+                );
+
+
+                preview.style.setProperty(
+                    "left",
+                    `${left + window.scrollX}px`,
+                    "important"
+                );
+
+
+                preview.style.setProperty(
+                    "top",
+                    `${top}px`,
+                    "important"
+                );
+
+
                 preview.classList.add(
                     "is-visible"
                 );
@@ -434,6 +477,3 @@ function initPortfolioHoverThumbnail() {
     });
 
 }
-
-
-
