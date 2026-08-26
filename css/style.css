@@ -383,11 +383,6 @@ nav a:hover {
     margin: 0 auto;
 }
 
-
-/* =========================================================
-   PC / MOBILE DISPLAY
-========================================================= */
-
 .experience-desktop {
     display: block;
 }
@@ -414,11 +409,6 @@ nav a:hover {
 .experience-mobile-list > #experience-object {
     display: block;
 }
-
-
-/* =========================================================
-   DESKTOP EXPERIENCE
-========================================================= */
 
 .experience-header {
     display: flex;
@@ -470,9 +460,6 @@ nav a:hover {
     font-weight: 600;
     letter-spacing: -.035em;
 }
-
-
-/* EXPERIENCE GRID */
 
 .experience-grid {
     position: relative;
@@ -555,11 +542,6 @@ nav a:hover {
     letter-spacing: -.03em;
 }
 
-
-/* =========================================================
-   DESKTOP 3D OBJECT
-========================================================= */
-
 #experience-object {
     position: absolute;
 
@@ -591,11 +573,6 @@ nav a:hover {
         translateY(0);
 }
 
-
-/* =========================================================
-   DESKTOP CAREER
-========================================================= */
-
 .experience-career {
     display: flex;
     justify-content: flex-end;
@@ -626,11 +603,6 @@ nav a:hover {
     font-size: 24px;
     line-height: 1;
 }
-
-
-/* =========================================================
-   MOBILE EXPERIENCE
-========================================================= */
 
 .experience-mobile-intro {
     width: 100%;
@@ -705,11 +677,6 @@ nav a:hover {
     border-bottom: 1px solid #111;
 }
 
-
-/* =========================================================
-   MOBILE EXPERIENCE — SPACING
-========================================================= */
-
 .experience-mobile-intro {
     margin-bottom: 36px;
 }
@@ -757,11 +724,6 @@ nav a:hover {
     gap: 6px;
     margin-bottom: 22px;
 }
-
-
-/* =========================================================
-   MOBILE 3D OBJECT
-========================================================= */
 
 #experience-object-mobile {
     position: relative;
@@ -1437,7 +1399,7 @@ footer {
         width: 100%;
 
         background: rgba(248, 248, 248, .72);
-       
+
         backdrop-filter: blur(20px) saturate(180%);
         -webkit-backdrop-filter: blur(20px) saturate(180%);
 
@@ -1457,7 +1419,7 @@ footer {
         display: flex;
 
         background: rgba(248, 248, 248, .72);
-       
+
         backdrop-filter: blur(20px) saturate(180%);
         -webkit-backdrop-filter: blur(20px) saturate(180%);
     }
@@ -1599,8 +1561,6 @@ footer {
 ========================================================= */
 
 @media (max-width: 767px) {
-
-    /* HERO */
 
     .hero {
         height: 100svh;
@@ -1751,9 +1711,6 @@ footer {
         position: relative;
     }
 
-
-    /* MOBILE INTRO */
-
     .experience-mobile-intro {
         width: 100%;
         margin-bottom: 42px;
@@ -1802,9 +1759,6 @@ footer {
         letter-spacing: -.025em;
     }
 
-
-    /* MOBILE LIST */
-
     .experience-mobile-list {
         display: block;
         width: 100%;
@@ -1843,17 +1797,12 @@ footer {
         border-top: 1px solid #dedede;
     }
 
-
-/* =====================================================
-   MOBILE EXPERIENCE ITEM ALIGNMENT
-===================================================== */
-
-.experience-mobile-item:nth-child(1),
-.experience-mobile-item:nth-child(2),
-.experience-mobile-item:nth-child(4) {
-    padding-left: 0;
-    padding-right: 0;
-}
+    .experience-mobile-item:nth-child(1),
+    .experience-mobile-item:nth-child(2),
+    .experience-mobile-item:nth-child(4) {
+        padding-left: 0;
+        padding-right: 0;
+    }
 
     .experience-mobile-number {
         margin-bottom: 16px;
@@ -1908,9 +1857,6 @@ footer {
         letter-spacing: -.03em;
     }
 
-
-    /* MOBILE 3D */
-
     #experience-object {
         display: block !important;
 
@@ -1937,9 +1883,6 @@ footer {
         position: relative;
         z-index: 2;
     }
-
-
-    /* MOBILE CAREER */
 
     .experience-mobile-career {
         display: flex;
@@ -1969,342 +1912,291 @@ footer {
     }
 
 
-/* =====================================================
-   PORTFOLIO MOBILE — PROJECT CARD
-===================================================== */
+    /* =====================================================
+       PORTFOLIO MOBILE — PROJECT CARD
+    ===================================================== */
 
-#portfolio {
-    width: 100%;
-    max-width: none;
-    box-sizing: border-box;
+    #portfolio {
+        width: 100%;
+        max-width: none;
+        box-sizing: border-box;
+
+        padding: 110px 16px 100px;
+    }
+
+    #portfolio .portfolio-wrap {
+        position: relative;
+
+        width: 100%;
+        max-width: none;
+
+        margin: 0;
+        padding: 0;
+
+        box-sizing: border-box;
+    }
+
+    #portfolio .portfolio-heading h2 {
+        font-size: 48px;
+        line-height: .94;
+        font-weight: 800;
+        letter-spacing: -.06em;
+
+        margin: 0 0 10px;
+    }
+
+    #portfolio .portfolio-heading p {
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    #portfolio-w-container {
+        display: none;
+    }
+
+    #portfolio .portfolio-grid {
+        position: relative;
+
+        display: flex;
+        flex-direction: column;
+
+        width: 100%;
+        max-width: none;
+
+        margin-top: 28px !important;
+        margin-left: 0;
+        margin-right: 0;
+
+        padding: 0 !important;
 
-    padding: 110px 16px 100px;
-}
+        box-sizing: border-box;
+    }
 
-#portfolio .portfolio-wrap {
-    position: relative;
+    #portfolio .project {
+        display: block;
 
-    width: 100%;
-    max-width: none;
+        width: 100%;
+        max-width: none;
+        min-height: auto;
 
-    margin: 0;
-    padding: 0;
+        padding: 32px 24px;
 
-    box-sizing: border-box;
-}
+        background: #f7f7f7;
+        border: 1px solid #eeeeee;
+        border-radius: 18px;
+
+        box-sizing: border-box;
+    }
 
-#portfolio .portfolio-heading h2 {
-    font-size: 48px;
-    line-height: .94;
-    font-weight: 800;
-    letter-spacing: -.06em;
+    #portfolio .project + .project {
+        margin-top: 16px;
+    }
 
-    margin: 0 0 10px;
-}
+    #portfolio .project-category {
+        position: static;
+        display: block;
+        margin-bottom: 16px;
+        font-size: 11px;
+        text-align: left;
+    }
 
-#portfolio .portfolio-heading p {
-    margin: 0;
-    line-height: 1.6;
-}
+    #portfolio .project h2 {
+        margin: 0;
+        font-size: 28px;
+        line-height: 1.05;
+        letter-spacing: -.055em;
+        text-align: left;
+    }
 
-#portfolio-w-container {
-    display: none;
-}
+    #portfolio .project p {
+        margin-top: 14px;
+        font-size: 14px;
+        line-height: 1.5;
+        text-align: left;
+    }
 
+    #portfolio .project .arrow {
+        position: static;
+        display: inline-block;
+        margin-top: 22px;
+        font-size: 13px;
+        text-align: left;
+    }
 
-/* =====================================================
-   PROJECT LIST
-===================================================== */
+    #portfolio .project:hover {
+        padding-left: 26px;
+        padding-right: 26px;
+    }
 
-#portfolio .portfolio-grid {
-    position: relative;
+    #portfolio .project:hover h2,
+    #portfolio .project:hover .project-category,
+    #portfolio .project:hover p {
+        transform: none;
+    }
 
-    display: flex;
-    flex-direction: column;
+    #portfolio .portfolio-grid:hover .project:not(:hover) {
+        opacity: 1;
+    }
 
-    width: 100%;
-    max-width: none;
+    #portfolio .project-archive {
+        position: relative;
 
-    margin-top: 28px !important;
-    margin-left: 0;
-    margin-right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-    padding: 0 !important;
+        width: 100%;
 
-    box-sizing: border-box;
-}
+        margin-top: 60px;
+        padding: 10px 0;
 
+        box-sizing: border-box;
+    }
 
-/* =====================================================
-   PROJECT CARD
-===================================================== */
+    #portfolio .archive-content h3 {
+        font-size: 24px;
+    }
 
-#portfolio .project {
-    display: block;
+    #portfolio .archive-content p {
+        margin-top: 12px;
 
-    width: 100%;
-    max-width: none;
-    min-height: auto;
+        font-size: 13px;
+    }
 
-    padding: 32px 24px;
+    #portfolio .archive-arrow {
+        left: calc(50% + 105px);
+        top: 45%;
 
-    background: #f7f7f7;
-    border: 1px solid #eeeeee;
-    border-radius: 18px;
+        font-size: 20px;
 
-    box-sizing: border-box;
-}
+        transform: translateY(-15px);
+    }
 
-#portfolio .project + .project {
-    margin-top: 16px;
-}
+    #portfolio .project-archive:hover .archive-arrow {
+        transform: translate(5px, -15px);
+        font-size: 24px;
+    }
 
+    #portfolio > .container {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        box-sizing: border-box;
+    }
 
-/* CATEGORY */
 
-#portfolio .project-category {
-    position: static;
-    display: block;
-    margin-bottom: 16px;
-    font-size: 11px;
-    text-align: left;
-}
+    /* =====================================================
+       ABOUT MOBILE
+    ===================================================== */
 
+    #about {
+        padding: 50px 26px 100px;
+    }
 
-/* TITLE */
+    #about .about-wrap {
+        position: relative;
 
-#portfolio .project h2 {
-    margin: 0;
-    font-size: 28px;
-    line-height: 1.05;
-    letter-spacing: -.055em;
-    text-align: left;
-}
+        display: block;
 
+        width: 100%;
+        max-width: none;
 
-/* DESCRIPTION */
+        margin: 0;
+        padding: 0;
+    }
 
-#portfolio .project p {
-    margin-top: 14px;
-    font-size: 14px;
-    line-height: 1.5;
-    text-align: left;
-}
+    #about .section-title {
+        position: absolute;
 
+        top: -50px;
+        left: 0;
 
-/* VIEW PROJECT */
+        transform: translateX(-25px);
 
-#portfolio .project .arrow {
-    position: static;
-    display: inline-block;
-    margin-top: 22px;
-    font-size: 13px;
-    text-align: left;
-}
+        margin: 0;
 
+        font-size: 13px;
+        line-height: 1;
+        letter-spacing: .14em;
 
-/* =====================================================
-   MOBILE HOVER RESET
-===================================================== */
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+    }
 
-#portfolio .project:hover {
-    padding-left: 26px;
-    padding-right: 26px;
-}
+    #about .about-main {
+        width: 100%;
+        max-width: 460px;
 
-#portfolio .project:hover h2,
-#portfolio .project:hover .project-category,
-#portfolio .project:hover p {
-    transform: none;
-}
+        margin: 0 auto;
 
-#portfolio .portfolio-grid:hover .project:not(:hover) {
-    opacity: 1;
-}
+        display: grid;
+        grid-template-columns: 1fr;
 
+        row-gap: 64px;
+    }
 
-/* =====================================================
-   PROJECT ARCHIVE
-===================================================== */
+    #about .about-copy {
+        width: 100%;
+        max-width: none;
+    }
 
-#portfolio .project-archive {
-    position: relative;
+    #about .about-copy h2 {
+        font-size: clamp(40px, 11vw, 58px);
+        line-height: 1;
+    }
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    #about .about-copy h3 {
+        margin-top: 12px;
 
-    width: 100%;
+        font-size: clamp(36px, 10vw, 52px);
+    }
 
-    margin-top: 60px;
-    padding: 10px 0;
+    #about .about-copy p {
+        margin-top: 42px;
 
-    box-sizing: border-box;
-}
+        font-size: 15px;
+        line-height: 1.75;
+    }
 
-#portfolio .archive-content h3 {
-    font-size: 24px;
-}
+    #about .about-timeline {
+        width: 100%;
 
-#portfolio .archive-content p {
-    margin-top: 12px;
+        margin-top: 0;
+    }
 
-    font-size: 13px;
-}
+    #about .about-timeline-label {
+        margin-bottom: 15px;
+    }
 
-#portfolio .archive-arrow {
-    left: calc(50% + 105px);
-    top: 45%;
+    #about .about-timeline-label span {
+        font-size: 10px;
+    }
 
-    font-size: 20px;
+    #about .about-statement {
+        margin-top: 22px;
 
-    transform: translateY(-15px);
-}
+        font-size: 13px;
+    }
 
-#portfolio .project-archive:hover .archive-arrow {
-    transform: translate(5px, -15px);
-    font-size: 24px;
-}
+    #about .about-bottom {
+        display: grid;
+        grid-template-columns: 1fr;
 
+        gap: 42px;
 
-/* =====================================================
-   PORTFOLIO MOBILE — CONTAINER WIDTH FIX
-===================================================== */
+        margin-top: 70px;
+        padding-top: 28px;
+    }
 
-#portfolio > .container {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    box-sizing: border-box;
-}
+    #about .about-links {
+        gap: 18px;
+    }
 
-
-/* =====================================================
-   ABOUT MOBILE
-===================================================== */
-
-#about {
-    padding: 50px 26px 100px;
-}
-
-#about .about-wrap {
-    position: relative;
-
-    display: block;
-
-    width: 100%;
-    max-width: none;
-
-    margin: 0;
-    padding: 0;
-}
-
-
-/* 세로 ABOUT 타이틀 */
-
-#about .section-title {
-    position: absolute;
-
-    top: -50px;
-    left: 0;
-
-    transform: translateX(-25px);
-
-    margin: 0;
-
-    font-size: 13px;
-    line-height: 1;
-    letter-spacing: .14em;
-
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-}
-
-
-/* 메인 콘텐츠 */
-
-#about .about-main {
-    width: 100%;
-    max-width: 460px;
-
-    margin: 0 auto;
-
-    display: grid;
-    grid-template-columns: 1fr;
-
-    row-gap: 64px;
-}
-
-
-/* 메인 카피 */
-
-#about .about-copy {
-    width: 100%;
-    max-width: none;
-}
-
-#about .about-copy h2 {
-    font-size: clamp(40px, 11vw, 58px);
-    line-height: 1;
-}
-
-#about .about-copy h3 {
-    margin-top: 12px;
-
-    font-size: clamp(36px, 10vw, 52px);
-}
-
-#about .about-copy p {
-    margin-top: 42px;
-
-    font-size: 15px;
-    line-height: 1.75;
-}
-
-
-/* Timeline */
-
-#about .about-timeline {
-    width: 100%;
-
-    margin-top: 0;
-}
-
-#about .about-timeline-label {
-    margin-bottom: 15px;
-}
-
-#about .about-timeline-label span {
-    font-size: 10px;
-}
-
-#about .about-statement {
-    margin-top: 22px;
-
-    font-size: 13px;
-}
-
-
-/* 하단 정보 */
-
-#about .about-bottom {
-    display: grid;
-    grid-template-columns: 1fr;
-
-    gap: 42px;
-
-    margin-top: 70px;
-    padding-top: 28px;
-}
-
-#about .about-links {
-    gap: 18px;
-}
-
-#about .about-links a {
-    font-size: 15px;
+    #about .about-links a {
+        font-size: 15px;
+    }
 }
 
 
@@ -2334,9 +2226,6 @@ footer {
     display: none !important;
 }
 
-
-/* MOBILE */
-
 @media (max-width: 768px) {
 
     .experience-desktop {
@@ -2349,6 +2238,7 @@ footer {
 
 }
 
+
 /* =========================================================
    PORTFOLIO HOVER THUMBNAIL
 ========================================================= */
@@ -2357,138 +2247,21 @@ footer {
     position: relative;
 }
 
-/* =========================================================
-   PORTFOLIO HOVER THUMBNAIL
-   PC ONLY
-========================================================= */
-
 .portfolio-preview {
-    position: fixed;
-
-    width: 320px;
-    height: 210px;
-
-    top: 50%;
-    right: 80px;
-
-    overflow: hidden;
-
-    background: #eee;
-
-    opacity: 0;
-    visibility: hidden;
-
-    pointer-events: none;
-
-    transform: translateY(-50%) translateY(12px);
-
-    z-index: 9999;
-
-    transition:
-        opacity .3s ease,
-        transform .4s cubic-bezier(.2,.7,.2,1);
-}
-
-.portfolio-preview.is-visible {
-    opacity: 1;
-    visibility: visible;
-
-    transform: translateY(-50%) translateY(0);
-}
-
-.portfolio-preview img {
-    display: block;
-
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-}
-
-@media (max-width: 900px) {
-
-    .portfolio-preview {
-        display: none;
-    }
-
-}
-
-   body > .portfolio-preview {
     position: fixed !important;
-
-    top: 50% !important;
-    right: 80px !important;
-    bottom: auto !important;
-    left: auto !important;
 
     width: 320px !important;
     height: 210px !important;
+
+    right: 80px !important;
+    top: 50% !important;
+
+    bottom: auto !important;
+    left: auto !important;
 
     margin: 0 !important;
 
-    opacity: 0;
-    visibility: hidden;
-
-    pointer-events: none;
-
-    transform: translateY(-50%) translateY(12px);
-
-    z-index: 99999 !important;
-
-    overflow: hidden;
-}
-
-body > .portfolio-preview.is-visible {
-    opacity: 1;
-    visibility: visible;
-
-    transform: translateY(-50%) translateY(0);
-}
-
-body > .portfolio-preview img {
-    display: block;
-
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-}
-
-body > .portfolio-preview {
-    position: fixed !important;
-    width: 320px !important;
-    height: 210px !important;
-    top: 50% !important;
-    right: 80px !important;
-    bottom: auto !important;
-    left: auto !important;
-    z-index: 99999 !important;
     overflow: hidden !important;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transform: translateY(-50%);
-}
-
-body > .portfolio-preview.is-visible {
-    opacity: 1;
-    visibility: visible;
-}
-
-   /* =========================================================
-   PORTFOLIO HOVER THUMBNAIL
-========================================================= */
-
-.portfolio-preview {
-    position: fixed;
-
-    width: 320px;
-    height: 210px;
-
-    right: 80px;
-    top: 50%;
-
-    overflow: hidden;
 
     background: #eee;
 
@@ -2499,7 +2272,7 @@ body > .portfolio-preview.is-visible {
 
     transform: translateY(-50%) translateY(12px);
 
-    z-index: 9999;
+    z-index: 99999 !important;
 
     transition:
         opacity .3s ease,
@@ -2525,7 +2298,7 @@ body > .portfolio-preview.is-visible {
 @media (max-width: 900px) {
 
     .portfolio-preview {
-        display: none;
+        display: none !important;
     }
 
 }
