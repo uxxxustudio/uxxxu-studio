@@ -344,12 +344,22 @@ async function initProfileFeature() {
    Portfolio Hover Thumbnail
 ========================================================= */
 
+/* =========================================================
+   Portfolio Hover Thumbnail
+========================================================= */
+
 function initPortfolioHoverThumbnail() {
 
     const portfolio =
         document.getElementById("portfolio");
 
     if (!portfolio) return;
+
+
+    const grid =
+        portfolio.querySelector(".portfolio-grid");
+
+    if (!grid) return;
 
 
     const projects =
@@ -361,7 +371,7 @@ function initPortfolioHoverThumbnail() {
     /* 기존 preview가 있으면 중복 생성하지 않음 */
 
     let preview =
-        document.querySelector(".portfolio-preview");
+        grid.querySelector(".portfolio-preview");
 
     if (!preview) {
 
@@ -388,7 +398,7 @@ function initPortfolioHoverThumbnail() {
 
         preview.appendChild(image);
 
-        document.body.appendChild(preview);
+        grid.appendChild(preview);
 
     }
 
@@ -415,44 +425,34 @@ function initPortfolioHoverThumbnail() {
 
 
                 /*
-                   썸네일을 현재 프로젝트 행 기준으로 배치.
-                   viewport가 아니라 문서 좌표를 사용하므로
-                   스크롤해도 화면을 따라다니지 않음.
+                   portfolio-grid를 기준으로
+                   현재 프로젝트의 오른쪽에 배치
                 */
 
-                const rect =
+                const projectRect =
                     project.getBoundingClientRect();
+
+                const gridRect =
+                    grid.getBoundingClientRect();
 
 
                 const left =
-                    rect.right - 190;
+                    projectRect.right -
+                    gridRect.left -
+                    190;
 
 
                 const top =
-                    rect.top +
-                    window.scrollY +
+                    projectRect.top -
+                    gridRect.top +
                     20;
 
 
-                preview.style.setProperty(
-                    "position",
-                    "absolute",
-                    "important"
-                );
+                preview.style.left =
+                    `${left}px`;
 
-
-                preview.style.setProperty(
-                    "left",
-                    `${left + window.scrollX}px`,
-                    "important"
-                );
-
-
-                preview.style.setProperty(
-                    "top",
-                    `${top}px`,
-                    "important"
-                );
+                preview.style.top =
+                    `${top}px`;
 
 
                 preview.classList.add(
