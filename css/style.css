@@ -2311,50 +2311,37 @@ footer {
    JS는 그대로 유지
 ========================================================= */
 
+/* =========================================================
+   PROJECT별 HOVER THUMBNAIL 위치
+   JS는 그대로 유지
+========================================================= */
+
 /* 01. AI Space Temperature Control */
-body:has(.portfolio-grid .project:nth-child(1):hover) > .portfolio-preview.is-visible {
-    transform:
-        translateX(-10px)
-        translateY(-50%)
-        translateY(45px);
+.portfolio-grid:has(.project:nth-child(1):hover) .portfolio-preview.is-visible {
+    margin-left: 390px;
 }
 
 /* 02. AI Smart Glasses */
-body:has(.portfolio-grid .project:nth-child(2):hover) > .portfolio-preview.is-visible {
-    transform:
-        translateX(-300px)
-        translateY(-50%)
-        translateY(45px);
+.portfolio-grid:has(.project:nth-child(2):hover) .portfolio-preview.is-visible {
+    margin-left: 120px;
 }
 
 /* 03. enough media site */
-body:has(.portfolio-grid .project:nth-child(3):hover) > .portfolio-preview.is-visible {
-    transform:
-        translateX(-300px)
-        translateY(-50%)
-        translateY(45px);
+.portfolio-grid:has(.project:nth-child(3):hover) .portfolio-preview.is-visible {
+    margin-left: 120px;
 }
 
 /* 04. Smart Home Switch */
-body:has(.portfolio-grid .project:nth-child(4):hover) > .portfolio-preview.is-visible {
-    transform:
-        translateX(-300px)
-        translateY(-50%)
-        translateY(45px);
+.portfolio-grid:has(.project:nth-child(4):hover) .portfolio-preview.is-visible {
+    margin-left: 120px;
 }
 
 /* 05. SmartCUBE */
-body:has(.portfolio-grid .project:nth-child(5):hover) > .portfolio-preview.is-visible {
-    transform:
-        translateX(-300px)
-        translateY(-50%)
-        translateY(45px);
+.portfolio-grid:has(.project:nth-child(5):hover) .portfolio-preview.is-visible {
+    margin-left: 120px;
 }
 
 /* 06. Jeju Seolmundaehalmang */
-body:has(.portfolio-grid .project:nth-child(6):hover) > .portfolio-preview.is-visible {
-    transform:
-        translateX(-300px)
-        translateY(-50%)
-        translateY(45px);
+.portfolio-grid:has(.project:nth-child(6):hover) .portfolio-preview.is-visible {
+    margin-left: 120px;
 }
