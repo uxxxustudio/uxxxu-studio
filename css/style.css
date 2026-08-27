@@ -544,16 +544,12 @@ nav a:hover {
 
 #experience-object {
     position: absolute;
-
     top: 50%;
     left: 62%;
-
     width: 280px;
     height: 280px;
-
     z-index: 5;
     pointer-events: none;
-
     opacity: 0;
 
     transform:
@@ -564,6 +560,7 @@ nav a:hover {
         opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
         transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 #experience-object.is-visible {
     opacity: 1;
 
