@@ -2268,7 +2268,7 @@ footer {
     translateY(-50%)
     translateY(27px);
 
-    z-index: 9999;
+    z-index: 1;
 
     transition:
         opacity .3s ease,
@@ -2294,6 +2294,10 @@ footer {
     object-fit: cover;
 }
 
+.portfolio-grid .project {
+    position: relative;
+    z-index: 2;
+}
 
 /* 모바일에서는 썸네일 사용하지 않음 */
 
