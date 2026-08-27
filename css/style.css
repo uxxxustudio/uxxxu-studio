@@ -544,12 +544,16 @@ nav a:hover {
 
 #experience-object {
     position: absolute;
+
     top: 50%;
     left: 62%;
+
     width: 280px;
     height: 280px;
+
     z-index: 5;
     pointer-events: none;
+
     opacity: 0;
 
     transform:
