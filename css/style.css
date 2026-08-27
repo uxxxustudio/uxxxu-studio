@@ -2323,12 +2323,12 @@ footer {
 
 /* 02. AI Smart Glasses */
 .portfolio-grid:has(.project:nth-child(2):hover) .portfolio-preview.is-visible {
-    margin-left: 120px;
+    margin-left: 50px;
 }
 
 /* 03. enough media site */
 .portfolio-grid:has(.project:nth-child(3):hover) .portfolio-preview.is-visible {
-    margin-left: 120px;
+    margin-left: 50px;
 }
 
 /* 04. Smart Home Switch */
