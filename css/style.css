@@ -2328,17 +2328,17 @@ footer {
 
 /* 03. enough media site */
 .portfolio-grid:has(.project:nth-child(3):hover) .portfolio-preview.is-visible {
-    margin-left: 50px;
+    margin-left: -50px;
 }
 
 /* 04. Smart Home Switch */
 .portfolio-grid:has(.project:nth-child(4):hover) .portfolio-preview.is-visible {
-    margin-left: 120px;
+    margin-left: -60px;
 }
 
 /* 05. SmartCUBE */
 .portfolio-grid:has(.project:nth-child(5):hover) .portfolio-preview.is-visible {
-    margin-left: 120px;
+    margin-left: -90px;
 }
 
 /* 06. Jeju Seolmundaehalmang */
