@@ -2333,12 +2333,12 @@ footer {
 
 /* 04. Smart Home Switch */
 .portfolio-grid:has(.project:nth-child(4):hover) .portfolio-preview.is-visible {
-    margin-left: -60px;
+    margin-left: -20px;
 }
 
 /* 05. SmartCUBE */
 .portfolio-grid:has(.project:nth-child(5):hover) .portfolio-preview.is-visible {
-    margin-left: -90px;
+    margin-left: -120px;
 }
 
 /* 06. Jeju Seolmundaehalmang */
