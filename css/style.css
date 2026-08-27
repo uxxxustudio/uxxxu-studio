@@ -2328,7 +2328,7 @@ footer {
 
 /* 03. enough media site */
 .portfolio-grid:has(.project:nth-child(3):hover) .portfolio-preview.is-visible {
-    margin-left: -50px;
+    margin-left: -30px;
 }
 
 /* 04. Smart Home Switch */
