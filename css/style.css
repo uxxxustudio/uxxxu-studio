@@ -2318,7 +2318,7 @@ footer {
 
 /* 01. AI Space Temperature Control */
 .portfolio-grid:has(.project:nth-child(1):hover) .portfolio-preview.is-visible {
-    margin-left: 390px;
+    margin-left: 250px;
 }
 
 /* 02. AI Smart Glasses */
