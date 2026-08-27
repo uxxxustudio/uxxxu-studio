@@ -2314,7 +2314,7 @@ footer {
 /* 01. AI Space Temperature Control */
 body:has(.portfolio-grid .project:nth-child(1):hover) > .portfolio-preview.is-visible {
     transform:
-        translateX(-30px)
+        translateX(-10px)
         translateY(-50%)
         translateY(45px);
 }
