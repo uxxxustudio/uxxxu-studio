@@ -2323,7 +2323,7 @@ footer {
 
 /* 02. AI Smart Glasses */
 .portfolio-grid:has(.project:nth-child(2):hover) .portfolio-preview.is-visible {
-    margin-left: 40px;
+    margin-left: 10px;
 }
 
 /* 03. enough media site */
