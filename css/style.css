@@ -2239,9 +2239,6 @@ footer {
 }
 
 
-/* =========================================================
-   PORTFOLIO HOVER THUMBNAIL
-========================================================= */
 
 /* =========================================================
    PORTFOLIO HOVER THUMBNAIL
@@ -2264,9 +2261,9 @@ footer {
     pointer-events: none;
 
     transform:
-    translateX(-420px)
-    translateY(-50%)
-    translateY(27px);
+        translateX(-420px)
+        translateY(-50%)
+        translateY(27px);
 
     z-index: 1;
 
