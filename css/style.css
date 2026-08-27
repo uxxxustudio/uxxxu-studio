@@ -2251,8 +2251,8 @@ footer {
 .portfolio-preview {
     position: absolute;
 
-    width: 190px;
-    height: 122px;
+    width: 170px;
+    height: 107px;
 
     overflow: hidden;
 
@@ -2263,7 +2263,10 @@ footer {
 
     pointer-events: none;
 
-    transform: translateY(12px);
+    transform:
+    translateX(-420px)
+    translateY(-50%)
+    translateY(27px);
 
     z-index: 9999;
 
@@ -2276,7 +2279,10 @@ footer {
     opacity: 1;
     visibility: visible;
 
-    transform: translateY(0);
+    transform:
+        translateX(-420px)
+        translateY(-50%)
+        translateY(15px);
 }
 
 .portfolio-preview img {
