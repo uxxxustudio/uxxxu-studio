@@ -2329,10 +2329,6 @@ footer {
 
 }
 
-/* =========================================================
-   PROJECT별 HOVER THUMBNAIL 위치
-   JS는 그대로 유지
-========================================================= */
 
 /* =========================================================
    PROJECT별 HOVER THUMBNAIL 위치
@@ -2388,24 +2384,28 @@ footer {
     z-index: 2 !important;
 }
 
-/* 💡 모바일 3D 오브젝트: 02와 03 사이 배경에 정중앙 크게 배치 */
+/*  모바일 3D 오브젝트: 02와 03 사이 강제 노출 및 중앙 배치 */
 #experience-object-mobile {
     position: absolute !important;
     left: 50% !important;
-    top: 58% !important; /* 02번과 03번 사이 배경 위치 (필요시 % 조정) */
+    top: 65% !important; /* 위치가 맞지 않으면 이 값을 %로 미세 조정하세요 */
     transform: translate(-50%, -50%) !important;
-    width: 260px !important;  /* 기존 120px에서 크게 확대 */
-    height: 260px !important;
+    width: 280px !important;
+    height: 280px !important;
     margin: 0 !important;
-    z-index: 1 !important;    /* 텍스트(z-index: 2) 뒤로 숨김 */
-    pointer-events: none !important; /* 터치 및 스크롤 방해 방지 */
+    z-index: 1 !important;
+    pointer-events: none !important;
     opacity: 1 !important;
+    visibility: visible !important;
 }
 
+/* Three.js 캔버스 영역 강제 노출 */
 #experience-object-mobile canvas {
     width: 100% !important;
     height: 100% !important;
     display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 /* =========================================================
    3D OBJECT GRID EXCLUSION & ABSOLUTE POSITIONING
