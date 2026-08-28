@@ -2373,9 +2373,25 @@ footer {
 ========================================================= */
 #experience-object,
 #experience-object-mobile {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    left: auto !important;
+    bottom: auto !important;
+    width: 100% !important;
+    height: 120px !important;
+    margin: 20px 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
     z-index: 20 !important;
+    opacity: 1 !important;
+    transform: none !important;
 }
-
+#experience-object-mobile canvas {
+    display: block !important;
+    margin: 0 auto !important;
+}
 /* =========================================================
    3D OBJECT GRID EXCLUSION & ABSOLUTE POSITIONING
 ========================================================= */
