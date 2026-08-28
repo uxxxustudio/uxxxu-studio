@@ -2392,7 +2392,11 @@ footer {
 /* =========================================================
    EXPERIENCE MOBILE STYLES (Clean Layout)
 ========================================================= */
+/* =========================================================
+   EXPERIENCE MOBILE STYLES (PROJECT 섹션 스타일 규격 통일)
+========================================================= */
 @media (max-width: 768px) {
+    /* 데스크톱 숨김 */
     .experience-desktop {
         display: none !important;
     }
@@ -2404,74 +2408,83 @@ footer {
         text-align: left;
     }
 
-    /* 상단 타이틀 영역 */
+    /* 1. 섹션 헤더 (PROJECT 헤더 규격 동일 적용) */
     .experience-mobile-intro {
-        margin-bottom: 50px;
+        margin-bottom: 40px;
     }
 
     .experience-mobile-label {
-        font-size: 28px;
-        font-weight: 800;
-        margin-bottom: 8px;
-        line-height: 1.1;
-        letter-spacing: -0.02em;
+        font-size: 38px;        /* PROJECT 대타이틀과 동일 크기 */
+        font-weight: 900;        /* 메인 볼륨감 부여 */
+        letter-spacing: -0.03em;
+        line-height: 1.0;
+        margin-bottom: 12px;
+        text-transform: uppercase;
     }
 
     .experience-mobile-years {
-        font-size: 26px;
-        font-weight: 800;
-        line-height: 1.25;
-        letter-spacing: -0.02em;
+        font-size: 15px;        /* PROJECT 서브 설명글 크기 */
+        font-weight: 500;
+        color: #555555;          /* 서브 텍스트 톤앤매너 */
+        line-height: 1.4;
+        letter-spacing: -0.01em;
     }
 
-    /* 리스트 및 간격 (구분선 없음, 왼쪽 정렬) */
+    /* 2. 아이템 리스트 (PROJECT 카드 헤더/본문 규격 적용) */
     .experience-mobile-list {
         display: flex;
         flex-direction: column;
-        gap: 40px;
-        margin-bottom: 60px;
+        gap: 36px;
+        margin-bottom: 50px;
     }
 
     .experience-mobile-item {
         text-align: left;
     }
 
+    /* 카드 제목 (AI Space Temperature Control 과 동일 볼륨) */
     .experience-mobile-item h3 {
-        font-size: 19px;
+        font-size: 22px;
         font-weight: 800;
-        margin-bottom: 6px;
+        line-height: 1.25;
+        letter-spacing: -0.02em;
+        margin-bottom: 8px;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
     }
 
+    .experience-mobile-num {
+        font-weight: 800;
+    }
+
+    /* 본문 키워드/설명 (PROJECT 설명글 크기 적용) */
     .experience-mobile-keywords {
         display: flex;
         flex-direction: column;
-        gap: 4px;
-        font-size: 15px;
-        color: #111;
+        gap: 2px;
+        font-size: 14px;
         font-weight: 500;
-        line-height: 1.4;
+        color: #555555;
+        line-height: 1.45;
     }
 
-    /* 하단 버튼 */
+    /* 3. 하단 CTA 버튼 (View Project -> 스타일 세팅) */
     .experience-mobile-career {
         display: flex;
-        justify-content: center;
-        margin-top: 40px;
+        justify-content: flex-start;
     }
 
     .experience-mobile-career a {
         display: inline-flex;
         align-items: center;
-        justify-content: center;
-        padding: 12px 30px;
-        border: 1.5px solid #000;
-        border-radius: 30px;
-        text-decoration: none;
+        gap: 6px;
+        font-size: 14px;
+        font-weight: 700;
         color: #000;
-        font-size: 15px;
-        font-weight: 600;
+        text-decoration: none;
+        padding: 10px 22px;
+        border: 1px solid #111;
+        border-radius: 30px;
     }
 }
