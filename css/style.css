@@ -383,6 +383,10 @@ nav a:hover {
     margin: 0 auto;
 }
 
+
+/* =========================================================
+   PC / MOBILE DISPLAY
+========================================================= */
 .experience-desktop {
     display: block;
 }
@@ -409,6 +413,10 @@ nav a:hover {
 .experience-mobile-list > #experience-object {
     display: block;
 }
+
+/* =========================================================
+   DESKTOP EXPERIENCE
+========================================================= */
 
 .experience-header {
     display: flex;
@@ -542,6 +550,9 @@ nav a:hover {
     letter-spacing: -.03em;
 }
 
+/* =========================================================
+   DESKTOP 3D OBJECT
+========================================================= */
 #experience-object {
     position: absolute;
 
@@ -603,6 +614,11 @@ nav a:hover {
     font-size: 24px;
     line-height: 1;
 }
+
+
+/* =========================================================
+   MOBILE EXPERIENCE
+========================================================= */
 
 .experience-mobile-intro {
     width: 100%;
@@ -677,6 +693,10 @@ nav a:hover {
     border-bottom: 1px solid #111;
 }
 
+
+/* =========================================================
+   MOBILE EXPERIENCE — SPACING
+========================================================= */
 .experience-mobile-intro {
     margin-bottom: 36px;
 }
@@ -725,6 +745,9 @@ nav a:hover {
     margin-bottom: 22px;
 }
 
+/* =========================================================
+   MOBILE 3D OBJECT
+========================================================= */
 #experience-object-mobile {
     position: relative;
 
