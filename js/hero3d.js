@@ -604,3 +604,7 @@ export function initPortfolio3D(containerId) {
 export function initProfile3D(containerId) {
     // initProfile3D 호출 시 스크립트가 멈추는 에러를 막아줍니다.
 }
+// 모바일 화면 로드시 Three.js 리사이즈 이벤트 강제 호출
+window.addEventListener('load', () => {
+    window.dispatchEvent(new Event('resize'));
+});
