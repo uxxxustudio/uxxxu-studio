@@ -2371,7 +2371,13 @@ footer {
 /* =========================================================
    3D OBJECT Z-INDEX OVERRIDE (3D 오브젝트 가려짐 해결)
 ========================================================= */
-#experience-object,
+
+/* 데스크톱용: z-index만 유지 */
+#experience-object {
+    z-index: 20 !important;
+}
+
+/* 모바일용: 02번과 03번 사이 중앙 배치 */
 #experience-object-mobile {
     position: relative !important;
     top: auto !important;
@@ -2388,6 +2394,7 @@ footer {
     opacity: 1 !important;
     transform: none !important;
 }
+
 #experience-object-mobile canvas {
     display: block !important;
     margin: 0 auto !important;
