@@ -1158,34 +1158,33 @@ footer {
     .experience-mobile { display: block !important; padding: 0; width: 100%; text-align: left; }
     .experience-mobile > * { display: block; }
 
-    /* 헤더 타이틀 정렬 */
-    .experience-mobile-intro { width: 100%; margin-bottom: 42px; margin-left: 0; text-align: left; }
-    .experience-mobile-label { font-size: 34px; font-weight: 800; line-height: 1.0; letter-spacing: -0.02em; color: #111; margin-bottom: 8px; }
-    .experience-mobile-years { font-size: 24px; font-weight: 800; color: #111; line-height: 1.15; }
+    .experience-mobile-intro { width: 100%; margin-bottom: 42px; margin-left: 0; }
+    .experience-mobile-years { font-size: 30px; font-weight: 700; color: #111; line-height: 1.1; }
+    .experience-mobile-years strong { display: block; font-size: 30px; }
+    .experience-mobile-years span { display: block; font-size: 20px; margin-top: 5px; }
 
-    /* 리스트 중앙 정렬 */
+    /* 리스트 및 카드를 중앙 정렬로 변경 */
     .experience-mobile-list {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        gap: 38px;
+        align-items: center; /* 텍스트 중앙 정렬 */
+        gap: 36px; /* 카드 간 여백 */
         position: relative !important; /* 3D Absolute 기준점 유지 */
         width: 100%;
     }
 
-    /* 카드 항목: 구분선 제거 및 텍스트 중앙 정렬 */
     .experience-mobile-item {
         position: relative !important;
-        z-index: 2 !important; /* 텍스트가 3D 오브젝트 위에 올라오도록 유지 */
+        z-index: 2 !important;
         width: 100%;
         padding: 0;
         border: none !important; /* 구분선 삭제 */
-        text-align: center;
+        text-align: center; /* 텍스트 중앙 정렬 */
     }
 
     .experience-mobile-item:first-child { padding-top: 0; border-top: none; }
-    
-    /* 01, 02, 03 제목 크기 축소 및 중앙배치 */
+
+    /* 01, 02, 03 제목 폰트 크기 축소 및 중앙배치 */
     .experience-mobile-item h3 {
         font-size: 17px;
         font-weight: 800;
@@ -1197,10 +1196,10 @@ footer {
         align-items: center;
         gap: 6px;
     }
-    
+
     .experience-mobile-num { font-size: 17px; font-weight: 800; }
 
-    /* 키워드 중앙 정렬 및 폰트 크기 조정 */
+    /* 키워드 폰트 크기 축소 및 중앙배치 */
     .experience-mobile-keywords {
         display: flex;
         flex-direction: column;
@@ -1210,16 +1209,16 @@ footer {
     }
     .experience-mobile-keywords span { font-size: 13px; color: #555; line-height: 1.45; }
 
-    /* 💡 MOBILE 3D BACKGROUND OBJECT (기존 설정 100% 원본 유지) */
+    /* 💡 MOBILE 3D BACKGROUND OBJECT (원본 코드 100% 동일 유지) */
     #experience-object-mobile {
         position: absolute !important;
         left: 50% !important;
-        top: 65% !important;
+        top: 65% !important; /* 화면 높이에 맞춰 미세조정 하세요 */
         transform: translate(-50%, -50%) !important;
         width: 300px !important;
         height: 300px !important;
         margin: 0 !important;
-        z-index: 1 !important;
+        z-index: 1 !important; /* 카드(z-index:2) 뒤로 배치 */
         pointer-events: none !important;
         opacity: 1 !important;
         visibility: visible !important;
@@ -1233,7 +1232,7 @@ footer {
         visibility: visible !important;
     }
 
-    /* View Full Career 버튼: 중앙 정렬 및 둥근 알약 스타일 */
+    /* 하단 버튼 알약형 스타일 및 중앙 정렬 */
     .experience-mobile-career { display: flex; justify-content: center; margin-top: 40px; padding-top: 0; }
     .experience-mobile-career a {
         display: inline-flex;
@@ -1247,7 +1246,6 @@ footer {
         color: #111;
         text-decoration: none;
     }
-
     /* PORTFOLIO MOBILE */
     #portfolio { width: 100%; max-width: none; box-sizing: border-box; padding: 110px 16px 100px; }
     #portfolio .portfolio-wrap { position: relative; width: 100%; margin: 0; padding: 0; }
