@@ -244,7 +244,7 @@ export function initHero3D() {
 
 
 /* =========================================================
-   EXPERIENCE SECTION OBJECT (initSectionObject)
+   EXPERIENCE SECTION OBJECT (initSectionObject) - Responsive Fixed
 ========================================================= */
 
 export function initSectionObject(containerId, assetInput = "U") {
@@ -271,6 +271,25 @@ export function initSectionObject(containerId, assetInput = "U") {
     transparent: false,
     opacity: 1.0,
   });
+
+  // [중요] 모바일 대응 및 반응형 Resize 처리 함수 정의
+  function handleResize() {
+    if (!container) return;
+    const w = container.clientWidth || 300;
+    const h = container.clientHeight || 300;
+    
+    // 모바일(768px 이하)일 때 3D 오브젝트 크기 비율 보정
+    const isMobile = window.innerWidth <= 768;
+    camera.aspect = w / h;
+    camera.position.z = isMobile ? 22 : 18; // 모바일에서 잘리지 않도록 멀리 배치
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(w, h);
+  }
+
+  // 리사이즈 및 로드 이벤트 등록
+  window.addEventListener("resize", handleResize);
+  window.addEventListener("orientationchange", handleResize);
 
   if (assetInput.length <= 2 && !assetInput.includes(".")) {
     const loader = new FontLoader();
@@ -358,6 +377,8 @@ export function initSectionObject(containerId, assetInput = "U") {
 
           renderer.render(scene, camera);
         }
+        
+        handleResize(); // 최초 생성 후 크기 보정 호출
         animate();
       }
     );
@@ -453,12 +474,13 @@ export function initSectionObject(containerId, assetInput = "U") {
 
           renderer.render(scene, camera);
         }
+
+        handleResize(); // 최초 생성 후 크기 보정 호출
         animate();
       }
     );
   }
 }
-
 
 /* =========================================================
    PORTFOLIO SECTION 3D OBJECT (initPortfolio3D) - "W" (모션 및 잘림 수정 버전)
