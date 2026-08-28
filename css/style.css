@@ -1160,14 +1160,14 @@ footer {
 
     .experience-mobile-intro { width: 100%; margin-bottom: 42px; margin-left: 0; }
     .experience-mobile-label {
-     margin: 0 0 36px;
+     margin: 0 0 26px;
      font-size: 44px;
      line-height: 1;
      font-weight: 800;
      letter-spacing: -.055em;
      color: #111;
      }
-    .experience-mobile-years { font-size: 30px; font-weight: 700; color: #111; line-height: 1.1; }
+    .experience-mobile-years { font-size: 28px; font-weight: 600; color: #111; line-height: 1.1; }
     .experience-mobile-years strong { display: block; font-size: 30px; }
     .experience-mobile-years span { display: block; font-size: 20px; margin-top: 5px; }
 
