@@ -2368,3 +2368,10 @@ footer {
 .portfolio-grid:has(.project:nth-child(6):hover) .portfolio-preview.is-visible {
     margin-left: 120px;
 }
+/* =========================================================
+   3D OBJECT Z-INDEX OVERRIDE (3D 오브젝트 가려짐 해결)
+========================================================= */
+#experience-object,
+#experience-object-mobile {
+    z-index: 20 !important;
+}
