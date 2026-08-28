@@ -55,9 +55,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     );
 
 
-/* =====================================================
-        Mobile Menu
-===================================================== */
+    /* =====================================================
+       Mobile Menu
+    ===================================================== */
 
     const menuToggle = document.querySelector(".menu-toggle");
     const nav = document.querySelector("#header > header nav");
@@ -66,9 +66,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     if (menuToggle && nav) {
 
         menuToggle.addEventListener("click", () => {
-
             nav.classList.toggle("open");
-
             const isOpen = nav.classList.contains("open");
 
             menuToggle.setAttribute(
@@ -76,51 +74,32 @@ window.addEventListener("DOMContentLoaded", async () => {
                 isOpen ? "true" : "false"
             );
 
-
             /* 메뉴가 열리면 헤더도 반투명 상태 */
-
             if (header) {
-
                 if (isOpen) {
-
                     header.classList.add("active");
-
                 } else if (window.scrollY <= 30) {
-
                     header.classList.remove("active");
-
                 }
-
             }
-
         });
 
 
         /* 모바일 메뉴 클릭 시 자동으로 닫기 */
-
         nav.querySelectorAll("a").forEach(link => {
-
             link.addEventListener("click", () => {
-
                 nav.classList.remove("open");
-
                 menuToggle.setAttribute(
                     "aria-expanded",
                     "false"
                 );
 
-
-                /* 최상단에서는 메뉴를 닫으면
-                   헤더도 원래 상태로 복귀 */
-
+                /* 최상단에서는 메뉴를 닫으면 헤더도 원래 상태로 복귀 */
                 if (header && window.scrollY <= 30) {
                     header.classList.remove("active");
                 }
-
             });
-
         });
-
     }
 
 
@@ -131,10 +110,14 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 
     /* Hero가 DOM에 들어온 뒤 3D 실행 */
-
-    const { initHero3D } = await import("./hero3d.js");
-
-    initHero3D();
+    try {
+        const { initHero3D } = await import("./hero3d.js");
+        if (typeof initHero3D === "function") {
+            initHero3D();
+        }
+    } catch (e) {
+        console.error("Hero 3D 로딩 실패:", e);
+    }
 
 
     await loadComponent(
@@ -153,14 +136,6 @@ window.addEventListener("DOMContentLoaded", async () => {
         "about",
         new URL("about.html", componentPath)
     );
-
-
-    /*
-    await loadComponent(
-        "contact",
-        new URL("contact.html", componentPath)
-    );
-    */
 
 
     await loadComponent(
@@ -182,24 +157,16 @@ window.addEventListener("scroll", () => {
 
     if (!header) return;
 
-
     if (window.scrollY > 30) {
         header.classList.add("active");
     } else {
         header.classList.remove("active");
     }
 
-
-    /*
-       스크롤하면 모바일 메뉴 닫기
-    */
-
+    /* 스크롤하면 모바일 메뉴 닫기 */
     if (nav) {
         nav.classList.remove("open");
-
-        const menuToggle =
-            document.querySelector(".menu-toggle");
-
+        const menuToggle = document.querySelector(".menu-toggle");
         if (menuToggle) {
             menuToggle.setAttribute(
                 "aria-expanded",
@@ -217,106 +184,54 @@ window.addEventListener("scroll", () => {
 
 async function initExperienceFeature() {
 
-
-
     try {
-
-
-
         // 1. 데스크톱 & 모바일 3D 오브젝트 생성 함수 호출
-
-
-
-        const { initSectionObject } =
-
-            await import("./hero3d.js");
-
-
+        const { initSectionObject } = await import("./hero3d.js");
 
         // 데스크톱 3D 호출
-
-        if (document.getElementById("experience-object")) {
-
-            initSectionObject(
-
-                "experience-object",
-
-                "U"
-
-            );
-
+        const desktopObject = document.getElementById("experience-object");
+        if (desktopObject) {
+            initSectionObject("experience-object", "U");
         }
 
-
-
-        // 💡 [추가] 모바일 3D 호출
-
-        if (document.getElementById("experience-object-mobile")) {
-
-            initSectionObject(
-
-                "experience-object-mobile",
-
-                "U"
-
-            );
-
+        // 모바일 3D 호출
+        const mobileObject = document.getElementById("experience-object-mobile");
+        if (mobileObject) {
+            initSectionObject("experience-object-mobile", "U");
         }
 
+        // 2. 관찰 대상 섹션 탐색 (experience 또는 service 컨테이너)
+        const experienceSection = document.getElementById("experience") || document.getElementById("service");
 
-        // 2. 스크롤 위치 감지하여 .is-visible 클래스 추가
-
-        const desktopObject =
-            document.getElementById("experience-object");
-
-        const mobileObject =
-            document.getElementById("experience-object-mobile");
-
-        const experienceSection =
-            document.getElementById("experience");
-
-
+        // 섹션 대상이 아예 없으면 안전하게 종료
         if (!experienceSection) return;
 
-
-        const observer =
-            new IntersectionObserver(
-                (entries, observer) => {
-
-                    entries.forEach(entry => {
-
-                        if (entry.isIntersecting) {
-
-                            if (desktopObject) {
-                                desktopObject.classList.add("is-visible");
-                            }
-
-                            if (mobileObject) {
-                                mobileObject.classList.add("is-visible");
-                            }
-
-                            observer.unobserve(entry.target);
-
+        const observer = new IntersectionObserver(
+            (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        if (desktopObject) {
+                            desktopObject.classList.add("is-visible");
                         }
-
-                    });
-
-                },
-                {
-                    threshold: 0.2
-                }
-            );
-
+                        if (mobileObject) {
+                            mobileObject.classList.add("is-visible");
+                        }
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            {
+                threshold: 0.1
+            }
+        );
 
         observer.observe(experienceSection);
 
     } catch (error) {
-
         console.error(
             "Experience 3D object initialization failed:",
             error
         );
-
     }
 
 }
@@ -329,21 +244,15 @@ async function initExperienceFeature() {
 async function initPortfolioFeature() {
 
     try {
-
-        const { initPortfolio3D } =
-            await import("./hero3d.js");
-
-        initPortfolio3D(
-            "portfolio-object"
-        );
-
+        const { initPortfolio3D } = await import("./hero3d.js");
+        if (document.getElementById("portfolio-object")) {
+            initPortfolio3D("portfolio-object");
+        }
     } catch (error) {
-
         console.error(
             "Portfolio 3D object initialization failed:",
             error
         );
-
     }
 
 }
@@ -356,21 +265,15 @@ async function initPortfolioFeature() {
 async function initProfileFeature() {
 
     try {
-
-        const { initProfile3D } =
-            await import("./hero3d.js");
-
-        initProfile3D(
-            "profile-object"
-        );
-
+        const { initProfile3D } = await import("./hero3d.js");
+        if (document.getElementById("profile-object")) {
+            initProfile3D("profile-object");
+        }
     } catch (error) {
-
         console.error(
             "Profile 3D object initialization failed:",
             error
         );
-
     }
 
 }
@@ -382,111 +285,53 @@ async function initProfileFeature() {
 
 function initPortfolioHoverThumbnail() {
 
-    const portfolio =
-        document.getElementById("portfolio");
-
+    const portfolio = document.getElementById("portfolio");
     if (!portfolio) return;
 
-
-    const grid =
-        portfolio.querySelector(".portfolio-grid");
-
+    const grid = portfolio.querySelector(".portfolio-grid");
     if (!grid) return;
 
-
-    const projects =
-        portfolio.querySelectorAll(".project");
-
+    const projects = portfolio.querySelectorAll(".project");
     if (!projects.length) return;
 
-
     /* 기존 preview가 있으면 중복 생성하지 않음 */
-
-    let preview =
-        grid.querySelector(".portfolio-preview");
+    let preview = grid.querySelector(".portfolio-preview");
 
     if (!preview) {
+        preview = document.createElement("div");
+        preview.className = "portfolio-preview";
+        preview.setAttribute("aria-hidden", "true");
 
-        preview =
-            document.createElement("div");
-
-        preview.className =
-            "portfolio-preview";
-
-        preview.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-
-        const image =
-            document.createElement("img");
-
-        image.id =
-            "portfolio-preview-image";
-
+        const image = document.createElement("img");
+        image.id = "portfolio-preview-image";
         image.alt = "";
 
-
         preview.appendChild(image);
-
         grid.appendChild(preview);
-
     }
 
-
-    const image =
-        preview.querySelector(
-            "#portfolio-preview-image"
-        );
-
+    const image = preview.querySelector("#portfolio-preview-image");
 
     projects.forEach((project) => {
 
-        project.addEventListener(
-            "mouseenter",
-            () => {
+        project.addEventListener("mouseenter", () => {
+            const thumb = project.dataset.thumb;
+            if (!thumb) return;
 
-                const thumb =
-                    project.dataset.thumb;
+            image.src = thumb;
 
-                if (!thumb) return;
+            const projectRect = project.getBoundingClientRect();
+            const gridRect = grid.getBoundingClientRect();
 
-                image.src = thumb;
+            preview.style.left = (projectRect.right - gridRect.left - 300) + "px";
+            preview.style.top = (projectRect.top - gridRect.top + 30) + "px";
 
-                const grid =
-                    portfolio.querySelector(".portfolio-grid");
+            preview.classList.add("is-visible");
+        });
 
-                const projectRect =
-                    project.getBoundingClientRect();
-
-                const gridRect =
-                    grid.getBoundingClientRect();
-
-                preview.style.left =
-                    (projectRect.right - gridRect.left - 300) + "px";
-
-                preview.style.top =
-                    (projectRect.top - gridRect.top + 30) + "px";
-
-                preview.classList.add(
-                    "is-visible"
-                );
-
-            }
-        );
-
-
-        project.addEventListener(
-            "mouseleave",
-            () => {
-
-                preview.classList.remove(
-                    "is-visible"
-                );
-
-            }
-        );
+        project.addEventListener("mouseleave", () => {
+            preview.classList.remove("is-visible");
+        });
 
     });
 
