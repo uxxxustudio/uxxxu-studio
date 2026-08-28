@@ -216,29 +216,23 @@ window.addEventListener("scroll", () => {
 ========================================================= */
 
 async function initExperienceFeature() {
-
     try {
-
-        // 1. 데스크톱 & 모바일 3D 오브젝트 생성 함수 호출
-
-        const { initSectionObject } =
-            await import("./hero3d.js");
+        // 1. 데스크톱 & 모바일 3D 오브젝트 생성 함수 불러오기
+        const { initSectionObject } = await import("./hero3d.js");
 
         // 데스크톱 3D 호출
         if (document.getElementById("experience-object")) {
-            initSectionObject(
-                "experience-object",
-                "U"
-            );
+            initSectionObject("experience-object", "U");
         }
 
-        // 💡 [추가] 모바일 3D 호출
+        // 모바일 3D 호출
         if (document.getElementById("experience-object-mobile")) {
-            initSectionObject(
-                "experience-object-mobile",
-                "U"
-            );
+            initSectionObject("experience-object-mobile", "U");
         }
+    } catch (error) {
+        console.error("Experience 3D 로딩 실패:", error);
+    }
+}
 
 
         // 2. 스크롤 위치 감지하여 .is-visible 클래스 추가
