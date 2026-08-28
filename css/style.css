@@ -2389,3 +2389,90 @@ footer {
     margin: 0 !important;
     z-index: 20 !important;
 }
+/* =========================================================
+   EXPERIENCE MOBILE STYLES (Clean Layout)
+========================================================= */
+@media (max-width: 768px) {
+    /* 기존 PC용 영역 숨김 */
+    .experience-desktop {
+        display: none !important;
+    }
+
+    .experience-mobile {
+        display: block !important;
+        padding: 40px 20px;
+        color: #000;
+        text-align: center;
+    }
+
+    /* 헤더 타이틀 */
+    .experience-mobile-intro {
+        margin-bottom: 50px;
+        text-align: left;
+    }
+
+    .experience-mobile-title-group {
+        display: flex;
+        gap: 10px;
+        font-size: 24px;
+        font-weight: 800;
+        line-height: 1.2;
+    }
+
+    .experience-mobile-sub-title {
+        font-size: 24px;
+        font-weight: 800;
+        line-height: 1.2;
+    }
+
+    /* 리스트 항목 */
+    .experience-mobile-list {
+        display: flex;
+        flex-direction: column;
+        gap: 45px;
+        margin-bottom: 60px;
+    }
+
+    .experience-mobile-item h3 {
+        font-size: 20px;
+        font-weight: 800;
+        margin-bottom: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .experience-mobile-num {
+        font-weight: 800;
+    }
+
+    .experience-mobile-keywords {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        font-size: 16px;
+        color: #111;
+        font-weight: 500;
+        line-height: 1.4;
+    }
+
+    /* 하단 버튼 */
+    .experience-mobile-career {
+        display: flex;
+        justify-content: center;
+    }
+
+    .experience-mobile-career a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 28px;
+        border: 1.5px solid #000;
+        border-radius: 30px;
+        text-decoration: none;
+        color: #000;
+        font-size: 16px;
+        font-weight: 600;
+    }
+}
