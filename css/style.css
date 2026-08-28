@@ -1173,40 +1173,49 @@ footer {
         width: 100%;
     }
 
-    .experience-mobile-item {
-        position: relative !important;
-        z-index: 2 !important;
-        width: 100%;
-        padding: 0;
-        border: none !important; /* 구분선 삭제 */
-        text-align: center; /* 텍스트 중앙 정렬 */
-    }
-
-    .experience-mobile-item:first-child { padding-top: 0; border-top: none; }
-
-    /* 01, 02, 03 제목 폰트 크기 축소 및 중앙배치 */
-    .experience-mobile-item h3 {
-        font-size: 17px;
-        font-weight: 800;
-        line-height: 1.2;
-        color: #111;
-        margin-bottom: 6px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .experience-mobile-num { font-size: 17px; font-weight: 800; }
-
-    /* 키워드 폰트 크기 축소 및 중앙배치 */
-    .experience-mobile-keywords {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
-        margin-bottom: 0;
-    }
+    /* 모바일 Experience 항목 레이아웃만 수정 */
+      .experience-mobile-item {
+          text-align: left;
+          padding: 0;
+          border: none !important;
+      }
+      
+      /* 01 / 03 → 오른쪽으로 이동 */
+      .experience-mobile-item:nth-of-type(1),
+      .experience-mobile-item:nth-of-type(3) {
+          margin-left: 195px;
+      }
+      
+      /* 02 → 왼쪽 배치 */
+      .experience-mobile-item:nth-of-type(2) {
+          margin-left: 46px;
+      }
+      
+      /* 항목 제목 */
+      .experience-mobile-item h3 {
+          font-size: 28px;
+          font-weight: 800;
+          line-height: 1.2;
+          letter-spacing: -0.02em;
+          margin: 0 0 10px 0;
+          display: block;
+      }
+      
+      /* 번호 */
+      .experience-mobile-num {
+          font-weight: 800;
+      }
+      
+      /* 키워드 */
+      .experience-mobile-keywords {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          font-size: 20px;
+          font-weight: 500;
+          color: #111111;
+          line-height: 1.45;
+      }
     .experience-mobile-keywords span { font-size: 13px; color: #555; line-height: 1.45; }
 
     /* 💡 MOBILE 3D BACKGROUND OBJECT (원본 코드 100% 동일 유지) */
