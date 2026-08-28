@@ -598,3 +598,9 @@ export function initPortfolio3D(containerId) {
     renderer.setSize(newWidth, newHeight);
   });
 }
+/* =========================================================
+   PROFILE 3D DUMMY (에러 방지용)
+========================================================= */
+export function initProfile3D(containerId) {
+    // initProfile3D 호출 시 스크립트가 멈추는 에러를 막아줍니다.
+}
