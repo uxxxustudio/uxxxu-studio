@@ -2410,8 +2410,9 @@ footer {
     /* 1. 상단 타이틀 (EXPERIENCE 제거, 20+ YEARS / UX/UI DESIGN 강조) */
     .experience-mobile-intro {
         margin-bottom: 60px;
+        margin-left: -24px;
     }
-
+      
     .experience-mobile-years {
         font-size: 32px;         /* 레퍼런스 이미지 비율에 맞춘 대형 폰트 */
         font-weight: 800;
