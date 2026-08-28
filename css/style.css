@@ -2389,11 +2389,9 @@ footer {
     margin: 0 !important;
     z-index: 20 !important;
 }
+
 /* =========================================================
-   EXPERIENCE MOBILE STYLES (Clean Layout)
-========================================================= */
-/* =========================================================
-   EXPERIENCE MOBILE STYLES (PROJECT 섹션 스타일 규격 통일)
+   EXPERIENCE MOBILE STYLES (레이아웃 & 폰트 크기 완벽 통일)
 ========================================================= */
 @media (max-width: 768px) {
     /* 데스크톱 숨김 */
@@ -2403,52 +2401,60 @@ footer {
 
     .experience-mobile {
         display: block !important;
-        padding: 40px 20px 60px 20px;
+        padding: 50px 20px 60px 20px;
         color: #000;
         text-align: left;
     }
 
-    /* 1. 섹션 헤더 (PROJECT 헤더 규격 동일 적용) */
+    /* 1. 상단 타이틀 영역 (크기 확대 & 간격 조절) */
     .experience-mobile-intro {
-        margin-bottom: 40px;
+        margin-bottom: 50px;
     }
 
+    /* EXPERIENCE 대타이틀 (PROJECT 대타이틀 헤더급 42px) */
     .experience-mobile-label {
-        font-size: 38px;        /* PROJECT 대타이틀과 동일 크기 */
-        font-weight: 900;        /* 메인 볼륨감 부여 */
+        font-size: 42px;
+        font-weight: 900;
         letter-spacing: -0.03em;
         line-height: 1.0;
         margin-bottom: 12px;
         text-transform: uppercase;
     }
 
+    /* 20+ YEARS / UX/UI DESIGN 서브 타이틀 */
     .experience-mobile-years {
-        font-size: 15px;        /* PROJECT 서브 설명글 크기 */
-        font-weight: 500;
-        color: #555555;          /* 서브 텍스트 톤앤매너 */
-        line-height: 1.4;
-        letter-spacing: -0.01em;
+        font-size: 24px;        /* 시안처럼 눈에 띄게 대폭 확대 */
+        font-weight: 800;
+        color: #000;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
     }
 
-    /* 2. 아이템 리스트 (PROJECT 카드 헤더/본문 규격 적용) */
+    /* 2. 아이템 리스트 영역 (가로 구분선 & 왼쪽 정렬) */
     .experience-mobile-list {
         display: flex;
         flex-direction: column;
-        gap: 36px;
-        margin-bottom: 50px;
+        gap: 0;                /* Border-bottom으로 구분선 형성 */
+        margin-bottom: 60px;
     }
 
     .experience-mobile-item {
         text-align: left;
+        padding: 32px 0;       /* 각 항목 위아래 여백 */
+        border-bottom: 1px solid #e5e5e5; /* 시안처럼 연한 가로 구분선 */
     }
 
-    /* 카드 제목 (AI Space Temperature Control 과 동일 볼륨) */
+    .experience-mobile-list > .experience-mobile-item:first-child {
+        border-top: 1px solid #e5e5e5;   /* 첫 번째 항목 상단 선 */
+    }
+
+    /* 숫자 + 제목 (01 DIGITAL SERVICE) */
     .experience-mobile-item h3 {
-        font-size: 22px;
+        font-size: 20px;       /* 가독성 높은 헤딩 크기 */
         font-weight: 800;
         line-height: 1.25;
         letter-spacing: -0.02em;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
         display: flex;
         align-items: center;
         gap: 8px;
@@ -2458,33 +2464,34 @@ footer {
         font-weight: 800;
     }
 
-    /* 본문 키워드/설명 (PROJECT 설명글 크기 적용) */
+    /* 키워드 설명글 */
     .experience-mobile-keywords {
         display: flex;
         flex-direction: column;
-        gap: 2px;
-        font-size: 14px;
+        gap: 4px;
+        font-size: 15px;       /* 텍스트 크기 확대 */
         font-weight: 500;
-        color: #555555;
+        color: #333333;
         line-height: 1.45;
     }
 
-    /* 3. 하단 CTA 버튼 (View Project -> 스타일 세팅) */
+    /* 3. 하단 CTA 버튼 (View Full Career →) */
     .experience-mobile-career {
         display: flex;
-        justify-content: flex-start;
+        justify-content: center;
+        margin-top: 20px;
     }
 
     .experience-mobile-career a {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        font-size: 14px;
-        font-weight: 700;
-        color: #000;
-        text-decoration: none;
-        padding: 10px 22px;
-        border: 1px solid #111;
+        justify-content: center;
+        padding: 14px 36px;
+        border: 1px solid #000;
         border-radius: 30px;
+        text-decoration: none;
+        color: #000;
+        font-size: 15px;
+        font-weight: 600;
     }
 }
