@@ -2510,3 +2510,34 @@ footer {
         display: block !important;
     }
 }
+
+/* =========================================================
+   MOBILE 3D OBJECT FORCE VISIBILITY FIX
+========================================================= */
+@media (max-width: 768px) {
+    /* 모바일에서 3D 영역 투명도 및 위치 강제 재설정 */
+    .experience-mobile #experience-object {
+        display: block !important;
+        position: relative !important;
+        width: 100% !important;
+        height: 220px !important;  /* 3D 오브젝트가 들어갈 명확한 높이 */
+        margin: 20px 0 !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        transform: none !important;
+        
+        /* 가장 중요한 원인 해결: opacity를 1로 강제 전환 */
+        opacity: 1 !important;
+        visibility: visible !important;
+        z-index: 10 !important;
+    }
+
+    /* 3D Canvas 엘리먼트 크기 강제 고정 */
+    .experience-mobile #experience-object canvas {
+        width: 100% !important;
+        height: 100% !important;
+        display: block !important;
+        opacity: 1 !important;
+    }
+}
