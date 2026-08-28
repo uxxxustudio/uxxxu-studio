@@ -388,14 +388,24 @@ nav a:hover {
 }
 
 .experience-mobile {
-    display: none;
+    display: block;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
 }
 
 .experience-mobile > * {
     display: none;
 }
 
-.experience-mobile-list,
+.experience-mobile-list {
+    display: block;
+}
+
+.experience-mobile-list > * {
+    display: none;
+}
+
 .experience-mobile-list > #experience-object {
     display: block;
 }
