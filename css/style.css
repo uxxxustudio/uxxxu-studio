@@ -2434,6 +2434,16 @@ footer {
         border: none !important; /* 가로 구분선 완전 제거 */
     }
 
+    /* 모바일 Experience 항목 좌우 배치 */
+      .experience-mobile-item:nth-of-type(1),
+      .experience-mobile-item:nth-of-type(3) {
+          margin-left: 100px;
+      }
+      
+      .experience-mobile-item:nth-of-type(2) {
+          margin-left: 0;
+      }
+   
     /* 번호 + 제목 (01 DIGITAL SERVICE) */
     .experience-mobile-item h3 {
         font-size: 22px;         /* 굵고 명확한 헤딩 크기 */
