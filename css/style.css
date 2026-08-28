@@ -2393,65 +2393,63 @@ footer {
    EXPERIENCE MOBILE STYLES (Clean Layout)
 ========================================================= */
 @media (max-width: 768px) {
-    /* 기존 PC용 영역 숨김 */
     .experience-desktop {
         display: none !important;
     }
 
     .experience-mobile {
         display: block !important;
-        padding: 40px 20px;
+        padding: 40px 20px 60px 20px;
         color: #000;
-        text-align: center;
-    }
-
-    /* 헤더 타이틀 */
-    .experience-mobile-intro {
-        margin-bottom: 50px;
         text-align: left;
     }
 
-    .experience-mobile-title-group {
-        display: flex;
-        gap: 10px;
-        font-size: 24px;
-        font-weight: 800;
-        line-height: 1.2;
+    /* 상단 타이틀 영역 */
+    .experience-mobile-intro {
+        margin-bottom: 50px;
     }
 
-    .experience-mobile-sub-title {
-        font-size: 24px;
+    .experience-mobile-label {
+        font-size: 28px;
         font-weight: 800;
-        line-height: 1.2;
+        margin-bottom: 8px;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
     }
 
-    /* 리스트 항목 */
+    .experience-mobile-years {
+        font-size: 26px;
+        font-weight: 800;
+        line-height: 1.25;
+        letter-spacing: -0.02em;
+    }
+
+    /* 리스트 및 간격 (구분선 없음, 왼쪽 정렬) */
     .experience-mobile-list {
         display: flex;
         flex-direction: column;
-        gap: 45px;
+        gap: 40px;
         margin-bottom: 60px;
     }
 
-    .experience-mobile-item h3 {
-        font-size: 20px;
-        font-weight: 800;
-        margin-bottom: 8px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
+    .experience-mobile-item {
+        text-align: left;
     }
 
-    .experience-mobile-num {
+    .experience-mobile-item h3 {
+        font-size: 19px;
         font-weight: 800;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
 
     .experience-mobile-keywords {
         display: flex;
         flex-direction: column;
         gap: 4px;
-        font-size: 16px;
+        font-size: 15px;
         color: #111;
         font-weight: 500;
         line-height: 1.4;
@@ -2461,18 +2459,19 @@ footer {
     .experience-mobile-career {
         display: flex;
         justify-content: center;
+        margin-top: 40px;
     }
 
     .experience-mobile-career a {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        padding: 12px 28px;
+        padding: 12px 30px;
         border: 1.5px solid #000;
         border-radius: 30px;
         text-decoration: none;
         color: #000;
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 600;
     }
 }
