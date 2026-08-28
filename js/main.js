@@ -20,13 +20,10 @@ async function loadComponent(id, file) {
         initExperienceFeature();
     }
 
-    // portfolio 섹션이 DOM에 로드되는 순간 Portfolio W 3D 오브젝트 초기화
+    // portfolio 섹션이 DOM에 로드되는 순간 Portfolio W 3D 오브젝트 및 호버 썸네일 초기화
     if (id === "portfolio") {
-
         initPortfolioFeature();
-
         initPortfolioHoverThumbnail();
-
     }
 
     // about 섹션이 DOM에 로드되는 순간 Profile 3D 캐릭터 초기화
@@ -59,7 +56,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 
 /* =====================================================
-       Mobile Menu
+        Mobile Menu
 ===================================================== */
 
     const menuToggle = document.querySelector(".menu-toggle");
@@ -222,27 +219,41 @@ async function initExperienceFeature() {
 
     try {
 
-        // 1. 3D 오브젝트 생성 함수 호출
+        // 1. 데스크톱 & 모바일 3D 오브젝트 생성 함수 호출
 
         const { initSectionObject } =
             await import("./hero3d.js");
 
-        initSectionObject(
-            "experience-object",
-            "U"
-        );
+        // 데스크톱 3D 호출
+        if (document.getElementById("experience-object")) {
+            initSectionObject(
+                "experience-object",
+                "U"
+            );
+        }
+
+        // 💡 [추가] 모바일 3D 호출
+        if (document.getElementById("experience-object-mobile")) {
+            initSectionObject(
+                "experience-object-mobile",
+                "U"
+            );
+        }
 
 
         // 2. 스크롤 위치 감지하여 .is-visible 클래스 추가
 
-        const objectElement =
+        const desktopObject =
             document.getElementById("experience-object");
+
+        const mobileObject =
+            document.getElementById("experience-object-mobile");
 
         const experienceSection =
             document.getElementById("experience");
 
 
-        if (!objectElement || !experienceSection) return;
+        if (!experienceSection) return;
 
 
         const observer =
@@ -253,13 +264,15 @@ async function initExperienceFeature() {
 
                         if (entry.isIntersecting) {
 
-                            objectElement.classList.add(
-                                "is-visible"
-                            );
+                            if (desktopObject) {
+                                desktopObject.classList.add("is-visible");
+                            }
 
-                            observer.unobserve(
-                                entry.target
-                            );
+                            if (mobileObject) {
+                                mobileObject.classList.add("is-visible");
+                            }
+
+                            observer.unobserve(entry.target);
 
                         }
 
@@ -344,10 +357,6 @@ async function initProfileFeature() {
    Portfolio Hover Thumbnail
 ========================================================= */
 
-/* =========================================================
-   Portfolio Hover Thumbnail
-========================================================= */
-
 function initPortfolioHoverThumbnail() {
 
     const portfolio =
@@ -412,37 +421,37 @@ function initPortfolioHoverThumbnail() {
     projects.forEach((project) => {
 
         project.addEventListener(
-             "mouseenter",
-             () => {
-         
-                 const thumb =
-                     project.dataset.thumb;
-         
-                 if (!thumb) return;
-         
-                 image.src = thumb;
-         
-                 const grid =
-                     portfolio.querySelector(".portfolio-grid");
-         
-                 const projectRect =
-                     project.getBoundingClientRect();
-         
-                 const gridRect =
-                     grid.getBoundingClientRect();
-         
-                 preview.style.left =
-                     (projectRect.right - gridRect.left - 300) + "px";
-         
-                 preview.style.top =
-                     (projectRect.top - gridRect.top + 30) + "px";
-         
-                 preview.classList.add(
-                     "is-visible"
-                 );
-         
-             }
-         );
+            "mouseenter",
+            () => {
+
+                const thumb =
+                    project.dataset.thumb;
+
+                if (!thumb) return;
+
+                image.src = thumb;
+
+                const grid =
+                    portfolio.querySelector(".portfolio-grid");
+
+                const projectRect =
+                    project.getBoundingClientRect();
+
+                const gridRect =
+                    grid.getBoundingClientRect();
+
+                preview.style.left =
+                    (projectRect.right - gridRect.left - 300) + "px";
+
+                preview.style.top =
+                    (projectRect.top - gridRect.top + 30) + "px";
+
+                preview.classList.add(
+                    "is-visible"
+                );
+
+            }
+        );
 
 
         project.addEventListener(
