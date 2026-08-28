@@ -2375,3 +2375,17 @@ footer {
 #experience-object-mobile {
     z-index: 20 !important;
 }
+
+/* =========================================================
+   3D OBJECT GRID EXCLUSION & ABSOLUTE POSITIONING
+========================================================= */
+/* 3D 오브젝트를 Grid 레이아웃 계산에서 제외시킵니다 */
+.experience-desktop .experience-grid #experience-object {
+    position: absolute !important;
+    left: 66.66% !important; /* 02 카드와 03 카드 사이 구분선 위치 */
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    grid-column: auto !important; /* Grid 칸을 차지하지 않도록 해제 */
+    margin: 0 !important;
+    z-index: 20 !important;
+}
