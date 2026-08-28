@@ -1158,42 +1158,68 @@ footer {
     .experience-mobile { display: block !important; padding: 0; width: 100%; text-align: left; }
     .experience-mobile > * { display: block; }
 
-    .experience-mobile-intro { width: 100%; margin-bottom: 42px; margin-left: 0; }
-    .experience-mobile-years { font-size: 30px; font-weight: 700; color: #111; line-height: 1.1; }
-    .experience-mobile-years strong { display: block; font-size: 30px; }
-    .experience-mobile-years span { display: block; font-size: 20px; margin-top: 5px; }
+    /* 헤더 타이틀 정렬 */
+    .experience-mobile-intro { width: 100%; margin-bottom: 42px; margin-left: 0; text-align: left; }
+    .experience-mobile-label { font-size: 34px; font-weight: 800; line-height: 1.0; letter-spacing: -0.02em; color: #111; margin-bottom: 8px; }
+    .experience-mobile-years { font-size: 24px; font-weight: 800; color: #111; line-height: 1.15; }
 
+    /* 리스트 중앙 정렬 */
     .experience-mobile-list {
         display: flex;
         flex-direction: column;
-        gap: 0;
-        position: relative !important; /* 3D Absolute 기준점 */
+        align-items: center;
+        gap: 38px;
+        position: relative !important; /* 3D Absolute 기준점 유지 */
         width: 100%;
     }
 
+    /* 카드 항목: 구분선 제거 및 텍스트 중앙 정렬 */
     .experience-mobile-item {
         position: relative !important;
-        z-index: 2 !important; /* 텍스트가 3D 오브젝트보다 위에 올라오도록 설정 */
+        z-index: 2 !important; /* 텍스트가 3D 오브젝트 위에 올라오도록 유지 */
         width: 100%;
-        padding: 34px 0 38px;
-        border-top: 1px solid #dedede;
+        padding: 0;
+        border: none !important; /* 구분선 삭제 */
+        text-align: center;
     }
 
     .experience-mobile-item:first-child { padding-top: 0; border-top: none; }
-    .experience-mobile-item h3 { font-size: 26px; font-weight: 600; line-height: .96; color: #111; margin-bottom: 12px; }
-    .experience-mobile-keywords { display: flex; flex-direction: column; gap: 6px; margin-bottom: 0; }
-    .experience-mobile-keywords span { font-size: 16px; color: #222; }
+    
+    /* 01, 02, 03 제목 크기 축소 및 중앙배치 */
+    .experience-mobile-item h3 {
+        font-size: 17px;
+        font-weight: 800;
+        line-height: 1.2;
+        color: #111;
+        margin-bottom: 6px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+    }
+    
+    .experience-mobile-num { font-size: 17px; font-weight: 800; }
 
-    /* 💡 MOBILE 3D BACKGROUND OBJECT (02와 03번 카드 사이 배경 고정) */
+    /* 키워드 중앙 정렬 및 폰트 크기 조정 */
+    .experience-mobile-keywords {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        margin-bottom: 0;
+    }
+    .experience-mobile-keywords span { font-size: 13px; color: #555; line-height: 1.45; }
+
+    /* 💡 MOBILE 3D BACKGROUND OBJECT (기존 설정 100% 원본 유지) */
     #experience-object-mobile {
         position: absolute !important;
         left: 50% !important;
-        top: 65% !important; /* 화면 높이에 맞춰 미세조정 하세요 */
+        top: 65% !important;
         transform: translate(-50%, -50%) !important;
         width: 300px !important;
         height: 300px !important;
         margin: 0 !important;
-        z-index: 1 !important; /* 카드(z-index:2) 뒤로 배치 */
+        z-index: 1 !important;
         pointer-events: none !important;
         opacity: 1 !important;
         visibility: visible !important;
@@ -1207,8 +1233,20 @@ footer {
         visibility: visible !important;
     }
 
-    .experience-mobile-career { display: flex; justify-content: flex-end; margin-top: 0; padding-top: 42px; }
-    .experience-mobile-career a { display: inline-flex; align-items: center; gap: 16px; padding-bottom: 9px; border-bottom: 1px solid #111; font-size: 17px; font-weight: 600; color: #111; }
+    /* View Full Career 버튼: 중앙 정렬 및 둥근 알약 스타일 */
+    .experience-mobile-career { display: flex; justify-content: center; margin-top: 40px; padding-top: 0; }
+    .experience-mobile-career a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 24px;
+        border: 1px solid #111;
+        border-radius: 25px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #111;
+        text-decoration: none;
+    }
 
     /* PORTFOLIO MOBILE */
     #portfolio { width: 100%; max-width: none; box-sizing: border-box; padding: 110px 16px 100px; }
