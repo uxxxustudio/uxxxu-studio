@@ -2268,7 +2268,7 @@ footer {
    PC ONLY
 ========================================================= */
 
-/*.portfolio-preview {
+.portfolio-preview {
     position: absolute;
 
     width: 170px;
@@ -2317,9 +2317,9 @@ footer {
 .portfolio-grid .project {
     position: relative;
     z-index: 2;
-}*/
+}
 
-/* 모바일에서는 썸네일 사용하지 않음 
+/* 모바일에서는 썸네일 사용하지 않음 */
 
 @media (max-width: 900px) {
 
@@ -2327,7 +2327,7 @@ footer {
         display: none !important;
     }
 
-}*/
+}
 
 /* =========================================================
    PROJECT별 HOVER THUMBNAIL 위치
@@ -2339,32 +2339,32 @@ footer {
    JS는 그대로 유지
 ========================================================= */
 
-/* 01. AI Space Temperature Control
+/* 01. AI Space Temperature Control*/
 .portfolio-grid:has(.project:nth-child(1):hover) .portfolio-preview.is-visible {
     margin-left: 210px;
-} */
+} 
 
-/* 02. AI Smart Glasses 
+/* 02. AI Smart Glasses */
 .portfolio-grid:has(.project:nth-child(2):hover) .portfolio-preview.is-visible {
     margin-left: -50px;
-}*/
+}
 
-/* 03. enough media site 
+/* 03. enough media site */
 .portfolio-grid:has(.project:nth-child(3):hover) .portfolio-preview.is-visible {
     margin-left: -30px;
-}*/
+}
 
-/* 04. Smart Home Switch 
+/* 04. Smart Home Switch */
 .portfolio-grid:has(.project:nth-child(4):hover) .portfolio-preview.is-visible {
     margin-left: 10px;
-}*/
+}
 
-/* 05. SmartCUBE 
+/* 05. SmartCUBE */
 .portfolio-grid:has(.project:nth-child(5):hover) .portfolio-preview.is-visible {
     margin-left: -150px;
-}*/
+}
 
-/* 06. Jeju Seolmundaehalmang 
+/* 06. Jeju Seolmundaehalmang */
 .portfolio-grid:has(.project:nth-child(6):hover) .portfolio-preview.is-visible {
     margin-left: 120px;
-}*/
+}
