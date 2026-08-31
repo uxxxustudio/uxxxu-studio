@@ -1152,7 +1152,7 @@ footer {
     .hero-light { width: 120vw; height: 70vh; right: -45vw; top: 15vh; opacity: .45; filter: blur(45px); }
 
     /* EXPERIENCE MOBILE LAYOUT */
-    #experience { padding: 110px 26px 100px; overflow: hidden; }
+    #experience { padding: 110px 26px 40px; overflow: hidden; }
     .experience-wrap { width: 100%; max-width: none; }
     .experience-desktop { display: none !important; }
     .experience-mobile { display: block !important; padding: 0; width: 100%; text-align: left; }
@@ -1267,7 +1267,7 @@ footer {
         text-decoration: none;
     }
     /* PORTFOLIO MOBILE */
-    #portfolio { width: 100%; max-width: none; box-sizing: border-box; padding: 110px 16px 100px; }
+    #portfolio { width: 100%; max-width: none; box-sizing: border-box; padding: 50px 16px 100px; }
     #portfolio .portfolio-wrap { position: relative; width: 100%; margin: 0; padding: 0; }
     #portfolio .portfolio-heading h2 { font-size: 48px; line-height: .94; font-weight: 800; margin: 0 0 10px; }
     #portfolio .portfolio-heading p { margin: 0; line-height: 1.6; }
