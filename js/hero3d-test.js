@@ -8,7 +8,7 @@ import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
 ========================================================= */
 
 export function initHero3D() {
-  const container = document.getElementById("hero-3d");
+  const container = document.getElementById("character");
   if (!container) return;
 
   container.innerHTML = "";
@@ -630,3 +630,4 @@ export function initProfile3D(containerId) {
 window.addEventListener('load', () => {
     window.dispatchEvent(new Event('resize'));
 });
+initHero3D();
