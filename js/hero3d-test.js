@@ -13,7 +13,7 @@ const camera = new THREE.PerspectiveCamera(
     100
 );
 
-camera.position.set(0, 0.8, 8.5);
+camera.position.set(0, 0.15, 7.2);
 
 const renderer = new THREE.WebGLRenderer({
     antialias: true,
@@ -29,176 +29,560 @@ renderer.toneMappingExposure = 1.15;
 container.appendChild(renderer.domElement);
 
 
-/* -------------------------
-   LIGHT
-------------------------- */
+// --------------------------------------------------
+// LIGHT
+// --------------------------------------------------
 
-const ambient = new THREE.AmbientLight(0xffffff, 1.8);
+const ambient = new THREE.AmbientLight(0xffffff, 1.5);
 scene.add(ambient);
 
-const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
-keyLight.position.set(3, 5, 6);
+const keyLight = new THREE.DirectionalLight(0xffffff, 3);
+keyLight.position.set(-3, 5, 6);
 scene.add(keyLight);
 
-const greenLight = new THREE.PointLight(0x27e878, 3, 8);
-greenLight.position.set(0, 1.5, 3);
+const greenLight = new THREE.PointLight(0x25ff88, 5, 10);
+greenLight.position.set(2.5, 1.5, 3);
 scene.add(greenLight);
 
+const rimLight = new THREE.PointLight(0xffffff, 2.5, 8);
+rimLight.position.set(-3, 1, -2);
+scene.add(rimLight);
 
-/* -------------------------
-   MATERIALS
-------------------------- */
 
-const bodyMaterial = new THREE.MeshStandardMaterial({
-    color: 0x555555,
-    roughness: 0.72,
+// --------------------------------------------------
+// MATERIALS
+// --------------------------------------------------
+
+const skinMaterial = new THREE.MeshStandardMaterial({
+    color: 0x8d918e,
+    roughness: 0.65,
     metalness: 0.05
 });
 
+const hairMaterial = new THREE.MeshStandardMaterial({
+    color: 0x101111,
+    roughness: 0.4,
+    metalness: 0.15
+});
+
+const glassesMaterial = new THREE.MeshStandardMaterial({
+    color: 0x080909,
+    roughness: 0.2,
+    metalness: 0.5,
+    transparent: true,
+    opacity: 0.92
+});
+
+const greenMaterial = new THREE.MeshStandardMaterial({
+    color: 0x35f58b,
+    emissive: 0x0bcf62,
+    emissiveIntensity: 2.2,
+    roughness: 0.3,
+    metalness: 0.2
+});
+
 const darkMaterial = new THREE.MeshStandardMaterial({
-    color: 0x101010,
-    roughness: 0.55,
-    metalness: 0.1
-});
-
-const greenMaterial = new THREE.MeshBasicMaterial({
-    color: 0x25e879
+    color: 0x151717,
+    roughness: 0.45,
+    metalness: 0.25
 });
 
 
-/* -------------------------
-   CHARACTER
-------------------------- */
+// --------------------------------------------------
+// CHARACTER GROUP
+// --------------------------------------------------
 
 const character = new THREE.Group();
+character.position.y = -0.15;
 scene.add(character);
 
 
-/* HEAD */
+// --------------------------------------------------
+// HELPER
+// --------------------------------------------------
 
-const head = new THREE.Mesh(
-    new THREE.SphereGeometry(1.05, 48, 32),
-    bodyMaterial
+function addMesh(geometry, material, position, scale = [1, 1, 1]) {
+
+    const mesh = new THREE.Mesh(geometry, material);
+
+    mesh.position.set(
+        position[0],
+        position[1],
+        position[2]
+    );
+
+    mesh.scale.set(
+        scale[0],
+        scale[1],
+        scale[2]
+    );
+
+    character.add(mesh);
+
+    return mesh;
+}
+
+
+// --------------------------------------------------
+// HAIR BACK
+// --------------------------------------------------
+
+// 뒤쪽 큰 머리카락 실루엣
+const hairBack = addMesh(
+    new THREE.SphereGeometry(1, 64, 48),
+    hairMaterial,
+    [0, 0.45, -0.15],
+    [1.72, 2.0, 0.72]
 );
 
-head.scale.set(1, 1.08, 0.9);
-head.position.y = 1.15;
-character.add(head);
 
-
-/* HAIR */
-
-const hair = new THREE.Mesh(
-    new THREE.SphereGeometry(1.08, 48, 24),
-    darkMaterial
+// 양쪽으로 내려오는 머리카락
+const hairLeft = addMesh(
+    new THREE.SphereGeometry(0.75, 48, 32),
+    hairMaterial,
+    [-1.28, -0.15, -0.05],
+    [0.7, 1.45, 0.65]
 );
 
-hair.scale.set(1.01, 0.55, 0.93);
-hair.position.set(0, 1.85, -0.03);
-character.add(hair);
-
-
-/* EYES */
-
-const eyeGeometry = new THREE.SphereGeometry(0.27, 32, 24);
-
-const leftEye = new THREE.Mesh(eyeGeometry, darkMaterial);
-leftEye.scale.set(0.8, 1.25, 0.45);
-leftEye.position.set(-0.38, 1.28, 0.82);
-character.add(leftEye);
-
-const rightEye = new THREE.Mesh(eyeGeometry, darkMaterial);
-rightEye.scale.set(0.8, 1.25, 0.45);
-rightEye.position.set(0.38, 1.28, 0.82);
-character.add(rightEye);
-
-
-/* NOSE */
-
-const nose = new THREE.Mesh(
-    new THREE.SphereGeometry(0.12, 24, 16),
-    bodyMaterial
+const hairRight = addMesh(
+    new THREE.SphereGeometry(0.75, 48, 32),
+    hairMaterial,
+    [1.28, -0.15, -0.05],
+    [0.7, 1.45, 0.65]
 );
 
-nose.scale.set(0.8, 1.3, 0.7);
-nose.position.set(0, 0.95, 0.9);
-character.add(nose);
 
+// --------------------------------------------------
+// FACE
+// --------------------------------------------------
 
-/* BODY */
-
-const body = new THREE.Mesh(
-    new THREE.SphereGeometry(1.45, 48, 32),
-    bodyMaterial
+const face = addMesh(
+    new THREE.SphereGeometry(1, 64, 48),
+    skinMaterial,
+    [0, 0.45, 0.55],
+    [1.38, 1.52, 0.82]
 );
 
-body.scale.set(1.05, 0.78, 0.72);
-body.position.y = -0.25;
-character.add(body);
+
+// --------------------------------------------------
+// NECK
+// --------------------------------------------------
+
+const neck = addMesh(
+    new THREE.CylinderGeometry(0.46, 0.55, 1.15, 48),
+    skinMaterial,
+    [0, -0.78, 0.25],
+    [1, 1, 0.85]
+);
 
 
-/* NECK / COLLAR */
+// --------------------------------------------------
+// SHOULDERS / UPPER BODY
+// --------------------------------------------------
 
-const collar = new THREE.Mesh(
-    new THREE.TorusGeometry(1.05, 0.035, 16, 96),
+const shoulders = addMesh(
+    new THREE.SphereGeometry(1, 64, 40),
+    darkMaterial,
+    [0, -1.38, 0],
+    [2.05, 0.72, 0.72]
+);
+
+
+// 조금 더 자연스러운 어깨 연결
+const shoulderLeft = addMesh(
+    new THREE.SphereGeometry(0.75, 48, 32),
+    darkMaterial,
+    [-1.35, -1.3, 0.05],
+    [1.0, 0.7, 0.72]
+);
+
+const shoulderRight = addMesh(
+    new THREE.SphereGeometry(0.75, 48, 32),
+    darkMaterial,
+    [1.35, -1.3, 0.05],
+    [1.0, 0.7, 0.72]
+);
+
+
+// --------------------------------------------------
+// EYES
+// --------------------------------------------------
+
+const eyeGeometry = new THREE.SphereGeometry(0.43, 48, 32);
+
+const leftEye = addMesh(
+    eyeGeometry,
+    darkMaterial,
+    [-0.55, 0.55, 1.28],
+    [0.82, 1.12, 0.32]
+);
+
+const rightEye = addMesh(
+    eyeGeometry,
+    darkMaterial,
+    [0.55, 0.55, 1.28],
+    [0.82, 1.12, 0.32]
+);
+
+
+// --------------------------------------------------
+// NOSE
+// --------------------------------------------------
+
+const nose = addMesh(
+    new THREE.SphereGeometry(0.22, 32, 24),
+    skinMaterial,
+    [0, 0.08, 1.35],
+    [0.72, 1.05, 0.75]
+);
+
+
+// --------------------------------------------------
+// MOUTH
+// --------------------------------------------------
+
+const mouthCurve = new THREE.QuadraticBezierCurve3(
+    new THREE.Vector3(-0.38, -0.36, 1.32),
+    new THREE.Vector3(0, -0.52, 1.42),
+    new THREE.Vector3(0.38, -0.36, 1.32)
+);
+
+const mouthGeometry = new THREE.TubeGeometry(
+    mouthCurve,
+    24,
+    0.035,
+    10,
+    false
+);
+
+const mouth = new THREE.Mesh(
+    mouthGeometry,
     greenMaterial
 );
 
-collar.rotation.x = Math.PI / 2;
-collar.position.y = 0.45;
-character.add(collar);
+character.add(mouth);
 
 
-/* LOWER RING */
+// --------------------------------------------------
+// EYEBROWS
+// --------------------------------------------------
 
-const lowerRing = new THREE.Mesh(
-    new THREE.TorusGeometry(1.38, 0.055, 16, 96),
+const browMaterial = new THREE.MeshStandardMaterial({
+    color: 0x151717,
+    roughness: 0.5
+});
+
+function createBrow(x, rotationZ) {
+
+    const brow = new THREE.Mesh(
+        new THREE.CapsuleGeometry(0.075, 0.55, 8, 16),
+        browMaterial
+    );
+
+    brow.position.set(x, 1.02, 1.28);
+    brow.rotation.z = rotationZ;
+
+    character.add(brow);
+}
+
+createBrow(-0.55, -0.22);
+createBrow(0.55, 0.22);
+
+
+// --------------------------------------------------
+// GLASSES
+// --------------------------------------------------
+
+const glasses = new THREE.Group();
+glasses.position.set(0, 0.56, 1.47);
+character.add(glasses);
+
+
+// 안경 렌즈 프레임
+function createLens(x) {
+
+    const frame = new THREE.Mesh(
+        new THREE.TorusGeometry(
+            0.52,
+            0.065,
+            12,
+            64
+        ),
+        greenMaterial
+    );
+
+    frame.scale.set(1.18, 0.82, 1);
+    frame.position.x = x;
+
+    glasses.add(frame);
+
+    // 렌즈
+    const lens = new THREE.Mesh(
+        new THREE.CylinderGeometry(
+            0.47,
+            0.47,
+            0.025,
+            48
+        ),
+        glassesMaterial
+    );
+
+    lens.rotation.x = Math.PI / 2;
+    lens.scale.set(1.18, 0.82, 1);
+    lens.position.set(x, 0, -0.015);
+
+    glasses.add(lens);
+}
+
+createLens(-0.58);
+createLens(0.58);
+
+
+// 안경 브릿지
+const bridge = new THREE.Mesh(
+    new THREE.CapsuleGeometry(0.055, 0.42, 8, 16),
     greenMaterial
 );
 
-lowerRing.rotation.x = Math.PI / 2;
-lowerRing.position.y = -0.48;
-character.add(lowerRing);
+bridge.rotation.z = Math.PI / 2;
+bridge.position.set(0, 0.02, 0);
+
+glasses.add(bridge);
 
 
-/* -------------------------
-   SOFT OUTER CIRCLE
-------------------------- */
+// 안경 다리
+const templeGeometry = new THREE.CapsuleGeometry(
+    0.045,
+    1.15,
+    8,
+    12
+);
 
+const templeLeft = new THREE.Mesh(
+    templeGeometry,
+    greenMaterial
+);
+
+templeLeft.rotation.y = Math.PI / 2;
+templeLeft.position.set(-1.05, 0, -0.05);
+glasses.add(templeLeft);
+
+const templeRight = new THREE.Mesh(
+    templeGeometry,
+    greenMaterial
+);
+
+templeRight.rotation.y = Math.PI / 2;
+templeRight.position.set(1.05, 0, -0.05);
+glasses.add(templeRight);
+
+
+// --------------------------------------------------
+// HAIR FRONT / BANGS
+// --------------------------------------------------
+
+const bangMaterial = hairMaterial;
+
+
+// 왼쪽 앞머리
+const bangLeft = addMesh(
+    new THREE.SphereGeometry(0.72, 48, 32),
+    bangMaterial,
+    [-0.72, 1.35, 0.82],
+    [0.72, 0.65, 0.45]
+);
+
+bangLeft.rotation.z = -0.38;
+
+
+// 오른쪽 앞머리
+const bangRight = addMesh(
+    new THREE.SphereGeometry(0.72, 48, 32),
+    bangMaterial,
+    [0.72, 1.4, 0.82],
+    [0.72, 0.58, 0.45]
+);
+
+bangRight.rotation.z = 0.38;
+
+
+// 가운데 포인트
+const bangCenter = addMesh(
+    new THREE.SphereGeometry(0.5, 40, 24),
+    bangMaterial,
+    [0, 1.62, 0.8],
+    [0.65, 0.45, 0.42]
+);
+
+
+// --------------------------------------------------
+// LARGE ORBIT RING
+// --------------------------------------------------
+
+const ringGroup = new THREE.Group();
+ringGroup.position.set(0, 0.05, -0.35);
+character.add(ringGroup);
+
+const ring = new THREE.Mesh(
+    new THREE.TorusGeometry(
+        2.75,
+        0.035,
+        16,
+        160
+    ),
+    greenMaterial
+);
+
+ring.rotation.x = Math.PI / 2;
+ringGroup.add(ring);
+
+
+// 두 번째 아주 약한 와이어 링
 const outerRing = new THREE.Mesh(
-    new THREE.TorusGeometry(2.7, 0.018, 16, 160),
+    new THREE.TorusGeometry(
+        2.83,
+        0.012,
+        8,
+        160
+    ),
     new THREE.MeshBasicMaterial({
-        color: 0x1c1c1c,
+        color: 0xffffff,
         transparent: true,
-        opacity: 0.75
+        opacity: 0.18
     })
 );
 
 outerRing.rotation.x = Math.PI / 2;
-outerRing.position.y = 0.65;
-character.add(outerRing);
+ringGroup.add(outerRing);
 
 
-/* -------------------------
-   CONTROLS
-------------------------- */
+// --------------------------------------------------
+// WIRE DETAIL
+// --------------------------------------------------
 
-const controls = new OrbitControls(camera, renderer.domElement);
+function addWireframe(mesh, opacity = 0.16) {
+
+    const edges = new THREE.EdgesGeometry(mesh.geometry);
+
+    const line = new THREE.LineSegments(
+        edges,
+        new THREE.LineBasicMaterial({
+            color: 0xffffff,
+            transparent: true,
+            opacity
+        })
+    );
+
+    line.position.copy(mesh.position);
+    line.rotation.copy(mesh.rotation);
+    line.scale.copy(mesh.scale);
+
+    character.add(line);
+
+    return line;
+}
+
+
+// 얼굴과 머리에 아주 약한 와이어 디테일
+addWireframe(face, 0.10);
+addWireframe(hairBack, 0.07);
+addWireframe(shoulders, 0.08);
+
+
+// --------------------------------------------------
+// SUBTLE FLOATING PARTICLES
+// --------------------------------------------------
+
+const particleGeometry = new THREE.BufferGeometry();
+const particleCount = 450;
+
+const particlePositions = new Float32Array(
+    particleCount * 3
+);
+
+for (let i = 0; i < particleCount; i++) {
+
+    const radius = 4.2 + Math.random() * 2;
+
+    const angle = Math.random() * Math.PI * 2;
+
+    particlePositions[i * 3] =
+        Math.cos(angle) * radius;
+
+    particlePositions[i * 3 + 1] =
+        (Math.random() - 0.5) * 5;
+
+    particlePositions[i * 3 + 2] =
+        (Math.random() - 0.5) * 2 - 1;
+}
+
+particleGeometry.setAttribute(
+    'position',
+    new THREE.BufferAttribute(
+        particlePositions,
+        3
+    )
+);
+
+const particles = new THREE.Points(
+    particleGeometry,
+    new THREE.PointsMaterial({
+        color: 0x6affaa,
+        size: 0.018,
+        transparent: true,
+        opacity: 0.35
+    })
+);
+
+scene.add(particles);
+
+
+// --------------------------------------------------
+// CONTROLS
+// --------------------------------------------------
+
+const controls = new OrbitControls(
+    camera,
+    renderer.domElement
+);
 
 controls.enableDamping = true;
-controls.dampingFactor = 0.05;
+controls.dampingFactor = 0.06;
 
-controls.enableZoom = false;
+controls.enablePan = false;
+
+controls.minDistance = 5;
+controls.maxDistance = 9;
 
 controls.minPolarAngle = Math.PI * 0.38;
 controls.maxPolarAngle = Math.PI * 0.62;
 
+controls.target.set(0, 0, 0.2);
 
-/* -------------------------
-   RESIZE
-------------------------- */
 
-function resize() {
+// --------------------------------------------------
+// MOUSE PARALLAX
+// --------------------------------------------------
+
+let mouseX = 0;
+let mouseY = 0;
+
+window.addEventListener('pointermove', (event) => {
+
+    mouseX =
+        (event.clientX / window.innerWidth - 0.5);
+
+    mouseY =
+        (event.clientY / window.innerHeight - 0.5);
+
+});
+
+
+// --------------------------------------------------
+// RESIZE
+// --------------------------------------------------
+
+window.addEventListener('resize', () => {
 
     const width = container.clientWidth;
     const height = container.clientHeight;
@@ -207,14 +591,12 @@ function resize() {
     camera.updateProjectionMatrix();
 
     renderer.setSize(width, height);
-}
-
-window.addEventListener('resize', resize);
+});
 
 
-/* -------------------------
-   ANIMATION
-------------------------- */
+// --------------------------------------------------
+// ANIMATION
+// --------------------------------------------------
 
 const clock = new THREE.Clock();
 
@@ -222,9 +604,25 @@ function animate() {
 
     requestAnimationFrame(animate);
 
-    const elapsed = clock.getElapsedTime();
+    const time = clock.getElapsedTime();
 
-    character.rotation.y = Math.sin(elapsed * 0.35) * 0.12;
+    // 아주 미세한 부유감
+    character.position.y =
+        -0.15 + Math.sin(time * 0.7) * 0.025;
+
+    // 마우스에 반응
+    character.rotation.y +=
+        (mouseX * 0.22 - character.rotation.y) * 0.025;
+
+    character.rotation.x +=
+        (-mouseY * 0.08 - character.rotation.x) * 0.025;
+
+    // 링은 천천히 회전
+    ringGroup.rotation.z =
+        time * 0.08;
+
+    particles.rotation.y =
+        time * 0.015;
 
     controls.update();
 
