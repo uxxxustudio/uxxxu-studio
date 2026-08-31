@@ -1,481 +1,670 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+
+// ======================================================
+// BASIC SETUP
+// ======================================================
+
 const container = document.getElementById('character');
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x050505);
-
-// --------------------------------------------------
-// CAMERA
-// --------------------------------------------------
 
 const camera = new THREE.PerspectiveCamera(
-    32,
+    35,
     container.clientWidth / container.clientHeight,
     0.1,
     100
 );
 
-camera.position.set(0, 0.15, 8);
+camera.position.set(0, 0, 8);
 
-// --------------------------------------------------
+
+// ======================================================
 // RENDERER
-// --------------------------------------------------
+// ======================================================
 
 const renderer = new THREE.WebGLRenderer({
     antialias: true,
     alpha: true
 });
 
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.setSize(container.clientWidth, container.clientHeight);
+renderer.setPixelRatio(
+    Math.min(window.devicePixelRatio, 2)
+);
 
-renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.15;
+renderer.setSize(
+    container.clientWidth,
+    container.clientHeight
+);
+
+renderer.outputColorSpace =
+    THREE.SRGBColorSpace;
 
 container.appendChild(renderer.domElement);
 
-// --------------------------------------------------
-// LIGHT
-// --------------------------------------------------
 
-const ambient = new THREE.HemisphereLight(
-    0xffffff,
-    0x111111,
-    2.2
-);
-
-scene.add(ambient);
-
-const keyLight = new THREE.DirectionalLight(
-    0xffffff,
-    3
-);
-
-keyLight.position.set(3, 5, 6);
-scene.add(keyLight);
-
-const fillLight = new THREE.DirectionalLight(
-    0x88ffbb,
-    1.2
-);
-
-fillLight.position.set(-4, 1, 4);
-scene.add(fillLight);
-
-// --------------------------------------------------
-// MATERIALS
-// --------------------------------------------------
-
-const skinMaterial = new THREE.MeshStandardMaterial({
-    color: 0xbfc5c0,
-    roughness: 0.58,
-    metalness: 0.02,
-    flatShading: false
-});
-
-const darkMaterial = new THREE.MeshStandardMaterial({
-    color: 0x080909,
-    roughness: 0.38,
-    metalness: 0.15,
-    flatShading: false
-});
-
-const greenMaterial = new THREE.MeshStandardMaterial({
-    color: 0x65ff9b,
-    emissive: 0x1aff68,
-    emissiveIntensity: 0.35,
-    roughness: 0.28,
-    metalness: 0.1
-});
-
-// --------------------------------------------------
-// CHARACTER GROUP
-// --------------------------------------------------
-
-const character = new THREE.Group();
-
-character.position.y = -0.1;
-
-scene.add(character);
-
-// --------------------------------------------------
-// HEAD
-// --------------------------------------------------
-
-const headGeometry = new THREE.SphereGeometry(
-    1.55,
-    64,
-    48
-);
-
-headGeometry.scale(0.86, 1.05, 0.82);
-
-const head = new THREE.Mesh(
-    headGeometry,
-    skinMaterial
-);
-
-head.position.set(0, 1.05, 0);
-
-character.add(head);
-
-// --------------------------------------------------
-// HAIR
-// --------------------------------------------------
-
-const hairGeometry = new THREE.SphereGeometry(
-    1.58,
-    64,
-    40,
-    0,
-    Math.PI * 2,
-    0,
-    Math.PI * 0.48
-);
-
-hairGeometry.scale(0.88, 0.75, 0.84);
-
-const hair = new THREE.Mesh(
-    hairGeometry,
-    darkMaterial
-);
-
-hair.position.set(0, 2.0, -0.02);
-
-character.add(hair);
-
-// --------------------------------------------------
-// HAIR SIDES
-// --------------------------------------------------
-
-function createHairSide(x) {
-
-    const geometry = new THREE.SphereGeometry(
-        0.7,
-        48,
-        32
-    );
-
-    geometry.scale(0.55, 1.45, 0.38);
-
-    const mesh = new THREE.Mesh(
-        geometry,
-        darkMaterial
-    );
-
-    mesh.position.set(x, 1.15, -0.05);
-
-    character.add(mesh);
-}
-
-createHairSide(-1.08);
-createHairSide(1.08);
-
-// --------------------------------------------------
-// NECK
-// --------------------------------------------------
-
-const neckGeometry = new THREE.CylinderGeometry(
-    0.42,
-    0.48,
-    0.75,
-    48
-);
-
-const neck = new THREE.Mesh(
-    neckGeometry,
-    skinMaterial
-);
-
-neck.position.set(0, -0.28, 0);
-
-character.add(neck);
-
-// --------------------------------------------------
-// SHOULDERS
-// --------------------------------------------------
-
-const shoulderGeometry = new THREE.SphereGeometry(
-    1.35,
-    64,
-    40
-);
-
-shoulderGeometry.scale(1.55, 0.55, 0.72);
-
-const shoulders = new THREE.Mesh(
-    shoulderGeometry,
-    darkMaterial
-);
-
-shoulders.position.set(0, -0.65, -0.02);
-
-character.add(shoulders);
-
-// --------------------------------------------------
-// EYES
-// --------------------------------------------------
-
-function createEye(x) {
-
-    const geometry = new THREE.SphereGeometry(
-        0.28,
-        48,
-        32
-    );
-
-    geometry.scale(0.78, 1.35, 0.32);
-
-    const eye = new THREE.Mesh(
-        geometry,
-        darkMaterial
-    );
-
-    eye.position.set(x, 1.15, 1.23);
-
-    character.add(eye);
-}
-
-createEye(-0.52);
-createEye(0.52);
-
-// --------------------------------------------------
-// NOSE
-// --------------------------------------------------
-
-const noseGeometry = new THREE.SphereGeometry(
-    0.18,
-    40,
-    32
-);
-
-noseGeometry.scale(0.72, 1.15, 0.65);
-
-const nose = new THREE.Mesh(
-    noseGeometry,
-    skinMaterial
-);
-
-nose.position.set(0, 0.72, 1.27);
-
-character.add(nose);
-
-// --------------------------------------------------
-// MOUTH
-// --------------------------------------------------
-
-const mouthCurve = new THREE.EllipseCurve(
-    0,
-    0,
-    0.38,
-    0.18,
-    Math.PI * 0.12,
-    Math.PI * 0.88,
-    false,
-    0
-);
-
-const mouthPoints = mouthCurve.getPoints(32);
-
-const mouthGeometry = new THREE.BufferGeometry().setFromPoints(
-    mouthPoints.map(p => new THREE.Vector3(p.x, p.y, 0))
-);
-
-const mouthMaterial = new THREE.LineBasicMaterial({
-    color: 0x080909,
-    linewidth: 2
-});
-
-const mouth = new THREE.Line(
-    mouthGeometry,
-    mouthMaterial
-);
-
-mouth.position.set(0, 0.36, 1.42);
-mouth.scale.set(1, 0.7, 1);
-
-character.add(mouth);
-
-// --------------------------------------------------
-// GLASSES
-// --------------------------------------------------
-
-function createGlassesFrame(x) {
-
-    const curve = new THREE.EllipseCurve(
-        0,
-        0,
-        0.62,
-        0.48,
-        0,
-        Math.PI * 2,
-        false,
-        0
-    );
-
-    const points = curve.getPoints(80);
-
-    const geometry = new THREE.BufferGeometry().setFromPoints(
-        points.map(p =>
-            new THREE.Vector3(
-                p.x + x,
-                p.y + 1.1,
-                1.48
-            )
+// ======================================================
+// MATERIAL
+// 면 없음.
+// 선만 사용.
+// ======================================================
+
+const whiteLine =
+    new THREE.LineBasicMaterial({
+        color: 0xdfeee5,
+        transparent: true,
+        opacity: 0.82
+    });
+
+
+const greenLine =
+    new THREE.LineBasicMaterial({
+        color: 0x65ff9b,
+        transparent: true,
+        opacity: 0.95
+    });
+
+
+// ======================================================
+// LINE FUNCTION
+// ======================================================
+
+function createLine(
+    points,
+    material,
+    closed = false
+) {
+
+    const geometry =
+        new THREE.BufferGeometry();
+
+    geometry.setFromPoints(
+        points.map(
+            point =>
+                new THREE.Vector3(
+                    point[0],
+                    point[1],
+                    point[2] || 0
+                )
         )
     );
 
-    const material = new THREE.LineBasicMaterial({
-        color: 0x9affb8
-    });
+    const object = closed
+        ? new THREE.LineLoop(
+            geometry,
+            material
+        )
+        : new THREE.Line(
+            geometry,
+            material
+        );
 
-    const frame = new THREE.LineLoop(
-        geometry,
-        material
-    );
+    scene.add(object);
 
-    character.add(frame);
+    return object;
 }
 
-createGlassesFrame(-0.55);
-createGlassesFrame(0.55);
 
-// --------------------------------------------------
+// ======================================================
+// ELLIPSE FUNCTION
+// ======================================================
+
+function createEllipse(
+    centerX,
+    centerY,
+    radiusX,
+    radiusY,
+    z,
+    material
+) {
+
+    const points = [];
+
+    const segments = 80;
+
+    for (let i = 0; i <= segments; i++) {
+
+        const angle =
+            Math.PI * 2 * i / segments;
+
+        points.push([
+            centerX +
+                Math.cos(angle) * radiusX,
+
+            centerY +
+                Math.sin(angle) * radiusY,
+
+            z
+        ]);
+    }
+
+    return createLine(
+        points,
+        material,
+        true
+    );
+}
+
+
+// ======================================================
+// CHARACTER GROUP
+// ======================================================
+
+const character =
+    new THREE.Group();
+
+character.position.set(
+    0,
+    0.15,
+    0
+);
+
+scene.add(character);
+
+
+// ======================================================
+// HEAD OUTLINE
+// ======================================================
+
+const headPoints = [];
+
+const headWidth = 1.42;
+const headHeight = 1.72;
+
+for (let i = 0; i <= 100; i++) {
+
+    const angle =
+        Math.PI * 2 * i / 100;
+
+    const x =
+        Math.cos(angle) *
+        headWidth;
+
+    const y =
+        Math.sin(angle) *
+        headHeight;
+
+    headPoints.push([
+        x,
+        y + 0.55,
+        0
+    ]);
+}
+
+const head =
+    createLine(
+        headPoints,
+        whiteLine,
+        true
+    );
+
+character.add(head);
+
+scene.remove(head);
+
+
+// ======================================================
+// HAIR TOP
+// ======================================================
+
+const hairPoints = [];
+
+for (let i = 0; i <= 60; i++) {
+
+    const angle =
+        Math.PI * i / 60;
+
+    const x =
+        Math.cos(angle) * 1.42;
+
+    const y =
+        Math.sin(angle) * 0.86 + 1.68;
+
+    hairPoints.push([
+        x,
+        y,
+        0.04
+    ]);
+}
+
+const hair =
+    createLine(
+        hairPoints,
+        whiteLine
+    );
+
+character.add(hair);
+
+scene.remove(hair);
+
+
+// ======================================================
+// HAIR LEFT
+// ======================================================
+
+const hairLeft =
+    createLine([
+        [-1.42, 1.68, 0.04],
+        [-1.48, 1.30, 0.04],
+        [-1.46, 0.90, 0.04],
+        [-1.35, 0.48, 0.04],
+        [-1.18, 0.22, 0.04]
+    ], whiteLine);
+
+character.add(hairLeft);
+
+scene.remove(hairLeft);
+
+
+// ======================================================
+// HAIR RIGHT
+// ======================================================
+
+const hairRight =
+    createLine([
+        [1.42, 1.68, 0.04],
+        [1.48, 1.30, 0.04],
+        [1.46, 0.90, 0.04],
+        [1.35, 0.48, 0.04],
+        [1.18, 0.22, 0.04]
+    ], whiteLine);
+
+character.add(hairRight);
+
+scene.remove(hairRight);
+
+
+// ======================================================
+// HAIR PART
+// ======================================================
+
+const hairPartLeft =
+    createLine([
+        [0, 2.54, 0.05],
+        [-0.16, 2.30, 0.05],
+        [-0.38, 2.06, 0.05]
+    ], whiteLine);
+
+character.add(hairPartLeft);
+
+scene.remove(hairPartLeft);
+
+
+const hairPartRight =
+    createLine([
+        [0, 2.54, 0.05],
+        [0.18, 2.30, 0.05],
+        [0.48, 2.08, 0.05]
+    ], whiteLine);
+
+character.add(hairPartRight);
+
+scene.remove(hairPartRight);
+
+
+// ======================================================
+// GLASSES
+// ======================================================
+
+const glassesLeft =
+    createEllipse(
+        -0.58,
+        0.98,
+        0.63,
+        0.48,
+        0.20,
+        greenLine
+    );
+
+character.add(glassesLeft);
+
+scene.remove(glassesLeft);
+
+
+const glassesRight =
+    createEllipse(
+        0.58,
+        0.98,
+        0.63,
+        0.48,
+        0.20,
+        greenLine
+    );
+
+character.add(glassesRight);
+
+scene.remove(glassesRight);
+
+
+// ======================================================
 // GLASSES BRIDGE
-// --------------------------------------------------
+// ======================================================
 
-const bridgeGeometry = new THREE.CapsuleGeometry(
-    0.045,
-    0.34,
-    8,
-    16
-);
-
-const bridge = new THREE.Mesh(
-    bridgeGeometry,
-    greenMaterial
-);
-
-bridge.rotation.z = Math.PI / 2;
-bridge.position.set(0, 1.1, 1.48);
+const bridge =
+    createLine([
+        [-0.07, 0.98, 0.20],
+        [0.07, 0.98, 0.20]
+    ], greenLine);
 
 character.add(bridge);
 
-// --------------------------------------------------
+scene.remove(bridge);
+
+
+// ======================================================
 // GLASSES TEMPLES
-// --------------------------------------------------
+// ======================================================
 
-function createTemple(x) {
+const templeLeft =
+    createLine([
+        [-1.17, 1.04, 0.18],
+        [-1.40, 1.10, 0.08]
+    ], greenLine);
 
-    const geometry = new THREE.CylinderGeometry(
-        0.035,
-        0.035,
-        0.85,
-        16
+character.add(templeLeft);
+
+scene.remove(templeLeft);
+
+
+const templeRight =
+    createLine([
+        [1.17, 1.04, 0.18],
+        [1.40, 1.10, 0.08]
+    ], greenLine);
+
+character.add(templeRight);
+
+scene.remove(templeRight);
+
+
+// ======================================================
+// EYES
+// ======================================================
+
+const eyeLeft =
+    createEllipse(
+        -0.55,
+        0.98,
+        0.25,
+        0.34,
+        0.12,
+        whiteLine
     );
 
-    const temple = new THREE.Mesh(
-        geometry,
-        greenMaterial
+character.add(eyeLeft);
+
+scene.remove(eyeLeft);
+
+
+const eyeRight =
+    createEllipse(
+        0.55,
+        0.98,
+        0.25,
+        0.34,
+        0.12,
+        whiteLine
     );
 
-    temple.rotation.z = Math.PI / 2;
+character.add(eyeRight);
 
-    temple.position.set(
-        x,
-        1.1,
-        1.32
-    );
+scene.remove(eyeRight);
 
-    character.add(temple);
+
+// ======================================================
+// NOSE
+// ======================================================
+
+const nose =
+    createLine([
+        [0, 0.86, 0.22],
+        [-0.08, 0.58, 0.22],
+        [0, 0.46, 0.22],
+        [0.08, 0.58, 0.22],
+        [0, 0.86, 0.22]
+    ], whiteLine);
+
+character.add(nose);
+
+scene.remove(nose);
+
+
+// ======================================================
+// MOUTH
+// ======================================================
+
+const mouthPoints = [];
+
+for (let i = 0; i <= 40; i++) {
+
+    const angle =
+        Math.PI * i / 40;
+
+    mouthPoints.push([
+        Math.cos(angle) * 0.38,
+        0.08 -
+            Math.sin(angle) * 0.13,
+        0.22
+    ]);
 }
 
-createTemple(-1.18);
-createTemple(1.18);
+const mouth =
+    createLine(
+        mouthPoints,
+        whiteLine
+    );
 
-// --------------------------------------------------
-// OUTER RING
-// --------------------------------------------------
+character.add(mouth);
 
-const ringGeometry = new THREE.TorusGeometry(
-    2.45,
-    0.035,
-    20,
-    160
-);
+scene.remove(mouth);
 
-const ring = new THREE.Mesh(
-    ringGeometry,
-    greenMaterial
-);
 
-ring.rotation.x = Math.PI / 2;
+// ======================================================
+// NECK
+// ======================================================
 
-ring.position.set(0, 0.55, -0.35);
+const neckLeft =
+    createLine([
+        [-0.38, -0.85, 0],
+        [-0.36, -1.15, 0],
+        [-0.28, -1.40, 0]
+    ], whiteLine);
 
-scene.add(ring);
+character.add(neckLeft);
 
-// --------------------------------------------------
+scene.remove(neckLeft);
+
+
+const neckRight =
+    createLine([
+        [0.38, -0.85, 0],
+        [0.36, -1.15, 0],
+        [0.28, -1.40, 0]
+    ], whiteLine);
+
+character.add(neckRight);
+
+scene.remove(neckRight);
+
+
+// ======================================================
+// SHOULDERS
+// ======================================================
+
+const shoulderPoints = [];
+
+for (let i = 0; i <= 80; i++) {
+
+    const angle =
+        Math.PI * i / 80;
+
+    shoulderPoints.push([
+        Math.cos(angle) * 1.65,
+        -1.55 +
+            Math.sin(angle) * 0.62,
+        -0.02
+    ]);
+}
+
+const shoulders =
+    createLine(
+        shoulderPoints,
+        whiteLine
+    );
+
+character.add(shoulders);
+
+scene.remove(shoulders);
+
+
+// ======================================================
+// BODY LEFT
+// ======================================================
+
+const bodyLeft =
+    createLine([
+        [-1.65, -1.55, -0.02],
+        [-1.58, -1.90, -0.02],
+        [-1.43, -2.15, -0.02],
+        [-1.20, -2.35, -0.02]
+    ], whiteLine);
+
+character.add(bodyLeft);
+
+scene.remove(bodyLeft);
+
+
+// ======================================================
+// BODY RIGHT
+// ======================================================
+
+const bodyRight =
+    createLine([
+        [1.65, -1.55, -0.02],
+        [1.58, -1.90, -0.02],
+        [1.43, -2.15, -0.02],
+        [1.20, -2.35, -0.02]
+    ], whiteLine);
+
+character.add(bodyRight);
+
+scene.remove(bodyRight);
+
+
+// ======================================================
+// OUTER CIRCLE
+// ======================================================
+
+const ringPoints = [];
+
+const ringRadius = 2.65;
+
+for (let i = 0; i <= 160; i++) {
+
+    const angle =
+        Math.PI * 2 * i / 160;
+
+    ringPoints.push([
+        Math.cos(angle) * ringRadius,
+        Math.sin(angle) * ringRadius,
+        -0.35
+    ]);
+}
+
+const ring =
+    createLine(
+        ringPoints,
+        greenLine,
+        true
+    );
+
+
+// ======================================================
 // CONTROLS
-// --------------------------------------------------
+// ======================================================
 
-const controls = new OrbitControls(
-    camera,
-    renderer.domElement
-);
+const controls =
+    new OrbitControls(
+        camera,
+        renderer.domElement
+    );
 
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
 
+controls.enablePan = false;
+
 controls.enableZoom = true;
+
 controls.minDistance = 5;
 controls.maxDistance = 10;
 
-controls.enablePan = false;
+controls.target.set(
+    0,
+    0.25,
+    0
+);
 
-controls.target.set(0, 0.55, 0);
 
-// --------------------------------------------------
+// ======================================================
 // RESIZE
-// --------------------------------------------------
+// ======================================================
 
-function resize() {
+window.addEventListener(
+    'resize',
+    () => {
 
-    const width = container.clientWidth;
-    const height = container.clientHeight;
+        const width =
+            container.clientWidth;
 
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
+        const height =
+            container.clientHeight;
 
-    renderer.setSize(width, height);
-}
+        camera.aspect =
+            width / height;
 
-window.addEventListener('resize', resize);
+        camera.updateProjectionMatrix();
 
-// --------------------------------------------------
+        renderer.setSize(
+            width,
+            height
+        );
+    }
+);
+
+
+// ======================================================
 // ANIMATION
-// --------------------------------------------------
+// ======================================================
 
-const clock = new THREE.Clock();
+const clock =
+    new THREE.Clock();
 
 function animate() {
 
-    requestAnimationFrame(animate);
+    requestAnimationFrame(
+        animate
+    );
 
-    const time = clock.getElapsedTime();
+    const time =
+        clock.getElapsedTime();
 
     character.rotation.y =
-        Math.sin(time * 0.35) * 0.08;
+        Math.sin(time * 0.35) * 0.05;
+
+    character.rotation.x =
+        Math.sin(time * 0.25) * 0.015;
 
     ring.rotation.z =
-        time * 0.08;
+        time * 0.06;
 
     controls.update();
 
-    renderer.render(scene, camera);
+    renderer.render(
+        scene,
+        camera
+    );
 }
 
 animate();
