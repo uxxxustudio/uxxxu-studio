@@ -1,633 +1,881 @@
-import * as THREE from "three";
-import { FontLoader } from "three/addons/loaders/FontLoader.js";
-import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
-import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
-
 /* =========================================================
-   HERO THREE.JS (Scroll-reactive U & X Parallax Effect)
+   UXXXU CHARACTER 3D TEST
+   - translucent 3D character
+   - holographic / wireframe feel
+   - green accent
+   - mouse interaction
 ========================================================= */
 
-export function initHero3D() {
-  const container = document.getElementById("character");
-  if (!container) return;
+export async function initHero3D() {
 
-  container.innerHTML = "";
+    const container =
+        document.getElementById("character");
 
-  const scene = new THREE.Scene();
-
-  const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
-  camera.position.set(0, 0, 15);
-
-  const renderer = new THREE.WebGLRenderer({
-    antialias: true,
-    alpha: true,
-    powerPreference: "high-performance",
-  });
-
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setClearColor(0x000000, 0);
-
-  container.appendChild(renderer.domElement);
-
-  const group = new THREE.Group();
-  scene.add(group);
-
-  /* =====================================================
-      1. 배경 공간 그리드 (실선)
-  ==================================================== */
-  function createSolidGridGeometry(width, height, stepX, stepY, curveAmount = 0.01) {
-    const points = [];
-    const resolution = 30;
-
-    for (let x = -width / 2; x <= width / 2; x += stepX) {
-      for (let i = 0; i < resolution; i++) {
-        const t1 = i / resolution, t2 = (i + 1) / resolution;
-        const y1 = -height / 2 + t1 * height, y2 = -height / 2 + t2 * height;
-        const z1 = (x * x * 0.8 + y1 * y1) * curveAmount - 3.0;
-        const z2 = (x * x * 0.8 + y2 * y2) * curveAmount - 3.0;
-        points.push(x, y1, z1, x, y2, z2);
-      }
+    if (!container) {
+        console.warn("character container not found");
+        return;
     }
 
-    for (let y = -height / 2; y <= height / 2; y += stepY) {
-      for (let i = 0; i < resolution; i++) {
-        const t1 = i / resolution, t2 = (i + 1) / resolution;
-        const x1 = -width / 2 + t1 * width, x2 = -width / 2 + t2 * width;
-        const z1 = (x1 * x1 * 0.8 + y * y) * curveAmount - 3.0;
-        const z2 = (x2 * x2 * 0.8 + y * y) * curveAmount - 3.0;
-        points.push(x1, y, z1, x2, y, z2);
-      }
-    }
+    try {
 
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute("position", new THREE.Float32BufferAttribute(points, 3));
-    return geometry;
-  }
-
-  const gridGroup = new THREE.Group();
-  gridGroup.position.set(0, 0, -3);
-
-  const gridWidth = 36, gridHeight = 22;
-  const stepX = 1.2, stepY = 1.2, curveFactor = 0.01;
-  const solidGridGeo = createSolidGridGeometry(gridWidth, gridHeight, stepX, stepY, curveFactor);
-
-  const gridMaterial = new THREE.LineBasicMaterial({
-    color: 0xB8B8B8,
-    transparent: true,
-    opacity: 0.5,
-  });
-
-  const gridLines = new THREE.LineSegments(solidGridGeo, gridMaterial);
-  gridGroup.add(gridLines);
-  scene.add(gridGroup);
-
-  const lineMat = new THREE.LineBasicMaterial({
-    color: 0x111111,
-    transparent: false,
-    opacity: 1.0,
-  });
-
-  const loader = new FontLoader();
-
-  loader.load(
-    "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
-    (font) => {
-      createLetterMesh("U", font, -2.9, -0.65, -0.42, 0.92, 0.0, true, 0.002);
-      createLetterMesh("X", font, 2.25, 0.55, 0.42, 0.88, 1.8, false, 0.003);
-      createLetterMesh("X", font, -2.3, 3.8, 0.35, 0.52, 3.6, false, 0.001);
-      createLetterMesh("X", font, 5.3, -3.2, 0.45, 0.55, 5.4, false, 0.004);
-      createLetterMesh("U", font, 6.2, 1.8, -0.75, 0.48, 7.2, true, 0.0035);
-    }
-  );
-
-  function createLetterMesh(character, font, x, y, rotationY, scale, timeOffset, isU, scrollSpeed) {
-    const geomOpts = { font: font, size: 4.1, depth: 0.38, curveSegments: isU ? 24 : 6, bevelEnabled: false };
-
-    const geometry = new TextGeometry(character, geomOpts);
-    geometry.computeBoundingBox();
-    const box = geometry.boundingBox;
-    geometry.translate(-(box.max.x + box.min.x) / 2, -(box.max.y + box.min.y) / 2, 0);
-
-    const letterGroup = new THREE.Group();
-    letterGroup.position.x = -1.5;
-
-    const material = new THREE.ShaderMaterial({
-      uniforms: {
-        uTime: { value: 0 },
-        uOffset: { value: timeOffset },
-        uIsU: { value: isU ? 1.0 : 0.0 },
-      },
-      vertexShader: `
-        varying vec3 vPosition;
-        varying vec3 vNormal;
-        void main() {
-          vPosition = position;
-          vNormal = normal;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragmentShader: `
-        uniform float uTime;
-        uniform float uOffset;
-        uniform float uIsU;
-        varying vec3 vPosition;
-        varying vec3 vNormal;
-
-        void main() {
-          if (abs(vNormal.z) > 0.1) { discard; }
-          float beam = 0.0;
-          if (uIsU > 0.5) {
-            float sideDir = (vPosition.x < 0.0) ? 1.0 : -1.0;
-            float flow = mod((vPosition.y * 0.2) + (uTime * 0.3 * sideDir) + (uOffset * 0.2), 1.0);
-            beam = smoothstep(0.12, 0.0, abs(flow - 0.5));
-          } else {
-            float angle = atan(vPosition.y, vPosition.x);
-            float sweep = mod((angle / 6.28318) - (uTime * 0.15) + (uOffset * 0.1), 1.0);
-            beam = smoothstep(0.12, 0.0, abs(sweep - 0.5));
-          }
-          vec3 baseColor = vec3(0.04, 0.04, 0.04);
-          vec3 neonGreen = vec3(0.12, 0.95, 0.45);
-          vec3 finalColor = mix(baseColor, neonGreen, beam);
-          float alpha = 0.08 + beam * 0.92;
-          gl_FragColor = vec4(finalColor, alpha);
-        }
-      `,
-      transparent: true,
-      side: THREE.DoubleSide,
-      depthWrite: false,
-    });
-
-    const fillMesh = new THREE.Mesh(geometry, material);
-    letterGroup.add(fillMesh);
-
-    const edges = new THREE.EdgesGeometry(geometry, isU ? 25 : 15);
-    const lineSegments = new THREE.LineSegments(edges, lineMat);
-    letterGroup.add(lineSegments);
-
-    letterGroup.position.set(x, y, 0);
-    letterGroup.scale.setScalar(scale);
-    letterGroup.rotation.y = rotationY;
-    letterGroup.rotation.x = -0.08;
-    
-    letterGroup.userData = { 
-      baseX: x, 
-      baseY: y, 
-      baseRotationY: rotationY, 
-      material: material,
-      scrollSpeed: scrollSpeed 
-    };
-    
-    group.add(letterGroup);
-  }
-
-  const target = { x: 0, y: 0 };
-  const mouse = { x: 0, y: 0 };
-
-  window.addEventListener(
-    "mousemove",
-    (e) => {
-      target.x = (e.clientX / window.innerWidth) * 2 - 1;
-      target.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    },
-    { passive: true }
-  );
-
-  function resize() {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    const isMobile = window.innerWidth < 768;
-    camera.aspect = width / height;
-    camera.position.z = isMobile ? 18.5 : 15;
-    camera.updateProjectionMatrix();
-
-    group.scale.setScalar(isMobile ? 0.68 : 1.0);
-    renderer.setSize(width, height);
-  }
-
-  window.addEventListener("resize", resize);
-
-  const clock = new THREE.Clock();
-
-  function animate() {
-    requestAnimationFrame(animate);
-
-    const time = clock.getElapsedTime();
-    const scrollY = window.scrollY || window.pageYOffset;
-
-    mouse.x += (target.x - mouse.x) * 0.08;
-    mouse.y += (target.y - mouse.y) * 0.08;
-
-    gridGroup.position.x = -mouse.x * 0.2;
-    gridGroup.position.y = -mouse.y * 0.15 + (scrollY * 0.001);
-
-    group.children.forEach((obj, index) => {
-      const p = obj.userData;
-      const scrollOffset = scrollY * p.scrollSpeed;
-
-      obj.position.x = p.baseX + Math.sin(time * 0.4 + index) * 0.06;
-      obj.position.y = (p.baseY - scrollOffset) + Math.cos(time * 0.5 + index) * 0.08;
-      
-      obj.rotation.y = p.baseRotationY + mouse.x * 0.2;
-      obj.rotation.x = -0.08 - mouse.y * 0.1;
-
-      if (p.material) {
-        p.material.uniforms.uTime.value = time;
-      }
-    });
-
-    renderer.render(scene, camera);
-  }
-
-  resize();
-  animate();
-}
+        const THREE =
+            await import("https://esm.sh/three@0.180.0");
 
 
-/* =========================================================
-   EXPERIENCE SECTION OBJECT (initSectionObject) - Responsive Fixed
-========================================================= */
+        /* =====================================================
+           SCENE
+        ===================================================== */
 
-export function initSectionObject(containerId, assetInput = "U") {
-  const container = document.getElementById(containerId);
-  if (!container) return;
+        const scene =
+            new THREE.Scene();
 
-  container.innerHTML = "";
 
-  const width = container.clientWidth || 300;
-  const height = container.clientHeight || 300;
+        /* =====================================================
+           CAMERA
+        ===================================================== */
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
-  camera.position.set(0, 0, 18);
+        const camera =
+            new THREE.PerspectiveCamera(
+                30,
+                container.clientWidth /
+                container.clientHeight,
+                0.1,
+                100
+            );
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setSize(width, height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setClearColor(0x000000, 0);
-  container.appendChild(renderer.domElement);
+        camera.position.set(
+            0,
+            0.15,
+            11
+        );
 
-  const lineMat = new THREE.LineBasicMaterial({
-    color: 0x111111,
-    transparent: false,
-    opacity: 1.0,
-  });
 
-  // [중요] 모바일 대응 및 반응형 Resize 처리 함수 정의
-  function handleResize() {
-    if (!container) return;
-    const w = container.clientWidth || 300;
-    const h = container.clientHeight || 300;
-    
-    // 모바일(768px 이하)일 때 3D 오브젝트 크기 비율 보정
-    const isMobile = window.innerWidth <= 768;
-    camera.aspect = w / h;
-    camera.position.z = isMobile ? 22 : 18; // 모바일에서 잘리지 않도록 멀리 배치
-    camera.updateProjectionMatrix();
+        /* =====================================================
+           RENDERER
+        ===================================================== */
 
-    renderer.setSize(w, h);
-  }
-
-  // 리사이즈 및 로드 이벤트 등록
-  window.addEventListener("resize", handleResize);
-  window.addEventListener("orientationchange", handleResize);
-
-  if (assetInput.length <= 2 && !assetInput.includes(".")) {
-    const loader = new FontLoader();
-    loader.load(
-      "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
-      (font) => {
-        const geomOpts = { font: font, size: 7.2, depth: 1.2, curveSegments: 24, bevelEnabled: false };
-        const geometry = new TextGeometry(assetInput, geomOpts);
-        geometry.computeBoundingBox();
-        const box = geometry.boundingBox;
-        geometry.translate(-(box.max.x + box.min.x) / 2, -(box.max.y + box.min.y) / 2, 0);
-
-        const characterGroup = new THREE.Group();
-
-        const material = new THREE.ShaderMaterial({
-          uniforms: {
-            uTime: { value: 0 },
-            uOffset: { value: 1.0 },
-            uIsU: { value: 1.0 },
-          },
-          vertexShader: `
-            varying vec3 vPosition;
-            varying vec3 vNormal;
-            void main() {
-              vPosition = position;
-              vNormal = normal;
-              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-            }
-          `,
-          fragmentShader: `
-            uniform float uTime;
-            uniform float uOffset;
-            uniform float uIsU;
-            varying vec3 vPosition;
-            varying vec3 vNormal;
-
-            void main() {
-              if (abs(vNormal.z) > 0.1) { discard; }
-              float sideDir = (vPosition.x < 0.0) ? 1.0 : -1.0;
-              float flow = mod((vPosition.y * 0.2) + (uTime * 0.3 * sideDir) + (uOffset * 0.2), 1.0);
-              float beam = smoothstep(0.12, 0.0, abs(flow - 0.5));
-
-              vec3 baseColor = vec3(0.04, 0.04, 0.04);
-              vec3 neonGreen = vec3(0.12, 0.95, 0.45);
-              vec3 finalColor = mix(baseColor, neonGreen, beam);
-              float alpha = 0.08 + beam * 0.92;
-              gl_FragColor = vec4(finalColor, alpha);
-            }
-          `,
-          transparent: true,
-          side: THREE.DoubleSide,
-          depthWrite: false,
-        });
-
-        const fillMesh = new THREE.Mesh(geometry, material);
-        characterGroup.add(fillMesh);
-
-        const edges = new THREE.EdgesGeometry(geometry, 25);
-        const lineSegments = new THREE.LineSegments(edges, lineMat);
-        characterGroup.add(lineSegments);
-
-        const wrapperGroup = new THREE.Group();
-        wrapperGroup.add(characterGroup);
-        scene.add(wrapperGroup);
-
-        const clock = new THREE.Clock();
-
-        function animate() {
-          requestAnimationFrame(animate);
-          const time = clock.getElapsedTime();
-          const scrollY = window.scrollY || window.pageYOffset;
-
-          const basePosY = -1.0; 
-          const scrollOffset = scrollY * 0.0015;
-
-          wrapperGroup.position.x = 0;
-          wrapperGroup.position.y = basePosY + scrollOffset + Math.sin(time * 0.4) * 0.12;
-          wrapperGroup.rotation.y += 0.005;
-
-          wrapperGroup.traverse((child) => {
-            if (child.material && child.material.uniforms && child.material.uniforms.uTime) {
-              child.material.uniforms.uTime.value = time;
-            }
-          });
-
-          renderer.render(scene, camera);
-        }
-        
-        handleResize(); // 최초 생성 후 크기 보정 호출
-        animate();
-      }
-    );
-  } else {
-    const svgLoader = new SVGLoader();
-    svgLoader.load(
-      assetInput,
-      (data) => {
-        const paths = data.paths;
-        const characterGroup = new THREE.Group();
-
-        paths.forEach((path) => {
-          const shapes = SVGLoader.createShapes(path);
-          shapes.forEach((shape) => {
-            const extrudeSettings = { depth: 1.2, bevelEnabled: false };
-            const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
-
-            const material = new THREE.ShaderMaterial({
-              uniforms: {
-                uTime: { value: 0 },
-                uOffset: { value: 1.0 },
-                uIsU: { value: 1.0 },
-              },
-              vertexShader: `
-                varying vec3 vPosition;
-                varying vec3 vNormal;
-                void main() {
-                  vPosition = position;
-                  vNormal = normal;
-                  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-                }
-              `,
-              fragmentShader: `
-                uniform float uTime;
-                uniform float uOffset;
-                uniform float uIsU;
-                varying vec3 vPosition;
-                varying vec3 vNormal;
-
-                void main() {
-                  if (abs(vNormal.z) > 0.1) { discard; }
-                  float sideDir = (vPosition.x < 0.0) ? 1.0 : -1.0;
-                  float flow = mod((vPosition.y * 0.2) + (uTime * 0.3 * sideDir) + (uOffset * 0.2), 1.0);
-                  float beam = smoothstep(0.12, 0.0, abs(flow - 0.5));
-
-                  vec3 baseColor = vec3(0.04, 0.04, 0.04);
-                  vec3 neonGreen = vec3(0.12, 0.95, 0.45);
-                  vec3 finalColor = mix(baseColor, neonGreen, beam);
-                  float alpha = 0.08 + beam * 0.92;
-                  gl_FragColor = vec4(finalColor, alpha);
-                }
-              `,
-              transparent: true,
-              side: THREE.DoubleSide,
-              depthWrite: false,
+        const renderer =
+            new THREE.WebGLRenderer({
+                antialias: true,
+                alpha: true
             });
 
-            const fillMesh = new THREE.Mesh(geometry, material);
-            characterGroup.add(fillMesh);
+        renderer.setPixelRatio(
+            Math.min(window.devicePixelRatio, 2)
+        );
 
-            const edges = new THREE.EdgesGeometry(geometry, 20);
-            const lineSegments = new THREE.LineSegments(edges, lineMat);
-            characterGroup.add(lineSegments);
-          });
-        });
+        renderer.setSize(
+            container.clientWidth,
+            container.clientHeight
+        );
 
-        characterGroup.scale.y = -1;
-        const box = new THREE.Box3().setFromObject(characterGroup);
-        const center = box.getCenter(new THREE.Vector3());
-        characterGroup.position.x = -center.x;
-        characterGroup.position.y = -center.y;
+        renderer.setClearColor(
+            0x000000,
+            0
+        );
 
-        const wrapperGroup = new THREE.Group();
-        wrapperGroup.add(characterGroup);
-        wrapperGroup.scale.setScalar(0.08);
-        scene.add(wrapperGroup);
+        container.appendChild(
+            renderer.domElement
+        );
 
-        const clock = new THREE.Clock();
 
-        function animate() {
-          requestAnimationFrame(animate);
-          const time = clock.getElapsedTime();
-          const scrollY = window.scrollY || window.pageYOffset;
+        /* =====================================================
+           MAIN GROUP
+        ===================================================== */
 
-          wrapperGroup.position.y = -1.0 + (scrollY * 0.0015) + Math.sin(time * 0.4) * 0.12;
-          wrapperGroup.rotation.y += 0.005;
+        const character =
+            new THREE.Group();
 
-          wrapperGroup.traverse((child) => {
-            if (child.material && child.material.uniforms && child.material.uniforms.uTime) {
-              child.material.uniforms.uTime.value = time;
-            }
-          });
+        scene.add(character);
 
-          renderer.render(scene, camera);
+
+        /* =====================================================
+           MATERIALS
+        ===================================================== */
+
+        const faceMaterial =
+            new THREE.MeshBasicMaterial({
+                color: 0xdfe2e3,
+                transparent: true,
+                opacity: 0.34,
+                side: THREE.DoubleSide,
+                depthWrite: false
+            });
+
+
+        const bodyMaterial =
+            new THREE.MeshBasicMaterial({
+                color: 0xcfd3d4,
+                transparent: true,
+                opacity: 0.24,
+                side: THREE.DoubleSide,
+                depthWrite: false
+            });
+
+
+        const darkMaterial =
+            new THREE.MeshBasicMaterial({
+                color: 0x080909,
+                transparent: true,
+                opacity: 0.88,
+                side: THREE.DoubleSide
+            });
+
+
+        const whiteLineMaterial =
+            new THREE.LineBasicMaterial({
+                color: 0xf5f7f7,
+                transparent: true,
+                opacity: 0.72
+            });
+
+
+        const greenMaterial =
+            new THREE.MeshBasicMaterial({
+                color: 0x19e878,
+                transparent: true,
+                opacity: 0.9
+            });
+
+
+        const greenLineMaterial =
+            new THREE.LineBasicMaterial({
+                color: 0x19e878,
+                transparent: true,
+                opacity: 0.95
+            });
+
+
+        /* =====================================================
+           HELPERS
+        ===================================================== */
+
+        function addWireObject(
+            geometry,
+            material,
+            lineMaterial = whiteLineMaterial,
+            threshold = 18
+        ) {
+
+            const mesh =
+                new THREE.Mesh(
+                    geometry,
+                    material
+                );
+
+            const edgesGeometry =
+                new THREE.EdgesGeometry(
+                    geometry,
+                    threshold
+                );
+
+            const edges =
+                new THREE.LineSegments(
+                    edgesGeometry,
+                    lineMaterial
+                );
+
+            const group =
+                new THREE.Group();
+
+            group.add(mesh);
+            group.add(edges);
+
+            character.add(group);
+
+            return group;
         }
 
-        handleResize(); // 최초 생성 후 크기 보정 호출
+
+        /* =====================================================
+           HEAD
+        ===================================================== */
+
+        const headGeometry =
+            new THREE.SphereGeometry(
+                2.05,
+                48,
+                32
+            );
+
+        const head =
+            addWireObject(
+                headGeometry,
+                faceMaterial,
+                whiteLineMaterial,
+                22
+            );
+
+        head.scale.set(
+            0.86,
+            1.04,
+            0.78
+        );
+
+        head.position.set(
+            0,
+            1.45,
+            0
+        );
+
+
+        /* =====================================================
+           HAIR
+           둥근 젊은 느낌의 짧은 헤어
+        ===================================================== */
+
+        const hairGeometry =
+            new THREE.SphereGeometry(
+                2.13,
+                48,
+                32,
+                0,
+                Math.PI * 2,
+                0,
+                Math.PI * 0.58
+            );
+
+        const hair =
+            new THREE.Mesh(
+                hairGeometry,
+                darkMaterial
+            );
+
+        hair.scale.set(
+            0.87,
+            1.02,
+            0.80
+        );
+
+        hair.position.set(
+            0,
+            2.0,
+            -0.12
+        );
+
+        character.add(hair);
+
+
+        /* =====================================================
+           SIDE HAIR
+        ===================================================== */
+
+        function createHairSide(x) {
+
+            const geometry =
+                new THREE.CapsuleGeometry(
+                    0.48,
+                    1.45,
+                    8,
+                    16
+                );
+
+            const side =
+                new THREE.Mesh(
+                    geometry,
+                    darkMaterial
+                );
+
+            side.position.set(
+                x,
+                0.95,
+                -0.02
+            );
+
+            side.rotation.z =
+                x < 0 ? -0.08 : 0.08;
+
+            side.scale.set(
+                0.85,
+                1,
+                0.7
+            );
+
+            character.add(side);
+        }
+
+        createHairSide(-1.58);
+        createHairSide(1.58);
+
+
+        /* =====================================================
+           GLASSES
+        ===================================================== */
+
+        function createGlassesLens(x) {
+
+            const shape =
+                new THREE.Shape();
+
+            const w = 0.88;
+            const h = 0.68;
+            const r = 0.22;
+
+            shape.moveTo(
+                -w + r,
+                -h
+            );
+
+            shape.lineTo(
+                w - r,
+                -h
+            );
+
+            shape.quadraticCurveTo(
+                w,
+                -h,
+                w,
+                -h + r
+            );
+
+            shape.lineTo(
+                w,
+                h - r
+            );
+
+            shape.quadraticCurveTo(
+                w,
+                h,
+                w - r,
+                h
+            );
+
+            shape.lineTo(
+                -w + r,
+                h
+            );
+
+            shape.quadraticCurveTo(
+                -w,
+                h,
+                -w,
+                h - r
+            );
+
+            shape.lineTo(
+                -w,
+                -h + r
+            );
+
+            shape.quadraticCurveTo(
+                -w,
+                -h,
+                -w + r,
+                -h
+            );
+
+
+            const geometry =
+                new THREE.ExtrudeGeometry(
+                    shape,
+                    {
+                        depth: 0.08,
+                        bevelEnabled: false
+                    }
+                );
+
+
+            const lens =
+                new THREE.Mesh(
+                    geometry,
+                    darkMaterial
+                );
+
+            lens.position.set(
+                x,
+                1.55,
+                1.45
+            );
+
+            lens.scale.set(
+                0.62,
+                0.68,
+                1
+            );
+
+            character.add(lens);
+
+
+            const edges =
+                new THREE.LineSegments(
+                    new THREE.EdgesGeometry(
+                        geometry
+                    ),
+                    greenLineMaterial
+                );
+
+            edges.position.copy(
+                lens.position
+            );
+
+            edges.scale.copy(
+                lens.scale
+            );
+
+            character.add(edges);
+        }
+
+
+        createGlassesLens(-0.82);
+        createGlassesLens(0.82);
+
+
+        /* =====================================================
+           GLASSES BRIDGE
+        ===================================================== */
+
+        const bridgeGeometry =
+            new THREE.BoxGeometry(
+                0.55,
+                0.08,
+                0.08
+            );
+
+        const bridge =
+            new THREE.Mesh(
+                bridgeGeometry,
+                greenMaterial
+            );
+
+        bridge.position.set(
+            0,
+            1.58,
+            1.48
+        );
+
+        character.add(bridge);
+
+
+        /* =====================================================
+           NOSE
+        ===================================================== */
+
+        const noseGeometry =
+            new THREE.SphereGeometry(
+                0.16,
+                20,
+                12
+            );
+
+        const nose =
+            new THREE.Mesh(
+                noseGeometry,
+                faceMaterial
+            );
+
+        nose.scale.set(
+            0.75,
+            1.5,
+            1.2
+        );
+
+        nose.position.set(
+            0,
+            0.95,
+            1.52
+        );
+
+        character.add(nose);
+
+
+        /* =====================================================
+           SMILE
+        ===================================================== */
+
+        const smileCurve =
+            new THREE.QuadraticBezierCurve3(
+                new THREE.Vector3(
+                    -0.42,
+                    0.63,
+                    1.48
+                ),
+                new THREE.Vector3(
+                    0,
+                    0.45,
+                    1.58
+                ),
+                new THREE.Vector3(
+                    0.42,
+                    0.63,
+                    1.48
+                )
+            );
+
+        const smileGeometry =
+            new THREE.BufferGeometry().setFromPoints(
+                smileCurve.getPoints(24)
+            );
+
+        const smile =
+            new THREE.Line(
+                smileGeometry,
+                whiteLineMaterial
+            );
+
+        character.add(smile);
+
+
+        /* =====================================================
+           NECK
+        ===================================================== */
+
+        const neckGeometry =
+            new THREE.CylinderGeometry(
+                0.58,
+                0.68,
+                1.0,
+                32
+            );
+
+        const neck =
+            addWireObject(
+                neckGeometry,
+                bodyMaterial,
+                whiteLineMaterial,
+                20
+            );
+
+        neck.position.set(
+            0,
+            -0.05,
+            0
+        );
+
+
+        /* =====================================================
+           BODY
+           둥근 상체
+        ===================================================== */
+
+        const bodyGeometry =
+            new THREE.SphereGeometry(
+                2.25,
+                48,
+                32
+            );
+
+        const body =
+            addWireObject(
+                bodyGeometry,
+                bodyMaterial,
+                whiteLineMaterial,
+                22
+            );
+
+        body.scale.set(
+            1.32,
+            0.82,
+            0.72
+        );
+
+        body.position.set(
+            0,
+            -1.28,
+            0
+        );
+
+
+        /* =====================================================
+           SHOULDERS
+        ===================================================== */
+
+        const shoulderGeometry =
+            new THREE.SphereGeometry(
+                1.35,
+                32,
+                20
+            );
+
+        const shoulder =
+            addWireObject(
+                shoulderGeometry,
+                bodyMaterial,
+                whiteLineMaterial,
+                20
+            );
+
+        shoulder.scale.set(
+            1.65,
+            0.45,
+            0.72
+        );
+
+        shoulder.position.set(
+            0,
+            -0.52,
+            0
+        );
+
+
+        /* =====================================================
+           GREEN HOLOGRAM RING
+        ===================================================== */
+
+        const ringGeometry =
+            new THREE.TorusGeometry(
+                2.55,
+                0.035,
+                12,
+                96
+            );
+
+        const ring =
+            new THREE.Mesh(
+                ringGeometry,
+                greenLineMaterial
+            );
+
+        ring.rotation.x =
+            Math.PI / 2;
+
+        ring.position.set(
+            0,
+            -0.72,
+            0
+        );
+
+        character.add(ring);
+
+
+        /* =====================================================
+           SECOND SUBTLE RING
+        ===================================================== */
+
+        const ring2Geometry =
+            new THREE.TorusGeometry(
+                3.35,
+                0.018,
+                10,
+                96
+            );
+
+        const ring2 =
+            new THREE.Mesh(
+                ring2Geometry,
+                greenLineMaterial
+            );
+
+        ring2.rotation.x =
+            Math.PI / 2;
+
+        ring2.position.set(
+            0,
+            0.55,
+            -0.3
+        );
+
+        ring2.scale.set(
+            1,
+            0.32,
+            1
+        );
+
+        character.add(ring2);
+
+
+        /* =====================================================
+           HOLOGRAM HALO
+        ===================================================== */
+
+        const haloGeometry =
+            new THREE.RingGeometry(
+                3.55,
+                3.59,
+                96
+            );
+
+        const haloMaterial =
+            new THREE.MeshBasicMaterial({
+                color: 0x6c7777,
+                transparent: true,
+                opacity: 0.18,
+                side: THREE.DoubleSide
+            });
+
+        const halo =
+            new THREE.Mesh(
+                haloGeometry,
+                haloMaterial
+            );
+
+        halo.position.set(
+            0,
+            0.7,
+            -1.1
+        );
+
+        halo.rotation.y =
+            Math.PI;
+
+        character.add(halo);
+
+
+        /* =====================================================
+           CHARACTER POSITION
+        ===================================================== */
+
+        character.scale.setScalar(
+            1.0
+        );
+
+        character.position.set(
+            0,
+            -0.15,
+            0
+        );
+
+
+        /* =====================================================
+           MOUSE
+        ===================================================== */
+
+        const mouse = {
+            x: 0,
+            y: 0
+        };
+
+        const targetMouse = {
+            x: 0,
+            y: 0
+        };
+
+
+        window.addEventListener(
+            "mousemove",
+            (event) => {
+
+                targetMouse.x =
+                    (event.clientX /
+                    window.innerWidth) * 2 - 1;
+
+                targetMouse.y =
+                    (event.clientY /
+                    window.innerHeight) * 2 - 1;
+
+            }
+        );
+
+
+        /* =====================================================
+           RESIZE
+        ===================================================== */
+
+        function resize() {
+
+            const width =
+                container.clientWidth;
+
+            const height =
+                container.clientHeight;
+
+            if (!width || !height) return;
+
+            camera.aspect =
+                width / height;
+
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(
+                width,
+                height
+            );
+        }
+
+
+        window.addEventListener(
+            "resize",
+            resize
+        );
+
+
+        /* =====================================================
+           ANIMATION
+        ===================================================== */
+
+        const clock =
+            new THREE.Clock();
+
+
+        function animate() {
+
+            requestAnimationFrame(
+                animate
+            );
+
+            const time =
+                clock.getElapsedTime();
+
+
+            mouse.x +=
+                (targetMouse.x - mouse.x) *
+                0.035;
+
+            mouse.y +=
+                (targetMouse.y - mouse.y) *
+                0.035;
+
+
+            /* 전체 캐릭터의 미세한 움직임 */
+
+            character.rotation.y =
+                mouse.x * 0.16;
+
+            character.rotation.x =
+                mouse.y * 0.06;
+
+
+            character.position.y =
+                -0.15 +
+                Math.sin(time * 0.7) *
+                0.08;
+
+
+            /* 링은 조금 더 느리게 */
+
+            ring.rotation.z =
+                time * 0.12;
+
+            ring2.rotation.z =
+                -time * 0.08;
+
+
+            /* 홀로그램 링 밝기 변화 */
+
+            greenLineMaterial.opacity =
+                0.72 +
+                Math.sin(time * 1.4) *
+                0.18;
+
+
+            renderer.render(
+                scene,
+                camera
+            );
+        }
+
+
+        resize();
         animate();
-      }
-    );
-  }
-}
 
-/* =========================================================
-   PORTFOLIO SECTION 3D OBJECT (initPortfolio3D) - "W" (모션 및 잘림 수정 버전)
-========================================================= */
-export function initPortfolio3D(containerId) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
 
-  container.innerHTML = "";
+    } catch (error) {
 
-  const width = container.clientWidth || 400;
-  const height = container.clientHeight || 400;
+        console.error(
+            "Character Three.js initialization failed:",
+            error
+        );
 
-  const scene = new THREE.Scene();
-  // 카메라 거리를 18 -> 22로 멀게 해서 윗부분이 잘리지 않도록 여유를 줌
-  const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
-  camera.position.set(0, 0, 22);
-
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setSize(width, height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setClearColor(0x000000, 0);
-  container.appendChild(renderer.domElement);
-
-  const lineMat = new THREE.LineBasicMaterial({
-    color: 0x111111,
-    transparent: false,
-    opacity: 1.0,
-  });
-
-  const loader = new FontLoader();
-  loader.load(
-    "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/fonts/helvetiker_bold.typeface.json",
-    (font) => {
-      const geomOpts = { font: font, size: 7.2, depth: 1.2, curveSegments: 24, bevelEnabled: false };
-      const geometry = new TextGeometry("W", geomOpts);
-      geometry.computeBoundingBox();
-      const box = geometry.boundingBox;
-      geometry.translate(-(box.max.x + box.min.x) / 2, -(box.max.y + box.min.y) / 2, 0);
-
-      const characterGroup = new THREE.Group();
-
-      const material = new THREE.ShaderMaterial({
-        uniforms: {
-          uTime: { value: 0 },
-          uOffset: { value: 1.5 },
-          uIsU: { value: 1.0 },
-        },
-        vertexShader: `
-          varying vec3 vPosition;
-          varying vec3 vNormal;
-          void main() {
-            vPosition = position;
-            vNormal = normal;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-          }
-        `,
-        fragmentShader: `
-          uniform float uTime;
-          uniform float uOffset;
-          uniform float uIsU;
-          varying vec3 vPosition;
-          varying vec3 vNormal;
-
-          void main() {
-            if (abs(vNormal.z) > 0.1) { discard; }
-            float sideDir = (vPosition.x < 0.0) ? 1.0 : -1.0;
-            float flow = mod((vPosition.y * 0.2) + (uTime * 0.3 * sideDir) + (uOffset * 0.2), 1.0);
-            float beam = smoothstep(0.12, 0.0, abs(flow - 0.5));
-
-            vec3 baseColor = vec3(0.04, 0.04, 0.04);
-            vec3 neonGreen = vec3(0.12, 0.95, 0.45);
-            vec3 finalColor = mix(baseColor, neonGreen, beam);
-            float alpha = 0.08 + beam * 0.92;
-            gl_FragColor = vec4(finalColor, alpha);
-          }
-        `,
-        transparent: true,
-        side: THREE.DoubleSide,
-        depthWrite: false,
-      });
-
-      const fillMesh = new THREE.Mesh(geometry, material);
-      characterGroup.add(fillMesh);
-
-      const edges = new THREE.EdgesGeometry(geometry, 25);
-      const lineSegments = new THREE.LineSegments(edges, lineMat);
-      characterGroup.add(lineSegments);
-
-      const wrapperGroup = new THREE.Group();
-      wrapperGroup.add(characterGroup);
-      scene.add(wrapperGroup);
-
-      // 마우스 인터랙션 좌표 변수
-      let mouseX = 0;
-      let mouseY = 0;
-      window.addEventListener("mousemove", (e) => {
-        mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-        mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
-      });
-
-      const clock = new THREE.Clock();
-
-      function animate() {
-        requestAnimationFrame(animate);
-        const time = clock.getElapsedTime();
-        const scrollY = window.scrollY || window.pageYOffset;
-        const scrollOffset = scrollY * 0.0010;
-
-        // 뱅뱅 돌지 않고, 마우스 움직임과 부드러운 호흡(상하/좌우 미세한 틸트)만 주도록 변경
-        const targetRotationY = mouseX * 0.3; // 마우스 방향으로 살짝개 고개 돌림
-        const targetRotationX = mouseY * 0.3;
-
-        wrapperGroup.rotation.y += (targetRotationY - wrapperGroup.rotation.y) * 0.05;
-        wrapperGroup.rotation.x += (targetRotationX - wrapperGroup.rotation.x) * 0.05;
-
-        // 위아래로 은은하게 떠있는 모션 (숨쉬듯 부드럽게)
-        wrapperGroup.position.y = scrollOffset + Math.sin(time * 1.2) * 0.15;
-
-        wrapperGroup.traverse((child) => {
-          if (child.material && child.material.uniforms && child.material.uniforms.uTime) {
-            child.material.uniforms.uTime.value = time;
-          }
-        });
-
-        renderer.render(scene, camera);
-      }
-      animate();
     }
-  );
+}
 
-  window.addEventListener("resize", () => {
-    const newWidth = container.clientWidth || 400;
-    const newHeight = container.clientHeight || 400;
-    camera.aspect = newWidth / newHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(newWidth, newHeight);
-  });
-}
+
 /* =========================================================
-   PROFILE 3D DUMMY (에러 방지용)
+   INITIALIZE
 ========================================================= */
-export function initProfile3D(containerId) {
-    // initProfile3D 호출 시 스크립트가 멈추는 에러를 막아줍니다.
-}
-// 모바일 화면 로드시 Three.js 리사이즈 이벤트 강제 호출
-window.addEventListener('load', () => {
-    window.dispatchEvent(new Event('resize'));
-});
-initHero3D();
+
+window.addEventListener(
+    "DOMContentLoaded",
+    () => {
+        initHero3D();
+    }
+);
