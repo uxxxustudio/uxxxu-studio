@@ -1,680 +1,322 @@
-import * as THREE from 'three';
+// js/hero3d-test.js
+// UXXXU 3D Character TEST
+// 원본 SVG를 면으로 변환하지 않고,
+// 여러 깊이 레이어 + 3D transform + 마우스 인터랙션으로 입체감 구현
 
-/* =========================================================
-   UXXXU 3D CHARACTER TEST
-   Source: assets/images/ne.svg
-
-   - Uses the original SVG artwork.
-   - No reconstructed 3D character geometry.
-   - Transparent line artwork only.
-   - Subtle 3D curvature + mouse parallax.
-========================================================= */
-
-const container = document.getElementById('character');
+const container = document.getElementById("character");
 
 if (!container) {
-    throw new Error('#character element not found.');
+    throw new Error("#character element not found.");
 }
 
-/* ---------------------------------------------------------
-   Renderer
---------------------------------------------------------- */
+// --------------------------------------------------
+// 기본 설정
+// --------------------------------------------------
 
-const renderer = new THREE.WebGLRenderer({
-    antialias: true,
-    alpha: true,
-    powerPreference: 'high-performance'
-});
+const SVG_PATH = "../assets/images/ne.svg";
 
-renderer.setPixelRatio(
-    Math.min(window.devicePixelRatio || 1, 2)
-);
+const LAYER_COUNT = 9;
+const DEPTH = 2.2;
 
-renderer.setSize(
-    container.clientWidth,
-    container.clientHeight
-);
+let mouseX = 0;
+let mouseY = 0;
 
-renderer.setClearColor(0x000000, 0);
+let targetRotateX = 0;
+let targetRotateY = 0;
 
-renderer.outputColorSpace = THREE.SRGBColorSpace;
+let currentRotateX = 0;
+let currentRotateY = 0;
 
-container.appendChild(renderer.domElement);
+let currentMoveX = 0;
+let currentMoveY = 0;
 
 
-/* ---------------------------------------------------------
-   Scene
---------------------------------------------------------- */
+// --------------------------------------------------
+// 컨테이너
+// --------------------------------------------------
 
-const scene = new THREE.Scene();
+container.innerHTML = "";
 
+container.style.position = "relative";
+container.style.width = "100%";
+container.style.height = "100%";
+container.style.overflow = "visible";
 
-/* ---------------------------------------------------------
-   Camera
---------------------------------------------------------- */
-
-const camera = new THREE.PerspectiveCamera(
-    38,
-    container.clientWidth / container.clientHeight,
-    0.1,
-    100
-);
-
-camera.position.set(0, 0, 7);
-camera.lookAt(0, 0, 0);
+container.style.perspective = "1400px";
+container.style.perspectiveOrigin = "50% 50%";
 
 
-/* ---------------------------------------------------------
-   SVG texture
---------------------------------------------------------- */
+// --------------------------------------------------
+// 3D 무대
+// --------------------------------------------------
 
-const textureLoader = new THREE.TextureLoader();
+const stage = document.createElement("div");
 
-const characterTexture = textureLoader.load(
-    './assets/images/ne.svg',
-    (texture) => {
+stage.style.position = "absolute";
+stage.style.left = "50%";
+stage.style.top = "50%";
 
-        texture.colorSpace = THREE.SRGBColorSpace;
+stage.style.width = "min(82vw, 900px)";
+stage.style.height = "min(82vh, 900px)";
 
-        texture.minFilter = THREE.LinearFilter;
-        texture.magFilter = THREE.LinearFilter;
+stage.style.transformStyle = "preserve-3d";
 
-        texture.wrapS = THREE.ClampToEdgeWrapping;
-        texture.wrapT = THREE.ClampToEdgeWrapping;
+stage.style.transform =
+    "translate(-50%, -50%) translateZ(0)";
 
-        texture.needsUpdate = true;
+stage.style.willChange = "transform";
+
+container.appendChild(stage);
+
+
+// --------------------------------------------------
+// SVG 레이어 생성
+// --------------------------------------------------
+
+const layers = [];
+
+for (let i = 0; i < LAYER_COUNT; i++) {
+
+    const img = document.createElement("img");
+
+    img.src = SVG_PATH;
+
+    img.alt = "";
+
+    img.draggable = false;
+
+    img.style.position = "absolute";
+    img.style.left = "0";
+    img.style.top = "0";
+
+    img.style.width = "100%";
+    img.style.height = "100%";
+
+    img.style.objectFit = "contain";
+
+    img.style.display = "block";
+
+    img.style.pointerEvents = "none";
+
+    img.style.transformStyle = "preserve-3d";
+
+    img.style.userSelect = "none";
+
+    // ------------------------------------------------
+    // 뒤쪽 레이어
+    // ------------------------------------------------
+
+    const depth = (i - (LAYER_COUNT - 1)) * DEPTH;
+
+    img.style.transform =
+        `translate3d(0, 0, ${depth}px)`;
+
+    // 뒤로 갈수록 조금 어둡게
+    const normalized = i / (LAYER_COUNT - 1);
+
+    img.style.opacity =
+        String(0.16 + normalized * 0.84);
+
+    // ------------------------------------------------
+    // 앞쪽 레이어는 약간 밝게
+    // ------------------------------------------------
+
+    if (i === LAYER_COUNT - 1) {
+
+        img.style.filter = `
+            drop-shadow(0 0 3px rgba(220,255,230,.75))
+            drop-shadow(0 0 10px rgba(150,255,190,.35))
+        `;
+
+    } else {
+
+        img.style.filter = `
+            drop-shadow(0 0 2px rgba(120,255,170,.22))
+        `;
     }
-);
+
+    stage.appendChild(img);
+
+    layers.push({
+        element: img,
+        baseZ: depth
+    });
+}
 
 
-/* =========================================================
-   Shader
-   ---------------------------------------------------------
-   ne.svg contains black artwork with transparency.
+// --------------------------------------------------
+// 은은한 뒤쪽 Glow
+// --------------------------------------------------
 
-   We invert the RGB value:
-   black line -> white line
+const glow = document.createElement("img");
 
-   Transparency remains untouched.
-========================================================= */
+glow.src = SVG_PATH;
 
-const lineVertexShader = `
-    uniform float uBend;
-    uniform float uTime;
+glow.alt = "";
 
-    varying vec2 vUv;
+glow.draggable = false;
 
-    void main() {
+glow.style.position = "absolute";
+glow.style.left = "0";
+glow.style.top = "0";
 
-        vUv = uv;
+glow.style.width = "100%";
+glow.style.height = "100%";
 
-        vec3 p = position;
+glow.style.objectFit = "contain";
 
-        /*
-         * Very subtle horizontal curvature.
-         * Keeps the original artwork readable from the front.
-         */
-        float x = p.x;
+glow.style.pointerEvents = "none";
 
-        p.z += (x * x) * uBend;
+glow.style.opacity = "0.16";
 
-        /*
-         * Tiny breathing movement.
-         */
-        p.z += sin(uTime * 0.65) * 0.015;
-
-        gl_Position =
-            projectionMatrix *
-            modelViewMatrix *
-            vec4(p, 1.0);
-    }
+glow.style.filter = `
+    blur(12px)
+    brightness(1.4)
+    drop-shadow(0 0 22px rgba(130,255,180,.65))
 `;
 
+glow.style.transform =
+    "translate3d(0, 0, -28px) scale(1.015)";
 
-const lineFragmentShader = `
-    uniform sampler2D uTexture;
-    uniform float uOpacity;
-    uniform vec3 uColor;
-
-    varying vec2 vUv;
-
-    void main() {
-
-        vec4 tex = texture2D(
-            uTexture,
-            vUv
-        );
-
-        /*
-         * Original artwork is black.
-         * Convert black -> white/color.
-         */
-        float luminance =
-            dot(
-                tex.rgb,
-                vec3(
-                    0.299,
-                    0.587,
-                    0.114
-                )
-            );
-
-        float line =
-            1.0 - luminance;
-
-        /*
-         * Keep the original transparency.
-         */
-        float alpha =
-            line *
-            tex.a *
-            uOpacity;
-
-        if (alpha < 0.008) {
-            discard;
-        }
-
-        gl_FragColor = vec4(
-            uColor,
-            alpha
-        );
-    }
-`;
+stage.insertBefore(glow, stage.firstChild);
 
 
-/* =========================================================
-   Glow shader
-========================================================= */
+// --------------------------------------------------
+// 마우스 인터랙션
+// --------------------------------------------------
 
-const glowVertexShader = `
-    uniform float uBend;
+container.addEventListener("pointermove", (event) => {
 
-    varying vec2 vUv;
+    const rect = container.getBoundingClientRect();
 
-    void main() {
+    const x =
+        (event.clientX - rect.left) / rect.width;
 
-        vUv = uv;
+    const y =
+        (event.clientY - rect.top) / rect.height;
 
-        vec3 p = position;
+    mouseX = (x - 0.5) * 2;
+    mouseY = (y - 0.5) * 2;
 
-        float x = p.x;
+    // 너무 과하게 돌아가지 않도록 제한
+    targetRotateY = mouseX * 9;
+    targetRotateX = -mouseY * 7;
 
-        p.z += (x * x) * uBend;
-
-        /*
-         * Glow layer sits slightly behind.
-         */
-        p.z -= 0.035;
-
-        gl_Position =
-            projectionMatrix *
-            modelViewMatrix *
-            vec4(p, 1.0);
-    }
-`;
-
-
-const glowFragmentShader = `
-    uniform sampler2D uTexture;
-    uniform vec3 uColor;
-    uniform float uOpacity;
-
-    varying vec2 vUv;
-
-    void main() {
-
-        vec4 tex =
-            texture2D(
-                uTexture,
-                vUv
-            );
-
-        float luminance =
-            dot(
-                tex.rgb,
-                vec3(
-                    0.299,
-                    0.587,
-                    0.114
-                )
-            );
-
-        float line =
-            1.0 - luminance;
-
-        float alpha =
-            line *
-            tex.a *
-            uOpacity;
-
-        if (alpha < 0.003) {
-            discard;
-        }
-
-        gl_FragColor =
-            vec4(
-                uColor,
-                alpha
-            );
-    }
-`;
-
-
-/* ---------------------------------------------------------
-   Artwork group
---------------------------------------------------------- */
-
-const artwork = new THREE.Group();
-
-scene.add(artwork);
-
-
-/* ---------------------------------------------------------
-   Main line plane
---------------------------------------------------------- */
-
-const geometry = new THREE.PlaneGeometry(
-    5.8,
-    5.8 * (1024 / 1536),
-    48,
-    32
-);
-
-
-const lineMaterial = new THREE.ShaderMaterial({
-
-    uniforms: {
-
-        uTexture: {
-            value: characterTexture
-        },
-
-        uOpacity: {
-            value: 1.0
-        },
-
-        uColor: {
-            value: new THREE.Color(0xf3fff7)
-        },
-
-        uBend: {
-            value: 0.075
-        },
-
-        uTime: {
-            value: 0
-        }
-    },
-
-    vertexShader: lineVertexShader,
-
-    fragmentShader: lineFragmentShader,
-
-    transparent: true,
-
-    depthWrite: false,
-
-    depthTest: false,
-
-    side: THREE.DoubleSide
 });
 
 
-const characterPlane =
-    new THREE.Mesh(
-        geometry,
-        lineMaterial
-    );
+// --------------------------------------------------
+// 마우스가 화면 밖으로 나가면 원위치
+// --------------------------------------------------
 
-artwork.add(characterPlane);
+container.addEventListener("pointerleave", () => {
 
+    mouseX = 0;
+    mouseY = 0;
 
-/* =========================================================
-   Glow layers
-   ---------------------------------------------------------
-   Same original artwork, duplicated behind itself.
-========================================================= */
+    targetRotateX = 0;
+    targetRotateY = 0;
 
-function createGlow(
-    scale,
-    opacity,
-    z
-) {
+});
 
-    const glowMaterial =
-        new THREE.ShaderMaterial({
 
-            uniforms: {
-
-                uTexture: {
-                    value: characterTexture
-                },
-
-                uOpacity: {
-                    value: opacity
-                },
-
-                uColor: {
-                    value: new THREE.Color(
-                        0x8fffc0
-                    )
-                },
-
-                uBend: {
-                    value: 0.075
-                }
-            },
-
-            vertexShader:
-                glowVertexShader,
-
-            fragmentShader:
-                glowFragmentShader,
-
-            transparent: true,
-
-            depthWrite: false,
-
-            depthTest: false,
-
-            blending:
-                THREE.AdditiveBlending,
-
-            side:
-                THREE.DoubleSide
-        });
-
-
-    const mesh =
-        new THREE.Mesh(
-            geometry,
-            glowMaterial
-        );
-
-    mesh.scale.set(
-        scale,
-        scale,
-        scale
-    );
-
-    mesh.position.z = z;
-
-    artwork.add(mesh);
-
-    return mesh;
-}
-
-
-/*
- * Soft outer glow
- */
-createGlow(
-    1.018,
-    0.10,
-    -0.08
-);
-
-
-/*
- * Slightly stronger inner glow
- */
-createGlow(
-    1.008,
-    0.16,
-    -0.045
-);
-
-
-/* ---------------------------------------------------------
-   Initial artwork position
---------------------------------------------------------- */
-
-artwork.position.set(
-    0,
-    0.05,
-    0
-);
-
-
-/* =========================================================
-   Mouse interaction
-========================================================= */
-
-const pointer = {
-    x: 0,
-    y: 0
-};
-
-const targetRotation = {
-    x: 0,
-    y: 0
-};
-
-const currentRotation = {
-    x: 0,
-    y: 0
-};
-
-
-function updatePointer(event) {
-
-    const rect =
-        container.getBoundingClientRect();
-
-    pointer.x =
-        (
-            (event.clientX - rect.left)
-            / rect.width
-        ) * 2 - 1;
-
-    pointer.y =
-        -(
-            (event.clientY - rect.top)
-            / rect.height
-        ) * 2 + 1;
-
-    targetRotation.y =
-        pointer.x * 0.075;
-
-    targetRotation.x =
-        pointer.y * 0.045;
-}
-
-
-window.addEventListener(
-    'pointermove',
-    updatePointer,
-    {
-        passive: true
-    }
-);
-
-
-/* ---------------------------------------------------------
-   Touch support
---------------------------------------------------------- */
-
-window.addEventListener(
-    'touchmove',
-    (event) => {
-
-        if (!event.touches.length) {
-            return;
-        }
-
-        const touch =
-            event.touches[0];
-
-        updatePointer({
-            clientX: touch.clientX,
-            clientY: touch.clientY
-        });
-    },
-    {
-        passive: true
-    }
-);
-
-
-/* =========================================================
-   Resize
-========================================================= */
-
-function resize() {
-
-    const width =
-        container.clientWidth;
-
-    const height =
-        container.clientHeight;
-
-    if (!width || !height) {
-        return;
-    }
-
-    renderer.setSize(
-        width,
-        height
-    );
-
-    renderer.setPixelRatio(
-        Math.min(
-            window.devicePixelRatio || 1,
-            2
-        )
-    );
-
-    camera.aspect =
-        width / height;
-
-    camera.updateProjectionMatrix();
-
-    /*
-     * Keep the character comfortably inside
-     * the viewport on both desktop and mobile.
-     */
-    const isMobile =
-        width < 700;
-
-    const scale =
-        isMobile
-            ? 0.88
-            : 1.0;
-
-    artwork.scale.set(
-        scale,
-        scale,
-        scale
-    );
-}
-
-
-window.addEventListener(
-    'resize',
-    resize
-);
-
-resize();
-
-
-/* =========================================================
-   Animation
-========================================================= */
-
-const clock =
-    new THREE.Clock();
-
+// --------------------------------------------------
+// 애니메이션
+// --------------------------------------------------
 
 function animate() {
 
-    requestAnimationFrame(
-        animate
-    );
+    requestAnimationFrame(animate);
 
-    const elapsed =
-        clock.getElapsedTime();
+    // 부드러운 easing
+    currentRotateX +=
+        (targetRotateX - currentRotateX) * 0.055;
 
+    currentRotateY +=
+        (targetRotateY - currentRotateY) * 0.055;
 
-    /*
-     * Send time to main shader.
-     */
-    lineMaterial.uniforms.uTime.value =
-        elapsed;
+    // ------------------------------------------------
+    // 아주 미세한 부유감
+    // ------------------------------------------------
 
+    const time = performance.now() * 0.001;
 
-    /*
-     * Smooth mouse movement.
-     */
-    currentRotation.y +=
-        (
-            targetRotation.y -
-            currentRotation.y
-        ) * 0.055;
+    const floatY =
+        Math.sin(time * 0.75) * 3;
 
-    currentRotation.x +=
-        (
-            targetRotation.x -
-            currentRotation.x
-        ) * 0.055;
+    const floatRotate =
+        Math.sin(time * 0.55) * 0.35;
 
+    // ------------------------------------------------
+    // 전체 3D 캐릭터
+    // ------------------------------------------------
 
-    /*
-     * Very subtle idle movement.
-     */
-    const idleY =
-        Math.sin(
-            elapsed * 0.45
-        ) * 0.012;
+    stage.style.transform = `
+        translate(-50%, -50%)
+        translate3d(
+            ${mouseX * 5}px,
+            ${floatY + mouseY * 3}px,
+            0
+        )
+        rotateX(${currentRotateX + floatRotate}deg)
+        rotateY(${currentRotateY}deg)
+    `;
 
-    const idleX =
-        Math.sin(
-            elapsed * 0.32
-        ) * 0.006;
+    // ------------------------------------------------
+    // 각각의 레이어에 아주 미세한 움직임
+    // → 단순 이미지 한 장보다 깊이감이 생김
+    // ------------------------------------------------
 
+    layers.forEach((layer, index) => {
 
-    artwork.rotation.y =
-        currentRotation.y +
-        idleY;
+        const depthRatio =
+            index / (LAYER_COUNT - 1);
 
-    artwork.rotation.x =
-        currentRotation.x +
-        idleX;
+        const layerX =
+            mouseX * depthRatio * 1.8;
 
+        const layerY =
+            mouseY * depthRatio * 1.2;
 
-    /*
-     * Tiny floating movement.
-     */
-    artwork.position.y =
-        0.05 +
-        Math.sin(
-            elapsed * 0.55
-        ) * 0.018;
+        layer.element.style.transform = `
+            translate3d(
+                ${layerX}px,
+                ${layerY}px,
+                ${layer.baseZ}px
+            )
+        `;
+    });
 
+    // ------------------------------------------------
+    // Glow도 같이 따라오되 살짝 느슨하게
+    // ------------------------------------------------
 
-    renderer.render(
-        scene,
-        camera
-    );
+    glow.style.transform = `
+        translate3d(
+            ${mouseX * -2}px,
+            ${mouseY * -1.5}px,
+            -28px
+        )
+        scale(1.015)
+    `;
 }
-
 
 animate();
 
 
-/* =========================================================
-   Cleanup
-========================================================= */
+// --------------------------------------------------
+// 이미지 로딩 실패 확인
+// --------------------------------------------------
 
-window.addEventListener(
-    'beforeunload',
-    () => {
+layers.forEach((layer) => {
 
-        geometry.dispose();
+    layer.element.addEventListener("error", () => {
 
-        lineMaterial.dispose();
+        console.error(
+            "SVG를 불러오지 못했습니다:",
+            SVG_PATH
+        );
 
-        characterTexture.dispose();
+    });
 
-        renderer.dispose();
-    }
-);
+});
