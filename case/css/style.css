@@ -352,6 +352,83 @@ line-height:1.7;
 }
 
 
+/* ---------------- UX Structure ---------------- */
+
+.ux-structure{
+
+padding:20px 0 100px;
+
+}
+
+.ux-structure .overview-text{
+
+margin-bottom:42px;
+
+}
+
+.ux-flow{
+
+display:grid;
+
+grid-template-columns:repeat(4,1fr);
+
+border-top:1px solid #111;
+
+border-bottom:1px solid #ececec;
+
+}
+
+.ux-flow-item{
+
+padding:28px 24px 30px;
+
+border-right:1px solid #ececec;
+
+}
+
+.ux-flow-item:first-child{
+
+padding-left:0;
+
+}
+
+.ux-flow-item:last-child{
+
+border-right:0;
+
+padding-right:0;
+
+}
+
+.ux-flow-item span{
+
+display:block;
+
+font-size:11px;
+
+font-weight:700;
+
+letter-spacing:.14em;
+
+text-transform:uppercase;
+
+color:#999;
+
+margin-bottom:14px;
+
+}
+
+.ux-flow-item strong{
+
+font-size:18px;
+
+font-weight:700;
+
+line-height:1.35;
+
+}
+
+
 /* ---------------- Footer ---------------- */
 
 footer {
@@ -446,6 +523,50 @@ gap:28px;
 .overview-grid{
 
 grid-template-columns:1fr;
+
+}
+
+.ux-flow{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+.ux-flow-item{
+
+padding:24px 20px;
+
+}
+
+.ux-flow-item:first-child{
+
+padding-left:0;
+
+}
+
+.ux-flow-item:nth-child(2){
+
+border-right:0;
+
+padding-right:0;
+
+}
+
+.ux-flow-item:nth-child(n+3){
+
+border-top:1px solid #ececec;
+
+}
+
+.ux-flow-item:nth-child(3){
+
+padding-left:0;
+
+}
+
+.ux-flow-item:last-child{
+
+padding-right:0;
 
 }
 
