@@ -1292,3 +1292,426 @@ section {
     }
 
 }
+
+/* ==================================================
+   PROJECT PROGRESS
+   ================================================== */
+
+.project-progress-section {
+    width: 100%;
+    padding: 150px 0 170px;
+    box-sizing: border-box;
+}
+
+.project-progress-section .container {
+    width: min(1400px, calc(100% - 80px));
+    margin: 0 auto;
+}
+
+
+/* ---------- Header ---------- */
+
+.progress-eyebrow {
+    margin-bottom: 32px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: #999;
+    text-transform: uppercase;
+}
+
+.progress-title {
+    margin: 0 0 28px;
+    font-size: 42px;
+    line-height: 1.3;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: #111;
+}
+
+.progress-description {
+    margin: 0;
+    max-width: 1100px;
+    font-size: 21px;
+    line-height: 1.9;
+    letter-spacing: -0.025em;
+    color: #777;
+}
+
+
+/* ==================================================
+   TIMELINE
+   ================================================== */
+
+.project-timeline {
+    position: relative;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    width: 100%;
+
+    margin-top: 110px;
+
+    /* 라인과 아래 콘텐츠 사이 공간을 확보 */
+    padding-top: 0;
+
+    box-sizing: border-box;
+}
+
+
+/* ---------- Horizontal Line ---------- */
+
+.project-timeline::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 1px;
+
+    background: #222;
+
+    z-index: 0;
+}
+
+
+/* ---------- Item ---------- */
+
+.timeline-item {
+    position: relative;
+
+    min-width: 0;
+
+    padding: 0 36px 0 0;
+
+    box-sizing: border-box;
+}
+
+
+/* 세로 구분선 */
+
+.timeline-item:not(:first-child)::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 1px;
+    height: 490px;
+
+    background: #e5e5e5;
+}
+
+
+/* ---------- Dot ---------- */
+
+.timeline-dot {
+    position: relative;
+
+    width: 14px;
+    height: 14px;
+
+    margin-top: -7px;
+
+    border-radius: 50%;
+
+    background: #d9d9d9;
+
+    z-index: 2;
+}
+
+
+/* 진행된 단계 */
+
+.timeline-complete .timeline-dot,
+.timeline-current .timeline-dot,
+.timeline-future .timeline-dot {
+    background: #111;
+}
+
+
+/* ==================================================
+   CONTENT
+
+   ★ 핵심:
+   라인에서 콘텐츠를 충분히 떨어뜨림
+   ================================================== */
+
+.timeline-content {
+
+    /* 라인 → 번호 사이 */
+    padding-top: 52px;
+
+    box-sizing: border-box;
+}
+
+
+/* 번호 */
+
+.timeline-number {
+    display: block;
+
+    margin-bottom: 18px;
+
+    font-size: 15px;
+    line-height: 1;
+
+    font-weight: 500;
+
+    color: #999;
+
+    letter-spacing: 0.08em;
+}
+
+
+/* 연차 */
+
+.timeline-year {
+    display: block;
+
+    margin-bottom: 18px;
+
+    font-size: 18px;
+    line-height: 1.3;
+
+    font-weight: 500;
+
+    color: #999;
+
+    letter-spacing: -0.02em;
+}
+
+
+/* 제목 */
+
+.timeline-content h3 {
+    margin: 0;
+
+    font-size: 28px;
+    line-height: 1.35;
+
+    font-weight: 700;
+
+    letter-spacing: -0.04em;
+
+    color: #111;
+}
+
+
+/* 설명 */
+
+.timeline-content ul {
+    list-style: none;
+
+    margin: 28px 0 0;
+    padding: 0;
+
+    font-size: 17px;
+    line-height: 1.9;
+
+    font-weight: 400;
+
+    letter-spacing: -0.025em;
+
+    color: #888;
+}
+
+.timeline-content li {
+    margin: 0;
+    padding: 0;
+}
+
+
+/* 현재 진행 단계 강조 */
+
+.timeline-current .timeline-number,
+.timeline-current .timeline-year {
+    color: #888;
+}
+
+.timeline-current .timeline-content h3 {
+    color: #111;
+}
+
+
+/* 예정 단계 */
+
+.timeline-item:not(.timeline-current) .timeline-content h3 {
+    color: #222;
+}
+
+
+/* ==================================================
+   TABLET
+   ================================================== */
+
+@media (max-width: 900px) {
+
+    .project-progress-section {
+        padding: 110px 0 120px;
+    }
+
+    .project-progress-section .container {
+        width: calc(100% - 48px);
+    }
+
+    .progress-title {
+        font-size: 34px;
+    }
+
+    .progress-description {
+        font-size: 18px;
+        line-height: 1.8;
+    }
+
+    .project-timeline {
+        margin-top: 80px;
+    }
+
+    .timeline-item {
+        padding-right: 20px;
+    }
+
+    .timeline-item:not(:first-child)::after {
+        height: 430px;
+    }
+
+    .timeline-content {
+        padding-top: 42px;
+    }
+
+    .timeline-content h3 {
+        font-size: 23px;
+    }
+
+    .timeline-content ul {
+        font-size: 15px;
+    }
+
+}
+
+
+/* ==================================================
+   MOBILE
+   ================================================== */
+
+@media (max-width: 600px) {
+
+    .project-progress-section {
+        padding: 90px 0 100px;
+    }
+
+    .project-progress-section .container {
+        width: calc(100% - 40px);
+    }
+
+    .progress-eyebrow {
+        font-size: 12px;
+        margin-bottom: 24px;
+    }
+
+    .progress-title {
+        font-size: 28px;
+        line-height: 1.4;
+        margin-bottom: 22px;
+    }
+
+    .progress-description {
+        font-size: 16px;
+        line-height: 1.8;
+    }
+
+
+    /*
+       모바일에서는 4개를 억지로 한 줄에 넣지 않고
+       세로 타임라인으로 변경
+    */
+
+    .project-timeline {
+        display: block;
+
+        margin-top: 70px;
+
+        padding-left: 24px;
+    }
+
+
+    /* 세로 라인 */
+
+    .project-timeline::before {
+        top: 0;
+        bottom: 0;
+        left: 5px;
+
+        width: 1px;
+        height: auto;
+    }
+
+
+    .timeline-item {
+        padding: 0 0 70px 36px;
+    }
+
+    .timeline-item:last-child {
+        padding-bottom: 0;
+    }
+
+
+    /* 모바일 세로 구분선 제거 */
+
+    .timeline-item:not(:first-child)::after {
+        display: none;
+    }
+
+
+    /* 점 */
+
+    .timeline-dot {
+        position: absolute;
+
+        top: 0;
+        left: -2px;
+
+        width: 14px;
+        height: 14px;
+
+        margin: 0;
+    }
+
+
+    /*
+       모바일에서도
+       라인과 텍스트 사이 간격 확보
+    */
+
+    .timeline-content {
+        padding-top: 0;
+    }
+
+    .timeline-number {
+        margin-bottom: 14px;
+        font-size: 13px;
+    }
+
+    .timeline-year {
+        margin-bottom: 12px;
+        font-size: 16px;
+    }
+
+    .timeline-content h3 {
+        font-size: 24px;
+    }
+
+    .timeline-content ul {
+        margin-top: 20px;
+        font-size: 15px;
+        line-height: 1.8;
+    }
+
+}
