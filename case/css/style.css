@@ -1017,745 +1017,25 @@ section {
 }
 
 
-/* Timeline */
-
-.project-timeline {
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    width: 100%;
-    padding-top: 56px;
-    border-top: 1px solid #222;
-}
-
-
-/* 각 연차 */
-
-.project-timeline .progress-item {
-    position: relative;
-    min-width: 0;
-    padding: 0 36px 0 0;
-}
-
-
-/* 세로선 */
-
-.project-timeline .progress-item::before {
-    content: "";
-    position: absolute;
-    top: -57px;
-    left: 0;
-    width: 1px;
-    height: calc(100% + 57px);
-    background: #e5e5e5;
-}
-
-
-/* 점 */
-
-.project-timeline .progress-item::after {
-    content: "";
-    position: absolute;
-    top: -63px;
-    left: 0;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #d8d8d8;
-    transform: translateX(-50%);
-}
-
-.project-timeline .progress-item.is-complete::after,
-.project-timeline .progress-item.current::after {
-    background: #111;
-}
-
-
-/* 숫자 */
-
-.progress-year {
-    display: block;
-    margin-bottom: 18px;
-    font-size: 14px;
-    color: #999;
-    letter-spacing: .08em;
-}
-
-
-/* 연차 */
-
-.progress-content small {
-    display: block;
-    margin-bottom: 12px;
-    font-size: 16px;
-    color: #999;
-}
-
-
-/* 제목 */
-
-.progress-content strong {
-    display: block;
-    max-width: 240px;
-    font-size: 26px;
-    line-height: 1.35;
-    font-weight: 700;
-    color: #111;
-}
-
-
-/* 세부 내용 */
-
-.progress-content p {
-    max-width: 230px;
-    margin: 28px 0 0;
-    font-size: 16px;
-    line-height: 1.85;
-    color: #888;
-}
-
-/* PROJECT PROGRESS - 라인과 내용 사이 간격 */
-.project-progress .progress-content {
-    padding-top: 35px;
-}
-
-/* =========================================
-   PROJECT PROGRESS MOBILE
-========================================= */
-
-@media (max-width: 980px) {
-
-    .project-progress-section {
-        padding: 80px 0 100px;
-    }
-
-    .progress-heading {
-        font-size: 38px;
-    }
-
-    .progress-description {
-        margin-bottom: 70px;
-    }
-
-    .project-timeline {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        row-gap: 70px;
-        padding-top: 50px;
-    }
-
-    .project-timeline .progress-item {
-        padding-right: 30px;
-    }
-
-    .project-timeline .progress-item:nth-child(3),
-    .project-timeline .progress-item:nth-child(4) {
-        padding-top: 30px;
-    }
-
-    .project-timeline .progress-item:nth-child(3)::before,
-    .project-timeline .progress-item:nth-child(4)::before {
-        top: -27px;
-        height: calc(100% + 27px);
-    }
-
-    .project-timeline .progress-item:nth-child(3)::after,
-    .project-timeline .progress-item:nth-child(4)::after {
-        top: -33px;
-    }
-
-}
-
-
-@media (max-width: 600px) {
-
-    .project-progress-section {
-        padding: 70px 0 90px;
-    }
-
-    .progress-heading {
-        font-size: 32px;
-    }
-
-    .progress-description {
-        font-size: 17px;
-        line-height: 1.8;
-    }
-
-    .project-timeline {
-        grid-template-columns: 1fr;
-        row-gap: 60px;
-    }
-
-    .project-timeline .progress-item,
-    .project-timeline .progress-item:nth-child(3),
-    .project-timeline .progress-item:nth-child(4) {
-        padding: 0 0 0 28px;
-    }
-
-    .project-timeline .progress-item::before,
-    .project-timeline .progress-item:nth-child(3)::before,
-    .project-timeline .progress-item:nth-child(4)::before {
-        top: -50px;
-        left: 0;
-        height: calc(100% + 50px);
-    }
-
-    .project-timeline .progress-item::after,
-    .project-timeline .progress-item:nth-child(3)::after,
-    .project-timeline .progress-item:nth-child(4)::after {
-        top: -56px;
-        left: 0;
-    }
-
-    .project-timeline .progress-item:first-child::before {
-        top: -50px;
-    }
-
-    .progress-content strong {
-        font-size: 23px;
-    }
-
-}
-
-/* =========================================
-   AI SMART GLASSES - IMAGE SIZE
-========================================= */
-
-/* User Interview - 2 images side by side */
-
-.interview-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px;
-    max-width: 760px;
-}
-
-.interview-image {
-    min-width: 0;
-}
-
-.interview-image img {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: 12px;
-}
-
-
-/* AI Visual Image */
-
-.glasses-visual-image {
-    max-width: 720px;
-    margin-left: 0;
-    margin-right: auto;
-}
-
-.glasses-visual-image img {
-    display: block;
-    width: 100%;
-    height: auto;
-}
-
-
-/* UI Design */
-
-.glasses-ui-image {
-    max-width: 720px;
-    margin-left: 0;
-    margin-right: auto;
-}
-
-.glasses-ui-image img {
-    display: block;
-    width: 100%;
-    height: auto;
-}
-
-
-/* Mobile */
-
-@media (max-width: 600px) {
-
-    .interview-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        max-width: 100%;
-    }
-
-    .interview-image img {
-        border-radius: 8px;
-    }
-
-    .glasses-visual-image,
-    .glasses-ui-image {
-        max-width: 100%;
-    }
-
-}
-
-/* ==================================================
-   PROJECT PROGRESS
-   ================================================== */
-
-.project-progress-section {
-    width: 100%;
-    padding: 150px 0 170px;
-    box-sizing: border-box;
-}
-
-.project-progress-section .container {
-    width: min(1400px, calc(100% - 80px));
-    margin: 0 auto;
-}
-
-
-/* ---------- Header ---------- */
-
-.progress-eyebrow {
-    margin-bottom: 32px;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    color: #999;
-    text-transform: uppercase;
-}
-
-.progress-title {
-    margin: 0 0 28px;
-    font-size: 42px;
-    line-height: 1.3;
-    font-weight: 700;
-    letter-spacing: -0.04em;
-    color: #111;
-}
-
-.progress-description {
-    margin: 0;
-    max-width: 1100px;
-    font-size: 21px;
-    line-height: 1.9;
-    letter-spacing: -0.025em;
-    color: #777;
-}
-
-
-/* ==================================================
-   TIMELINE
-   ================================================== */
-
-.project-timeline {
-    position: relative;
-
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-
-    width: 100%;
-
-    margin-top: 110px;
-
-    /* 라인과 아래 콘텐츠 사이 공간을 확보 */
-    padding-top: 0;
-
-    box-sizing: border-box;
-}
-
-
-/* ---------- Horizontal Line ---------- */
-
-.project-timeline::before {
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    left: 0;
-    right: 0;
-
-    height: 1px;
-
-    background: #222;
-
-    z-index: 0;
-}
-
-
-/* ---------- Item ---------- */
-
-.timeline-item {
-    position: relative;
-
-    min-width: 0;
-
-    padding: 0 36px 0 0;
-
-    box-sizing: border-box;
-}
-
-
-/* 세로 구분선 */
-
-.timeline-item:not(:first-child)::after {
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    left: 0;
-
-    width: 1px;
-    height: 490px;
-
-    background: #e5e5e5;
-}
-
-
-/* ---------- Dot ---------- */
-
-.timeline-dot {
-    position: relative;
-
-    width: 14px;
-    height: 14px;
-
-    margin-top: -7px;
-
-    border-radius: 50%;
-
-    background: #d9d9d9;
-
-    z-index: 2;
-}
-
-
-/* 진행된 단계 */
-
-.timeline-complete .timeline-dot,
-.timeline-current .timeline-dot,
-.timeline-future .timeline-dot {
-    background: #111;
-}
-
-
-/* ==================================================
-   CONTENT
-
-   ★ 핵심:
-   라인에서 콘텐츠를 충분히 떨어뜨림
-   ================================================== */
-
-.timeline-content {
-
-    /* 라인 → 번호 사이 */
-    padding-top: 52px;
-
-    box-sizing: border-box;
-}
-
-
-/* 번호 */
-
-.timeline-number {
-    display: block;
-
-    margin-bottom: 18px;
-
-    font-size: 15px;
-    line-height: 1;
-
-    font-weight: 500;
-
-    color: #999;
-
-    letter-spacing: 0.08em;
-}
-
-
-/* 연차 */
-
-.timeline-year {
-    display: block;
-
-    margin-bottom: 18px;
-
-    font-size: 18px;
-    line-height: 1.3;
-
-    font-weight: 500;
-
-    color: #999;
-
-    letter-spacing: -0.02em;
-}
-
-
-/* 제목 */
-
-.timeline-content h3 {
-    margin: 0;
-
-    font-size: 28px;
-    line-height: 1.35;
-
-    font-weight: 700;
-
-    letter-spacing: -0.04em;
-
-    color: #111;
-}
-
-
-/* 설명 */
-
-.timeline-content ul {
-    list-style: none;
-
-    margin: 28px 0 0;
-    padding: 0;
-
-    font-size: 17px;
-    line-height: 1.9;
-
-    font-weight: 400;
-
-    letter-spacing: -0.025em;
-
-    color: #888;
-}
-
-.timeline-content li {
-    margin: 0;
-    padding: 0;
-}
-
-
-/* 현재 진행 단계 강조 */
-
-.timeline-current .timeline-number,
-.timeline-current .timeline-year {
-    color: #888;
-}
-
-.timeline-current .timeline-content h3 {
-    color: #111;
-}
-
-
-/* 예정 단계 */
-
-.timeline-item:not(.timeline-current) .timeline-content h3 {
-    color: #222;
-}
-
-
-/* ==================================================
-   TABLET
-   ================================================== */
-
-@media (max-width: 900px) {
-
-    .project-progress-section {
-        padding: 110px 0 120px;
-    }
-
-    .project-progress-section .container {
-        width: calc(100% - 48px);
-    }
-
-    .progress-title {
-        font-size: 34px;
-    }
-
-    .progress-description {
-        font-size: 18px;
-        line-height: 1.8;
-    }
-
-    .project-timeline {
-        margin-top: 80px;
-    }
-
-    .timeline-item {
-        padding-right: 20px;
-    }
-
-    .timeline-item:not(:first-child)::after {
-        height: 430px;
-    }
-
-    .timeline-content {
-        padding-top: 42px;
-    }
-
-    .timeline-content h3 {
-        font-size: 23px;
-    }
-
-    .timeline-content ul {
-        font-size: 15px;
-    }
-
-}
-
-
-/* ==================================================
-   MOBILE
-   ================================================== */
-
-@media (max-width: 600px) {
-
-    .project-progress-section {
-        padding: 90px 0 100px;
-    }
-
-    .project-progress-section .container {
-        width: calc(100% - 40px);
-    }
-
-    .progress-eyebrow {
-        font-size: 12px;
-        margin-bottom: 24px;
-    }
-
-    .progress-title {
-        font-size: 28px;
-        line-height: 1.4;
-        margin-bottom: 22px;
-    }
-
-    .progress-description {
-        font-size: 16px;
-        line-height: 1.8;
-    }
-
-
-    /*
-       모바일에서는 4개를 억지로 한 줄에 넣지 않고
-       세로 타임라인으로 변경
-    */
-
-    .project-timeline {
-        display: block;
-
-        margin-top: 70px;
-
-        padding-left: 24px;
-    }
-
-
-    /* 세로 라인 */
-
-    .project-timeline::before {
-        top: 0;
-        bottom: 0;
-        left: 5px;
-
-        width: 1px;
-        height: auto;
-    }
-
-
-    .timeline-item {
-        padding: 0 0 70px 36px;
-    }
-
-    .timeline-item:last-child {
-        padding-bottom: 0;
-    }
-
-
-    /* 모바일 세로 구분선 제거 */
-
-    .timeline-item:not(:first-child)::after {
-        display: none;
-    }
-
-
-    /* 점 */
-
-    .timeline-dot {
-        position: absolute;
-
-        top: 0;
-        left: -2px;
-
-        width: 14px;
-        height: 14px;
-
-        margin: 0;
-    }
-
-
-    /*
-       모바일에서도
-       라인과 텍스트 사이 간격 확보
-    */
-
-    .timeline-content {
-        padding-top: 0;
-    }
-
-    .timeline-number {
-        margin-bottom: 14px;
-        font-size: 13px;
-    }
-
-    .timeline-year {
-        margin-bottom: 12px;
-        font-size: 16px;
-    }
-
-    .timeline-content h3 {
-        font-size: 24px;
-    }
-
-    .timeline-content ul {
-        margin-top: 20px;
-        font-size: 15px;
-        line-height: 1.8;
-    }
-
-}
-
-
-
-/* =========================================
-   PROJECT PROGRESS
-========================================= */
-
-.project-progress-section {
-    padding: 100px 0 140px;
-}
-
-.project-progress-section .container {
-    overflow: visible;
-}
-
-.progress-heading {
-    max-width: 900px;
-    margin: 0 0 28px;
-    font-size: clamp(36px, 4vw, 52px);
-    font-weight: 800;
-    line-height: 1.25;
-    letter-spacing: -.035em;
-}
-
-.progress-description {
-    max-width: 1000px;
-    margin-bottom: 125px;
-}
-
-
 /* =========================================
    TIMELINE
 ========================================= */
 
 .project-timeline {
     position: relative;
+
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
+
     width: 100%;
-    padding-top: 0;
+
+    /* 가로선 */
     border-top: 1px solid #222;
+
+    /* ★ 선과 01 사이의 간격 */
+    padding-top: 70px;
+
+    box-sizing: border-box;
 }
 
 
@@ -1765,24 +1045,30 @@ section {
 
 .project-timeline .progress-item {
     position: relative;
+
     min-width: 0;
+
+    /* ★ 01 / 02 / 03 / 04가 선에서 떨어지는 핵심 */
     padding: 0 36px 0 0;
+
+    box-sizing: border-box;
 }
 
 
 /* =========================================
-   세로선
+   세로 구분선
 ========================================= */
 
-.project-timeline .progress-item::before {
+.project-timeline .progress-item:not(:last-child)::before {
     content: "";
+
     position: absolute;
 
-    top: 0;
+    top: -71px;
     left: 0;
 
     width: 1px;
-    height: 390px;
+    height: calc(100% + 71px);
 
     background: #e5e5e5;
 }
@@ -1797,11 +1083,11 @@ section {
 
     position: absolute;
 
-    top: -7px;
+    top: -77px;
     left: 0;
 
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
 
     border-radius: 50%;
 
@@ -1813,31 +1099,16 @@ section {
 }
 
 
-/* =========================================
-   현재 진행 단계
-   → 2년차만 검정
-========================================= */
+/* ★ 현재 진행 단계 = 2년차만 검정 */
 
 .project-timeline .progress-item.is-complete::after {
     background: #111;
 }
 
 
-/* 4년차는 예정이므로 회색 */
-
+/* 혹시 current 클래스가 남아 있어도 4년차가 검정이 되지 않도록 */
 .project-timeline .progress-item.current::after {
     background: #d8d8d8;
-}
-
-
-/* =========================================
-   라인 → 콘텐츠 사이 간격
-========================================= */
-
-.project-timeline .progress-content {
-    position: relative;
-
-    padding-top: 52px;
 }
 
 
@@ -1850,7 +1121,7 @@ section {
 
     margin: 0 0 18px;
 
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1;
 
     color: #999;
@@ -1866,9 +1137,9 @@ section {
 .project-timeline .progress-content small {
     display: block;
 
-    margin: 0 0 16px;
+    margin: 0 0 12px;
 
-    font-size: 18px;
+    font-size: 16px;
     line-height: 1.3;
 
     color: #999;
@@ -1886,12 +1157,10 @@ section {
 
     margin: 0;
 
-    font-size: 27px;
+    font-size: 26px;
     line-height: 1.35;
 
     font-weight: 700;
-
-    letter-spacing: -.045em;
 
     color: #111;
 }
@@ -1904,62 +1173,12 @@ section {
 .project-timeline .progress-content p {
     max-width: 230px;
 
-    margin: 24px 0 0;
+    margin: 28px 0 0;
 
-    font-size: 17px;
-    line-height: 1.9;
+    font-size: 16px;
+    line-height: 1.85;
 
     color: #888;
-}
-
-
-/* =========================================
-   TABLET
-========================================= */
-
-@media (max-width: 980px) {
-
-    .project-progress-section {
-        padding: 80px 0 100px;
-    }
-
-    .progress-heading {
-        font-size: 38px;
-    }
-
-    .progress-description {
-        margin-bottom: 90px;
-    }
-
-    .project-timeline {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        row-gap: 70px;
-    }
-
-    .project-timeline .progress-item {
-        padding-right: 30px;
-    }
-
-    .project-timeline .progress-item:nth-child(3),
-    .project-timeline .progress-item:nth-child(4) {
-        padding-top: 30px;
-    }
-
-    .project-timeline .progress-item:nth-child(3)::before,
-    .project-timeline .progress-item:nth-child(4)::before {
-        top: -30px;
-        height: calc(100% + 30px);
-    }
-
-    .project-timeline .progress-item:nth-child(3)::after,
-    .project-timeline .progress-item:nth-child(4)::after {
-        top: -37px;
-    }
-
-    .project-timeline .progress-content {
-        padding-top: 52px;
-    }
-
 }
 
 
@@ -1983,18 +1202,21 @@ section {
         margin-bottom: 70px;
     }
 
+
+    /* 모바일만 세로 타임라인 */
+
     .project-timeline {
         display: block;
+
+        padding-top: 0;
 
         border-top: 0;
 
         padding-left: 28px;
-
-        row-gap: 0;
     }
 
 
-    /* 모바일 세로 라인 */
+    /* 모바일 세로선 */
 
     .project-timeline::before {
         content: "";
@@ -2006,35 +1228,32 @@ section {
         left: 5px;
 
         width: 1px;
+        height: auto;
 
-        background: #222;
+        background: #e5e5e5;
     }
 
 
-    .project-timeline .progress-item,
-    .project-timeline .progress-item:nth-child(3),
-    .project-timeline .progress-item:nth-child(4) {
-
-        padding: 0 0 70px 34px;
+    .project-timeline .progress-item {
+        padding: 0 0 60px 28px;
     }
 
 
-    /* 모바일에서는 개별 세로선 제거 */
+    .project-timeline .progress-item:last-child {
+        padding-bottom: 0;
+    }
 
-    .project-timeline .progress-item::before,
-    .project-timeline .progress-item:nth-child(3)::before,
-    .project-timeline .progress-item:nth-child(4)::before {
 
+    /* PC용 구분선 제거 */
+
+    .project-timeline .progress-item:not(:last-child)::before {
         display: none;
     }
 
 
     /* 모바일 점 */
 
-    .project-timeline .progress-item::after,
-    .project-timeline .progress-item:nth-child(3)::after,
-    .project-timeline .progress-item:nth-child(4)::after {
-
+    .project-timeline .progress-item::after {
         top: 0;
         left: -23px;
 
@@ -2049,16 +1268,8 @@ section {
         background: #111;
     }
 
-
     .project-timeline .progress-item.current::after {
         background: #d8d8d8;
-    }
-
-
-    /* 모바일 라인 → 번호 간격 */
-
-    .project-timeline .progress-content {
-        padding-top: 0;
     }
 
 
@@ -2067,23 +1278,18 @@ section {
         font-size: 13px;
     }
 
-
     .project-timeline .progress-content small {
         margin-bottom: 12px;
         font-size: 16px;
     }
 
-
     .project-timeline .progress-content strong {
-        font-size: 23px;
+        font-size: 24px;
     }
 
-
     .project-timeline .progress-content p {
-        margin-top: 18px;
-
+        margin-top: 20px;
         font-size: 15px;
         line-height: 1.8;
     }
-
 }
