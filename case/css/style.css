@@ -1323,3 +1323,53 @@ section {
     border-radius: 10px;
 }
 
+/* 전역 — 한글 단어 중간 끊김 방지 */
+body{word-break:keep-all;overflow-wrap:break-word;}
+
+/* Problem & Approach — 큰 넘버 배경 (데스크톱) */
+.problem-item{position:relative;overflow:hidden;}
+.problem-item .num{position:absolute;top:-14px;right:6px;font-size:64px;font-weight:800;color:#f1f1f1;line-height:1;z-index:0;}
+.problem-item span,.problem-item h3,.problem-item p{position:relative;z-index:1;}
+
+/* 진행 타임라인 — 채워지는 진행바 */
+.progress-line-fill{position:absolute;top:36px;left:16px;height:2px;background:#111;width:46%;}
+.progress-dot{display:flex;align-items:center;justify-content:center;width:32px;height:32px;font-size:12px;font-weight:700;background:#fff;border:2px solid #ddd;color:#bbb;border-radius:50%;}
+.progress-item.current .progress-dot,.progress-item.past .progress-dot{background:#111;border-color:#111;color:#fff;}
+
+/* Benchmark — 카드 대신 리스트 */
+.benchmark-list{border-top:1px solid #ececec;}
+.benchmark-row{display:grid;grid-template-columns:220px 1fr;gap:24px;padding:22px 0;border-bottom:1px solid #ececec;align-items:baseline;}
+.benchmark-row .name{font-size:17px;font-weight:700;}
+.benchmark-row .desc{font-size:15px;color:#666;line-height:1.7;}
+
+/* Key Insights — 카드 대신 구분선 컬럼 + 아이콘 */
+.insight-row-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid #111;border-bottom:1px solid #ececec;margin-top:10px;}
+.insight-col{padding:28px 24px 30px;border-right:1px solid #ececec;}
+.insight-col:first-child{padding-left:0;}
+.insight-col:last-child{border-right:0;padding-right:0;}
+.insight-col span{display:block;font-size:11px;font-weight:700;letter-spacing:.12em;color:#999;margin-bottom:18px;}
+.insight-col h3{font-size:17px;font-weight:700;line-height:1.35;margin-bottom:12px;}
+.insight-col p{font-size:14px;line-height:1.7;color:#666;}
+.insight-icon{font-size:26px;color:#111;margin-bottom:22px;}
+
+/* ===== 모바일 (980px 이하) ===== */
+@media(max-width:980px){
+  .problem-item{border-right:0;border-bottom:0;padding:24px 0 44px;position:relative;}
+  .problem-item:first-child{padding-top:0;}
+  .problem-item:last-child{padding-bottom:0;}
+  .problem-item:not(:last-child)::after{content:"↓";position:absolute;left:0;bottom:6px;font-size:20px;color:#ccc;}
+  .problem-item .num{display:none;}
+
+  .benchmark-row{grid-template-columns:1fr;gap:3px;padding:14px 0;}
+  .benchmark-row .name{font-size:14px;}
+  .benchmark-row .desc{font-size:12px;color:#999;line-height:1.5;}
+
+  .insight-row-grid{grid-template-columns:repeat(2,1fr);gap:44px 20px;margin-top:28px;padding:32px 0 36px;}
+  .insight-col{border:0;padding:0;}
+  .insight-icon{font-size:19px;margin-bottom:12px;}
+  .insight-col h3{font-size:17px;margin-bottom:0;}
+  .insight-col p{display:none;}
+  .insight-col span{font-size:10px;margin-bottom:6px;}
+
+  .overview-text{font-size:17px;line-height:1.65;}
+}
