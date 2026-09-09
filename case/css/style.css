@@ -988,3 +988,121 @@ section {
     }
 
 }
+/* =========================================
+   PROJECT PROGRESS
+========================================= */
+
+.project-progress {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 80px;
+    border-top: 1px solid #111;
+}
+
+.progress-item {
+    position: relative;
+    padding: 32px 28px 0;
+    border-right: 1px solid #ececec;
+    min-height: 150px;
+}
+
+.progress-item:first-child {
+    padding-left: 0;
+}
+
+.progress-item:last-child {
+    border-right: 0;
+    padding-right: 0;
+}
+
+.progress-item::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: 28px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #ddd;
+}
+
+.progress-item:first-child::before {
+    left: 0;
+}
+
+.progress-item.is-complete::before,
+.progress-item.current::before {
+    background: #111;
+}
+
+.progress-year {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    color: #999;
+    margin-bottom: 14px;
+}
+
+.progress-item small {
+    display: block;
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 8px;
+}
+
+.progress-item strong {
+    display: block;
+    font-size: 20px;
+    line-height: 1.4;
+    font-weight: 700;
+}
+
+.progress-item p {
+    margin-top: 14px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #777;
+}
+
+.progress-item.current strong {
+    font-weight: 800;
+}
+
+
+/* Mobile */
+
+@media (max-width: 900px) {
+
+    .project-progress {
+        grid-template-columns: 1fr;
+        margin-top: 60px;
+        border-top: 1px solid #111;
+    }
+
+    .progress-item {
+        padding: 28px 0;
+        min-height: auto;
+        border-right: 0;
+        border-bottom: 1px solid #ececec;
+    }
+
+    .progress-item:first-child {
+        padding-left: 0;
+    }
+
+    .progress-item:last-child {
+        border-bottom: 0;
+    }
+
+    .progress-item::before,
+    .progress-item:first-child::before {
+        top: 30px;
+        left: auto;
+        right: 0;
+        width: 8px;
+        height: 8px;
+    }
+
+}
