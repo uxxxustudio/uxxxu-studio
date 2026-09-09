@@ -1373,3 +1373,7 @@ body{word-break:keep-all;overflow-wrap:break-word;}
 
   .overview-text{font-size:17px;line-height:1.65;}
 }
+.progress-timeline .progress-line-fill{position:absolute;top:0;left:0;height:1px;background:#111;width:46%;z-index:1;}
+.progress-timeline .progress-dot{width:28px;height:28px;top:-14px;background:#fff;border:2px solid #d8d8d8;}
+.progress-timeline .progress-item.current .progress-dot,
+.progress-timeline .progress-item.past .progress-dot{background:#111;border-color:#111;}
