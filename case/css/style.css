@@ -1397,30 +1397,23 @@ body{word-break:keep-all;overflow-wrap:break-word;}
    PROJECT PROGRESS - 진행 상태 컬러만 수정
 ================================================== */
 
-/* 01 · 02 : 진행된 단계 */
-.progress-timeline .progress-item:nth-child(2) .progress-number,
-.progress-timeline .progress-item:nth-child(2) .progress-year,
-.progress-timeline .progress-item:nth-child(2) strong,
-.progress-timeline .progress-item:nth-child(2) p,
-.progress-timeline .progress-item:nth-child(3) .progress-number,
-.progress-timeline .progress-item:nth-child(3) .progress-year,
-.progress-timeline .progress-item:nth-child(3) strong,
-.progress-timeline .progress-item:nth-child(3) p {
+.progress-timeline .progress-item.current .progress-number,
+.progress-timeline .progress-item.current .progress-year,
+.progress-timeline .progress-item.current strong,
+.progress-timeline .progress-item.current p,
+.progress-timeline .progress-item.past .progress-number,
+.progress-timeline .progress-item.past .progress-year,
+.progress-timeline .progress-item.past strong,
+.progress-timeline .progress-item.past p {
     color: #111;
 }
 
-/* 03 · 04 : 아직 진행되지 않은 단계 */
-.progress-timeline .progress-item:nth-child(4) .progress-number,
-.progress-timeline .progress-item:nth-child(4) .progress-year,
-.progress-timeline .progress-item:nth-child(4) strong,
-.progress-timeline .progress-item:nth-child(4) p,
-.progress-timeline .progress-item:nth-child(5) .progress-number,
-.progress-timeline .progress-item:nth-child(5) .progress-year,
-.progress-timeline .progress-item:nth-child(5) strong,
-.progress-timeline .progress-item:nth-child(5) p {
+.progress-timeline .progress-item:not(.current):not(.past) .progress-number,
+.progress-timeline .progress-item:not(.current):not(.past) .progress-year,
+.progress-timeline .progress-item:not(.current):not(.past) strong,
+.progress-timeline .progress-item:not(.current):not(.past) p {
     color: #999;
 }
-
 /* =========================
    User Interview
 ========================= */
