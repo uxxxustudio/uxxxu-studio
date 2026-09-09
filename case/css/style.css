@@ -1299,10 +1299,10 @@ section {
 ========================= */
 
 .interview-grid {
+    display: block;
     width: 100%;
-    max-width: 620px;
-    margin-left: 0;
-    margin-right: auto;
+    max-width: 900px;
+    margin: 0;
 }
 
 .interview-image {
@@ -1313,5 +1313,6 @@ section {
     display: block;
     width: 100%;
     height: auto;
+    border-radius: 10px;
 }
 
