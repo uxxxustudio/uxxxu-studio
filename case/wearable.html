@@ -21,220 +21,6 @@ href="https://fonts.googleapis.com">
 <link rel="stylesheet"
 href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 
-
-<style>
-
-/* ==================================================
-   03. PROJECT PROGRESS
-   ================================================== */
-
-.project-progress-section {
-    width: 100%;
-    overflow: hidden;
-}
-
-.project-progress-section .container {
-    width: min(1280px, calc(100% - 160px));
-    margin: 0 auto;
-}
-
-.project-progress-section .section-title {
-    margin-bottom: 45px;
-}
-
-.project-progress-section h2 {
-    margin-bottom: 28px;
-}
-
-.project-progress-section .overview-text {
-    margin-bottom: 90px;
-}
-
-
-/* Timeline */
-
-.project-progress-timeline {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    position: relative;
-    margin-top: 20px;
-    padding-top: 42px;
-}
-
-
-/* horizontal line */
-
-.project-progress-timeline::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: #222;
-}
-
-
-/* Item */
-
-.project-progress-item {
-    position: relative;
-    min-width: 0;
-    padding: 30px 28px 0 0;
-    border-right: 1px solid #e5e5e5;
-}
-
-.project-progress-item:last-child {
-    border-right: 0;
-    padding-right: 0;
-}
-
-
-/* Timeline dot */
-
-.project-progress-item::before {
-    content: "";
-    position: absolute;
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: #d9d9d9;
-    top: -4px;
-    left: 0;
-    transform: translateX(-50%);
-}
-
-.project-progress-item.is-complete::before,
-.project-progress-item.is-current::before {
-    background: #111;
-}
-
-
-/* Number */
-
-.project-progress-year {
-    display: block;
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    color: #999;
-    margin-bottom: 14px;
-}
-
-
-/* Content */
-
-.project-progress-content small {
-    display: block;
-    font-size: 15px;
-    color: #888;
-    margin-bottom: 10px;
-}
-
-.project-progress-content strong {
-    display: block;
-    font-size: 22px;
-    line-height: 1.35;
-    color: #111;
-    font-weight: 700;
-}
-
-.project-progress-content p {
-    margin: 22px 0 0;
-    font-size: 14px;
-    line-height: 1.8;
-    color: #777;
-}
-
-
-/* Current */
-
-.project-progress-item.is-current .project-progress-content strong {
-    font-weight: 800;
-}
-
-
-/* Role summary */
-
-.project-progress-role {
-    margin-top: 80px;
-    padding-top: 32px;
-    border-top: 1px solid #e5e5e5;
-    display: grid;
-    grid-template-columns: 180px 1fr;
-    gap: 40px;
-}
-
-.project-progress-role-title {
-    font-size: 13px;
-    letter-spacing: 0.08em;
-    color: #888;
-}
-
-.project-progress-role-text {
-    font-size: 16px;
-    line-height: 1.8;
-    color: #333;
-}
-
-
-/* Mobile */
-
-@media (max-width: 768px) {
-
-    .project-progress-section .container {
-        width: calc(100% - 40px);
-    }
-
-    .project-progress-section .overview-text {
-        margin-bottom: 60px;
-    }
-
-    .project-progress-timeline {
-        display: block;
-        padding-top: 0;
-        margin-top: 0;
-        padding-left: 24px;
-    }
-
-    .project-progress-timeline::before {
-        top: 0;
-        bottom: 0;
-        left: 4px;
-        right: auto;
-        width: 1px;
-        height: auto;
-    }
-
-    .project-progress-item {
-        padding: 0 0 55px 28px;
-        border-right: 0;
-    }
-
-    .project-progress-item:last-child {
-        padding-bottom: 0;
-    }
-
-    .project-progress-item::before {
-        top: 4px;
-        left: -20px;
-        transform: none;
-    }
-
-    .project-progress-content strong {
-        font-size: 20px;
-    }
-
-    .project-progress-role {
-        margin-top: 60px;
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-
-}
-
-</style>
-
 </head>
 
 
@@ -408,161 +194,109 @@ alt="AI Wearable Device Concept">
      03. PROJECT PROGRESS
 ================================================== -->
 
-<section class="project-progress-section">
+<section class="project-progress">
 
-<div class="container">
+<div class="project-progress">
 
+    <div class="progress-item">
 
-<div class="section-title">
-    03 / Project Progress
-</div>
+        <span class="progress-year">
+            01
+        </span>
 
+        <div class="progress-content">
 
-<h2>
-    4년차 R&amp;D 과제를 앞두고,<br>
-    UX/UI 설계부터 초기 UI 디자인까지 구체화했습니다.
-</h2>
+            <small>
+                1년차
+            </small>
 
+            <strong>
+                R&amp;D 진행
+            </strong>
 
-<p class="overview-text">
+        </div>
 
-프로젝트는 4년차 과제로 예정되어 있었으며,
-2년차 당시 UX/UI 설계가 시작되지 않은 상태였습니다.<br>
-퇴사 전까지 사용자 인터뷰와 리서치를 바탕으로 주요 기능과 사용자 흐름을 정리하고,
-와이어프레임을 고도화한 뒤 주요 화면의 초기 UI 디자인까지 진행했습니다.
-
-</p>
-
-
-<div class="project-progress-timeline">
+    </div>
 
 
-<div class="project-progress-item">
+    <div class="progress-item is-complete">
 
-<span class="project-progress-year">
-    01
-</span>
+        <span class="progress-year">
+            02
+        </span>
 
-<div class="project-progress-content">
+        <div class="progress-content">
 
-<small>
-    1년차
-</small>
+            <small>
+                2년차
+            </small>
 
-<strong>
-    R&amp;D 진행
-</strong>
+            <strong>
+                UX/UI 설계 시작
+            </strong>
 
-</div>
+            <p>
+                User Interview · UX Research<br>
+                Benchmark · User Requirements<br>
+                UX Flow · IA<br>
+                Wireframe · Initial UI
+            </p>
 
-</div>
+        </div>
 
-
-
-<div class="project-progress-item is-complete">
-
-<span class="project-progress-year">
-    02
-</span>
-
-<div class="project-progress-content">
-
-<small>
-    2년차
-</small>
-
-<strong>
-    UX/UI 설계 시작
-</strong>
-
-<p>
-    User Interview<br>
-    UX Research · Benchmark<br>
-    User Requirements<br>
-    UX Flow · IA<br>
-    Wireframe · Initial UI
-</p>
-
-</div>
-
-</div>
+    </div>
 
 
+    <div class="progress-item">
 
-<div class="project-progress-item">
+        <span class="progress-year">
+            03
+        </span>
 
-<span class="project-progress-year">
-    03
-</span>
+        <div class="progress-content">
 
-<div class="project-progress-content">
+            <small>
+                3년차
+            </small>
 
-<small>
-    3년차
-</small>
+            <strong>
+                고도화 예정
+            </strong>
 
-<strong>
-    고도화 예정
-</strong>
+            <p>
+                UX/UI 고도화<br>
+                기능 및 화면 확장
+            </p>
 
-<p>
-    UX/UI 고도화<br>
-    기능 및 화면 확장
-</p>
+        </div>
 
-</div>
-
-</div>
-
+    </div>
 
 
-<div class="project-progress-item is-current">
+    <div class="progress-item current">
 
-<span class="project-progress-year">
-    04
-</span>
+        <span class="progress-year">
+            04
+        </span>
 
-<div class="project-progress-content">
+        <div class="progress-content">
 
-<small>
-    4년차
-</small>
+            <small>
+                4년차
+            </small>
 
-<strong>
-    R&amp;D 과제 진행 예정
-</strong>
+            <strong>
+                R&amp;D 과제 진행 예정
+            </strong>
 
-<p>
-    서비스 구현 및<br>
-    UX/UI 고도화 예정
-</p>
+            <p>
+                서비스 구현 및<br>
+                UX/UI 고도화 예정
+            </p>
 
-</div>
+        </div>
 
-</div>
-
-
-</div>
-
-
-<div class="project-progress-role">
-
-<div class="project-progress-role-title">
-    MY CONTRIBUTION
-</div>
-
-<div class="project-progress-role-text">
-
-프로젝트가 본격적인 UX/UI 설계 단계로 진입하기 전,
-사용자 인터뷰와 리서치를 통해 요구사항을 정리하고
-서비스 구조와 사용자 흐름을 설계했습니다.
-이후 IA, Screen Definition, Wireframe을 구체화하고
-주요 화면의 초기 UI 디자인까지 진행했습니다.
-
-</div>
-
-</div>
-
+    </div>
 
 </div>
 
@@ -585,9 +319,132 @@ alt="AI Wearable Device Concept">
 
 
 <h2>
-    접근성과 웨어러블 서비스의
-    주요 사례를 조사했습니다.
+    사용자 인터뷰와 서비스 리서치를 통해
+    주요 요구사항을 정의했습니다.
 </h2>
+
+
+<p class="overview-text">
+
+사용자 인터뷰와 국내외 접근성 서비스 및
+AI 기반 보조 서비스의 사례를 조사하고,
+이를 바탕으로 서비스의 주요 요구사항과
+UX 방향을 정리했습니다.
+
+</p>
+
+
+
+<!-- ==================================================
+     USER INTERVIEW
+================================================== -->
+
+<div class="section-title"
+style="margin-top:90px;">
+
+User Interview
+
+</div>
+
+
+<h3
+style="
+font-size:32px;
+line-height:1.35;
+margin-bottom:32px;
+">
+
+실제 사용자 인터뷰를 통해
+주변 상황 인지와 의사소통 과정의 요구사항을 확인했습니다.
+
+</h3>
+
+
+<div class="interview-grid">
+
+    <div class="interview-image">
+
+        <!-- 실제 인터뷰 이미지 삽입 영역 -->
+
+        <img
+        src="images/user-interview-01.jpg"
+        alt="User Interview 01">
+
+    </div>
+
+
+    <div class="interview-image">
+
+        <!-- 실제 인터뷰 이미지 삽입 영역 -->
+
+        <img
+        src="images/user-interview-02.jpg"
+        alt="User Interview 02">
+
+    </div>
+
+</div>
+
+
+
+<!-- ==================================================
+     USER REQUIREMENTS
+================================================== -->
+
+<div class="section-title"
+style="margin-top:120px;">
+
+User Requirements
+
+</div>
+
+
+<h3
+style="
+font-size:32px;
+line-height:1.35;
+margin-bottom:32px;
+">
+
+인터뷰와 리서치 결과를 바탕으로
+서비스에 필요한 핵심 요구사항을 정리했습니다.
+
+</h3>
+
+
+<div class="hero-image">
+
+<img
+src="images/3_wearable_talk.png"
+alt="User Requirements and Key Insights">
+
+</div>
+
+
+
+<!-- ==================================================
+     BENCHMARK
+================================================== -->
+
+<div class="section-title"
+style="margin-top:120px;">
+
+Benchmark
+
+</div>
+
+
+<h3
+style="
+font-size:32px;
+line-height:1.35;
+margin-bottom:32px;
+">
+
+접근성과 웨어러블 서비스의
+주요 사례를 조사했습니다.
+
+</h3>
 
 
 <p class="overview-text">
@@ -599,15 +456,8 @@ UI 구성 및 주요 기능을 조사하고,
 </p>
 
 
-<div class="section-title"
-style="margin-top:90px;">
-
-Benchmark
-
-</div>
-
-
-<div class="hero-image">
+<div class="hero-image"
+style="margin-top:50px;">
 
 <img
 src="images/3_wearable_ppt.png"
@@ -726,6 +576,10 @@ style="margin-top:70px;">
 
 
 
+<!-- ==================================================
+     KEY INSIGHTS
+================================================== -->
+
 <div class="section-title"
 style="margin-top:140px;">
 
@@ -742,16 +596,85 @@ margin-bottom:32px;
 ">
 
 사용자 요구사항을 바탕으로
-서비스 방향을 정리했습니다.
+서비스의 핵심 방향을 정의했습니다.
 
 </h3>
 
 
-<div class="hero-image">
+<div class="insight-grid">
 
-<img
-src="images/3_wearable_talk.png"
-alt="User Research Insights">
+
+<div class="overview-card">
+
+<span>
+    Insight 01
+</span>
+
+<h3>
+    실시간 정보 전달이 가장 중요
+</h3>
+
+<p>
+    주변 상황을 즉시 전달받을 수 있는
+    정보 제공 방식이 필요했습니다.
+</p>
+
+</div>
+
+
+<div class="overview-card">
+
+<span>
+    Insight 02
+</span>
+
+<h3>
+    여러 기기 사용의 불편
+</h3>
+
+<p>
+    여러 기능을 각각 사용하는 것보다
+    하나의 기기로 통합된 경험이 필요했습니다.
+</p>
+
+</div>
+
+
+<div class="overview-card">
+
+<span>
+    Insight 03
+</span>
+
+<h3>
+    상황별 맞춤 기능 필요
+</h3>
+
+<p>
+    이동, 대화, OCR 등 상황에 따라
+    필요한 기능이 달라졌습니다.
+</p>
+
+</div>
+
+
+<div class="overview-card">
+
+<span>
+    Insight 04
+</span>
+
+<h3>
+    간단한 조작 선호
+</h3>
+
+<p>
+    복잡한 UI보다 빠르게 실행할 수 있는
+    직관적인 인터페이스가 필요했습니다.
+</p>
+
+</div>
+
 
 </div>
 
@@ -836,7 +759,9 @@ Information Architecture를 기반으로
 
 
 
-<!-- Screen Definition -->
+<!-- ==================================================
+     SCREEN DEFINITION
+================================================== -->
 
 <div class="section-title"
 style="margin-top:90px;">
@@ -867,7 +792,10 @@ alt="Screen Definition">
 </div>
 
 
-<!-- Wireframe -->
+
+<!-- ==================================================
+     WIREFRAME
+================================================== -->
 
 <div class="section-title"
 style="margin-top:140px;">
@@ -906,13 +834,118 @@ alt="Low-Fidelity Wireframe">
 
 
 <!-- ==================================================
+     07. UI DESIGN
+================================================== -->
+
+<section class="ui-design">
+
+<div class="container">
+
+
+<div class="section-title">
+    07 / UI Design
+</div>
+
+
+<h2>
+    UX 설계를 바탕으로
+    초기 UI 디자인을 구체화했습니다.
+</h2>
+
+
+<p class="overview-text">
+
+정의된 사용자 흐름과 기능을 바탕으로
+AI 스마트 글래스의 비주얼 컨셉과
+모바일 애플리케이션의 초기 UI를 설계했습니다.
+
+</p>
+
+
+
+<!-- ==================================================
+     AI VISUAL IMAGE
+================================================== -->
+
+<div class="section-title"
+style="margin-top:90px;">
+
+AI Visual Image
+
+</div>
+
+
+<h3
+style="
+font-size:32px;
+line-height:1.35;
+margin-bottom:32px;
+">
+
+웨어러블 디바이스의
+AI 기반 시각적 컨셉을 구체화했습니다.
+
+</h3>
+
+
+<div class="hero-image">
+
+<img
+src="images/3_wearable_visual.png"
+alt="AI Smart Glasses Visual Concept">
+
+</div>
+
+
+
+<!-- ==================================================
+     UI DESIGN
+================================================== -->
+
+<div class="section-title"
+style="margin-top:140px;">
+
+UI Design
+
+</div>
+
+
+<h3
+style="
+font-size:32px;
+line-height:1.35;
+margin-bottom:32px;
+">
+
+시각 보조와 청각 보조를 중심으로
+주요 모바일 화면을 디자인했습니다.
+
+</h3>
+
+
+<div class="hero-image">
+
+<img
+src="images/3_wearable_ui.png"
+alt="AI Smart Glasses UI Design">
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
      FOOTER
 ================================================== -->
 
 <footer>
 
 <div class="footer-title">
-    Government R&amp;D
+    Government R&D
 </div>
 
 <div class="footer-link">
