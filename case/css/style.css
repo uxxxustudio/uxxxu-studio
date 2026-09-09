@@ -1114,6 +1114,10 @@ section {
     color: #888;
 }
 
+/* PROJECT PROGRESS - 라인과 내용 사이 간격 */
+.project-progress .progress-content {
+    padding-top: 35px;
+}
 
 /* =========================================
    PROJECT PROGRESS MOBILE
