@@ -21,6 +21,220 @@ href="https://fonts.googleapis.com">
 <link rel="stylesheet"
 href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 
+
+<style>
+
+/* ==================================================
+   03. PROJECT PROGRESS
+   ================================================== */
+
+.project-progress-section {
+    width: 100%;
+    overflow: hidden;
+}
+
+.project-progress-section .container {
+    width: min(1280px, calc(100% - 160px));
+    margin: 0 auto;
+}
+
+.project-progress-section .section-title {
+    margin-bottom: 45px;
+}
+
+.project-progress-section h2 {
+    margin-bottom: 28px;
+}
+
+.project-progress-section .overview-text {
+    margin-bottom: 90px;
+}
+
+
+/* Timeline */
+
+.project-progress-timeline {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    position: relative;
+    margin-top: 20px;
+    padding-top: 42px;
+}
+
+
+/* horizontal line */
+
+.project-progress-timeline::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #222;
+}
+
+
+/* Item */
+
+.project-progress-item {
+    position: relative;
+    min-width: 0;
+    padding: 30px 28px 0 0;
+    border-right: 1px solid #e5e5e5;
+}
+
+.project-progress-item:last-child {
+    border-right: 0;
+    padding-right: 0;
+}
+
+
+/* Timeline dot */
+
+.project-progress-item::before {
+    content: "";
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #d9d9d9;
+    top: -4px;
+    left: 0;
+    transform: translateX(-50%);
+}
+
+.project-progress-item.is-complete::before,
+.project-progress-item.is-current::before {
+    background: #111;
+}
+
+
+/* Number */
+
+.project-progress-year {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: #999;
+    margin-bottom: 14px;
+}
+
+
+/* Content */
+
+.project-progress-content small {
+    display: block;
+    font-size: 15px;
+    color: #888;
+    margin-bottom: 10px;
+}
+
+.project-progress-content strong {
+    display: block;
+    font-size: 22px;
+    line-height: 1.35;
+    color: #111;
+    font-weight: 700;
+}
+
+.project-progress-content p {
+    margin: 22px 0 0;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #777;
+}
+
+
+/* Current */
+
+.project-progress-item.is-current .project-progress-content strong {
+    font-weight: 800;
+}
+
+
+/* Role summary */
+
+.project-progress-role {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid #e5e5e5;
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 40px;
+}
+
+.project-progress-role-title {
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: #888;
+}
+
+.project-progress-role-text {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #333;
+}
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+    .project-progress-section .container {
+        width: calc(100% - 40px);
+    }
+
+    .project-progress-section .overview-text {
+        margin-bottom: 60px;
+    }
+
+    .project-progress-timeline {
+        display: block;
+        padding-top: 0;
+        margin-top: 0;
+        padding-left: 24px;
+    }
+
+    .project-progress-timeline::before {
+        top: 0;
+        bottom: 0;
+        left: 4px;
+        right: auto;
+        width: 1px;
+        height: auto;
+    }
+
+    .project-progress-item {
+        padding: 0 0 55px 28px;
+        border-right: 0;
+    }
+
+    .project-progress-item:last-child {
+        padding-bottom: 0;
+    }
+
+    .project-progress-item::before {
+        top: 4px;
+        left: -20px;
+        transform: none;
+    }
+
+    .project-progress-content strong {
+        font-size: 20px;
+    }
+
+    .project-progress-role {
+        margin-top: 60px;
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+}
+
+</style>
+
 </head>
 
 
@@ -194,55 +408,164 @@ alt="AI Wearable Device Concept">
      03. PROJECT PROGRESS
 ================================================== -->
 
-<section class="project-progress">
+<section class="project-progress-section">
 
-<div class="project-progress">
-
-    <div class="progress-item">
-        <span class="progress-year">01</span>
-
-        <div class="progress-content">
-            <small>1년차</small>
-            <strong>R&amp;D 진행</strong>
-        </div>
-    </div>
+<div class="container">
 
 
-    <div class="progress-item is-complete">
-        <span class="progress-year">02</span>
-
-        <div class="progress-content">
-            <small>2년차</small>
-            <strong>UX/UI 설계 시작</strong>
-
-            <p>
-                User Research · UX Flow<br>
-                Wireframe · Initial UI
-            </p>
-        </div>
-    </div>
+<div class="section-title">
+    03 / Project Progress
+</div>
 
 
-    <div class="progress-item">
-        <span class="progress-year">03</span>
-
-        <div class="progress-content">
-            <small>3년차</small>
-            <strong>예정</strong>
-        </div>
-    </div>
+<h2>
+    4년차 R&amp;D 과제를 앞두고,<br>
+    UX/UI 설계부터 초기 UI 디자인까지 구체화했습니다.
+</h2>
 
 
-    <div class="progress-item current">
-        <span class="progress-year">04</span>
+<p class="overview-text">
 
-        <div class="progress-content">
-            <small>4년차</small>
-            <strong>과제 진행 예정</strong>
-        </div>
-    </div>
+프로젝트는 4년차 과제로 예정되어 있었으며,
+2년차 당시 UX/UI 설계가 시작되지 않은 상태였습니다.<br>
+퇴사 전까지 사용자 인터뷰와 리서치를 바탕으로 주요 기능과 사용자 흐름을 정리하고,
+와이어프레임을 고도화한 뒤 주요 화면의 초기 UI 디자인까지 진행했습니다.
+
+</p>
+
+
+<div class="project-progress-timeline">
+
+
+<div class="project-progress-item">
+
+<span class="project-progress-year">
+    01
+</span>
+
+<div class="project-progress-content">
+
+<small>
+    1년차
+</small>
+
+<strong>
+    R&amp;D 진행
+</strong>
 
 </div>
+
+</div>
+
+
+
+<div class="project-progress-item is-complete">
+
+<span class="project-progress-year">
+    02
+</span>
+
+<div class="project-progress-content">
+
+<small>
+    2년차
+</small>
+
+<strong>
+    UX/UI 설계 시작
+</strong>
+
+<p>
+    User Interview<br>
+    UX Research · Benchmark<br>
+    User Requirements<br>
+    UX Flow · IA<br>
+    Wireframe · Initial UI
+</p>
+
+</div>
+
+</div>
+
+
+
+<div class="project-progress-item">
+
+<span class="project-progress-year">
+    03
+</span>
+
+<div class="project-progress-content">
+
+<small>
+    3년차
+</small>
+
+<strong>
+    고도화 예정
+</strong>
+
+<p>
+    UX/UI 고도화<br>
+    기능 및 화면 확장
+</p>
+
+</div>
+
+</div>
+
+
+
+<div class="project-progress-item is-current">
+
+<span class="project-progress-year">
+    04
+</span>
+
+<div class="project-progress-content">
+
+<small>
+    4년차
+</small>
+
+<strong>
+    R&amp;D 과제 진행 예정
+</strong>
+
+<p>
+    서비스 구현 및<br>
+    UX/UI 고도화 예정
+</p>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<div class="project-progress-role">
+
+<div class="project-progress-role-title">
+    MY CONTRIBUTION
+</div>
+
+<div class="project-progress-role-text">
+
+프로젝트가 본격적인 UX/UI 설계 단계로 진입하기 전,
+사용자 인터뷰와 리서치를 통해 요구사항을 정리하고
+서비스 구조와 사용자 흐름을 설계했습니다.
+이후 IA, Screen Definition, Wireframe을 구체화하고
+주요 화면의 초기 UI 디자인까지 진행했습니다.
+
+</div>
+
+</div>
+
+
+</div>
+
 </section>
 
 
@@ -589,7 +912,7 @@ alt="Low-Fidelity Wireframe">
 <footer>
 
 <div class="footer-title">
-    Government R&D
+    Government R&amp;D
 </div>
 
 <div class="footer-link">
