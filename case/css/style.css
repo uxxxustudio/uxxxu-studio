@@ -1212,3 +1212,79 @@ section {
     }
 
 }
+
+/* =========================================
+   AI SMART GLASSES - IMAGE SIZE
+========================================= */
+
+/* User Interview - 2 images side by side */
+
+.interview-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    max-width: 760px;
+}
+
+.interview-image {
+    min-width: 0;
+}
+
+.interview-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+
+
+/* AI Visual Image */
+
+.glasses-visual-image {
+    max-width: 720px;
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.glasses-visual-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+
+/* UI Design */
+
+.glasses-ui-image {
+    max-width: 720px;
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.glasses-ui-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .interview-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        max-width: 100%;
+    }
+
+    .interview-image img {
+        border-radius: 8px;
+    }
+
+    .glasses-visual-image,
+    .glasses-ui-image {
+        max-width: 100%;
+    }
+
+}
