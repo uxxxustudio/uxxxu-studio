@@ -995,13 +995,17 @@ section {
 .project-progress {
     position: relative;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    width: 100%;
+    max-width: 100%;
     margin-top: 80px;
     border-top: 1px solid #111;
 }
 
 .progress-item {
     position: relative;
+    min-width: 0;
+    width: 100%;
     padding: 32px 28px 0;
     border-right: 1px solid #ececec;
     min-height: 150px;
@@ -1057,6 +1061,7 @@ section {
     font-size: 20px;
     line-height: 1.4;
     font-weight: 700;
+    word-break: keep-all;
 }
 
 .progress-item p {
@@ -1064,10 +1069,8 @@ section {
     font-size: 14px;
     line-height: 1.6;
     color: #777;
-}
-
-.progress-item.current strong {
-    font-weight: 800;
+    word-break: keep-all;
+    overflow-wrap: break-word;
 }
 
 
