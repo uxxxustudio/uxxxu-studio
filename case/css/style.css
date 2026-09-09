@@ -994,111 +994,79 @@ section {
    PROJECT PROGRESS
 ========================================= */
 
-.project-progress-section {
-    overflow: hidden;
+.project-progress {
+    width: 100%;
+    margin-top: 100px;
+    padding-top: 45px; /* 가로선과 타임라인 사이 간격 */
+    border-top: 1px solid #222;
 }
 
-.project-progress {
+.project-progress > .project-progress {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     width: 100%;
-    margin-top: 80px;
-    border-top: 1px solid #111;
+    padding-top: 0;
+    border-top: none;
 }
 
 .progress-item {
     position: relative;
     min-width: 0;
-    padding: 32px 28px 0;
-    border-right: 1px solid #ececec;
-}
-
-.progress-item:first-child {
-    padding-left: 0;
-}
-
-.progress-item:last-child {
-    border-right: 0;
-    padding-right: 0;
+    padding-right: 40px;
 }
 
 .progress-item::before {
     content: "";
     position: absolute;
-    top: -5px;
-    left: 28px;
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: #ddd;
-}
-
-.progress-item:first-child::before {
+    top: -46px;
     left: 0;
+    width: 1px;
+    height: 100%;
+    background: #e5e5e5;
 }
 
-.progress-item.is-complete::before,
-.progress-item.current::before {
+.progress-item::after {
+    content: "";
+    position: absolute;
+    top: -51px;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #d9d9d9;
+    transform: translateX(-50%);
+}
+
+.progress-item.is-complete::after,
+.progress-item.current::after {
     background: #111;
 }
 
 .progress-year {
     display: block;
-    margin-bottom: 14px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .14em;
+    margin-bottom: 18px;
+    font-size: 14px;
     color: #999;
+    letter-spacing: 0.08em;
 }
 
 .progress-content small {
     display: block;
-    margin-bottom: 8px;
-    font-size: 14px;
-    color: #888;
+    margin-bottom: 12px;
+    font-size: 16px;
+    color: #999;
 }
 
 .progress-content strong {
     display: block;
-    font-size: 20px;
-    line-height: 1.4;
-    font-weight: 700;
-    word-break: keep-all;
+    font-size: 26px;
+    line-height: 1.35;
+    color: #111;
 }
 
 .progress-content p {
-    margin-top: 14px;
-    font-size: 14px;
-    line-height: 1.7;
-    color: #777;
-    word-break: keep-all;
-}
-
-
-/* Mobile */
-
-@media (max-width: 900px) {
-
-    .project-progress {
-        grid-template-columns: 1fr;
-        margin-top: 60px;
-    }
-
-    .progress-item {
-        padding: 28px 0;
-        border-right: 0;
-        border-bottom: 1px solid #ececec;
-    }
-
-    .progress-item:last-child {
-        border-bottom: 0;
-    }
-
-    .progress-item::before,
-    .progress-item:first-child::before {
-        top: 30px;
-        left: auto;
-        right: 0;
-    }
-
+    margin-top: 28px;
+    font-size: 17px;
+    line-height: 1.9;
+    color: #888;
 }
