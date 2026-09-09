@@ -1435,3 +1435,10 @@ body{word-break:keep-all;overflow-wrap:break-word;}
     height: auto;
     border-radius: 10px;
 }
+
+.glasses-visual-image,
+.glasses-ui-image {
+    max-width: 640px;
+    margin-left: 0;
+    margin-right: auto;
+}
