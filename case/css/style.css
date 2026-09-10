@@ -1487,3 +1487,12 @@ body{word-break:keep-all;overflow-wrap:break-word;}
     background:#111;
   }
 }
+@media (max-width:600px){
+  .progress-timeline .progress-line{background:transparent !important;}
+  .problem-item:first-child{padding-top:32px !important;}
+  .problem-item:last-child{padding-bottom:32px !important;}
+}
+
+@media (max-width:980px){
+  .insight-row-grid{grid-template-columns:repeat(2,1fr) !important;}
+}
