@@ -1456,10 +1456,9 @@ body{word-break:keep-all;overflow-wrap:break-word;}
 
 
 @media (max-width:600px){
-  .progress-timeline .progress-line{display:none;}
+  .progress-timeline .progress-line{display:none !important;}
   .progress-timeline .progress-item::before{display:none;}
   .progress-timeline .progress-item{padding:0 0 70px 46px;}
-  .progress-timeline .progress-item:last-child{padding-bottom:0;}
 
   .progress-timeline .progress-dot{
     position:absolute;
@@ -1474,7 +1473,7 @@ body{word-break:keep-all;overflow-wrap:break-word;}
     transform:none;
   }
 
-  .progress-timeline .progress-item:not(:last-child)::after{
+  .progress-timeline .progress-item::after{
     content:"";
     position:absolute;
     top:26px;
