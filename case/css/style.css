@@ -1496,3 +1496,7 @@ body{word-break:keep-all;overflow-wrap:break-word;}
 @media (max-width:980px){
   .insight-row-grid{grid-template-columns:repeat(2,1fr) !important;}
 }
+
+@media (max-width:600px){
+  .progress-timeline .progress-line-fill{display:none !important;}
+}
