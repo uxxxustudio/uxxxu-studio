@@ -1503,3 +1503,13 @@ body{word-break:keep-all;overflow-wrap:break-word;}
 @media (max-width:600px){
   .progress-timeline .progress-line-fill{display:none !important;}
 }
+/* 하위 라벨 — 인라인 스타일 붙은 것만 작고 연하게 */
+.section-title[style]{
+  font-size: 11px;
+  color: #aaa;
+}
+
+/* 하위 소제목(h3, 인라인 32px) — 상위 h2보다 확실히 작게 */
+h3[style*="font-size:32px"]{
+  font-size: 24px !important;
+}
