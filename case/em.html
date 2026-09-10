@@ -139,7 +139,7 @@
 
         .case-meta-item strong {
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 700;
         }
 
 
@@ -219,11 +219,11 @@
             display: grid;
 
             grid-template-columns: repeat(2, 1fr);
-            gap: 80px;
+            gap: 60px 80px;
         }
 
         .case-text-block h3 {
-            margin: 0 0 18px;
+            margin: 0 0 14px;
 
             font-size: 20px;
             letter-spacing: -.02em;
@@ -232,6 +232,21 @@
         .case-text-block p {
             font-size: 15px;
             line-height: 1.8;
+        }
+
+        .case-text-block .thumb {
+            width: 100%;
+            aspect-ratio: 16/10;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .case-text-block .thumb img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
 
@@ -276,6 +291,20 @@
             padding-top: 40px;
 
             border-top: 1px solid #ddd;
+        }
+
+
+        /* =========================================================
+           MOBILE — 3열 그리드
+        ========================================================= */
+
+        @media (min-width: 768px) {
+
+            .case-image-grid--3 {
+                grid-template-columns: repeat(3, 1fr);
+                max-width: 900px;
+            }
+
         }
 
 
@@ -571,6 +600,10 @@
 
             <div class="case-text-block">
 
+                <div class="thumb">
+                    <img src="images/em/EnoughM_main_korean.png" alt="아이콘 시스템">
+                </div>
+
                 <h3>
                     콘텐츠 중심의 정보 구조
                 </h3>
@@ -585,6 +618,10 @@
 
 
             <div class="case-text-block">
+
+                <div class="thumb">
+                    <img src="images/em/EnoughM_main_korean.png" alt="카테고리 아이콘">
+                </div>
 
                 <h3>
                     시각적 카테고리 시스템
@@ -601,6 +638,10 @@
 
             <div class="case-text-block">
 
+                <div class="thumb">
+                    <img src="images/em/image.png" alt="여백 중심 화면 구성">
+                </div>
+
                 <h3>
                     브랜드와 실용성의 균형
                 </h3>
@@ -615,6 +656,10 @@
 
 
             <div class="case-text-block">
+
+                <div class="thumb">
+                    <img src="images/em/EnoughM_work_video.png" alt="풀스크린 인터랙션">
+                </div>
 
                 <h3>
                     몰입감 있는 인터랙션
@@ -632,28 +677,36 @@
 
     </div>
 
+
+
+    <!-- =====================================================
+         CONSTRAINT
+    ===================================================== -->
+
     <div class="case-section">
 
-    <div class="case-section-label">
-        Constraint
+        <div class="case-section-label">
+            Constraint
+        </div>
+
+
+        <h2>
+            인터랙션 대신,<br>
+            완성도를 택했습니다.
+        </h2>
+
+
+        <p>
+            초기 기획 단계에서는 아이콘 하나하나에 호버 시 반응하는
+            인터랙티브 모션을 적용해, 방문자가 카테고리를 직관적으로
+            탐색하도록 제안했습니다. 다만 예산 범위 내에서 우선순위를
+            조정하며, 모션 대신 정적 아트웍 자체의 완성도를 높이는
+            방향으로 스코프를 재설계했습니다.
+        </p>
+
     </div>
 
-    <h2>
-        인터랙션 대신,<br>
-        완성도를 택했습니다.
-    </h2>
 
-    <p>
-        초기 기획 단계에서는 아이콘 하나하나에 호버 시 반응하는
-        인터랙티브 모션을 적용해, 방문자가 카테고리를 직관적으로
-        탐색하도록 제안했습니다. 다만 예산 범위 내에서 우선순위를
-        조정하며, 모션 대신 정적 아트웍 자체의 완성도를 높이는
-        방향으로 스코프를 재설계했습니다.
-    </p>
-
-</div>
-
-    
 
     <!-- =====================================================
          DESIGN POINT
@@ -753,27 +806,25 @@
         </div>
 
 
-        <div class="case-image-grid">
+        <div class="case-image-grid case-image-grid--3">
 
             <img
-                src="images/em/em_m_01.png"
+                src="images/em/image 2.png"
                 alt="Enough Media mobile design"
             >
 
 
             <img
-                src="images/em/em_m_02.png"
+                src="images/em/image 3.png"
                 alt="Enough Media mobile design"
             >
 
 
             <img
-                src="images/em/em_m_03.png"
+                src="images/em/image 4.png"
                 alt="Enough Media mobile design"
             >
 
-
-           
         </div>
 
     </div>
