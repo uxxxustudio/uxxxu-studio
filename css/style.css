@@ -738,7 +738,7 @@ nav a:hover {
     line-height: 1;
     font-weight: 400;
     color: #111;
-    transform: translateY(-24px);
+    transform: translateY(-28px);
     transition: transform .45s cubic-bezier(.2,.7,.2,1);
 }
 
