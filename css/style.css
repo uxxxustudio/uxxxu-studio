@@ -729,7 +729,7 @@ nav a:hover {
 
 .archive-arrow {
     position: absolute;
-    left: calc(50% + 155px);
+    left: calc(50% + 135px);
     top: 50%;
     display: inline-flex;
     align-items: center;
@@ -738,7 +738,7 @@ nav a:hover {
     line-height: 1;
     font-weight: 400;
     color: #111;
-    transform: translateY(-18px);
+    transform: translateY(-24px);
     transition: transform .45s cubic-bezier(.2,.7,.2,1);
 }
 
