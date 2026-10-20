@@ -756,7 +756,7 @@ nav a:hover {
 }
 
 .project-archive:hover .archive-arrow {
-    transform: translate(6px, -24px);
+    transform: translate(5px, -33px);
 }
 
 
@@ -1060,12 +1060,13 @@ footer {
 }
 
 /* PROJECT별 HOVER THUMBNAIL 위치 */
-.portfolio-grid:has(.project:nth-child(1):hover) .portfolio-preview.is-visible { margin-left: 210px; } 
-.portfolio-grid:has(.project:nth-child(2):hover) .portfolio-preview.is-visible { margin-left: -50px; }
-.portfolio-grid:has(.project:nth-child(3):hover) .portfolio-preview.is-visible { margin-left: -30px; }
-.portfolio-grid:has(.project:nth-child(4):hover) .portfolio-preview.is-visible { margin-left: 10px; }
-.portfolio-grid:has(.project:nth-child(5):hover) .portfolio-preview.is-visible { margin-left: -150px; }
-.portfolio-grid:has(.project:nth-child(6):hover) .portfolio-preview.is-visible { margin-left: 120px; }
+.portfolio-grid:has(.project:nth-child(1):hover) .portfolio-preview.is-visible { margin-left: 55px; }
+.portfolio-grid:has(.project:nth-child(2):hover) .portfolio-preview.is-visible { margin-left: 210px; } 
+.portfolio-grid:has(.project:nth-child(3):hover) .portfolio-preview.is-visible { margin-left: -50px; }
+.portfolio-grid:has(.project:nth-child(4):hover) .portfolio-preview.is-visible { margin-left: -30px; }
+.portfolio-grid:has(.project:nth-child(5):hover) .portfolio-preview.is-visible { margin-left: 10px; }
+.portfolio-grid:has(.project:nth-child(6):hover) .portfolio-preview.is-visible { margin-left: -150px; }
+.portfolio-grid:has(.project:nth-child(7):hover) .portfolio-preview.is-visible { margin-left: 120px; }
 
 
 /* =========================================================

@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Design-led AI Coding | uxxxu.studio</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<meta name="description"
+content="Design-led AI Coding — UXXXU.STUDIO AI Workflow Case Study">
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+
+<style>
+
+/* ==================================================
+   PAGE-LOCAL : AI Workflow
+   기존 case 스타일의 값만 재사용 (새 값 추가 없음)
+================================================== */
+
+.workflow-list{
+    margin-top:30px;
+}
+
+.workflow-item{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);
+    gap:64px;
+    align-items:center;
+    padding:70px 0;
+    border-top:1px solid #ececec;
+}
+
+.workflow-item:last-child{
+    border-bottom:1px solid #ececec;
+}
+
+.workflow-item.reverse .workflow-text{
+    order:2;
+}
+
+.workflow-text span{
+    display:block;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:#888;
+    margin-bottom:22px;
+}
+
+.workflow-text h3{
+    font-size:32px;
+    font-weight:800;
+    line-height:1.2;
+    letter-spacing:-.03em;
+    margin-bottom:16px;
+}
+
+.workflow-text > p{
+    font-size:18px;
+    line-height:1.9;
+    color:#666;
+    letter-spacing:-.03em;
+}
+
+.prompt-box{
+    margin-top:30px;
+    padding:30px 36px;
+    border:1px solid #ececec;
+    border-radius:20px;
+    background:#fafafa;
+}
+
+.prompt-box small{
+    display:block;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:#888;
+    margin-bottom:12px;
+}
+
+.prompt-box p{
+    font-size:15px;
+    line-height:1.6;
+    letter-spacing:-.02em;
+    color:#555;
+}
+
+.workflow-image{
+    overflow:hidden;
+    border-radius:18px;
+    border:1px solid #ececec;
+}
+
+.workflow-image img{
+    display:block;
+    width:100%;
+    height:auto;
+}
+
+.system-stats{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:28px;
+    margin-top:30px;
+}
+
+.system-stat{
+    padding:30px 36px;
+    border:1px solid #ececec;
+    border-radius:20px;
+    background:#fafafa;
+}
+
+.system-stat strong{
+    display:block;
+    font-size:64px;
+    font-weight:800;
+    line-height:1;
+    letter-spacing:-.045em;
+    margin-bottom:16px;
+}
+
+.system-stat span{
+    display:block;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:#888;
+    margin-bottom:12px;
+}
+
+.system-stat p{
+    font-size:15px;
+    line-height:1.6;
+    letter-spacing:-.02em;
+    color:#666;
+}
+
+.system-image{
+    margin-top:70px;
+    overflow:hidden;
+    border-radius:28px;
+    border:1px solid #ececec;
+}
+
+.system-image img{
+    display:block;
+    width:100%;
+    height:auto;
+}
+
+.pill-link{
+    display:inline-flex;
+    align-items:center;
+    height:46px;
+    padding:0 26px;
+    border:1px solid #111;
+    border-radius:999px;
+    background:#fff;
+    color:#111;
+    font-size:13px;
+    font-weight:500;
+    transition:
+        transform .35s cubic-bezier(.2,.7,.2,1),
+        background .2s ease,
+        color .2s ease;
+}
+
+.pill-link:hover{
+    background:#111;
+    color:#fff;
+    transform:translateY(-2px);
+}
+
+@media(max-width:980px){
+
+    .workflow-item{
+        grid-template-columns:1fr;
+        gap:36px;
+        padding:50px 0;
+    }
+
+    .workflow-item.reverse .workflow-text{
+        order:0;
+    }
+
+    .system-stats{
+        grid-template-columns:1fr 1fr;
+        gap:16px;
+    }
+
+    .system-stat strong{
+        font-size:42px;
+    }
+
+    .prompt-box,
+    .system-stat{
+        padding:26px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<a href="../index.html" class="logo">
+    uxxxu.studio
+</a>
+
+<a href="../index.html"
+class="back">
+    ← Back to Portfolio
+</a>
+
+</header>
+
+
+<main>
+
+
+<!-- ==================================================
+     01. PROJECT
+================================================== -->
+
+<section class="hero">
+
+<div class="container">
+
+<div class="eyebrow">
+    AI WORKFLOW
+</div>
+
+
+<h1>
+    Design-led<br>
+    AI Coding
+</h1>
+
+
+<p class="subtitle">
+    디자인 방향은 직접 정하고, 구현은 AI와 함께한
+    개인 포트폴리오 사이트 UXXXU.STUDIO
+</p>
+
+
+<div class="project-info">
+
+
+<div>
+
+<small>Category</small>
+
+<strong>
+    AI Workflow<br>
+    Vibe Coding
+</strong>
+
+</div>
+
+
+<div>
+
+<small>Year</small>
+
+<strong>
+    2026
+</strong>
+
+</div>
+
+
+<div>
+
+<small>Tools</small>
+
+<strong>
+    Claude Code<br>
+    ChatGPT<br>
+    Claude<br>
+    Three.js
+</strong>
+
+</div>
+
+
+<div>
+
+<small>My Role</small>
+
+<strong>
+    Concept &amp; Direction<br>
+    3D Visual<br>
+    Review<br>
+    Design System
+</strong>
+
+</div>
+
+
+</div>
+
+
+<div class="hero-image">
+
+<img
+src="images/uxxxu-ai/hero.jpg"
+alt="UXXXU.STUDIO 노트북 목업과 3D 타이포 U·X">
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     02. OVERVIEW
+================================================== -->
+
+<section class="overview">
+
+<div class="container">
+
+
+<div class="section-title">
+    Overview
+</div>
+
+
+<h2>
+    디자인 방향은 직접 정하고,
+    구현은 AI와 함께했습니다.
+</h2>
+
+
+<p class="overview-text">
+
+Figma 시안 없이, 말로 설명하고 결과를 보며 고치는 방식으로
+이 사이트를 만들었습니다.<br>
+
+컨셉과 3D 비주얼, 화면의 우선순위는 제가 정하고,
+코드 구현은 Claude Code가 맡았습니다.<br>
+
+AI가 만든 결과를 검수해 규칙으로 정리하면서,
+디자이너가 방향을 쥔 채 AI와 작업하는 흐름을 만들었습니다.
+
+</p>
+
+
+<div class="overview-grid">
+
+
+<div class="overview-card">
+
+<span>AI</span>
+
+<h3>
+    구현과 반복 수정
+</h3>
+
+<p>
+    HTML·CSS·JS 구현과 수치 조정 같은 반복 작업을
+    AI에게 지시해 진행했습니다.
+</p>
+
+</div>
+
+
+<div class="overview-card">
+
+<span>My Role</span>
+
+<h3>
+    방향 · 검수 · 규칙
+</h3>
+
+<p>
+    컨셉과 3D 비주얼을 정하고, 결과를 직접 확인한 뒤
+    디자인 규칙으로 정리했습니다.
+</p>
+
+</div>
+
+
+<div class="overview-card">
+
+<span>Tools</span>
+
+<h3>
+    목적별 도구 분리
+</h3>
+
+<p>
+    시각 컨셉은 ChatGPT, 구현은 Claude Code,
+    검토와 규칙 정리는 Claude에서 진행했습니다.
+</p>
+
+</div>
+
+
+<div class="overview-card">
+
+<span>Result</span>
+
+<h3>
+    운영 중인 실제 사이트
+</h3>
+
+<p>
+    포트폴리오 사이트로 공개해 운영하고,
+    새 페이지도 같은 규칙으로 확장하고 있습니다.
+</p>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     03. WORKFLOW
+================================================== -->
+
+<section class="overview ai-workflow">
+
+<div class="container">
+
+
+<div class="section-title">
+    Workflow
+</div>
+
+
+<h2>
+    설명하고, 지시하고,<br>
+    검수하고, 규칙으로 남겼습니다.
+</h2>
+
+
+<p class="overview-text">
+
+작업을 네 단계로 나누고, 단계마다 맞는 도구를 사용했습니다.
+아래 지시 예시는 실제 지시 내용을 정리한 문장입니다.
+
+</p>
+
+
+<div class="workflow-list">
+
+
+<!-- 01 -->
+<div class="workflow-item">
+
+<div class="workflow-text">
+
+<span>01 · Concept &amp; 3D Visual</span>
+
+<h3>
+    그리드 위에 올릴<br>
+    3D 타이포 만들기
+</h3>
+
+<p>
+    정돈된 그리드 위에 U·X 3D 글자를 올리는 컨셉을 정하고,
+    ChatGPT와 Three.js로 형태와 질감을 다듬었습니다.
+</p>
+
+<div class="prompt-box">
+
+<small>Prompt · ChatGPT</small>
+
+<p>
+    3D 글자 사이의 간격과 윤곽선 두께를 조정해줘.
+    투명한 질감은 유지하고, 다른 요소는 바꾸지 마.
+</p>
+
+</div>
+
+</div>
+
+<div class="workflow-image">
+<img src="images/uxxxu-ai/cap2.jpg"
+alt="ChatGPT로 3D 타이포 컨셉을 다듬는 화면">
+</div>
+
+</div>
+
+
+<!-- 02 -->
+<div class="workflow-item reverse">
+
+<div class="workflow-text">
+
+<span>02 · Brief &amp; Build</span>
+
+<h3>
+    범위를 좁혀 지시하고<br>
+    구현하기
+</h3>
+
+<p>
+    한 번에 하나의 요소만 지시했습니다.
+    수정 범위를 명확히 정해, 다른 화면이 함께 바뀌는 일을 막았습니다.
+</p>
+
+<div class="prompt-box">
+
+<small>Prompt · Claude Code</small>
+
+<p>
+    아카이브 화살표만 수정해줘.
+    hover 시 대각선 위로 이동하게 하고, 다른 규칙은 건드리지 마.
+</p>
+
+</div>
+
+</div>
+
+<div class="workflow-image">
+<img src="images/uxxxu-ai/cap1.jpg"
+alt="Claude Code로 사이트를 구현하는 화면">
+</div>
+
+</div>
+
+
+<!-- 03 -->
+<div class="workflow-item">
+
+<div class="workflow-text">
+
+<span>03 · Review &amp; Refine</span>
+
+<h3>
+    브라우저에서 직접 보고<br>
+    수치로 다듬기
+</h3>
+
+<p>
+    결과는 실제 브라우저에서 확인하고, 어긋난 부분을
+    위치와 수치 단위로 짚어 수정했습니다.
+</p>
+
+<div class="prompt-box">
+
+<small>Prompt · Claude</small>
+
+<p>
+    화살표 위치를 포트폴리오 텍스트 하단에 맞춰줘.
+    구조는 그대로 두고 수치만 조정해줘.
+</p>
+
+</div>
+
+</div>
+
+<div class="workflow-image">
+<img src="images/uxxxu-ai/cap3.jpg"
+alt="Claude와 브라우저로 결과를 검수하는 화면">
+</div>
+
+</div>
+
+
+<!-- 04 -->
+<div class="workflow-item reverse">
+
+<div class="workflow-text">
+
+<span>04 · Systemize</span>
+
+<h3>
+    반복되는 판단을<br>
+    규칙으로 남기기
+</h3>
+
+<p>
+    수정하면서 쌓인 기준을 CLAUDE.md로 정리하고,
+    Claude Design System으로 옮겨 이후 작업의 기준으로 삼았습니다.
+</p>
+
+<div class="prompt-box">
+
+<small>Rule · CLAUDE.md</small>
+
+<p>
+    새 색상·폰트 크기·간격 값을 임의로 추가하지 말고,
+    기존 팔레트와 컴포넌트 패턴을 그대로 재사용해줘.
+</p>
+
+</div>
+
+</div>
+
+<div class="workflow-image">
+<img src="images/uxxxu-ai/cap4.jpg"
+alt="Claude Design System으로 규칙을 정리한 화면">
+</div>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     04. DESIGN SYSTEM
+================================================== -->
+
+<section class="overview ai-system">
+
+<div class="container">
+
+
+<div class="section-title">
+    Design System
+</div>
+
+
+<h2>
+    타이포·컬러·컴포넌트를<br>
+    규칙으로 정리했습니다.
+</h2>
+
+
+<p class="overview-text">
+
+구현된 CSS에서 실제로 쓰이는 값만 모아 정리했습니다.
+새 값을 만들지 않고 기존 값을 재사용하도록 해,
+페이지가 늘어나도 같은 톤이 유지됩니다.
+
+</p>
+
+
+<div class="system-stats">
+
+
+<div class="system-stat">
+    <strong>12</strong>
+    <span>Colors</span>
+    <p>ink·paper와 회색 단계, 구분선, 카드 배경</p>
+</div>
+
+
+<div class="system-stat">
+    <strong>7</strong>
+    <span>Components</span>
+    <p>Header, PillButton, ProjectItem, Footer 등</p>
+</div>
+
+
+<div class="system-stat">
+    <strong>2</strong>
+    <span>Breakpoints</span>
+    <p>980px · 767px</p>
+</div>
+
+
+<div class="system-stat">
+    <strong>1280</strong>
+    <span>Container</span>
+    <p>컨테이너 최대 너비 (px)</p>
+</div>
+
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     05. RESULT
+================================================== -->
+
+<section class="overview outcome">
+
+<div class="container">
+
+
+<div class="section-title">
+    Result
+</div>
+
+
+<h2>
+    방향은 디자이너가,<br>
+    속도는 AI가 맡았습니다.
+</h2>
+
+
+<p class="overview-text">
+
+시안 없이도 컨셉부터 구현, 검수, 규칙 정리까지 한 흐름으로 진행했습니다.<br>
+
+이 경험을 바탕으로, AI가 만든 결과의 품질 기준을 세우고
+팀의 디자인 시스템으로 연결하는 일을 하고 싶습니다.
+
+</p>
+
+
+<a href="https://www.uxxxu-studio.com"
+class="pill-link"
+target="_blank"
+rel="noopener">
+    Visit uxxxu-studio.com ↗
+</a>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     FOOTER
+================================================== -->
+
+<footer>
+
+<div class="footer-title">
+    AI Workflow
+</div>
+
+<div class="footer-link">
+    UXXXU.STUDIO
+</div>
+
+<a href="../index.html" class="footer-back">
+    ← Back to Portfolio
+</a>
+
+</footer>
+
+
+<script src="../js/main.js"></script>
+
+
+</main>
+
+</body>
+
+</html>
