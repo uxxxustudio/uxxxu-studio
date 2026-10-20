@@ -28,6 +28,37 @@ href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretend
    기존 case 스타일의 값만 재사용 (새 값 추가 없음)
 ================================================== */
 
+/* 히어로 이미지 : 좌우 끝까지 배경색, 목업은 그 위에 */
+
+.hero .hero-image{
+    margin-left:calc(50% - 50vw);
+    margin-right:calc(50% - 50vw);
+    border-radius:0;
+    background:#e5e5e2;
+}
+
+.hero .hero-image img{
+    display:block;
+    width:100%;
+    height:clamp(260px,50vw,720px);
+    object-fit:contain;
+    object-position:65% 50%;
+    -webkit-mask-image:
+        linear-gradient(to right,#000 78%,transparent 100%),
+        linear-gradient(to bottom,#000 90%,transparent 100%);
+    -webkit-mask-composite:source-in;
+    mask-image:
+        linear-gradient(to right,#000 78%,transparent 100%),
+        linear-gradient(to bottom,#000 90%,transparent 100%);
+    mask-composite:intersect;
+}
+
+@media(min-width:981px){
+    .hero .hero-image img{
+        transform:scale(1.12);
+    }
+}
+
 .workflow-list{
     margin-top:30px;
 }
@@ -325,7 +356,7 @@ class="back">
 <div class="hero-image">
 
 <img
-src="images/uxxxu-ai/hero.jpg"
+src="images/uxxxu-ai/ux_mockup.png"
 alt="UXXXU.STUDIO 노트북 목업과 3D 타이포 U·X">
 
 </div>
