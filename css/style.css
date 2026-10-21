@@ -811,7 +811,7 @@ nav a:hover {
 #about .about-copy h2 {
     margin: 0;
     max-width: 680px;
-    font-size: clamp(46px, 4.6vw, 72px);
+    font-size: var(--about-h2);
     font-weight: 650;
     line-height: .98;
     letter-spacing: -.055em;
@@ -919,11 +919,45 @@ nav a:hover {
     transform: translate(-50%, -50%) scale(1.45);
 }
 
+/* ABOUT 프로필 3D 동전: 제목 "Experience shapes" 위에 걸치도록 제목 기준으로 배치
+   (제목 폭의 65% 지점이 동전 중심, 제목 글자 뒤로 깔림) */
+#about { overflow-x: clip; }
+
+#about .about-headline {
+    position: relative;
+    width: fit-content;
+    --about-h2: clamp(46px, 4.6vw, 72px); /* 제목 글자 크기 (동전 위치 계산에도 사용) */
+    --pf-w: 300px;                        /* 동전 캔버스 크기 */
+    --pf-h: 280px;
+}
+
+#about .about-headline h2 {
+    position: relative;
+    z-index: 1;
+}
+
+#about .about-profile {
+    position: absolute;
+    left: 65%; /* JS(initAboutProfilePosition)가 실제 글자 끝 기준으로 덮어씀 */
+    top: calc(var(--about-h2) * -2.1 + (280px - var(--pf-h)) / 2);
+    z-index: 2;
+    width: var(--pf-w);
+    height: var(--pf-h);
+    margin-left: calc(var(--pf-w) / -2);
+    pointer-events: none;
+}
+
+/* 태블릿: 동전을 조금 작게 */
+@media (max-width: 1180px) {
+    #about .about-headline { --pf-w: 240px; --pf-h: 224px; }
+}
+
 /* ABOUT 등장 모션
    JS가 .about-motion을 붙인 경우에만 적용 (reduced-motion·JS 없음에서는 그대로 정적) */
 #about .about-copy.about-motion h2,
 #about .about-copy.about-motion h3,
 #about .about-copy.about-motion p,
+#about .about-profile.about-motion,
 #about .about-timeline.about-motion {
     opacity: 0;
     transform: translateY(28px);
@@ -932,10 +966,12 @@ nav a:hover {
 
 #about .about-copy.about-motion h3 { transition-delay: .2s; }
 #about .about-copy.about-motion p  { transition-delay: .45s; }
+#about .about-profile.about-motion { transition-delay: .3s; }
 
 #about .about-copy.is-in h2,
 #about .about-copy.is-in h3,
 #about .about-copy.is-in p,
+#about .about-profile.is-in,
 #about .about-timeline.is-in {
     opacity: 1;
     transform: none;
@@ -1157,9 +1193,10 @@ footer {
     #about .section-title { margin: 0 0 60px; }
     #about .about-main { grid-template-columns: 1fr; row-gap: 80px; }
     #about .about-copy { max-width: 720px; }
-    #about .about-copy h2 { font-size: clamp(44px, 8vw, 68px); }
+    #about .about-copy h2 { font-size: var(--about-h2); }
     #about .about-copy h3 { font-size: clamp(40px, 7vw, 58px); }
     #about .about-timeline { width: min(100%, 560px); margin-top: 0; }
+    #about .about-headline { --about-h2: clamp(44px, 8vw, 68px); }
     #about .about-bottom { grid-column: auto; grid-template-columns: 1fr 1fr; gap: 50px; margin-top: 90px; }
 
     footer { padding: 30px 26px; }
@@ -1332,7 +1369,9 @@ footer {
     #about .section-title { position: absolute; top: -50px; left: 0; transform: translateX(-25px); margin: 0; font-size: 13px; line-height: 1; writing-mode: vertical-rl; }
     #about .about-main { width: 100%; max-width: 460px; margin: 0 auto; display: grid; grid-template-columns: 1fr; row-gap: 64px; }
     #about .about-copy { width: 100%; }
-    #about .about-copy h2 { font-size: clamp(40px, 11vw, 58px); line-height: 1; }
+    #about .about-headline { --about-h2: clamp(40px, 11vw, 58px); --pf-w: 160px; --pf-h: 149px; }
+    #about .about-profile { top: calc(var(--pf-h) * -0.86 + var(--about-h2) * 0.6); }
+    #about .about-copy h2 { font-size: var(--about-h2); line-height: 1; }
     #about .about-copy h3 { margin-top: 12px; font-size: clamp(36px, 10vw, 52px); }
     #about .about-copy p { margin-top: 42px; font-size: 15px; line-height: 1.75; }
     #about .about-timeline { width: 100%; margin-top: 0; }

@@ -624,7 +624,202 @@ export function initPortfolio3D(containerId) {
    PROFILE 3D DUMMY (에러 방지용)
 ========================================================= */
 export function initProfile3D(containerId) {
-    // initProfile3D 호출 시 스크립트가 멈추는 에러를 막아줍니다.
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  if (container.offsetParent === null) return; // 모바일처럼 숨겨진 화면에서는 3D를 만들지 않음
+
+  container.innerHTML = "";
+
+  const width = container.clientWidth || 300;
+  const height = container.clientHeight || 280;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
+  camera.position.set(0, 0, 22);
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
+  container.appendChild(renderer.domElement);
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // 동전: 메인 타이포 3D(U·X)와 같은 결의 유리 동전.
+  // 옆면(두께)은 옅게 비치는 벽이고 그 위로 초록 빛이 돈다. 앞뒤 둘레에는 가는 회색 윤곽선, 앞면에는 캐릭터 선화.
+  const RADIUS = 5; // 동전 반지름
+  const THICKNESS = 1.4; // 동전 두께 (지름의 약 14%)
+  const BASE_YAW = -0.7; // 앞면이 왼쪽으로 꽤 돌아가 있어서 오른쪽 옆면(두께)이 보임
+  const DECAL_SIZE = 8.4; // 캐릭터 이미지 한 변
+  const DECAL_OFFSET_Y = -0.7; // 캐릭터 하단이 면의 아래 끝에 맞도록 내림
+  const RING_COLOR = 0x8a8a8a; // 앞뒤 둘레 윤곽선 색 (타이포 3D의 윤곽선과 같은 회색)
+
+  const wrapperGroup = new THREE.Group(); // 동전 전체 (위아래로 떠 있는 모션)
+  scene.add(wrapperGroup);
+
+  const characterGroup = new THREE.Group(); // 동전 (마우스를 따라 W처럼 살짝 기울어짐)
+  characterGroup.rotation.y = BASE_YAW;
+  wrapperGroup.add(characterGroup);
+
+  const glassMaterials = [];
+
+  const textureUrl = new URL("../assets/images/profile_character.webp", import.meta.url).href;
+
+  new THREE.TextureLoader().load(textureUrl, (texture) => {
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+    // 옆면: 타이포 3D(U·X)의 벽과 같은 재질. 평소엔 옅게 비치는 회색, 빛이 지나갈 때만 초록으로 진해진다.
+    // 빛은 둘레를 따라 돌고(오른쪽 옆면에서 아래 → 위), 머리는 밝고 꼬리는 길게 사라진다.
+    const sideMaterial = new THREE.ShaderMaterial({
+      uniforms: { uTime: { value: 0 } },
+      vertexShader: `
+        varying vec3 vPosition;
+        void main() {
+          vPosition = position;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform float uTime;
+        varying vec3 vPosition;
+
+        void main() {
+          // 동전 평면에서의 각도 0~1 (반시계 방향 = 오른쪽에서 위로)
+          float a = atan(-vPosition.z, vPosition.x) / 6.28318530718 + 0.5;
+          float head = fract(uTime * 0.16);
+          float d = fract(head - a);
+          float s = d > 0.95 ? d - 1.0 : d;
+          float beam = (1.0 - smoothstep(0.0, 0.32, s)) * smoothstep(-0.04, 0.0, s);
+
+          vec3 baseColor = vec3(0.04, 0.04, 0.04);
+          vec3 neonGreen = vec3(0.12, 0.95, 0.45);
+          vec3 finalColor = mix(baseColor, neonGreen, beam);
+          float alpha = 0.08 + beam * 0.92;
+          gl_FragColor = vec4(finalColor, alpha);
+        }
+      `,
+      transparent: true,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+    });
+    glassMaterials.push(sideMaterial);
+
+    const side = new THREE.Mesh(
+      new THREE.CylinderGeometry(RADIUS, RADIUS, THICKNESS, 128, 1, true),
+      sideMaterial
+    );
+    side.rotation.x = Math.PI / 2; // 원통 축을 Z(앞뒤)로 눕힘
+    side.renderOrder = 1;
+    characterGroup.add(side);
+
+    // 앞면 / 뒷면: 거의 흰색의 옅게 비치는 면 (면 너머로 옆면과 뒷면 윤곽이 희미하게 비침)
+    const plateMaterial = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.7,
+      depthWrite: false,
+    });
+    const decalMaterial = new THREE.MeshBasicMaterial({ map: texture, transparent: true, depthWrite: false });
+    // 뒷면 그림: 앞에서 보면 좌우가 뒤집힌 모습으로 앞판 너머에 아주 옅게 비침 (뒤에서 보면 똑바로 보임)
+    const ghostMaterial = new THREE.MeshBasicMaterial({
+      map: texture,
+      transparent: true,
+      opacity: 0.25,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+    });
+
+    const frontPlate = new THREE.Mesh(new THREE.CircleGeometry(RADIUS, 128), plateMaterial);
+    frontPlate.position.z = THICKNESS / 2;
+    frontPlate.renderOrder = 2;
+    characterGroup.add(frontPlate);
+
+    const frontDecal = new THREE.Mesh(new THREE.PlaneGeometry(DECAL_SIZE, DECAL_SIZE), decalMaterial);
+    frontDecal.position.set(0, DECAL_OFFSET_Y, THICKNESS / 2 + 0.02);
+    frontDecal.renderOrder = 3;
+    characterGroup.add(frontDecal);
+
+    const backPlate = new THREE.Mesh(new THREE.CircleGeometry(RADIUS, 128), plateMaterial);
+    backPlate.position.z = -THICKNESS / 2;
+    backPlate.rotation.y = Math.PI;
+    backPlate.renderOrder = 0;
+    characterGroup.add(backPlate);
+
+    const backDecal = new THREE.Mesh(new THREE.PlaneGeometry(DECAL_SIZE, DECAL_SIZE), ghostMaterial);
+    backDecal.position.set(0, DECAL_OFFSET_Y, -THICKNESS / 2 - 0.02);
+    backDecal.rotation.y = Math.PI;
+    backDecal.renderOrder = 0;
+    characterGroup.add(backDecal);
+
+    // 윤곽선: 앞/뒤 둘레의 가는 1px 선 (타이포 3D의 윤곽선처럼)
+    const ringPoints = [];
+    for (let i = 0; i < 128; i++) {
+      const angle = (i / 128) * Math.PI * 2;
+      ringPoints.push(new THREE.Vector3(Math.cos(angle) * RADIUS, Math.sin(angle) * RADIUS, 0));
+    }
+    const ringGeometry = new THREE.BufferGeometry().setFromPoints(ringPoints);
+    const ringMaterial = new THREE.LineBasicMaterial({ color: RING_COLOR });
+
+    const frontRing = new THREE.LineLoop(ringGeometry, ringMaterial);
+    frontRing.position.z = THICKNESS / 2 + 0.03;
+    characterGroup.add(frontRing);
+
+    const backRing = new THREE.LineLoop(ringGeometry, ringMaterial);
+    backRing.position.z = -THICKNESS / 2 - 0.03;
+    characterGroup.add(backRing);
+  });
+
+  // 마우스 인터랙션 좌표 (W와 동일한 방식)
+  let mouseX = 0;
+  let mouseY = 0;
+  window.addEventListener("mousemove", (e) => {
+    mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+    mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+  });
+
+  // 화면 밖에서는 렌더링 멈춤
+  let isVisible = true;
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver((entries) => {
+      isVisible = entries[0].isIntersecting;
+    }).observe(container);
+  }
+
+  const clock = new THREE.Clock();
+
+  function animate() {
+    requestAnimationFrame(animate);
+    if (!isVisible) return;
+
+    const time = clock.getElapsedTime();
+
+    if (!reduceMotion) {
+      glassMaterials.forEach((material) => { material.uniforms.uTime.value = time; });
+
+      // 커서를 살짝 바라보는 정도 + 가만히 있어도 보이는 미세한 스웨이
+      // (기본 각도 BASE_YAW 주변에서만 움직여서 옆면이 항상 같은 쪽에 보이게)
+      const targetRotationY = BASE_YAW + mouseX * 0.12 + Math.sin(time * 0.7) * 0.06;
+      const targetRotationX = -mouseY * 0.12 + Math.sin(time * 0.5) * 0.04;
+
+      characterGroup.rotation.y += (targetRotationY - characterGroup.rotation.y) * 0.05;
+      characterGroup.rotation.x += (targetRotationX - characterGroup.rotation.x) * 0.05;
+
+      // 숨쉬듯 은은하게 떠 있는 모션
+      wrapperGroup.position.y = Math.sin(time * 1.2) * 0.15;
+    }
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener("resize", () => {
+    const newWidth = container.clientWidth || 300;
+    const newHeight = container.clientHeight || 280;
+    camera.aspect = newWidth / newHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(newWidth, newHeight);
+  });
 }
 // 모바일 화면 로드시 Three.js 리사이즈 이벤트 강제 호출
 window.addEventListener('load', () => {

@@ -30,6 +30,7 @@ async function loadComponent(id, file) {
     if (id === "about") {
         initProfileFeature();
         initAboutMotion();
+        initAboutProfilePosition();
     }
 }
 
@@ -348,7 +349,7 @@ function initAboutMotion() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (!("IntersectionObserver" in window)) return;
 
-    const targets = document.querySelectorAll("#about .about-copy, #about .about-timeline");
+    const targets = document.querySelectorAll("#about .about-copy, #about .about-profile, #about .about-timeline");
     if (!targets.length) return;
 
     const observer = new IntersectionObserver((entries, obs) => {
@@ -364,5 +365,52 @@ function initAboutMotion() {
         target.classList.add("about-motion");
         observer.observe(target);
     });
+
+}
+
+
+/* =========================================================
+   About 프로필 동전 위치: 제목 첫 줄 "Experience shapes"의 실제 글자 폭 기준
+   (글자 오른쪽 끝에서 OVERLAP px 만큼 동전이 안쪽으로 걸침)
+========================================================= */
+
+function initAboutProfilePosition() {
+
+    const wrapper = document.querySelector("#about .about-headline");
+    const heading = wrapper && wrapper.querySelector("h2");
+    const profile = document.getElementById("profile-object");
+    if (!wrapper || !heading || !profile) return;
+
+    const textNode = Array.from(heading.childNodes).find(
+        node => node.nodeType === Node.TEXT_NODE && node.textContent.trim()
+    );
+    if (!textNode) return;
+
+    const place = () => {
+        const range = document.createRange();
+        range.selectNodeContents(textNode);
+        const text = range.getBoundingClientRect();
+        const box = wrapper.getBoundingClientRect();
+        if (!text.width) return;
+        /* 동전 원판 반지름(데스크톱 약 100px)을 기준으로, 글자 끝에서 OVERLAP px 만큼 안쪽으로 걸치게 배치
+           → 겹침 정도를 바꾸려면 OVERLAP 숫자만 조절 (클수록 shapes 글자를 더 덮음)
+           동전 크기가 줄어드는 화면에서는 같은 비율로 줄어듦 */
+        const OVERLAP = 35;
+        const scale = profile.offsetWidth / 300;
+        const discRadius = profile.offsetWidth * 0.33;
+        let center = text.right - box.left + discRadius - OVERLAP * scale;
+
+        /* 좁은 화면: 동전이 화면 오른쪽 밖으로 나가지 않도록 8px 여백을 두고 멈춤 */
+        const maxCenter = document.documentElement.clientWidth - 8 - discRadius - box.left;
+        center = Math.min(center, maxCenter);
+
+        profile.style.left = center + "px";
+    };
+
+    place();
+    window.addEventListener("resize", place);
+    if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(place);
+    }
 
 }
