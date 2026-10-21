@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>나만의 AI 만들기 | uxxxu.studio</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<meta name="description"
+content="디지털윤리체험관 어린이 AI 윤리 체험 게임 '나만의 AI 만들기' UX/UI Case Study">
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+
+<style>
+
+/* ==================================================
+   PAGE-LOCAL : 나만의 AI 만들기
+   기존 case 스타일의 값만 재사용 (새 값 추가 없음)
+================================================== */
+
+.hero h1,
+.overview h2,
+.problem-solving h2,
+.ui-design h2,
+.overview-text,
+.problem-item h3,
+.problem-item p,
+.ae-row p{
+    word-break:keep-all;
+}
+
+.hero .hero-image img{
+    display:block;
+    width:100%;
+    height:auto;
+}
+
+.ae-rows{
+    margin-top:56px;
+    border-top:1px solid #ececec;
+}
+
+.ae-row{
+    display:grid;
+    grid-template-columns:200px minmax(0,1fr);
+    gap:28px;
+    padding:28px 0;
+    border-bottom:1px solid #ececec;
+}
+
+.ae-row span{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:#888;
+    padding-top:6px;
+}
+
+.ae-row p{
+    font-size:15px;
+    line-height:1.6;
+    letter-spacing:-.02em;
+    color:#666;
+}
+
+.ae-video{
+    position:relative;
+    width:100%;
+    aspect-ratio:16 / 9;
+    margin-top:30px;
+    overflow:hidden;
+    border-radius:20px;
+    border:1px solid #ececec;
+    background:#111;
+    cursor:pointer;
+}
+
+.ae-video img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.ae-video iframe{
+    display:block;
+    width:100%;
+    height:100%;
+    border:0;
+}
+
+.ae-play{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:72px;
+    height:72px;
+    margin:-36px 0 0 -36px;
+    border-radius:50%;
+    background:#fff;
+}
+
+.ae-play::before{
+    content:"";
+    position:absolute;
+    top:50%;
+    left:50%;
+    margin:-11px 0 0 -7px;
+    border-style:solid;
+    border-width:11px 0 11px 20px;
+    border-color:transparent transparent transparent #111;
+}
+
+.ae-video.is-playing{
+    cursor:default;
+}
+
+.ae-yt{
+    margin-top:12px;
+    text-align:right;
+    font-size:13px;
+    letter-spacing:-.02em;
+}
+
+.ae-yt a{
+    color:#888;
+    transition:color .2s ease;
+}
+
+.ae-yt a:hover{
+    color:#111;
+}
+
+.ae-shots{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:28px;
+    margin-top:28px;
+}
+
+.ae-shot{
+    aspect-ratio:16 / 9;
+    overflow:hidden;
+    border-radius:20px;
+    border:1px solid #ececec;
+    background:#fff;
+}
+
+.ae-shot img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.ae-field{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-rows:auto auto;
+    gap:28px;
+    margin-top:30px;
+}
+
+.ae-photo{
+    overflow:hidden;
+    border-radius:20px;
+    border:1px solid #ececec;
+    background:#fff;
+}
+
+.ae-photo img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.ae-photo.is-wide{
+    aspect-ratio:4 / 3;
+}
+
+.ae-photo.is-tall{
+    grid-column:2;
+    grid-row:1 / span 2;
+}
+
+@media(max-width:980px){
+
+    .ae-row{
+        grid-template-columns:1fr;
+        gap:8px;
+        padding:22px 0;
+    }
+
+    .ae-play{
+        width:56px;
+        height:56px;
+        margin:-28px 0 0 -28px;
+    }
+
+    .ae-play::before{
+        margin:-9px 0 0 -5px;
+        border-width:9px 0 9px 16px;
+    }
+
+    .ae-shots{
+        grid-template-columns:1fr;
+        gap:16px;
+    }
+
+    .ae-field{
+        grid-template-columns:1fr;
+        grid-template-rows:none;
+        gap:16px;
+    }
+
+    .ae-photo.is-tall{
+        grid-column:auto;
+        grid-row:auto;
+        aspect-ratio:3 / 4;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<a href="../index.html" class="logo">
+    uxxxu.studio
+</a>
+
+<a href="../index.html"
+class="back">
+    ← Back to Portfolio
+</a>
+
+</header>
+
+
+<main>
+
+
+<!-- ==================================================
+     01. PROJECT
+================================================== -->
+
+<section class="hero">
+
+<div class="container">
+
+<div class="eyebrow">
+    EXHIBITION · GAME UX
+</div>
+
+
+<h1>
+    나만의 AI 만들기
+</h1>
+
+
+<p class="subtitle">
+    디지털윤리체험관
+    어린이 AI 윤리 체험 게임 UX/UI 디자인
+</p>
+
+
+<div class="project-info">
+
+
+<div>
+
+<small>Category</small>
+
+<strong>
+    Exhibition<br>
+    Game UX/UI
+</strong>
+
+</div>
+
+
+<div>
+
+<small>Year</small>
+
+<strong>
+    2024
+</strong>
+
+</div>
+
+
+<div>
+
+<small>Tools</small>
+
+<strong>
+    Photoshop<br>
+    Illustrator<br>
+    Spline<br>
+    Midjourney<br>
+    Copilot
+</strong>
+
+</div>
+
+
+<div>
+
+<small>My Role</small>
+
+<strong>
+    UX/UI Design<br>
+    Scenario<br>
+    Interaction<br>
+    3D Character<br>
+    AI Visual
+</strong>
+
+</div>
+
+
+</div>
+
+
+<div class="hero-image">
+
+<img
+src="images/aiethics/intro_01.webp"
+alt="나만의 AI 만들기 시작 화면">
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     02. OVERVIEW
+================================================== -->
+
+<section class="overview">
+
+<div class="container">
+
+
+<div class="section-title">
+    Overview
+</div>
+
+
+<h2>
+    AI 윤리를<br>
+    몸으로 체험하게 만들었습니다.
+</h2>
+
+
+<p class="overview-text">
+
+'나만의 AI 만들기'는 어린이가 AI를 올바르게 이해하고 사용하는 법을
+게임으로 체험하는 3개의 콘텐츠입니다.<br>
+
+디지털윤리체험관에 설치되어, 유치원생부터 초등학생까지
+4방향 발판을 밟아 직접 플레이합니다.
+
+</p>
+
+
+<div class="ae-rows">
+
+<div class="ae-row">
+    <span>Audience</span>
+    <p>유치원생부터 초등학생. 줄을 서서 구경하고 차례를 기다리는 개방된 체험 공간</p>
+</div>
+
+<div class="ae-row">
+    <span>Input</span>
+    <p>4방향 발판. 좌우로 게임을 고르고, 스텝을 두 번 밟아 시작</p>
+</div>
+
+<div class="ae-row">
+    <span>Games</span>
+    <p>둥실둥실 데이터 월드 · 조심조심 블랙홀 시티 · 좌충우돌 퀘스천 로드</p>
+</div>
+
+<div class="ae-row">
+    <span>Character</span>
+    <p>제안 단계의 블록형 피노키오 캐릭터 대신, 직접 만든 3D 캐릭터 'AI 바른이'가 채택됨</p>
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     03. DESIGN CONCEPT
+================================================== -->
+
+<section class="problem-solving">
+
+<div class="container">
+
+<div class="section-title">
+    Design Concept
+</div>
+
+<h2>
+    AI 윤리의 어려운 개념을<br>
+    아이의 행동 하나로 바꿨습니다.
+</h2>
+
+<p class="overview-text">
+
+기존 센서형 콘텐츠가 열린 공간에서 겪던 문제와,
+어린이에게 어려운 AI 윤리라는 주제를 함께 풀어야 했습니다.
+
+</p>
+
+
+<div class="problem-flow">
+
+
+<div class="problem-item">
+
+<span>01 · PROBLEM</span>
+
+<h3>
+    센서는 열린 공간에서 자주 오작동했다
+</h3>
+
+<p>
+    지나가는 관람객까지 인식하는 키네틱 센서 대신, 발로 밟는 4방향 발판으로
+    입력을 바꿨습니다. 센서 간섭이 없어 줄 선 아이들이 옆에서 구경하며
+    차례를 기다릴 수 있습니다.
+</p>
+
+</div>
+
+
+<div class="problem-item">
+
+<span>02 · PROBLEM</span>
+
+<h3>
+    AI 윤리는 어린이에게 너무 추상적이다
+</h3>
+
+<p>
+    개념마다 아이가 할 수 있는 동작 하나로 바꿨습니다.
+    다양성은 모으기, 개인정보는 피하기, 공공성은 답변할지 회피할지 고르기입니다.
+</p>
+
+</div>
+
+
+<div class="problem-item">
+
+<span>03 · PROBLEM</span>
+
+<h3>
+    게임이 세 개여도 규칙은 하나여야 한다
+</h3>
+
+<p>
+    검은 토끼는 늘 조심해야 할 것, 스텝 두 번은 확인과 시작으로 통일했습니다.
+    틀렸을 때의 효과음도 공통으로 맞춰, 한 번 익힌 규칙을 세 게임에서 그대로 쓰게 했습니다.
+</p>
+
+</div>
+
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     04. ENTRY FLOW
+================================================== -->
+
+<section class="ui-design">
+
+<div class="container">
+
+
+<div class="section-title">
+    Entry Flow
+</div>
+
+
+<h2>
+    시작부터 점수까지<br>
+    발판 하나로 조작합니다.
+</h2>
+
+
+<p class="overview-text">
+
+시작 화면에서 발판을 눌러 메시지를 확인하고,
+좌우 발판으로 게임을 고른 뒤 스텝을 두 번 밟아 시작합니다.
+화면의 안내에는 글과 함께 발자국 아이콘을 써서
+무엇을 하면 되는지 한눈에 보이게 했습니다.
+
+</p>
+
+
+<div class="ae-video"
+role="button"
+tabindex="0"
+data-yt="QcD6XlqcZgo"
+data-title="나만의 AI 만들기 대기 화면"
+aria-label="대기 화면 영상 재생">
+
+<img src="images/aiethics/intro_02.webp"
+alt="나만의 AI 만들기 게임 선택 화면">
+
+<span class="ae-play"></span>
+
+</div>
+
+<p class="ae-yt"><a href="https://youtu.be/QcD6XlqcZgo" target="_blank" rel="noopener">YouTube에서 보기 ↗</a></p>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     05. GAME 1
+================================================== -->
+
+<section class="ui-design">
+
+<div class="container">
+
+
+<div class="section-title">
+    Game 1 · AI 다양성
+</div>
+
+
+<h2>
+    둥실둥실 데이터 월드
+</h2>
+
+
+<p class="overview-text">
+
+AI가 한쪽에 치우치지 않으려면 다양한 정보로 학습해야 한다는 개념을 담았습니다.
+주어진 키워드에 맞는 데이터 카드만 골라 모으고, 잘못된 카드나
+장애물(검은 토끼)에 닿으면 기회가 줄어듭니다.
+카드 이미지는 Copilot으로 직접 생성했습니다.
+
+</p>
+
+
+<div class="ae-video"
+role="button"
+tabindex="0"
+data-yt="kI2upFIQY_w"
+data-title="둥실둥실 데이터 월드 플레이 영상"
+aria-label="둥실둥실 데이터 월드 영상 재생">
+
+<img src="images/aiethics/game1_02.webp"
+alt="둥실둥실 데이터 월드 플레이 화면 - 과일 카드">
+
+<span class="ae-play"></span>
+
+</div>
+
+<p class="ae-yt"><a href="https://youtu.be/kI2upFIQY_w" target="_blank" rel="noopener">YouTube에서 보기 ↗</a></p>
+
+
+<div class="ae-shots">
+
+<div class="ae-shot">
+<img src="images/aiethics/game1_01.webp"
+alt="둥실둥실 데이터 월드 설명 화면">
+</div>
+
+<div class="ae-shot">
+<img src="images/aiethics/game1_03.webp"
+alt="둥실둥실 데이터 월드 플레이 화면 - 동물 카드">
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     06. GAME 2
+================================================== -->
+
+<section class="ui-design">
+
+<div class="container">
+
+
+<div class="section-title">
+    Game 2 · AI 프라이버시
+</div>
+
+
+<h2>
+    조심조심 블랙홀 시티
+</h2>
+
+
+<p class="overview-text">
+
+AI가 학습하는 과정에서 개인정보가 새어 나갈 수 있다는 위험을 알리는 게임입니다.
+60초 안에 검은 토끼와 함정을 피해 탈출 지점에 도착해야 하고,
+화면 곳곳에 “전화번호 줄래?”, “가족 이름 알려줘” 같은
+실제 개인정보 요구 문장이 등장해 경각심을 줍니다.
+
+</p>
+
+
+<div class="ae-video"
+role="button"
+tabindex="0"
+data-yt="7h5L7e3lc9U"
+data-title="조심조심 블랙홀 시티 플레이 영상"
+aria-label="조심조심 블랙홀 시티 영상 재생">
+
+<img src="images/aiethics/game2_02.webp"
+alt="조심조심 블랙홀 시티 플레이 화면">
+
+<span class="ae-play"></span>
+
+</div>
+
+<p class="ae-yt"><a href="https://youtu.be/7h5L7e3lc9U" target="_blank" rel="noopener">YouTube에서 보기 ↗</a></p>
+
+
+<div class="ae-shots">
+
+<div class="ae-shot">
+<img src="images/aiethics/game2_00.webp"
+alt="조심조심 블랙홀 시티 규칙 설명 화면">
+</div>
+
+<div class="ae-shot">
+<img src="images/aiethics/game2_01.webp"
+alt="조심조심 블랙홀 시티 시작 화면">
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     07. GAME 3
+================================================== -->
+
+<section class="ui-design">
+
+<div class="container">
+
+
+<div class="section-title">
+    Game 3 · AI 공공성
+</div>
+
+
+<h2>
+    좌충우돌 퀘스천 로드
+</h2>
+
+
+<p class="overview-text">
+
+AI를 쓸 때 어떤 질문이 올바른지 스스로 판단하는 게임입니다.
+제한 시간 안에 나오는 질문에 ‘답변한다 / 회피한다’를 골라 발판을 밟고,
+정답에 가까운 질문은 하얀 토끼, 오답은 검은 토끼로 구분됩니다.
+게임이 진행될수록 이동 속도가 빨라져 빠른 판단이 필요합니다.
+
+</p>
+
+
+<div class="ae-video"
+role="button"
+tabindex="0"
+data-yt="56haLWLAsSk"
+data-title="좌충우돌 퀘스천 로드 플레이 영상"
+aria-label="좌충우돌 퀘스천 로드 영상 재생">
+
+<img src="images/aiethics/game3_02.webp"
+alt="좌충우돌 퀘스천 로드 플레이 화면">
+
+<span class="ae-play"></span>
+
+</div>
+
+<p class="ae-yt"><a href="https://youtu.be/56haLWLAsSk" target="_blank" rel="noopener">YouTube에서 보기 ↗</a></p>
+
+
+<div class="ae-shots">
+
+<div class="ae-shot">
+<img src="images/aiethics/game3_01.webp"
+alt="좌충우돌 퀘스천 로드 설명 화면">
+</div>
+
+<div class="ae-shot">
+<img src="images/aiethics/game3_03.webp"
+alt="좌충우돌 퀘스천 로드 질문 화면">
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     08. ON SITE
+================================================== -->
+
+<section class="ui-design">
+
+<div class="container">
+
+
+<div class="section-title">
+    On Site
+</div>
+
+
+<h2>
+    현장에서 아이들이<br>
+    직접 플레이했습니다.
+</h2>
+
+
+<p class="overview-text">
+
+큰 화면과 4방향 발판, 손잡이로 이루어진 체험 부스입니다.
+
+</p>
+
+
+<div class="ae-field">
+
+<div class="ae-photo is-wide">
+<img src="images/aiethics/site_06.webp"
+alt="어린이 체험 공간에 설치된 나만의 AI 만들기">
+</div>
+
+<div class="ae-photo is-wide">
+<img src="images/aiethics/site_02.webp"
+alt="화면과 발판으로 구성된 체험 부스 전경">
+</div>
+
+<div class="ae-photo is-tall">
+<img src="images/aiethics/site_09.webp"
+alt="아이들이 발판 위에서 게임을 플레이하는 모습">
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     09. RESULT
+================================================== -->
+
+<section class="overview outcome">
+
+<div class="container">
+
+
+<div class="section-title">
+    Result
+</div>
+
+
+<h2>
+    전국 6곳의 체험관에<br>
+    설치·운영되었습니다.
+</h2>
+
+
+<p class="overview-text">
+
+2024년, 서울·부산·대구·광주·경기·전북의 과학관과 어린이 체험관에
+설치되어 아이들이 발판으로 직접 플레이하는 콘텐츠로 운영되었습니다.
+
+</p>
+
+
+<div class="ae-rows">
+
+<div class="ae-row">
+    <span>Installed</span>
+    <p>서울시립과학관 · 국립부산과학관 · 국립대구과학관 · 국립광주과학관 · 한국잡월드 · 전북어린이창의체험관</p>
+</div>
+
+<div class="ae-row">
+    <span>Contribution</span>
+    <p>UX/UI 디자인 100%, 게임 시나리오 기획 참여, 인터랙션 설계, 3D 캐릭터 및 오브젝트 디자인</p>
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     FOOTER
+================================================== -->
+
+<footer>
+
+<div class="footer-title">
+    Exhibition · Game UX/UI
+</div>
+
+<div class="footer-link">
+    나만의 AI 만들기
+</div>
+
+<a href="../index.html" class="footer-back">
+    ← Back to Portfolio
+</a>
+
+</footer>
+
+
+<script src="../js/main.js"></script>
+
+<script>
+
+(function(){
+
+    var items = document.querySelectorAll('.ae-video');
+
+    function play(box){
+
+        if (box.classList.contains('is-playing')) return;
+
+        var id = box.getAttribute('data-yt');
+        var frame = document.createElement('iframe');
+
+        frame.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0';
+        frame.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+        frame.title = box.getAttribute('data-title') || '';
+        frame.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture; fullscreen');
+        frame.setAttribute('allowfullscreen', '');
+
+        box.innerHTML = '';
+        box.appendChild(frame);
+        box.classList.add('is-playing');
+        box.removeAttribute('role');
+        box.removeAttribute('tabindex');
+        box.removeAttribute('aria-label');
+
+    }
+
+    Array.prototype.forEach.call(items, function(box){
+
+        box.addEventListener('click', function(){ play(box); });
+
+        box.addEventListener('keydown', function(e){
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                play(box);
+            }
+        });
+
+    });
+
+})();
+
+</script>
+
+</main>
+
+</body>
+
+</html>
