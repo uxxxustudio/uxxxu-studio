@@ -953,6 +953,8 @@ nav a:hover {
 /* 태블릿: 동전을 조금 작게 */
 @media (max-width: 1180px) {
     #about .about-copy { --pf-w: 240px; --pf-h: 224px; }
+    /* 좁은 화면은 제목이 두 줄로 꺾이므로, 동전 중심을 제목 첫 줄 높이 근처로 내려서 "Experience" 끝에 걸치게 */
+    #about .about-profile { top: calc(var(--pf-h) * -0.5 + var(--about-h2) * 0.7); }
 }
 
 /* ABOUT 등장 모션
@@ -1373,7 +1375,6 @@ footer {
     #about .about-main { width: 100%; max-width: 460px; margin: 0 auto; display: grid; grid-template-columns: 1fr; row-gap: 64px; }
     #about .about-copy { width: 100%; }
     #about .about-copy { --about-h2: clamp(40px, 11vw, 58px); --pf-w: 160px; --pf-h: 149px; }
-    #about .about-profile { top: calc(var(--pf-h) * -0.86 + var(--about-h2) * 0.6); }
     #about .about-copy h2 { font-size: var(--about-h2); line-height: 1; }
     #about .about-copy h3 { margin-top: 12px; font-size: clamp(36px, 10vw, 52px); }
     #about .about-copy p { margin-top: 42px; font-size: 15px; line-height: 1.75; }
