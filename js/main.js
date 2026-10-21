@@ -6,7 +6,7 @@ async function loadComponent(id, file) {
     const target = document.getElementById(id);
     if (!target) return;
 
-    const res = await fetch(file);
+    const res = await fetch(file, { cache: "no-cache" });
 
     if (!res.ok) {
         console.error(file + " load failed");
