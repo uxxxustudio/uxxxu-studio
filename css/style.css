@@ -811,7 +811,7 @@ nav a:hover {
 #about .about-copy h2 {
     margin: 0;
     max-width: 680px;
-    font-size: var(--about-h2);
+    font-size: var(--about-h2, clamp(46px, 4.6vw, 72px));
     font-weight: 650;
     line-height: .98;
     letter-spacing: -.055em;
@@ -923,12 +923,15 @@ nav a:hover {
    (제목 폭의 65% 지점이 동전 중심, 제목 글자 뒤로 깔림) */
 #about { overflow-x: clip; }
 
-#about .about-headline {
-    position: relative;
-    width: fit-content;
+#about .about-copy {
     --about-h2: clamp(46px, 4.6vw, 72px); /* 제목 글자 크기 (동전 위치 계산에도 사용) */
     --pf-w: 300px;                        /* 동전 캔버스 크기 */
     --pf-h: 280px;
+}
+
+#about .about-headline {
+    position: relative;
+    width: fit-content;
 }
 
 #about .about-headline h2 {
@@ -949,7 +952,7 @@ nav a:hover {
 
 /* 태블릿: 동전을 조금 작게 */
 @media (max-width: 1180px) {
-    #about .about-headline { --pf-w: 240px; --pf-h: 224px; }
+    #about .about-copy { --pf-w: 240px; --pf-h: 224px; }
 }
 
 /* ABOUT 등장 모션
@@ -1196,7 +1199,7 @@ footer {
     #about .about-copy h2 { font-size: var(--about-h2); }
     #about .about-copy h3 { font-size: clamp(40px, 7vw, 58px); }
     #about .about-timeline { width: min(100%, 560px); margin-top: 0; }
-    #about .about-headline { --about-h2: clamp(44px, 8vw, 68px); }
+    #about .about-copy { --about-h2: clamp(44px, 8vw, 68px); }
     #about .about-bottom { grid-column: auto; grid-template-columns: 1fr 1fr; gap: 50px; margin-top: 90px; }
 
     footer { padding: 30px 26px; }
@@ -1369,7 +1372,7 @@ footer {
     #about .section-title { position: absolute; top: -50px; left: 0; transform: translateX(-25px); margin: 0; font-size: 13px; line-height: 1; writing-mode: vertical-rl; }
     #about .about-main { width: 100%; max-width: 460px; margin: 0 auto; display: grid; grid-template-columns: 1fr; row-gap: 64px; }
     #about .about-copy { width: 100%; }
-    #about .about-headline { --about-h2: clamp(40px, 11vw, 58px); --pf-w: 160px; --pf-h: 149px; }
+    #about .about-copy { --about-h2: clamp(40px, 11vw, 58px); --pf-w: 160px; --pf-h: 149px; }
     #about .about-profile { top: calc(var(--pf-h) * -0.86 + var(--about-h2) * 0.6); }
     #about .about-copy h2 { font-size: var(--about-h2); line-height: 1; }
     #about .about-copy h3 { margin-top: 12px; font-size: clamp(36px, 10vw, 52px); }
