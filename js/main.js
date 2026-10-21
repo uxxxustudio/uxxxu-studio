@@ -29,6 +29,7 @@ async function loadComponent(id, file) {
     // about 섹션이 DOM에 로드되는 순간 Profile 3D 캐릭터 초기화
     if (id === "about") {
         initProfileFeature();
+        initAboutMotion();
     }
 }
 
@@ -333,6 +334,35 @@ function initPortfolioHoverThumbnail() {
             preview.classList.remove("is-visible");
         });
 
+    });
+
+}
+
+
+/* =========================================================
+   About 섹션 등장 모션 (헤드라인 순차 등장 + 타임라인 점 이동)
+========================================================= */
+
+function initAboutMotion() {
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!("IntersectionObserver" in window)) return;
+
+    const targets = document.querySelectorAll("#about .about-copy, #about .about-timeline");
+    if (!targets.length) return;
+
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("is-in");
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+
+    targets.forEach(target => {
+        target.classList.add("about-motion");
+        observer.observe(target);
     });
 
 }

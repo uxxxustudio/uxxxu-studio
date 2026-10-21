@@ -919,6 +919,38 @@ nav a:hover {
     transform: translate(-50%, -50%) scale(1.45);
 }
 
+/* ABOUT 등장 모션
+   JS가 .about-motion을 붙인 경우에만 적용 (reduced-motion·JS 없음에서는 그대로 정적) */
+#about .about-copy.about-motion h2,
+#about .about-copy.about-motion h3,
+#about .about-copy.about-motion p,
+#about .about-timeline.about-motion {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .9s ease, transform 1s cubic-bezier(.2,.7,.2,1);
+}
+
+#about .about-copy.about-motion h3 { transition-delay: .2s; }
+#about .about-copy.about-motion p  { transition-delay: .45s; }
+
+#about .about-copy.is-in h2,
+#about .about-copy.is-in h3,
+#about .about-copy.is-in p,
+#about .about-timeline.is-in {
+    opacity: 1;
+    transform: none;
+}
+
+/* 타임라인 점: THEN → NOW 이동 */
+#about .about-timeline.about-motion .about-timeline-point {
+    left: 0;
+    transition: left 1.8s cubic-bezier(.65,0,.35,1) .5s, transform .35s ease;
+}
+
+#about .about-timeline.is-in .about-timeline-point {
+    left: 80%;
+}
+
 #about .about-bottom {
     grid-column: 2;
     display: grid;
