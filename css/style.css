@@ -995,7 +995,7 @@ nav a:hover {
 #about .about-bottom {
     grid-column: 2;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) 300px; /* 위 about-main과 같은 열 구성 → 이메일이 타임라인 왼쪽 선에 맞음 */
     gap: 80px;
     margin: 120px 0 0;
     padding: 34px 0 0;
