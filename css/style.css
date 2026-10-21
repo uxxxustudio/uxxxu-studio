@@ -954,7 +954,7 @@ nav a:hover {
 @media (max-width: 1180px) {
     #about .about-copy { --pf-w: 240px; --pf-h: 224px; }
     /* 좁은 화면은 제목이 두 줄로 꺾이므로, 동전 중심을 제목 첫 줄 높이 근처로 내려서 "Experience" 끝에 걸치게 */
-    #about .about-profile { top: calc(var(--pf-h) * -0.5 + var(--about-h2) * 0.7); }
+    #about .about-profile { top: calc(var(--pf-h) * -0.5 + var(--about-h2) * 0.9); }
 }
 
 /* ABOUT 등장 모션
