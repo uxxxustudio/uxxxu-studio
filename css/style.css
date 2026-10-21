@@ -599,7 +599,6 @@ nav a:hover {
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     width: 100%;
-    max-width: 1120px;
     min-height: 150px;
     padding: 34px 0;
     color: #111;
@@ -710,6 +709,10 @@ nav a:hover {
 }
 
 .archive-content h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
     margin: 0;
     font-size: 32px;
     line-height: 1;
@@ -728,9 +731,6 @@ nav a:hover {
 }
 
 .archive-arrow {
-    position: absolute;
-    left: calc(50% + 135px);
-    top: 50%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -738,7 +738,6 @@ nav a:hover {
     line-height: 1;
     font-weight: 400;
     color: #111;
-    transform: translateY(-28px);
     transition: transform .45s cubic-bezier(.2,.7,.2,1);
 }
 
@@ -756,7 +755,7 @@ nav a:hover {
 }
 
 .project-archive:hover .archive-arrow {
-    transform: translate(5px, -33px);
+    transform: translate(5px, -5px);
 }
 
 
@@ -1291,8 +1290,9 @@ footer {
     #portfolio .project-archive { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; margin-top: 60px; padding: 10px 0; }
     #portfolio .archive-content h3 { font-size: 24px; }
     #portfolio .archive-content p { margin-top: 12px; font-size: 13px; }
-    #portfolio .archive-arrow { left: calc(50% + 105px); top: 45%; font-size: 20px; transform: translateY(-15px); }
-    #portfolio .project-archive:hover .archive-arrow { transform: translate(5px, -15px); font-size: 24px; }
+    #portfolio .archive-content h3 { gap: 10px; }
+    #portfolio .archive-arrow { font-size: 20px; }
+    #portfolio .project-archive:hover .archive-arrow { transform: translate(5px, -5px); font-size: 24px; }
 
     /* ABOUT MOBILE */
     #about { padding: 50px 26px 100px; }

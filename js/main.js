@@ -323,7 +323,7 @@ function initPortfolioHoverThumbnail() {
             const projectRect = project.getBoundingClientRect();
             const gridRect = grid.getBoundingClientRect();
 
-            preview.style.left = (projectRect.right - gridRect.left - 300) + "px";
+            preview.style.left = (projectRect.left - gridRect.left + Math.min(projectRect.width, 1120) - 300) + "px";
             preview.style.top = (projectRect.top - gridRect.top + 30) + "px";
 
             preview.classList.add("is-visible");
