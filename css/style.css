@@ -1036,7 +1036,7 @@ footer {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transform: translateX(-420px) translateY(-50%) translateY(27px);
+    transform: translateX(-420px) translateY(-50%) translateY(38px);
     z-index: 1;
     transition: opacity .3s ease, transform .4s cubic-bezier(.2,.7,.2,1);
 }
@@ -1044,7 +1044,7 @@ footer {
 .portfolio-preview.is-visible {
     opacity: 1;
     visibility: visible;
-    transform: translateX(-420px) translateY(-50%) translateY(45px);
+    transform: translateX(-420px) translateY(-50%) translateY(56px);
 }
 
 .portfolio-preview img {
