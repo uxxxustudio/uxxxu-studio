@@ -1061,7 +1061,7 @@ footer {
 
 /* PROJECT별 HOVER THUMBNAIL 위치 */
 .portfolio-grid:has(.project:nth-child(1):hover) .portfolio-preview.is-visible { margin-left: 55px; }
-.portfolio-grid:has(.project:nth-child(2):hover) .portfolio-preview.is-visible { margin-left: 120px; }
+.portfolio-grid:has(.project:nth-child(2):hover) .portfolio-preview.is-visible { margin-left: -130px; }
 .portfolio-grid:has(.project:nth-child(3):hover) .portfolio-preview.is-visible { margin-left: 210px; }
 .portfolio-grid:has(.project:nth-child(4):hover) .portfolio-preview.is-visible { margin-left: -50px; }
 .portfolio-grid:has(.project:nth-child(5):hover) .portfolio-preview.is-visible { margin-left: -30px; }
