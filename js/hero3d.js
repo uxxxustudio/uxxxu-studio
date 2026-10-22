@@ -33,52 +33,127 @@ export function initHero3D() {
   scene.add(group);
 
   /* =====================================================
-      1. 배경 공간 그리드 (실선)
+      1. 배경 공간 그리드 — 구(sphere) 안쪽 버전
+      카메라를 구의 뒤쪽에 두고 앞쪽 내벽을 바라보는 구조.
+      → 먼 벽은 칸이 작고, 옆 벽은 크고 가깝게 보여 공간감이 생김
+      아래 값만 조절하면 됩니다.
   ==================================================== */
-  function createSolidGridGeometry(width, height, stepX, stepY, curveAmount = 0.01) {
-    const points = [];
-    const resolution = 30;
+  const SPHERE = {
+    mode: "fisheye",     // "fisheye" = 카카오식(구 중심 + 어안렌즈) / "bowl" = 이전 테스트(그릇형)
+    fov: 130,            // [fisheye] 가로 화각(도). 클수록 많이 휘고 칸이 작아짐
+    fisheyeEdge: 0.4,    // [fisheye] 가장자리 진하기(중앙 대비). 1이면 흐림 없음
+    radius: 16,          // 구 크기
+    cameraBack: 0.55,    // 카메라가 구 중심에서 뒤로 물러난 정도(0=중심, 1=벽). 클수록 원근 강해짐
+    meridians: 36,       // 세로선(경선) 개수 — 360°를 나눈 수. 적을수록 칸이 큼
+    parallelStep: 10,    // 가로선(위선) 간격(도). 클수록 칸이 큼
+    tiltX: 0.22,         // 구를 앞으로 기울이는 각도(라디안). 위쪽 선이 모이는 느낌
+    color: 0xB8B8B8,     // 선 색
+    opacity: 0.45,       // 중앙부 선 진하기
+    edgeFade: 0.15,      // 가장자리 진하기(중앙 대비 비율). 0이면 완전히 사라짐
+    scrollRotate: 0.00035, // 스크롤에 따른 회전량
+    mouseRotate: 0.05,   // 마우스에 따른 회전량
+    bottomFade: 0,       // (하단 페이드는 test-sphere.html의 CSS mask로 처리 중) 그리드만 따로 페이드하려면 0.35 등
+  };
 
-    for (let x = -width / 2; x <= width / 2; x += stepX) {
-      for (let i = 0; i < resolution; i++) {
-        const t1 = i / resolution, t2 = (i + 1) / resolution;
-        const y1 = -height / 2 + t1 * height, y2 = -height / 2 + t2 * height;
-        const z1 = (x * x * 0.8 + y1 * y1) * curveAmount - 3.0;
-        const z2 = (x * x * 0.8 + y2 * y2) * curveAmount - 3.0;
-        points.push(x, y1, z1, x, y2, z2);
+  function createSphereGridGeometry(r, meridians, parallelStep) {
+    const pts = [];
+    const seg = 160;
+    // 경선 (위아래 극점으로 모이는 선)
+    for (let m = 0; m < meridians; m++) {
+      const lon = (m / meridians) * Math.PI * 2;
+      for (let i = 0; i < seg; i++) {
+        const a1 = (i / seg) * Math.PI, a2 = ((i + 1) / seg) * Math.PI;
+        pts.push(
+          r * Math.sin(a1) * Math.sin(lon), r * Math.cos(a1), r * Math.sin(a1) * Math.cos(lon),
+          r * Math.sin(a2) * Math.sin(lon), r * Math.cos(a2), r * Math.sin(a2) * Math.cos(lon)
+        );
       }
     }
-
-    for (let y = -height / 2; y <= height / 2; y += stepY) {
-      for (let i = 0; i < resolution; i++) {
-        const t1 = i / resolution, t2 = (i + 1) / resolution;
-        const x1 = -width / 2 + t1 * width, x2 = -width / 2 + t2 * width;
-        const z1 = (x1 * x1 * 0.8 + y * y) * curveAmount - 3.0;
-        const z2 = (x2 * x2 * 0.8 + y * y) * curveAmount - 3.0;
-        points.push(x1, y, z1, x2, y, z2);
+    // 위선 (수평 원)
+    for (let lat = -90 + parallelStep; lat < 90; lat += parallelStep) {
+      const phi = THREE.MathUtils.degToRad(lat);
+      const y = r * Math.sin(phi), rr = r * Math.cos(phi);
+      for (let i = 0; i < seg; i++) {
+        const t1 = (i / seg) * Math.PI * 2, t2 = ((i + 1) / seg) * Math.PI * 2;
+        pts.push(rr * Math.sin(t1), y, rr * Math.cos(t1), rr * Math.sin(t2), y, rr * Math.cos(t2));
       }
     }
-
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute("position", new THREE.Float32BufferAttribute(points, 3));
-    return geometry;
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.Float32BufferAttribute(pts, 3));
+    return g;
   }
 
-  const gridGroup = new THREE.Group();
-  gridGroup.position.set(0, 0, -3);
-
-  const gridWidth = 36, gridHeight = 22;
-  const stepX = 1.2, stepY = 1.2, curveFactor = 0.01;
-  const solidGridGeo = createSolidGridGeometry(gridWidth, gridHeight, stepX, stepY, curveFactor);
-
-  const gridMaterial = new THREE.LineBasicMaterial({
-    color: 0xB8B8B8,
+  // 시선 중심은 진하고 가장자리로 갈수록 흐려지는 선 재질
+  const gridMaterial = new THREE.ShaderMaterial({
     transparent: true,
-    opacity: 0.5,
+    depthWrite: false,
+    uniforms: {
+      uColor: { value: new THREE.Color(SPHERE.color) },
+      uOpacity: { value: SPHERE.opacity },
+      uEdge: { value: SPHERE.mode === "fisheye" ? SPHERE.fisheyeEdge : SPHERE.edgeFade },
+      uFisheye: { value: SPHERE.mode === "fisheye" ? 1.0 : 0.0 },
+      uHalfFov: { value: THREE.MathUtils.degToRad(SPHERE.fov / 2) },
+      uAspect: { value: 1.0 },
+      uBottomFade: { value: SPHERE.bottomFade },
+    },
+    vertexShader: `
+      uniform float uFisheye;
+      uniform float uHalfFov;
+      uniform float uAspect;
+      varying float vFocus;
+      varying float vVisible;
+      varying float vScreenY;
+      void main() {
+        vec4 mv = modelViewMatrix * vec4(position, 1.0);
+        vec3 dir = normalize(mv.xyz);
+        vVisible = 1.0;
+        if (uFisheye > 0.5) {
+          // 어안렌즈(등거리) 투영: 시선 중심에서의 각도에 비례해 화면 위치 결정
+          float theta = acos(clamp(-dir.z, -1.0, 1.0));
+          float r = theta / uHalfFov;
+          vec2 d = length(dir.xy) > 1e-5 ? normalize(dir.xy) : vec2(0.0);
+          // 화각(fov)은 화면의 긴 쪽 기준 → 세로 화면(모바일)에서도 극점이 보이지 않음
+          vec2 sc = uAspect >= 1.0 ? vec2(1.0, uAspect) : vec2(1.0 / uAspect, 1.0);
+          gl_Position = vec4(d.x * r * sc.x, d.y * r * sc.y, 0.999, 1.0);
+          vFocus = 1.0 - smoothstep(0.35, 1.15, r);
+          vVisible = step(theta, 2.5); // 카메라 뒤쪽 선은 숨김
+        } else {
+          // 카메라 정면(0,0,-1)과 이루는 각 — 1에 가까울수록 화면 중앙
+          vFocus = smoothstep(0.80, 0.99, dot(dir, vec3(0.0, 0.0, -1.0)));
+          gl_Position = projectionMatrix * mv;
+        }
+        vScreenY = gl_Position.y / gl_Position.w * 0.5 + 0.5; // 0=화면 아래, 1=위
+      }
+    `,
+    fragmentShader: `
+      uniform vec3 uColor;
+      uniform float uOpacity;
+      uniform float uEdge;
+      uniform float uBottomFade;
+      varying float vFocus;
+      varying float vVisible;
+      varying float vScreenY;
+      void main() {
+        if (vVisible < 0.5) discard;
+        float a = uOpacity * mix(uEdge, 1.0, vFocus);
+        a *= smoothstep(0.0, max(uBottomFade, 0.001), vScreenY); // 아래로 갈수록 자연스럽게 사라짐
+        gl_FragColor = vec4(uColor, a);
+      }
+    `,
   });
 
-  const gridLines = new THREE.LineSegments(solidGridGeo, gridMaterial);
+  const gridGroup = new THREE.Group();
+  const gridLines = new THREE.LineSegments(
+    createSphereGridGeometry(SPHERE.radius, SPHERE.meridians, SPHERE.parallelStep),
+    gridMaterial
+  );
+  gridLines.renderOrder = -1;
   gridGroup.add(gridLines);
+  // 구 중심을 카메라(z=15) 앞쪽에 두어, 카메라가 구 뒤쪽 안에 있도록 배치
+  const isFisheye = SPHERE.mode === "fisheye";
+  const gridTilt = isFisheye ? 0 : SPHERE.tiltX;
+  gridGroup.position.set(0, 0, isFisheye ? 15 : 15 - SPHERE.radius * SPHERE.cameraBack);
+  gridGroup.rotation.x = gridTilt;
   scene.add(gridGroup);
 
   const lineMat = new THREE.LineBasicMaterial({
@@ -197,6 +272,7 @@ export function initHero3D() {
     const height = window.innerHeight;
     const isMobile = window.innerWidth < 768;
     camera.aspect = width / height;
+    gridMaterial.uniforms.uAspect.value = width / height;
     camera.position.z = isMobile ? 18.5 : 15;
     camera.updateProjectionMatrix();
 
@@ -217,8 +293,10 @@ export function initHero3D() {
     mouse.x += (target.x - mouse.x) * 0.08;
     mouse.y += (target.y - mouse.y) * 0.08;
 
-    gridGroup.position.x = -mouse.x * 0.2;
-    gridGroup.position.y = -mouse.y * 0.15 + (scrollY * 0.001);
+    // 그리드는 평행이동 대신 천천히 회전 → 감싸는 벽 느낌
+    gridGroup.rotation.y = mouse.x * SPHERE.mouseRotate + scrollY * SPHERE.scrollRotate;
+    gridGroup.rotation.x = gridTilt - mouse.y * SPHERE.mouseRotate * 0.6;
+    if (isFisheye) gridGroup.position.z = camera.position.z; // 구 중심 = 카메라 위치
 
     group.children.forEach((obj, index) => {
       const p = obj.userData;
