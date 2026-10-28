@@ -737,9 +737,38 @@ export function initProfile3D(containerId) {
 
   const characterGroup = new THREE.Group(); // 동전 (마우스를 따라 W처럼 살짝 기울어짐)
   characterGroup.rotation.y = BASE_YAW;
+  const BASE_PITCH = 0.08; // 위쪽 테두리 두께가 살짝 보이도록 동전 윗부분을 앞으로 기울임
+  characterGroup.rotation.x = BASE_PITCH;
   wrapperGroup.add(characterGroup);
 
   const glassMaterials = [];
+
+  // 두께 외곽선: 매 프레임 카메라 방향에 맞춰 원통의 실제 외곽(앞면 → 옆면 직선 → 뒷면 바깥 호 → 옆면 직선 → 앞면)을 계산
+  let rimLine = null;
+  const RIM_SEGMENTS = 64;
+  const camLocal = new THREE.Vector3();
+  function updateRim() {
+    if (!rimLine) return;
+    characterGroup.updateMatrixWorld(true);
+    camLocal.copy(camera.position);
+    characterGroup.worldToLocal(camLocal);
+    const rho = Math.hypot(camLocal.x, camLocal.y);
+    if (rho <= RADIUS) { rimLine.visible = false; return; }
+    rimLine.visible = true;
+    const phi = Math.atan2(camLocal.y, camLocal.x);
+    const half = Math.acos(RADIUS / rho); // 옆면이 카메라에서 접선으로 보이는 각도
+    const a1 = phi - half, a2 = phi + half;
+    const frontZ = THICKNESS / 2 + 0.03, backZ = -THICKNESS / 2 - 0.03;
+    const pos = rimLine.geometry.attributes.position;
+    pos.setXYZ(0, Math.cos(a1) * RADIUS, Math.sin(a1) * RADIUS, frontZ);
+    for (let i = 0; i <= RIM_SEGMENTS; i++) {
+      const a = a1 + (a2 - a1) * (i / RIM_SEGMENTS);
+      pos.setXYZ(i + 1, Math.cos(a) * RADIUS, Math.sin(a) * RADIUS, backZ);
+    }
+    pos.setXYZ(RIM_SEGMENTS + 2, Math.cos(a2) * RADIUS, Math.sin(a2) * RADIUS, frontZ);
+    pos.needsUpdate = true;
+    rimLine.geometry.computeBoundingSphere();
+  }
 
   const textureUrl = new URL("../assets/images/profile_character.webp", import.meta.url).href;
 
@@ -773,7 +802,9 @@ export function initProfile3D(containerId) {
           vec3 baseColor = vec3(0.04, 0.04, 0.04);
           vec3 neonGreen = vec3(0.12, 0.95, 0.45);
           vec3 finalColor = mix(baseColor, neonGreen, beam);
-          float alpha = 0.08 + beam * 0.92;
+          // 옆면 안쪽(앞판 너머로 비쳐 보이는 면)은 회색을 빼고 초록 빛만 남김
+          float baseAlpha = gl_FrontFacing ? 0.08 : 0.0;
+          float alpha = baseAlpha + beam * 0.92;
           gl_FragColor = vec4(finalColor, alpha);
         }
       `,
@@ -843,9 +874,12 @@ export function initProfile3D(containerId) {
     frontRing.position.z = THICKNESS / 2 + 0.03;
     characterGroup.add(frontRing);
 
-    const backRing = new THREE.LineLoop(ringGeometry, ringMaterial);
-    backRing.position.z = -THICKNESS / 2 - 0.03;
-    characterGroup.add(backRing);
+    // 뒷면 둘레는 원 전체 대신, 실제로 보이는 바깥쪽 외곽만 그림 (updateRim에서 매 프레임 계산)
+    const rimGeometry = new THREE.BufferGeometry();
+    rimGeometry.setAttribute("position", new THREE.BufferAttribute(new Float32Array((RIM_SEGMENTS + 3) * 3), 3));
+    rimLine = new THREE.Line(rimGeometry, ringMaterial);
+    characterGroup.add(rimLine);
+    updateRim();
   });
 
   // 마우스 인터랙션 좌표 (W와 동일한 방식)
@@ -878,7 +912,7 @@ export function initProfile3D(containerId) {
       // 커서를 살짝 바라보는 정도 + 가만히 있어도 보이는 미세한 스웨이
       // (기본 각도 BASE_YAW 주변에서만 움직여서 옆면이 항상 같은 쪽에 보이게)
       const targetRotationY = BASE_YAW + mouseX * 0.12 + Math.sin(time * 0.7) * 0.06;
-      const targetRotationX = -mouseY * 0.12 + Math.sin(time * 0.5) * 0.04;
+      const targetRotationX = BASE_PITCH - mouseY * 0.12 + Math.sin(time * 0.5) * 0.04;
 
       characterGroup.rotation.y += (targetRotationY - characterGroup.rotation.y) * 0.05;
       characterGroup.rotation.x += (targetRotationX - characterGroup.rotation.x) * 0.05;
@@ -887,6 +921,7 @@ export function initProfile3D(containerId) {
       wrapperGroup.position.y = Math.sin(time * 1.2) * 0.15;
     }
 
+    updateRim();
     renderer.render(scene, camera);
   }
   animate();
