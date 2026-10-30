@@ -272,7 +272,9 @@
     }
 
     #pl-object{
-        display:none;
+        width:160px;
+        height:122px;
+        left:calc(100% - 65px);
     }
 
     .pl-layout{
@@ -912,11 +914,9 @@
 </script>
 
 <script type="module">
-if (window.matchMedia('(min-width:981px)').matches) {
-    import('./js/hero3d.js?v=20261030')
-        .then(function(m){ m.initPortfolio3D('pl-object', { solidFace: 0.7 }); })
-        .catch(function(e){ console.error('W object init failed:', e); });
-}
+import('./js/hero3d.js?v=20261030')
+    .then(function(m){ m.initPortfolio3D('pl-object', { solidFace: 0.7 }); })
+    .catch(function(e){ console.error('W object init failed:', e); });
 </script>
 
 </body>
