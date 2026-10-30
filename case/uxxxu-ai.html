@@ -279,6 +279,44 @@ href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretend
     }
 }
 
+/* UX Decision: Problem / Solution / Outcome */
+.ux-psr + .ux-psr{
+    margin-top:36px;
+    padding-top:36px;
+    border-top:1px solid #ececec;
+}
+
+.ux-psr-label{
+    margin-bottom:14px;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:#888;
+}
+
+.ux-psr h4{
+    font-size:22px;
+    font-weight:800;
+    line-height:1.4;
+    letter-spacing:-.03em;
+    color:#111;
+    word-break:keep-all;
+}
+
+.ux-psr p{
+    margin-top:12px;
+    font-size:17px;
+    line-height:1.8;
+    letter-spacing:-.03em;
+    color:#666;
+    word-break:keep-all;
+}
+
+.ux-psr ~ .prompt-box{
+    margin-top:40px;
+}
+
 /* 텍스트를 첫 번째 이미지 상단에 맞춤 (이미지 영역 위 여백 24px과 동일) */
 .workflow-item.is-top{
     align-items:start;
@@ -296,6 +334,14 @@ href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretend
 }
 
 @media(max-width:980px){
+    .ux-psr h4{
+        font-size:19px;
+    }
+
+    .ux-psr p{
+        font-size:15px;
+    }
+
     .ux-decision-title{
         word-break:keep-all;
     }
@@ -855,10 +901,6 @@ UX Decision
 출력 가능한 이력서 형태로 전환했습니다.<span class="ux-print-btn" aria-hidden="true"><img src="../assets/images/printer.png" alt=""></span>
 </h2>
 
-<p class="overview-text">
-경력기술서 페이지를 그대로 인쇄하면 헤더, 타임라인, 3D 오브젝트까지 함께 출력됩니다.
-화면 디자인은 그대로 두고, 인쇄할 때만 A4 이력서 레이아웃으로 바뀌도록 설계했습니다.
-</p>
 
 <div class="workflow-list">
 
@@ -866,18 +908,31 @@ UX Decision
 
 <div class="workflow-text">
 
-<span>Print Layout</span>
-
-<h3>
-화면은 그대로,<br>
-인쇄는 이력서처럼
-</h3>
-
+<div class="ux-psr">
+<div class="ux-psr-label">Problem</div>
+<h4>웹 화면과 인쇄물은 목적이 다릅니다.</h4>
 <p>
-Career 제목 옆 라인 위에 인쇄 버튼을 두고, 출력물 첫 장에는 이름·직무·연락처를 담았습니다.
-화면용 요소는 빼고 회사와 프로젝트가 페이지 사이에서 끊기지 않게 정리했으며,
-연락처는 사이트에는 스튜디오 메일, 출력물에는 개인 메일로 나눴습니다.
+Career 페이지는 온라인에서 경력을 탐색하기 위한 화면이지만, 출력할 때는 채용 담당자가 검토하기 편한 이력서 형식이 필요했습니다.
+화면을 그대로 인쇄하면 탐색용 요소와 레이아웃이 함께 출력됩니다.
 </p>
+</div>
+
+<div class="ux-psr">
+<div class="ux-psr-label">Solution</div>
+<h4>화면 디자인은 유지하고, 인쇄할 때만 이력서 레이아웃으로 전환했습니다.</h4>
+<p>
+Career 제목 옆에 인쇄 버튼을 두고, 인쇄 시에는 화면용 요소를 빼고 이름·직무·연락처와 경력 정보를 A4 이력서 형태로 재구성했습니다.
+회사와 프로젝트가 페이지 사이에서 끊기지 않게 정리했고, 연락처는 사이트에는 스튜디오 메일, 출력물에는 개인 메일로 나눴습니다.
+</p>
+</div>
+
+<div class="ux-psr">
+<div class="ux-psr-label">Outcome</div>
+<h4>하나의 Career 페이지를 온라인과 인쇄 환경에서 모두 활용합니다.</h4>
+<p>
+별도의 이력서 페이지를 관리하지 않고도, 웹에서는 기존 디자인을 유지하면서 필요할 때 정돈된 이력서로 출력할 수 있습니다.
+</p>
+</div>
 
 <div class="prompt-box">
 <small>Prompt · Claude Code</small>
