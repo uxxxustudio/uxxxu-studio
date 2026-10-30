@@ -226,6 +226,12 @@ href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretend
 
 }
 
+
+/* UX Decision: 웹 화면 / 인쇄 미리보기 두 장 */
+.workflow-image img + img{
+    margin-top:16px;
+}
+
 </style>
 
 </head>
@@ -717,6 +723,73 @@ alt="Claude Design System으로 규칙을 정리한 화면">
 
 </section>
 
+
+
+<!-- ==================================================
+     UX DECISION : 경력기술서 인쇄 기능
+================================================== -->
+
+<section class="overview ai-workflow">
+
+<div class="container">
+
+<div class="section-title">
+UX Decision
+</div>
+
+<h2>
+웹에서 보던 경력 정보를<br>
+출력 가능한 이력서 형태로 전환했습니다.
+</h2>
+
+<p class="overview-text">
+경력기술서 페이지를 그대로 인쇄하면 헤더, 타임라인, 3D 오브젝트까지 함께 출력됩니다.
+화면 디자인은 그대로 두고, 인쇄할 때만 A4 이력서 레이아웃으로 바뀌도록 설계했습니다.
+</p>
+
+<div class="workflow-list">
+
+<div class="workflow-item">
+
+<div class="workflow-text">
+
+<span>Print Layout</span>
+
+<h3>
+화면은 그대로,<br>
+인쇄는 이력서처럼
+</h3>
+
+<p>
+Career 제목 옆 라인 위에 인쇄 버튼을 두고, 출력물 첫 장에는 이름·직무·연락처를 담았습니다.
+화면용 요소는 빼고 회사와 프로젝트가 페이지 사이에서 끊기지 않게 정리했으며,
+연락처는 사이트에는 스튜디오 메일, 출력물에는 개인 메일로 나눴습니다.
+</p>
+
+<div class="prompt-box">
+<small>Prompt · Claude Code</small>
+<p>
+인쇄할 때만 A4 이력서 레이아웃으로 바뀌게 해줘.
+화면 디자인은 그대로 두고.
+</p>
+</div>
+
+</div>
+
+<div class="workflow-image">
+<img src="images/uxxxu-ai/cap5.png"
+alt="경력기술서 웹 화면과 인쇄 버튼">
+<img src="images/uxxxu-ai/cap6.png"
+alt="인쇄 미리보기에서 A4 이력서 형태로 전환된 경력기술서">
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
 
 
 <!-- ==================================================
