@@ -9,9 +9,17 @@
         <div class="hero-intro">
 
             <h1>
-                <span class="title-line-1">From Complexity</span>
-                <span class="title-line-2">to Clarity.</span>
+                <span class="title-line-1"><span class="title-morph">From Complexity</span><span class="title-ghost" aria-hidden="true">Too Complex,</span></span>
+                <span class="title-line-2"><span class="title-morph">to Clarity.</span><span class="title-ghost" aria-hidden="true">Hard to Use.</span></span>
             </h1>
+
+            <!-- 타이틀 로드 모션용 필터: 블러된 글자를 다시 또렷한 형태로 끊어 '녹았다 맺히는' 느낌 -->
+            <svg class="hero-goo-defs" aria-hidden="true" focusable="false">
+                <filter id="hero-goo" x="-60%" y="-60%" width="320%" height="220%" color-interpolation-filters="sRGB">
+                    <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 25 -9" result="goo" />
+                    <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+                </filter>
+            </svg>
 
         </div>
 

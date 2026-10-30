@@ -278,6 +278,80 @@ header nav {
     font-weight: 900;
 }
 
+/* 타이틀 로드 모션 (처음 한 번): 두 줄이 서로의 문장으로 시작해 엉켰다가 제 문장으로 맺힘
+   1줄: to Clarity. → From Complexity / 2줄: From Complexity → to Clarity.
+   바깥 span = 끊기 필터, 안쪽 = 블러·투명도 교차. 끝나면 필터를 꺼서 원래 글자 그대로 */
+.hero-goo-defs {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+.hero h1 .title-line-1,
+.hero h1 .title-line-2 {
+    filter: url(#hero-goo);
+    animation: title-goo-off 0s 2.85s forwards;
+}
+
+.hero h1 .title-line-2 {
+    position: relative;
+}
+
+.hero h1 .title-line-1 {
+    position: relative;
+}
+
+.hero h1 .title-morph,
+.hero h1 .title-ghost {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.hero h1 .title-ghost {
+    position: absolute;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+}
+
+.hero h1 .title-morph,
+.hero h1 .title-ghost {
+    transform-origin: center;
+    will-change: opacity, filter, transform;
+}
+
+/* Originkit Text Morph 방식: 나가는 글자는 커지며 흐려지고, 들어오는 글자는 작은 상태에서 커지며 맺힘
+   바뀐 문장이 1초 보인 뒤 1초 동안 교차 */
+.hero h1 .title-morph {
+    animation: title-in 1s 1.8s ease-in-out both;
+}
+
+.hero h1 .title-ghost {
+    animation: title-out 1s 1.8s ease-in-out both;
+}
+
+@keyframes title-in {
+    0%   { opacity: 0; filter: blur(.17em); transform: scale(.8); }
+    100% { opacity: 1; filter: blur(0);     transform: scale(1); }
+}
+
+@keyframes title-out {
+    0%   { opacity: 1; filter: blur(0);     transform: scale(1); }
+    100% { opacity: 0; filter: blur(.17em); transform: scale(1.2); visibility: hidden; }
+}
+
+@keyframes title-goo-off {
+    to { filter: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero h1 .title-line-1,
+    .hero h1 .title-line-2,
+    .hero h1 .title-morph { animation: none; filter: none; }
+    .hero h1 .title-ghost { display: none; }
+}
+
 .hero-message {
     position: absolute;
     z-index: 4;
@@ -1193,9 +1267,12 @@ footer {
     .menu-toggle { display: block; }
     .header-pdf { margin-left: auto; margin-right: 12px; height: 34px; padding: 0 4px 0 14px; }
     .header-pdf .pdf-arrow { width: 26px; height: 26px; margin-left: 10px; }
+    .header-pdf .pdf-label-long { display: none; }
 
     .hero { padding: 0 26px; min-height: 720px; }
     .hero h1 { left: 26px; top: 28%; font-size: clamp(52px, 13vw, 72px); line-height: .95; letter-spacing: -0.04em; }
+    .hero h1 .title-morph, .hero h1 .title-ghost { white-space: normal; }
+    .hero h1 .title-ghost { width: 100%; }
     .hero-message-ux { left: 26px; top: 58%; width: calc(100% - 52px); }
     .hero-message h2 { font-size: 20px; }
     .hero-message p { font-size: 14px; }
