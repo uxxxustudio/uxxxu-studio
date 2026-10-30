@@ -110,11 +110,58 @@
     padding-left:28px;
 }
 
+/* PDF: 메인 헤더 .header-pdf 버튼 스타일 재사용 */
 .pl-index .pl-pdf{
-    display:block;
-    margin:20px 0 0 28px;
-    padding:20px 0 0;
+    display:flex;
+    align-items:center;
+    width:calc(100% - 28px);
+    margin:32px 0 0 28px;
+    padding-top:32px;
     border-top:1px solid #ececec;
+    font-size:15px;
+    font-weight:600;
+    letter-spacing:-.02em;
+    color:#111;
+    white-space:nowrap;
+}
+
+.pl-pdf .pdf-arrow{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:26px;
+    height:26px;
+    margin-left:10px;
+    border-radius:50%;
+    background:#111;
+    color:#fff;
+    overflow:hidden;
+    transition:background .25s ease, color .25s ease;
+}
+
+.pl-pdf:hover .pdf-arrow{
+    background:rgb(31,242,115);
+    color:#111;
+}
+
+.pl-pdf .pdf-arrow i{
+    display:block;
+    font-style:normal;
+    font-size:13px;
+    line-height:1;
+    animation:pdf-arrow 2.6s cubic-bezier(.65,0,.35,1) infinite;
+}
+
+@keyframes pdf-arrow{
+    0%, 45% { transform:translate(0,0); opacity:1; }
+    65% { transform:translate(18px,-18px); opacity:1; }
+    65.01% { transform:translate(-18px,18px); opacity:0; }
+    66% { opacity:1; }
+    85%, 100% { transform:translate(0,0); opacity:1; }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .pl-pdf .pdf-arrow i{ animation:none; }
 }
 
 .pl-notion span{
@@ -132,7 +179,7 @@
 }
 
 .pl-group{
-    padding:0 0 100px;
+    padding:0 0 240px;
 }
 
 .pl-group:last-child{
@@ -156,7 +203,7 @@
 
 .pl-grid{
     display:grid;
-    grid-template-columns:repeat(3,minmax(0,1fr));
+    grid-template-columns:repeat(2,minmax(0,1fr));
     gap:56px 28px;
 }
 
@@ -332,8 +379,10 @@
 
     .pl-index .pl-pdf{
         order:3;
-        margin:14px 0 0;
-        padding:0;
+        justify-self:start;
+        width:auto;
+        margin:20px 0 0;
+        padding-top:0;
         border-top:0;
     }
 
@@ -361,7 +410,7 @@
 @media(max-width:767px){
 
     .pl-group{
-        padding-bottom:72px;
+        padding-bottom:120px;
     }
 
     .pl-group-head{
@@ -466,8 +515,9 @@
 </a>
 
 <a href="https://drive.google.com/file/d/10iD0BIrafUtT5MDurE7-HalvfIgzf6KY/view?usp=drive_link"
-   class="pl-notion pl-pdf" target="_blank" rel="noopener">
-    Portfolio PDF <span>↗</span>
+   class="pl-pdf" target="_blank" rel="noopener">
+    Portfolio PDF
+    <span class="pdf-arrow"><i>↗</i></span>
 </a>
 </aside>
 
@@ -565,14 +615,6 @@
     <div class="pl-thumb"><img src="case/images/thumbnail/moamoa.webp" alt="" loading="lazy"></div>
     <div class="pl-title">
         <h3>통일동화책 XR</h3>
-        <span class="pl-ext" aria-label="외부 링크">↗</span>
-    </div>
-    <span class="pl-year">2024</span>
-</a>
-<a href="https://psychedelic-decimal-282.notion.site/AR-APP-1d67c886d29180a8b949e8fa3e28ea3c" class="pl-item" target="_blank" rel="noopener">
-    <div class="pl-thumb"><img src="case/images/thumbnail/modoo_mongchon.png" alt="" loading="lazy"></div>
-    <div class="pl-title">
-        <h3>모두의 몽촌토성 AR APP</h3>
         <span class="pl-ext" aria-label="외부 링크">↗</span>
     </div>
     <span class="pl-year">2024</span>
