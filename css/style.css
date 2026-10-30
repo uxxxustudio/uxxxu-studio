@@ -108,6 +108,82 @@ nav a:hover {
     opacity: .45;
 }
 
+/* 메뉴를 PDF 버튼 왼쪽으로 모으고, 버튼과의 간격은 메뉴 간격보다 넓게 */
+header nav {
+    margin-left: auto;
+}
+
+.header-pdf {
+    display: inline-flex;
+    align-items: center;
+    height: 42px;
+    margin-left: 64px;
+    padding: 0 6px 0 18px;
+    border: 1px solid #333;
+    border-radius: 999px;
+    background: transparent;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: #111;
+    white-space: nowrap;
+    transition: background .25s ease, color .25s ease;
+}
+
+/* 화살표 원형: 히어로 View Portfolio와 같은 블랙 */
+.header-pdf .pdf-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    margin-left: 12px;
+    border-radius: 50%;
+    background: #111;
+    color: #fff;
+    overflow: hidden;
+}
+
+.header-pdf .pdf-arrow {
+    transition: background .25s ease, color .25s ease;
+}
+
+/* hover: 버튼이 어두워질 때 원형은 사이트 포인트 그린으로 전환 */
+.header-pdf:hover .pdf-arrow {
+    background: rgb(31, 242, 115);
+    color: #111;
+}
+
+.header-pdf .pdf-arrow i {
+    display: block;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 1;
+    animation: pdf-arrow 2.6s cubic-bezier(.65, 0, .35, 1) infinite;
+}
+
+.header-pdf:hover {
+    background: #333;
+    color: #fff;
+}
+
+/* 화살표: 오른쪽 위로 빠져나갔다가 왼쪽 아래에서 다시 들어옴 (원형 밖은 가려짐) */
+.header-pdf {
+    position: relative;
+}
+
+@keyframes pdf-arrow {
+    0%, 45% { transform: translate(0, 0); opacity: 1; }
+    65% { transform: translate(18px, -18px); opacity: 1; }
+    65.01% { transform: translate(-18px, 18px); opacity: 0; }
+    66% { opacity: 1; }
+    85%, 100% { transform: translate(0, 0); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .header-pdf .pdf-arrow i { animation: none; }
+}
+
 .menu-toggle {
     display: none;
     width: 42px;
@@ -1115,6 +1191,8 @@ footer {
 
     nav.open { display: flex; }
     .menu-toggle { display: block; }
+    .header-pdf { margin-left: auto; margin-right: 12px; height: 34px; padding: 0 4px 0 14px; }
+    .header-pdf .pdf-arrow { width: 26px; height: 26px; margin-left: 10px; }
 
     .hero { padding: 0 26px; min-height: 720px; }
     .hero h1 { left: 26px; top: 28%; font-size: clamp(52px, 13vw, 72px); line-height: .95; letter-spacing: -0.04em; }
