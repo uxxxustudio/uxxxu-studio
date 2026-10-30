@@ -109,6 +109,13 @@
     padding-left:28px;
 }
 
+.pl-index .pl-pdf{
+    display:block;
+    margin:20px 0 0 28px;
+    padding:20px 0 0;
+    border-top:1px solid #ececec;
+}
+
 .pl-notion span{
     display:inline-block;
     margin-left:2px;
@@ -285,6 +292,12 @@
         display:none;
     }
 
+    .pl-index .pl-pdf{
+        margin:10px 0 0;
+        padding:0;
+        border-top:0;
+    }
+
     .pl-index nav{
         padding-left:0;
         flex-direction:row;
@@ -373,6 +386,11 @@
 <a href="https://psychedelic-decimal-282.notion.site/PORTFOLIO-15fbb729673a4b218efac2ce73e56788"
    class="pl-notion" target="_blank" rel="noopener">
     Notion Portfolio <span>↗</span>
+</a>
+
+<a href="https://drive.google.com/file/d/10iD0BIrafUtT5MDurE7-HalvfIgzf6KY/view?usp=drive_link"
+   class="pl-notion pl-pdf" target="_blank" rel="noopener">
+    Portfolio PDF <span>↗</span>
 </a>
 </aside>
 
@@ -816,7 +834,7 @@
 
 <script type="module">
 if (window.matchMedia('(min-width:981px)').matches) {
-    import('./js/hero3d.js')
+    import('./js/hero3d.js?v=20261030')
         .then(function(m){ m.initPortfolio3D('pl-object', { solidFace: 0.7 }); })
         .catch(function(e){ console.error('W object init failed:', e); });
 }
