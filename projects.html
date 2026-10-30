@@ -53,7 +53,7 @@
 }
 
 .pl-layout{
-    padding-bottom:240px;
+    padding-bottom:360px;
     display:grid;
     grid-template-columns:200px minmax(0,1fr);
     gap:64px;
@@ -268,6 +268,7 @@
 
     .pl-hero{
         padding-top:150px;
+        padding-bottom:24px;
     }
 
     #pl-object{
@@ -276,39 +277,71 @@
 
     .pl-layout{
         padding-bottom:160px;
-        grid-template-columns:1fr;
+        grid-template-columns:minmax(0,1fr);
         gap:0;
     }
 
+    /* 인덱스: 모바일에서는 nav만 상단 고정 바, 외부 링크는 맨 아래로 */
     .pl-index{
-        position:static;
-        padding:0 0 48px;
+        display:contents;
     }
 
-    .pl-index .pl-notion{
-        margin-top:20px;
-        padding-left:0;
+    .pl-index nav{
+        position:sticky;
+        top:72px;
+        z-index:20;
+        order:0;
+        flex-direction:row;
+        flex-wrap:nowrap;
+        gap:22px;
+        margin:0 -26px 40px;
+        padding:16px 26px;
+        overflow-x:auto;
+        white-space:nowrap;
+        background:rgba(255,255,255,.88);
+        backdrop-filter:blur(20px);
+        border-bottom:1px solid #ececec;
+        scrollbar-width:none;
+    }
+
+    .pl-index nav::-webkit-scrollbar{
+        display:none;
+    }
+
+    .pl-index a.is-active{
+        font-size:15px;
     }
 
     .pl-index-line{
         display:none;
     }
 
+    .pl-body{
+        order:1;
+    }
+
+    .pl-index .pl-notion{
+        order:2;
+        display:block;
+        margin:100px 0 0;
+        padding:32px 0 0;
+        border-top:1px solid #ececec;
+    }
+
     .pl-index .pl-pdf{
-        margin:10px 0 0;
+        order:3;
+        margin:14px 0 0;
         padding:0;
         border-top:0;
     }
 
-    .pl-index nav{
-        padding-left:0;
-        flex-direction:row;
-        flex-wrap:wrap;
-        gap:10px 20px;
+    .pl-group{
+        scroll-margin-top:140px;
     }
 
-    .pl-group{
-        scroll-margin-top:80px;
+    .pl-group:first-child .pl-group-head{
+        padding-top:0;
+        border-top:0;
     }
 
     .pl-textlist{
@@ -325,13 +358,53 @@
 
 @media(max-width:767px){
 
-    .pl-grid,
-    .pl-textlist{
-        grid-template-columns:1fr;
+    .pl-group{
+        padding-bottom:72px;
+    }
+
+    .pl-group-head{
+        padding-top:28px;
+        margin-bottom:28px;
+    }
+
+    .pl-group-head h2{
+        font-size:26px;
+    }
+
+    .pl-grid{
+        gap:32px 14px;
+    }
+
+    .pl-title{
+        gap:8px;
+        margin-top:12px;
     }
 
     .pl-title h3{
-        font-size:18px;
+        font-size:15px;
+        line-height:1.45;
+    }
+
+    .pl-ext{
+        font-size:14px;
+    }
+
+    .pl-year{
+        margin-top:4px;
+        font-size:12px;
+    }
+
+    .pl-textlist{
+        column-gap:14px;
+    }
+
+    .pl-textlist a{
+        padding:14px 0;
+        gap:8px;
+    }
+
+    .pl-textlist span{
+        font-size:15px;
     }
 
 }
@@ -821,6 +894,10 @@
     function moveTo(a){
         if(!line||!a) return;
         links.forEach(function(l){ l.classList.toggle('is-active', l===a); });
+        var nav=a.parentNode;
+        if(nav.scrollWidth>nav.clientWidth){
+            nav.scrollTo({left:a.offsetLeft-26, behavior:'smooth'});
+        }
         var y=a.offsetTop+a.offsetHeight/2;
         line.style.transform='translateY('+y+'px)';
         line.style.opacity='1';
