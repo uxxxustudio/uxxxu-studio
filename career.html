@@ -1,0 +1,2072 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Career | uxxxu.studio</title>
+<meta name="description" content="UX/UI · Product 디자이너 경력기술서">
+
+<link rel="apple-touch-icon" sizes="180x180" href="assets/images/studio_favicon.png">
+<link rel="icon" type="image/png" href="assets/images/studio_favicon.png">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="case/css/style.css">
+
+<script type="importmap">
+{
+    "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+    }
+}
+</script>
+
+<style>
+
+/* ==================================================
+   PAGE-LOCAL : All Projects (포트폴리오 리스트)
+   case/css 값 재사용
+================================================== */
+
+.pl-hero{
+    padding-top:180px;
+    padding-bottom:40px;
+}
+
+.pl-title-wrap{
+    position:relative;
+    display:inline-block;
+}
+
+#pl-object{
+    position:absolute;
+    top:calc(50% - 14px);
+    left:calc(100% - 90px);
+    width:300px;
+    height:280px;
+    transform:translateY(-50%);
+    pointer-events:none;
+    z-index:2;
+}
+
+.pl-layout{
+    padding-bottom:360px;
+    display:grid;
+    grid-template-columns:200px minmax(0,1fr);
+    gap:64px;
+    align-items:start;
+}
+
+.pl-index{
+    position:sticky;
+    top:140px;
+    padding-top:36px;
+}
+
+.pl-index nav{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    padding-left:28px;
+}
+
+.pl-index a{
+    font-size:15px;
+    font-weight:500;
+    letter-spacing:-.02em;
+    color:#999;
+    transition:color .25s ease;
+}
+
+.pl-index a:hover,
+.pl-index a.is-active{
+    color:#111;
+}
+
+.pl-index a.is-active{
+    font-size:17px;
+    font-weight:700;
+}
+
+.pl-index-line{
+    position:absolute;
+    top:0;
+    left:0;
+    width:16px;
+    height:2px;
+    margin-top:-1px;
+    background:#111;
+    opacity:0;
+    transition:transform .5s cubic-bezier(.2,.7,.2,1), opacity .25s ease;
+}
+
+.pl-index .pl-notion{
+    display:inline-block;
+    margin-top:40px;
+    padding-left:28px;
+}
+
+/* PDF: 메인 헤더 .header-pdf 버튼 스타일 재사용 */
+.pl-index .pl-pdf{
+    display:flex;
+    align-items:center;
+    width:calc(100% - 28px);
+    margin:32px 0 0 28px;
+    padding-top:32px;
+    border-top:1px solid #ececec;
+    font-size:15px;
+    font-weight:600;
+    letter-spacing:-.02em;
+    color:#111;
+    white-space:nowrap;
+}
+
+.pl-pdf .pdf-arrow{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:26px;
+    height:26px;
+    margin-left:10px;
+    border-radius:50%;
+    background:#111;
+    color:#fff;
+    overflow:hidden;
+    transition:background .25s ease, color .25s ease;
+}
+
+.pl-pdf:hover .pdf-arrow{
+    background:rgb(31,242,115);
+    color:#111;
+}
+
+.pl-pdf .pdf-arrow i{
+    display:block;
+    font-style:normal;
+    font-size:13px;
+    line-height:1;
+    animation:pdf-arrow 2.6s cubic-bezier(.65,0,.35,1) infinite;
+}
+
+@keyframes pdf-arrow{
+    0%, 45% { transform:translate(0,0); opacity:1; }
+    65% { transform:translate(18px,-18px); opacity:1; }
+    65.01% { transform:translate(-18px,18px); opacity:0; }
+    66% { opacity:1; }
+    85%, 100% { transform:translate(0,0); opacity:1; }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .pl-pdf .pdf-arrow i{ animation:none; }
+}
+
+.pl-notion span{
+    display:inline-block;
+    margin-left:2px;
+    transition:transform .35s cubic-bezier(.2,.7,.2,1);
+}
+
+.pl-notion:hover span{
+    transform:translate(2px,-2px);
+}
+
+.pl-group{
+    scroll-margin-top:110px;
+}
+
+.pl-group{
+    padding:0 0 240px;
+}
+
+.pl-group:last-child{
+    padding-bottom:0;
+}
+
+.pl-group-head{
+    display:flex;
+    padding-top:36px;
+    margin-bottom:44px;
+    border-top:1px solid #ececec;
+}
+
+.pl-group-head h2{
+    font-size:32px;
+    font-weight:700;
+    line-height:1;
+    letter-spacing:-.04em;
+    color:#111;
+}
+
+.pl-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:56px 28px;
+}
+
+.pl-item{
+    display:block;
+}
+
+.pl-thumb{
+    aspect-ratio:27 / 17;
+    border-radius:4px;
+    overflow:hidden;
+    background:#eeeeee;
+}
+
+.pl-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:transform .5s cubic-bezier(.2,.7,.2,1);
+}
+
+.pl-title{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+    margin-top:20px;
+}
+
+.pl-title h3{
+    font-size:20px;
+    font-weight:700;
+    line-height:1.4;
+    letter-spacing:-.03em;
+    word-break:keep-all;
+}
+
+.pl-ext{
+    flex:none;
+    font-size:18px;
+    line-height:1.4;
+    color:#999;
+    transition:transform .35s cubic-bezier(.2,.7,.2,1), color .25s ease;
+}
+
+.pl-year{
+    display:block;
+    margin-top:6px;
+    font-size:13px;
+    font-weight:500;
+    color:#999;
+}
+
+.pl-thumb img.is-top{
+    object-position:top;
+}
+
+.pl-item:hover .pl-thumb img{
+    transform:scale(1.04);
+}
+
+.pl-item:hover .pl-ext{
+    color:#111;
+    transform:translate(3px,-3px);
+}
+
+.pl-textlist{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    column-gap:28px;
+    border-top:1px solid #ececec;
+}
+
+.pl-textlist a{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:18px 0;
+    border-bottom:1px solid #ececec;
+}
+
+.pl-textlist span{
+    font-size:18px;
+    font-weight:600;
+    letter-spacing:-.03em;
+    color:#555;
+    transition:color .25s ease;
+}
+
+.pl-textlist .pl-ext{
+    font-style:normal;
+}
+
+.pl-textlist a:hover span,
+.pl-textlist a:hover .pl-ext{
+    color:#111;
+}
+
+.pl-textlist a:hover .pl-ext{
+    transform:translate(3px,-3px);
+}
+
+.pl-item.is-disabled h3{
+    color:#999;
+}
+
+@media(max-width:980px){
+
+    .pl-hero{
+        padding-top:150px;
+        padding-bottom:24px;
+    }
+
+    #pl-object{
+        width:150px;
+        height:140px;
+        left:calc(100% - 45px);
+    }
+
+    .pl-layout{
+        padding-bottom:160px;
+        grid-template-columns:minmax(0,1fr);
+        gap:0;
+    }
+
+    /* 인덱스: 모바일에서는 nav만 상단 고정 바, 외부 링크는 맨 아래로 */
+    .pl-index{
+        display:contents;
+    }
+
+    .pl-index nav{
+        position:sticky;
+        top:72px;
+        z-index:20;
+        order:0;
+        flex-direction:row;
+        flex-wrap:nowrap;
+        gap:22px;
+        margin:0 -26px 40px;
+        padding:16px 26px;
+        overflow-x:auto;
+        white-space:nowrap;
+        background:rgba(255,255,255,.88);
+        backdrop-filter:blur(20px);
+        border-bottom:1px solid #ececec;
+        scrollbar-width:none;
+    }
+
+    .pl-index nav::-webkit-scrollbar{
+        display:none;
+    }
+
+    .pl-index a.is-active{
+        font-size:15px;
+    }
+
+    .pl-index-line{
+        display:none;
+    }
+
+    .pl-body{
+        order:1;
+    }
+
+    .pl-index .pl-notion{
+        order:2;
+        display:block;
+        margin:100px 0 0;
+        padding:32px 0 0;
+        border-top:1px solid #ececec;
+    }
+
+    .pl-index .pl-pdf{
+        order:3;
+        justify-self:start;
+        width:auto;
+        margin:20px 0 0;
+        padding-top:0;
+        border-top:0;
+    }
+
+    .pl-group{
+        scroll-margin-top:140px;
+    }
+
+    .pl-group:first-child .pl-group-head{
+        padding-top:0;
+        border-top:0;
+    }
+
+    .pl-textlist{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        column-gap:20px;
+    }
+
+    .pl-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:44px 20px;
+    }
+
+}
+
+@media(max-width:767px){
+
+    .pl-group{
+        padding-bottom:120px;
+    }
+
+    .pl-group-head{
+        padding-top:28px;
+        margin-bottom:28px;
+    }
+
+    .pl-group-head h2{
+        font-size:26px;
+    }
+
+    .pl-grid{
+        gap:32px 14px;
+    }
+
+    .pl-title{
+        gap:8px;
+        margin-top:12px;
+    }
+
+    .pl-title h3{
+        font-size:15px;
+        line-height:1.45;
+    }
+
+    .pl-ext{
+        font-size:14px;
+    }
+
+    .pl-year{
+        margin-top:4px;
+        font-size:12px;
+    }
+
+    .pl-textlist{
+        column-gap:14px;
+    }
+
+    .pl-textlist a{
+        padding:14px 0;
+        gap:8px;
+    }
+
+    .pl-textlist span{
+        font-size:15px;
+    }
+
+}
+
+/* ==================================================
+   PAGE-LOCAL : Career (경력기술서)
+================================================== */
+
+.pl-group.cr-group{
+    padding-bottom:160px;
+}
+
+.pl-layout{
+    gap:120px;
+}
+
+.pl-index nav a em{
+    display:inline-block;
+    width:44px;
+    font-style:normal;
+    font-weight:500;
+    color:#bbb;
+}
+
+.pl-index a.is-active em{
+    color:#999;
+}
+
+.cr-overview{
+    padding:40px 0 180px;
+}
+
+.cr-about{
+    position:relative;
+    display:grid;
+    grid-template-columns:minmax(0,5fr) minmax(0,7fr);
+    gap:96px;
+    padding-top:48px;
+    border-top:1px solid #ececec;
+}
+
+/* 인쇄 버튼: 회색 라인 위 오른쪽 끝 */
+.cr-print-btn{
+    position:absolute;
+    right:64px;
+    bottom:calc(100% + 16px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:46px;
+    height:46px;
+    padding:0;
+    border:1px solid #111;
+    border-radius:50%;
+    background:#fff;
+    cursor:pointer;
+    transition:background .25s ease, transform .35s cubic-bezier(.2,.7,.2,1);
+}
+
+.cr-print-btn img{
+    width:20px;
+    height:20px;
+    object-fit:contain;
+    transition:filter .25s ease;
+}
+
+.cr-print-btn:hover{
+    background:#111;
+    transform:translateY(-2px);
+}
+
+.cr-print-btn:hover img{
+    filter:invert(1);
+}
+
+.cr-about-left{
+    display:flex;
+    flex-direction:column;
+}
+
+.cr-about-left h2{
+    font-size:28px;
+    font-weight:700;
+    line-height:1.4;
+    letter-spacing:-.04em;
+    word-break:keep-all;
+}
+
+.cr-about-left p{
+    margin-top:28px;
+    font-size:16px;
+    line-height:1.8;
+    letter-spacing:-.02em;
+    color:#555;
+    word-break:keep-all;
+}
+
+.cr-figure{
+    margin-top:auto;
+    padding-top:56px;
+    border-bottom:1px solid #111;
+}
+
+.cr-laptop{
+    position:relative;
+    display:block;
+    width:380px;
+    max-width:100%;
+    margin-left:auto;
+}
+
+.cr-laptop img{
+    display:block;
+    width:100%;
+}
+
+/* 노트북 사과 로고 불빛: 사과 모양 그대로 밝아졌다 은은해졌다 반복 */
+.cr-apple-glow{
+    position:absolute;
+    left:72.74%;
+    top:80.56%;
+    width:6.95%;
+    height:10.15%;
+    pointer-events:none;
+    animation:cr-apple-glow 3.2s ease-in-out infinite alternate;
+}
+
+.cr-apple-glow i{
+    display:block;
+    width:100%;
+    height:100%;
+    background:#fff;
+    -webkit-mask:url(assets/images/apple_mask.png) center / 100% 100% no-repeat;
+    mask:url(assets/images/apple_mask.png) center / 100% 100% no-repeat;
+    animation:cr-apple-tone 3.2s ease-in-out infinite alternate;
+}
+
+@keyframes cr-apple-glow{
+    from{ filter:drop-shadow(0 0 0 rgba(255,255,255,0)); }
+    to{ filter:drop-shadow(0 0 4px rgba(255,255,255,1)) drop-shadow(0 0 10px rgba(255,255,255,.9)); }
+}
+
+@keyframes cr-apple-tone{
+    from{ background:#e2e2e2; }
+    to{ background:#fff; }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .cr-apple-glow,
+    .cr-apple-glow i{
+        animation:none;
+    }
+}
+
+
+.cr-do-title{
+    font-size:32px;
+    font-weight:700;
+    line-height:1;
+    letter-spacing:-.04em;
+}
+
+.cr-do{
+    list-style:none;
+    margin-top:36px;
+    border-top:1px solid #111;
+}
+
+.cr-do li{
+    display:grid;
+    grid-template-columns:220px minmax(0,1fr);
+    gap:24px;
+    padding:20px 0;
+    border-bottom:1px solid #ececec;
+}
+
+.cr-do li:last-child{
+    border-bottom-color:#111;
+}
+
+.cr-do h3{
+    font-size:16px;
+    font-weight:700;
+    line-height:1.6;
+    letter-spacing:-.03em;
+    color:#111;
+}
+
+.cr-do p{
+    font-size:15px;
+    line-height:1.7;
+    letter-spacing:-.02em;
+    color:#555;
+    word-break:keep-all;
+}
+
+.cr-row{
+    padding:32px 0;
+    border-bottom:1px solid #ececec;
+}
+
+.cr-label{
+    margin-bottom:16px;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.02em;
+    color:#999;
+}
+
+.pl-group-head.cr-head{
+    display:block;
+    margin-bottom:12px;
+}
+
+.pl-index nav a{
+    white-space:nowrap;
+}
+
+/* 타임라인 인덱스: 세로선 + 경력별 작은 원 + 선택 원이 따라 내려감 */
+.pl-index nav::before{
+    content:"";
+    position:absolute;
+    left:7px;
+    top:9px;
+    bottom:9px;
+    width:1px;
+    background:#d8d8d8;
+}
+
+.pl-index nav a{
+    position:relative;
+}
+
+/* All Projects 위 구분선 */
+.pl-index .pl-notion{
+    display:block;
+    width:calc(100% - 28px);
+    margin:40px 0 0 28px;
+    padding:32px 0 0;
+    border-top:1px solid #ececec;
+}
+
+/* 회사 시작선은 진하게 */
+.cr-group .pl-group-head{
+    border-top-color:#111;
+}
+
+/* 요약 → 경력 연결 문구 */
+.cr-bridge{
+    padding:0 0 140px;
+}
+
+.cr-bridge h2{
+    font-size:clamp(48px,6vw,88px);
+    font-weight:800;
+    line-height:1;
+    letter-spacing:-.05em;
+}
+
+.cr-bridge h2 span{
+    font-family:Georgia,"Times New Roman",serif;
+    font-style:italic;
+    font-weight:400;
+}
+
+.cr-bridge p{
+    margin-top:28px;
+    font-size:17px;
+    letter-spacing:-.02em;
+    color:#555;
+}
+
+.cr-bridge p strong{
+    font-weight:700;
+    color:#111;
+}
+
+.pl-index .pl-index-line{
+    left:2px;
+    width:11px;
+    height:11px;
+    margin-top:-5.5px;
+    border-radius:50%;
+    background:#111;
+    z-index:1;
+}
+
+.cr-head h2{
+    line-height:1.2;
+}
+
+.cr-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:4px 16px;
+    margin-top:16px;
+    font-size:17px;
+    letter-spacing:-.02em;
+}
+
+.cr-meta span:first-child{
+    color:#555;
+}
+
+.cr-meta span:last-child{
+    color:#999;
+}
+
+.cr-head + .cr-row{
+    border-top:1px solid #ececec;
+    margin-top:36px;
+}
+
+.cr-row:last-child{
+    border-bottom:0;
+}
+
+.cr-list{
+    list-style:none;
+}
+
+.cr-list li{
+    position:relative;
+    padding-left:14px;
+    font-size:16px;
+    line-height:1.8;
+    letter-spacing:-.02em;
+    color:#555;
+    word-break:keep-all;
+}
+
+.cr-list li::before{
+    content:"·";
+    position:absolute;
+    left:0;
+    color:#999;
+}
+
+.cr-project{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:16px;
+    margin:36px 0 10px;
+}
+
+.cr-body > .cr-project:first-child{
+    margin-top:0;
+}
+
+.cr-project h3{
+    font-size:17px;
+    font-weight:700;
+    line-height:1.6;
+    letter-spacing:-.03em;
+    color:#111;
+    word-break:keep-all;
+}
+
+.cr-note{
+    font-weight:500;
+    color:#999;
+}
+
+.cr-case{
+    flex:none;
+    font-size:13px;
+    font-weight:500;
+    color:#999;
+    transition:color .25s ease;
+}
+
+.cr-case:hover{
+    color:#111;
+}
+
+.cr-inline{
+    color:#111;
+    text-decoration:underline;
+    text-decoration-color:#ccc;
+    text-underline-offset:4px;
+    transition:text-decoration-color .25s ease;
+}
+
+.cr-inline:hover{
+    text-decoration-color:#111;
+}
+
+.cr-inline i{
+    margin-left:2px;
+    font-style:normal;
+    font-size:.8em;
+    color:#999;
+}
+
+.cr-text{
+    margin:0 0 8px;
+    font-size:16px;
+    line-height:1.8;
+    letter-spacing:-.02em;
+    color:#111;
+}
+
+@media(max-width:767px){
+
+    .pl-group.cr-group{
+        padding-bottom:100px;
+    }
+
+    .cr-overview{
+        padding:24px 0 120px;
+    }
+
+    .cr-about-left h2{
+        font-size:24px;
+    }
+
+    .cr-about-left p{
+        font-size:15px;
+    }
+
+    .cr-laptop{
+        width:240px;
+    }
+
+    .cr-do-title{
+        font-size:26px;
+    }
+
+    .cr-do li{
+        grid-template-columns:1fr;
+        gap:6px;
+    }
+
+    .cr-row{
+        padding:24px 0;
+    }
+
+    .cr-meta{
+        font-size:15px;
+    }
+
+    .cr-list li,
+    .cr-text{
+        font-size:15px;
+    }
+
+    .cr-project{
+        flex-direction:column;
+        gap:4px;
+        margin-top:28px;
+    }
+
+    .cr-project h3{
+        font-size:16px;
+    }
+
+    .pl-index nav a em{
+        width:auto;
+        margin-right:6px;
+    }
+
+}
+
+@media(max-width:980px){
+
+    .pl-layout{
+        gap:0;
+    }
+
+    .cr-about{
+        grid-template-columns:1fr;
+        gap:80px;
+    }
+
+    .pl-index nav::before{
+        display:none;
+    }
+
+    .pl-index .pl-notion{
+        width:auto;
+        margin:100px 0 0;
+    }
+
+    /* 모바일도 PC처럼: 첫 회사 시작선 진하게 */
+    .pl-group:first-child .pl-group-head.cr-head{
+        padding-top:28px;
+        border-top:1px solid #111;
+    }
+
+    /* 모바일 상단 바: 선택된 경력 앞에 PC 타임라인과 같은 검은 원 */
+    .pl-index nav a.is-active::before{
+        content:"";
+        display:inline-block;
+        width:7px;
+        height:7px;
+        margin-right:7px;
+        border-radius:50%;
+        background:#111;
+        vertical-align:middle;
+        position:relative;
+        top:-1px;
+    }
+
+    .cr-print-btn{
+        right:26px;
+        width:40px;
+        height:40px;
+    }
+
+    .cr-print-btn img{
+        width:18px;
+        height:18px;
+    }
+
+    .cr-bridge{
+        padding-bottom:80px;
+    }
+
+}
+/* ==================================================
+   PRINT (A4)
+================================================== */
+
+.cr-print-head{
+    display:none;
+}
+
+@media print{
+
+    @page{
+        size:A4;
+        margin:16mm 16mm 18mm;
+    }
+
+    html,body{
+        background:#fff;
+        -webkit-print-color-adjust:exact;
+        print-color-adjust:exact;
+    }
+
+    header,
+    footer,
+    .cr-print-btn,
+    .pl-hero,
+    .cr-bridge,
+    .pl-index,
+    .cr-figure,
+    .cr-case,
+    #pl-object{
+        display:none !important;
+    }
+
+    .container{
+        max-width:none;
+        padding:0;
+    }
+
+    .cr-print-head{
+        display:flex;
+        align-items:flex-end;
+        justify-content:space-between;
+        padding-bottom:5mm;
+        border-bottom:1.5px solid #111;
+    }
+
+    .cr-print-head h1{
+        font-size:24pt;
+        font-weight:800;
+        letter-spacing:-.04em;
+        line-height:1;
+    }
+
+    .cr-print-role{
+        margin-top:3mm;
+        font-size:11pt;
+        font-weight:600;
+        color:#111;
+    }
+
+    .cr-print-contact{
+        margin-top:1.5mm;
+        font-size:9pt;
+        color:#555;
+    }
+
+    .cr-print-contact span{
+        margin:0 2mm;
+        color:#bbb;
+    }
+
+    .cr-print-head img{
+        width:36mm;
+        height:auto;
+    }
+
+    /* 소개 + What I Do */
+    .cr-overview{
+        padding:7mm 0 12mm;
+    }
+
+    .cr-about{
+        display:block;
+        padding:0;
+        border:0;
+    }
+
+    .cr-about-left h2{
+        font-size:13pt;
+        line-height:1.45;
+    }
+
+    .cr-about-left p{
+        margin-top:3mm;
+        font-size:9.5pt;
+        line-height:1.65;
+        color:#333;
+    }
+
+    .cr-about-right{
+        margin-top:7mm;
+    }
+
+    .cr-do-title{
+        font-size:12pt;
+    }
+
+    .cr-do{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        column-gap:8mm;
+        margin-top:3mm;
+        border-top:1px solid #111;
+    }
+
+    .cr-do li{
+        display:block;
+        padding:2.5mm 0;
+        break-inside:avoid;
+    }
+
+    .cr-do li:last-child{
+        border-bottom:0;
+    }
+
+    /* 첫 회사(프리텍) 시작선: 화면 980px 규칙이 인쇄에도 걸려 사라지던 것 복구 */
+    .pl-group:first-child .pl-group-head.cr-head{
+        padding-top:4mm;
+        border-top:1px solid #111;
+    }
+
+    .cr-do h3{
+        font-size:9.5pt;
+    }
+
+    .cr-do p{
+        margin-top:.8mm;
+        font-size:8.5pt;
+        line-height:1.5;
+        color:#333;
+    }
+
+    /* 경력 */
+    .pl-layout{
+        display:block;
+        padding:0;
+    }
+
+    .pl-group.cr-group{
+        padding:0 0 5mm;
+    }
+
+    .pl-group-head.cr-head{
+        margin:0;
+        padding-top:4mm;
+        break-after:avoid;
+    }
+
+    .cr-head h2{
+        font-size:14pt;
+    }
+
+    .cr-meta{
+        margin-top:1.5mm;
+        font-size:9.5pt;
+    }
+
+    .cr-head + .cr-row{
+        margin-top:3mm;
+    }
+
+    .cr-row{
+        padding:2.5mm 0;
+    }
+
+    .cr-label{
+        margin-bottom:1.5mm;
+        font-size:8pt;
+        break-after:avoid;
+    }
+
+    .cr-project{
+        margin:3mm 0 1mm;
+        break-after:avoid;
+    }
+
+    .cr-project h3{
+        font-size:10pt;
+    }
+
+    .cr-list li,
+    .cr-text{
+        font-size:9pt;
+        line-height:1.55;
+        color:#333;
+        break-inside:avoid;
+    }
+
+    .cr-inline{
+        color:inherit;
+        text-decoration:none;
+    }
+
+    .cr-inline i{
+        display:none;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<a href="index.html" class="logo">
+    uxxxu.studio
+</a>
+
+<a href="index.html" class="back">
+    ← Back to Home
+</a>
+
+</header>
+
+
+<main>
+
+<!-- 프린트 전용 머리 (화면에서는 숨김) -->
+<div class="cr-print-head">
+    <div>
+        <h1>강나은</h1>
+        <p class="cr-print-role">UX/UI · Product Designer</p>
+        <p class="cr-print-contact">uxxxu-studio.com<span>·</span>kkangna@gmail.com</p>
+    </div>
+    <img src="assets/images/character_laptop.webp" alt="">
+</div>
+
+<section class="hero pl-hero">
+<div class="container">
+
+<div class="pl-title-wrap">
+<h1>Career</h1>
+<div id="pl-object" aria-hidden="true"></div>
+</div>
+
+
+</div>
+</section>
+
+
+<section class="cr-overview">
+<div class="container cr-about">
+
+<button type="button" class="cr-print-btn" onclick="window.print()" aria-label="경력기술서 인쇄" title="인쇄">
+    <img src="assets/images/printer.png" alt="">
+</button>
+
+<div class="cr-about-left">
+    <h2>복잡한 서비스를 직관적인 사용자 경험으로 만드는 UX/UI · Product 디자이너 강나은입니다.</h2>
+    <p>약 20년간 웹·모바일 서비스, 금융·B2B·관리자 시스템, 제품 연동 앱, 전시·교육 콘텐츠의 UX/UI를 설계하고 디자인해왔습니다. 사용자 요구사항 분석과 기능 정의부터 IA, User Flow, Wireframe, UI·인터랙션 디자인과 디자인 시스템 구축까지 프로젝트에 따라 폭넓게 맡아왔으며, 디자인 PM·팀장으로 프로젝트를 리드한 경험도 함께 갖고 있습니다.</p>
+    <figure class="cr-figure">
+        <span class="cr-laptop">
+            <img src="assets/images/character_laptop.webp" alt="">
+            <span class="cr-apple-glow" aria-hidden="true"><i></i></span>
+        </span>
+    </figure>
+</div>
+
+<div class="cr-about-right">
+    <h2 class="cr-do-title">What I Do</h2>
+    <ul class="cr-do">
+    <li>
+        <h3>UX/UI Design</h3>
+        <p>웹·모바일 서비스와 업무 시스템의 IA, User Flow, Wireframe 설계부터 UI·인터랙션 디자인까지 수행</p>
+    </li>
+    <li>
+        <h3>Product Design</h3>
+        <p>AI 웨어러블, 제품 연동 앱, HiddenGEM 등에서 사용자 요구사항 분석과 기능 정의에 참여하고 서비스 구조와 사용자 흐름 설계</p>
+    </li>
+    <li>
+        <h3>Complex Service UX/UI</h3>
+        <p>삼성증권·현대캐피탈·은행연합회 등 금융 서비스와 B2B·커머스·관리자 시스템의 UX/UI 디자인</p>
+    </li>
+    <li>
+        <h3>Design Leadership</h3>
+        <p>디자인 PL·PM·팀장으로 디자인 방향 설정, 팀원 업무 분배, 시안 리뷰, 일정·품질 관리</p>
+    </li>
+    <li>
+        <h3>Learning &amp; Interactive Experience Design</h3>
+        <p>어린이 AI 윤리 교육게임, 박물관 유물 학습게임 등 유치원생~초등학생 눈높이에 맞춘 UX/UI·게임 화면·3D 캐릭터 디자인, 전국 6곳 과학관·체험관 설치</p>
+    </li>
+    <li>
+        <h3>Design System</h3>
+        <p>Figma 기반 UI 컴포넌트와 아이콘 체계를 설계·디자인해 서비스가 늘어나도 일관된 UI 기준 유지</p>
+    </li>
+    <li>
+        <h3>User Research &amp; Data-Informed UX</h3>
+        <p>AI 웨어러블 정부 R&amp;D에서 사용자 인터뷰(4개 그룹, 20여 명)로 기능 방향 재정의, HiddenGEM에서 MVP 피드백과 출시 후 Google Analytics 데이터로 UI 개선</p>
+    </li>
+    <li>
+        <h3>Visual &amp; Character Design</h3>
+        <p>UI 비주얼, 아이콘, 브랜딩, 제품 GUI, 3D 캐릭터·오브젝트 디자인 (AI 바른이, HiddenGEM, LS 스마트홈 스위치 등)</p>
+    </li>
+    <li>
+        <h3>AI-Assisted Design</h3>
+        <p>생성형 AI로 기능 검증과 콘셉트 비주얼을 빠르게 만들고, Claude Code·ChatGPT를 활용한 바이브 코딩으로 포트폴리오 사이트와 3D 인터랙션을 직접 구현</p>
+    </li>
+    </ul>
+</div>
+
+</div>
+</section>
+
+<section class="cr-bridge">
+<div class="container">
+    <h2>From Complexity<br><span>to Clarity.</span></h2>
+    <p>복잡한 구조를 더 <strong>나은</strong> 경험으로 디자인합니다.</p>
+</div>
+</section>
+
+<div class="container pl-layout">
+
+<aside class="pl-index">
+<nav>
+    <a href="#c01"><em>2025</em>프리텍</a>
+    <a href="#c02"><em>2023</em>이너프미디어</a>
+    <a href="#c03"><em>2022</em>플러스</a>
+    <a href="#c04"><em>2021</em>프리랜서</a>
+    <a href="#c05"><em>2019</em>하마컴퍼니</a>
+    <a href="#c06"><em>2014</em>프리랜서</a>
+    <a href="#c07"><em>2011</em>와이더플래닛</a>
+    <a href="#c08"><em>2010</em>SK브로드밴드</a>
+    <a href="#c09"><em>2006</em>이모션글로벌</a>
+    <a href="#c10"><em>2006</em>마우스닷컴</a>
+    <a href="#c11"><em>2005</em>프리랜서</a>
+    <a href="#c12"><em>2004</em>애니엠커뮤니케이션</a>
+    <a href="#c13"><em>2003</em>LG전자</a>
+    <a href="#c14"><em>2002</em>세경세무법인</a>
+    <a href="#c15"><em>2002</em>시티러버</a>
+    <span class="pl-index-line" aria-hidden="true"></span>
+</nav>
+
+<a href="projects.html" class="pl-notion">
+    All Projects <span>→</span>
+</a>
+
+<a href="https://drive.google.com/file/d/10iD0BIrafUtT5MDurE7-HalvfIgzf6KY/view?usp=drive_link"
+   class="pl-pdf" target="_blank" rel="noopener">
+    Portfolio PDF
+    <span class="pdf-arrow"><i>↗</i></span>
+</a>
+</aside>
+
+<div class="pl-body">
+
+<section class="pl-group cr-group" id="c01">
+
+<div class="pl-group-head cr-head">
+    <h2>(주)프리텍</h2>
+    <p class="cr-meta"><span>디자인팀 · 차장 (디자인팀장)</span><span>2025.07 ~ 2026.08</span></p>
+</div>
+
+<div class="cr-row">
+    <h3 class="cr-label">주요 업무</h3>
+    <div class="cr-body">
+<ul class="cr-list">
+    <li>디자인팀장으로 디자인팀을 이끌며 웹·모바일 서비스 및 제품 연동 애플리케이션 UX/UI 디자인 진행 및 리드</li>
+    <li>팀원 업무 분배와 디자인 방향 설정, 일정·품질 관리</li>
+    <li>정부 R&amp;D 과제 사용자 리서치 주도 및 UX/UI 기획·설계·디자인</li>
+    <li>제품 연동 모바일 애플리케이션 7건 UX/UI 기획 및 디자인</li>
+    <li>사용자 리서치와 요구사항 분석을 바탕으로 IA·User Flow·Wireframe·Screen Definition 설계 및 UI 디자인</li>
+    <li>제품 특성과 서비스 목적에 맞춘 UI 구조, UI 컴포넌트·아이콘 디자인 및 Figma 기반 디자인 시스템 구축</li>
+    <li>생성형 AI를 활용한 기능 검증, 제품 콘셉트 비주얼 및 제안서 시각화</li>
+    <li>자사 웹사이트 리뉴얼 및 운영 디자인, 서비스 구조 및 UI 개선</li>
+    <li>기획·개발·연구 담당자와 협업하여 R&amp;D 산출물 작성 및 디자인 시안부터 구현까지 진행</li>
+</ul>
+    </div>
+</div>
+<div class="cr-row">
+    <h3 class="cr-label">주요 프로젝트</h3>
+    <div class="cr-body">
+<div class="cr-project">
+    <h3>정부 R&amp;D 「시각/청각 보조를 위한 초개인화 주변상황 안내 웨어러블 디바이스」 (주관기관)</h3>
+    <a href="case/wearable.html" class="cr-case">Case Study →</a>
+</div>
+<ul class="cr-list">
+    <li>시·청각장애인용 AI 웨어러블 글래스 및 연동 모바일 앱 UX/UI 기획·디자인 총괄 (4년 과제 중 2년 차까지 참여)</li>
+    <li>시각장애인협회·청각장애인협회에서 보조앱 사용 여부에 따라 4개 그룹, 20여 명 사용자 인터뷰 진행 (질문지 작성, 인터뷰, 전사, 그룹별 분석)</li>
+    <li>인터뷰 결과 두 그룹의 불편이 상반됨을 확인하고, 하나의 기기로 함께 지원하던 방향을 그룹별 기능·사용 흐름으로 분리</li>
+    <li>시각장애인은 음성, 청각장애인은 진동 중심의 정보 전달 방식 설계, 반복 진동을 원하지 않는 의견을 알림 설계에 반영</li>
+    <li>정리한 기능을 생성형 AI로 사전 검증한 뒤 화면 구조에 반영</li>
+    <li>IA, User Flow, Wireframe, 초기 UI 디자인 및 정부 R&amp;D 산출물·화면 정의서 작성</li>
+</ul>
+<div class="cr-project">
+    <h3>제품 연동 모바일 애플리케이션 7건</h3>
+</div>
+<p class="cr-text"><a href="case/seedN.html" class="cr-inline">seedN</a>, <a href="case/smartCUBE.html" class="cr-inline">SmartCUBE</a>, <a href="https://psychedelic-decimal-282.notion.site/Swasher-3757c886d2918042a2a7f30c65828629" class="cr-inline" target="_blank" rel="noopener">Swasher<i>↗</i></a>, <a href="https://psychedelic-decimal-282.notion.site/ENDO_Robotics-3b37c886d291809ea9e3fc6aab02fe23" class="cr-inline" target="_blank" rel="noopener">Endo Robotics<i>↗</i></a>, URINE, digiQUARK, <a href="https://psychedelic-decimal-282.notion.site/fittrix-3b37c886d29180358abee3814c6598fd" class="cr-inline" target="_blank" rel="noopener">FITTRIX<i>↗</i></a></p>
+<ul class="cr-list">
+    <li>제품의 기능과 사용 환경을 분석하여 모바일 UX/UI 구조와 사용자 흐름 설계 및 UI 디자인</li>
+    <li>seedN: AI 공간 온도 제어 관리자용 태블릿 대시보드·모바일 제어 화면 UX/UI 설계 및 디자인</li>
+    <li>SmartCUBE: 공동주택 로봇 배송 서비스의 배송 상태·로봇 호출 흐름 설계 및 모바일 UI 디자인</li>
+    <li>프로젝트별 UI 컴포넌트와 아이콘 디자인, Figma 기반 디자인 시스템 제작</li>
+</ul>
+<div class="cr-project">
+    <h3>LS 통신 스마트홈 스위치 GUI</h3>
+    <a href="case/smart_switch.html" class="cr-case">Case Study →</a>
+</div>
+<ul class="cr-list">
+    <li>4.3인치·5인치 디스플레이 환경에 맞춘 GUI 콘셉트 제안 및 최종 UI 디자인</li>
+    <li>스위치 UX/UI, GUI, 아이콘 디자인</li>
+    <li>제품 라이팅과 연결된 화면 인터랙션 설계 및 디자인</li>
+</ul>
+<div class="cr-project">
+    <h3>HD현대사이트솔루션 제어기·센서 패키지 개발 RFP</h3>
+    <a href="https://psychedelic-decimal-282.notion.site/HD-3ae7c886d29180579f13c6066b76e30c" class="cr-case" target="_blank" rel="noopener">Notion ↗</a>
+</div>
+<ul class="cr-list">
+    <li>RFP의 제어기·센서 패키지 요구사항 분석 및 제안 전략 수립</li>
+    <li>제안 방향에 따른 발표자료 구성 및 디자인</li>
+    <li>생성형 AI를 활용한 제품 콘셉트 및 비주얼 시안 제작</li>
+</ul>
+    </div>
+</div>
+
+</section>
+
+<section class="pl-group cr-group" id="c02">
+
+<div class="pl-group-head cr-head">
+    <h2>(주)이너프미디어</h2>
+    <p class="cr-meta"><span>R&amp;D센터 · 차장 (디자인팀장)</span><span>2023.06 ~ 2025.04</span></p>
+</div>
+
+<div class="cr-row">
+    <h3 class="cr-label">주요 업무</h3>
+    <div class="cr-body">
+<ul class="cr-list">
+    <li>R&amp;D센터 디자인팀장으로 팀원과 함께 박물관·과학관·체험관 전시 콘텐츠의 UX/UI 및 시각 디자인 진행 및 총괄</li>
+    <li>프로젝트별 디자인 방향 설정, 팀원 업무 분배와 시안 리뷰, 일정·품질 관리</li>
+    <li>어린이·청소년 대상 게임형 학습 콘텐츠의 기획 참여, 게임 UI·화면·인터랙션 디자인</li>
+    <li>인터랙티브 체험형 콘텐츠의 사용자 흐름, UI 화면, 그래픽 요소 설계</li>
+    <li>터치스크린·키오스크·미디어월·투명 OLED·발판 등 전시 환경과 입력 방식에 맞춘 화면 구성 및 디지털 콘텐츠 디자인</li>
+    <li>3D 캐릭터·오브젝트, 아이콘, 콘텐츠 비주얼 디자인 (Figma, Photoshop, Illustrator, Spline)</li>
+    <li>자사 웹사이트 및 앱 서비스 UX/UI 디자인과 디자인 시스템 구축</li>
+    <li>생성형 AI 도구를 활용한 콘셉트 비주얼 및 콘텐츠 이미지 제작</li>
+    <li>프로젝트별 기획·개발 담당자와 협업하여 디자인 시안부터 실제 구현까지 진행</li>
+</ul>
+    </div>
+</div>
+<div class="cr-row">
+    <h3 class="cr-label">주요 프로젝트</h3>
+    <div class="cr-body">
+<div class="cr-project">
+    <h3>AI 윤리 교육게임 &#x27;나만의 AI 만들기&#x27; (디지털윤리체험관)</h3>
+    <a href="case/aiethics.html" class="cr-case">Case Study →</a>
+</div>
+<ul class="cr-list">
+    <li>유치원생~초등학생 대상 AI 윤리 체험 게임 3종의 UX/UI 디자인 및 시나리오 기획 참여</li>
+    <li>추상적인 AI 윤리 개념을 모으기·피하기·고르기 동작으로 바꾸고, 세 게임의 조작 규칙을 하나로 통일</li>
+    <li>글을 읽기 어려운 아이도 따라 할 수 있도록 발자국 아이콘 기반 안내 UI 디자인</li>
+    <li>오작동이 잦던 센서 대신 4방향 발판 입력 방식에 맞춘 화면·인터랙션 설계</li>
+    <li>3D 캐릭터 &#x27;AI 바른이&#x27; 직접 디자인 (제안 단계 캐릭터 대신 최종 채택) 및 바닥 블록 판 등 주요 3D 오브젝트 디자인</li>
+    <li>서울시립과학관, 국립부산·대구·광주과학관, 한국잡월드, 전북어린이창의체험관 등 전국 6곳 설치·운영</li>
+</ul>
+<div class="cr-project">
+    <h3>히든젬(HiddenGEM) 앱·브랜드 사이트 <span class="cr-note">(2025년 상반기 출시)</span></h3>
+    <a href="case/hiddengem.html" class="cr-case">Case Study →</a>
+</div>
+<ul class="cr-list">
+    <li>서비스 기획 참여부터 앱·브랜드 사이트 UX/UI 디자인 총괄 및 브랜딩</li>
+    <li>수집형 콘텐츠의 화면 구조 및 사용자 흐름 설계·디자인</li>
+    <li>웹·앱 디자인 시스템 및 UI 컴포넌트 구축</li>
+    <li>브랜드 아이덴티티를 반영한 웹·앱 비주얼 디자인</li>
+    <li>MVP 단계 사용자 피드백을 반영해 UX 개선</li>
+    <li>출시 후 SNS·굿즈 발송 등 홍보 기획 참여, Google Analytics 유입·체류 데이터를 바탕으로 회의를 거쳐 UI 개선</li>
+</ul>
+<div class="cr-project">
+    <h3>판교박물관 체험형 콘텐츠 - 판교 RUN·유물 PANG</h3>
+    <a href="https://psychedelic-decimal-282.notion.site/1d57c886d2918028a919e8b3acdcaeb2" class="cr-case" target="_blank" rel="noopener">Notion ↗</a>
+</div>
+<ul class="cr-list">
+    <li>어린이 대상 유물 학습 게임 UI 및 화면 디자인</li>
+    <li>러닝게임 방식에 맞춘 게임 진행 단계별 화면 구성 및 인터랙션 디자인</li>
+    <li>유물을 친근한 그래픽으로 재해석하여 게임 요소로 시각화</li>
+    <li>유물 콘텐츠를 쉽게 이해할 수 있도록 아이콘·그래픽 요소 및 피드백 UI 디자인</li>
+    <li>캐릭터 중심의 그래픽과 직관적인 조작·피드백 UI 구성</li>
+</ul>
+<div class="cr-project">
+    <h3>서울백제어린이박물관 체험형 콘텐츠</h3>
+    <a href="https://psychedelic-decimal-282.notion.site/f653b170f48e4246ae652bde758730bc" class="cr-case" target="_blank" rel="noopener">Notion ↗</a>
+</div>
+<ul class="cr-list">
+    <li>어린이 대상 체험형 전시 콘텐츠 UI 및 그래픽 디자인</li>
+    <li>「아카이브월」, 「토성 쌓기」, 「발굴일지」, 「풀무질 체험」 등 콘텐츠 디자인</li>
+    <li>어린이 사용자의 이해도와 조작성을 고려한 직관적인 UI 및 피드백 디자인</li>
+    <li>전시 동선과 체험 방식에 맞춘 화면 및 인터랙션 구성</li>
+</ul>
+<div class="cr-project">
+    <h3>한국잡월드 체험형 콘텐츠</h3>
+    <a href="https://psychedelic-decimal-282.notion.site/KOREA-JOB-WORLD-605955cb93c64a03b6259c56e830e967" class="cr-case" target="_blank" rel="noopener">Notion ↗</a>
+</div>
+<ul class="cr-list">
+    <li>청소년 대상 직업체험 콘텐츠 UX/UI 및 인터랙션 디자인</li>
+    <li>HD현대 계열 산업 현장을 게임으로 체험하는 콘텐츠의 화면 디자인</li>
+    <li>직무·공정 체험 과정에 맞춘 인터랙션 및 게임화 구성</li>
+</ul>
+<div class="cr-project">
+    <h3>제주 설문대할망 전시관</h3>
+    <a href="case/jeju-exhibition.html" class="cr-case">Case Study →</a>
+</div>
+<ul class="cr-list">
+    <li>제주 신화 콘텐츠를 활용한 디지털 전시 UX/UI 및 콘텐츠 디자인</li>
+    <li>인터랙티브 키오스크 및 미니게임 화면 디자인</li>
+    <li>투명 OLED 디스플레이 환경에 맞춘 인터랙션 화면 설계 및 콘텐츠 디자인</li>
+    <li>신화 소재를 활용한 그래픽 및 시각 요소 디자인</li>
+    <li>캐릭터 제작을 제외한 화면 구성, UI, 콘텐츠 비주얼 등 디지털 콘텐츠 디자인 전반 담당</li>
+</ul>
+<div class="cr-project">
+    <h3>이너프미디어 공식 웹사이트 리뉴얼</h3>
+    <a href="case/em.html" class="cr-case">Case Study →</a>
+</div>
+<ul class="cr-list">
+    <li>기업의 다양한 프로젝트와 사업 영역을 효과적으로 보여주는 웹사이트 UX/UI 디자인</li>
+    <li>프로젝트 성격에 따른 카테고리 및 콘텐츠 구조 구성</li>
+    <li>프로젝트를 아이콘으로 구분하여 분야별 콘텐츠를 직관적으로 탐색할 수 있도록 디자인</li>
+    <li>아이콘 및 디자인 시스템 구축</li>
+</ul>
+<div class="cr-project">
+    <h3>기타 프로젝트</h3>
+</div>
+<ul class="cr-list">
+    <li>한성백제박물관 <a href="https://psychedelic-decimal-282.notion.site/AR-APP-1d67c886d29180a8b949e8fa3e28ea3c" class="cr-inline" target="_blank" rel="noopener">「모두의 몽촌토성」<i>↗</i></a> 스마트뮤지엄 AR 앱 UX/UI 디자인</li>
+    <li><a href="https://psychedelic-decimal-282.notion.site/31774ad8576840d4b3a1eafb2de5d98e" class="cr-inline" target="_blank" rel="noopener">춘천애니메이션박물관<i>↗</i></a> 미디어월 및 음향체험 콘텐츠 「MAKE FOLEY」 디자인</li>
+</ul>
+    </div>
+</div>
+
+</section>
+
+<section class="pl-group cr-group" id="c03">
+
+<div class="pl-group-head cr-head">
+    <h2>(주)플러스</h2>
+    <p class="cr-meta"><span>온라인팀 · 팀장</span><span>2022.03 ~ 2023.02</span></p>
+</div>
+
+<div class="cr-row">
+    <h3 class="cr-label">주요 업무</h3>
+    <div class="cr-body">
+<ul class="cr-list">
+    <li>온라인팀 팀장으로 기업 홈페이지 및 자사몰 UX/UI 디자인 총괄</li>
+    <li>팀원 업무 분배와 디자인 방향 설정, 일정·품질 관리</li>
+    <li>반응형 웹사이트의 UX/UI 설계 및 시각 디자인, 개발 가이드 제작·전달</li>
+    <li>브랜드 아이덴티티를 반영한 컬러·타이포그래피·UI 컴포넌트 설계 및 디자인</li>
+    <li>제품 및 서비스 특성에 따른 정보구조와 콘텐츠 구성, 화면 디자인</li>
+    <li>자사몰 구축 및 운영 디자인, SNS 콘텐츠와 마케팅 커뮤니케이션 디자인</li>
+    <li>Figma, Photoshop, Illustrator를 활용한 웹·그래픽 디자인 및 산출물 제작</li>
+    <li>기획·개발 담당자와 협업하여 디자인 구현 및 품질 관리</li>
+</ul>
+    </div>
+</div>
+<div class="cr-row">
+    <h3 class="cr-label">주요 프로젝트</h3>
+    <div class="cr-body">
+<div class="cr-project">
+    <h3>PROPLUS 브랜드 웹사이트 리뉴얼</h3>
+    <a href="https://psychedelic-decimal-282.notion.site/PROWIN-1c87c886d29180c6b728f38b7371152c" class="cr-case" target="_blank" rel="noopener">Notion ↗</a>
+</div>
+<ul class="cr-list">
+    <li>반응형 웹 UX/UI 및 비주얼 디자인 총괄</li>
+    <li>기술력과 신뢰감을 전달하기 위한 네이비 기반 컬러 시스템 및 UI 구조 설계·디자인</li>
+    <li>온수기 내부 부품을 그래픽 오브제로 활용한 메인 비주얼 디자인으로 제품 전문성과 브랜드 이미지 표현</li>
+    <li>제품 카테고리 및 리스트 UI를 구성하여 제품 탐색 구조 및 정보 접근성 개선</li>
+    <li>Figma 기반 전체 화면 구조 및 UI 컴포넌트 설계·디자인</li>
+    <li>Photoshop·Illustrator를 활용한 그래픽 및 세부 UI 제작</li>
+    <li>데스크톱·모바일 반응형 화면 설계·디자인 및 개발 가이드 제작</li>
+</ul>
+    </div>
+</div>
+
+</section>
+
+<section class="pl-group cr-group" id="c04">
+
+<div class="pl-group-head cr-head">
+    <h2>프리랜서</h2>
+    <p class="cr-meta"><span>UX/UI 디자이너</span><span>2021.07 ~ 2022.03</span></p>
+</div>
+
+<div class="cr-row">
+    <h3 class="cr-label">주요 업무</h3>
+    <div class="cr-body">
+<ul class="cr-list">
+    <li>기업 제안 디자인 및 B2B 프로젝트 UX/UI 디자인</li>
+    <li>기업·브랜드 웹사이트 및 소셜커머스 콘텐츠 디자인</li>
+    <li>브랜드 특성과 프로젝트 목적에 맞춘 UX/UI 및 비주얼 디자인</li>
+    <li>기업 및 브랜드 제안서·프레젠테이션 디자인</li>
+    <li>Figma, Photoshop, Illustrator를 활용한 UI·그래픽 디자인 및 산출물 제작</li>
+    <li>주요 클라이언트: 중앙선거관리위원회, 하이트진로, <a href="https://psychedelic-decimal-282.notion.site/FOODHUNTER-1d57c886d29180eab9f5cd3865924410" class="cr-inline" target="_blank" rel="noopener">FOODHUNTER<i>↗</i></a>, 한국애너하임서비스센터 등</li>
+</ul>
+    </div>
+</div>
+<div class="cr-row">
+    <h3 class="cr-label">주요 프로젝트</h3>
+    <div class="cr-body">
+<div class="cr-project">
+    <h3>HITE JINRO 전자전표 통합 시스템 UI 개편</h3>
+    <a href="https://psychedelic-decimal-282.notion.site/HITE-JINRO-1c87c886d29180f7903adb1ad77272b0" class="cr-case" target="_blank" rel="noopener">Notion ↗</a>
+</div>
+<ul class="cr-list">
+    <li>전자전표 통합 시스템 UX 설계 및 관리자 UI 디자인</li>
+    <li>사용자 유형별 업무 흐름을 정리하고 홈·메뉴 구조 중심으로 UX 리디자인</li>
+    <li>전표 상태를 한눈에 확인할 수 있는 요약 블록 디자인</li>
+    <li>결재 프로세스를 직관적으로 보여주는 흐름도 및 화면 디자인</li>
+    <li>ERP와 연동되는 입력·결재·처리 과정을 고려한 정보구조 및 화면 UI 설계·디자인</li>
+    <li>Figma 기반 컴포넌트 설계 및 Photoshop·Illustrator를 활용한 최종 디자인 산출물 제작</li>
+</ul>
+<div class="cr-project">
+    <h3>중앙선거관리위원회 선거정보시스템 운영지원사업 PPT 디자인</h3>
+    <a href="https://psychedelic-decimal-282.notion.site/1c87c886d2918098803de844c91f4701" class="cr-case" target="_blank" rel="noopener">Notion ↗</a>
+</div>
+<ul class="cr-list">
+    <li>「제20대 대통령 선거 선거정보시스템 운영지원사업」 보고자료 PPT 커버 및 템플릿 디자인</li>
+    <li>공공기관 보고자료의 특성과 사업 내용을 고려한 정보 중심의 프레젠테이션 디자인</li>
+    <li>선거정보시스템의 기술적 이미지를 전달하는 그래픽 모티프 및 비주얼 구성</li>
+    <li>표지·내지 템플릿의 디자인 체계 구성으로 자료 전반의 일관된 시각적 완성도 확보</li>
+</ul>
+    </div>
+</div>
+
+</section>
+
+<section class="pl-group cr-group" id="c05">
+
+<div class="pl-group-head cr-head">
+    <h2>(주)하마컴퍼니</h2>
+    <p class="cr-meta"><span>디자인팀 · 팀장</span><span>2019.03 ~ 2021.07</span></p>
+</div>
+
+<div class="cr-row">
+    <h3 class="cr-label">주요 업무</h3>
+    <div class="cr-body">
+<ul class="cr-list">
+    <li>디자인팀장으로 팀원 업무 분배와 디자인 방향 설정, 일정·품질 관리</li>
+    <li>브랜드 쇼핑몰 및 온라인 채널의 UX/UI·콘텐츠 디자인 총괄</li>
+    <li>쇼핑몰 상품·프로모션 콘텐츠 및 SNS 채널 디자인 제작·운영</li>
+    <li>브랜드 아이덴티티를 반영한 <a href="https://psychedelic-decimal-282.notion.site/HAMA-COFFEE-1fe7c886d291805482cdc1ce15552ec4" class="cr-inline" target="_blank" rel="noopener">패키지<i>↗</i></a> 및 인쇄 홍보물 디자인</li>
+    <li>온라인과 오프라인 채널의 디자인 방향 및 비주얼 일관성 관리</li>
+    <li>제품 및 브랜드 특성에 맞춘 이미지·그래픽 콘텐츠 기획 및 제작</li>
+</ul>
+    </div>
+</div>
+
+</section>
+
+<section class="pl-group cr-group" id="c06">
+
+<div class="pl-group-head cr-head">
+    <h2>프리랜서</h2>
+    <p class="cr-meta"><span>디자이너</span><span>2014.01 ~ 2019.02</span></p>
+</div>
+
+<div class="cr-row">
+    <h3 class="cr-label">주요 업무</h3>
+    <div class="cr-body">
+<ul class="cr-list">
+    <li>기업·브랜드 사이트 및 커머스 사이트 구축·리뉴얼·유지보수 디자인</li>
+    <li>온라인 쇼핑몰 상세페이지 및 프로모션 콘텐츠 디자인</li>
+    <li>브랜드별 웹사이트 UI 및 콘텐츠 구성, 운영 디자인</li>
+    <li>사이트 운영 과정에서 발생하는 UI 수정 및 디자인 유지관리</li>
+    <li>기업·브랜드 프로젝트 제안 및 웹 디자인 시안 제작</li>
+    <li>클라이언트 요구사항을 반영한 디자인 기획·제작·수정 전반 담당</li>
+</ul>
+    </div>
+</div>
+<div class="cr-row">
+    <h3 class="cr-label">주요 프로젝트</h3>
+    <div class="cr-body">
+<div class="cr-project">
+    <h3>RESTYLANE 브랜드 사이트 구축</h3>
+    <a href="https://psychedelic-decimal-282.notion.site/1d77c886d29180128efdca0f70fa450f" class="cr-case" target="_blank" rel="noopener">Notion ↗</a>
+</div>
+<ul class="cr-list">
+    <li>레스틸렌 브랜드 및 제품 정보를 효과적으로 전달하기 위한 웹사이트 UX/UI 설계 및 디자인</li>
+    <li>제품·시술·브랜드 콘텐츠의 메뉴 및 정보 구조 구성</li>
+    <li>브랜드 이미지를 반영한 메인 비주얼과 콘텐츠 영역으로 브랜드 아이덴티티 구축</li>
+    <li>제품 상세 콘텐츠 및 이미지 중심의 정보 전달 화면 디자인</li>
+    <li>브랜드 사이트의 전체 화면 디자인 및 웹 콘텐츠 제작</li>
+</ul>
+<div class="cr-project">
+    <h3>커머스·브랜드 사이트 운영</h3>
+    <a href="https://psychedelic-decimal-282.notion.site/FOODHUNTER-1d57c886d29180eab9f5cd3865924410" class="cr-case" target="_blank" rel="noopener">Notion ↗</a>
+</div>
+<ul class="cr-list">
+    <li>다양한 기업·브랜드의 쇼핑몰·브랜드 사이트 유지보수 및 UI 개선</li>
+    <li>상품 및 콘텐츠 특성에 따른 상세페이지 구성 및 디자인</li>
+    <li>시즌·프로모션별 온라인 콘텐츠 제작 및 페이지 업데이트</li>
+    <li>기존 사이트의 콘텐츠 변경 및 디자인 유지관리</li>
+</ul>
+<div class="cr-project">
+    <h3>온라인 콘텐츠 디자인</h3>
+    <a href="https://psychedelic-decimal-282.notion.site/PROWIN-SNS-1d57c886d291805f834fedfb80028cac" class="cr-case" target="_blank" rel="noopener">Notion ↗</a>
+</div>
+<ul class="cr-list">
+    <li>쇼핑몰 상품 상세페이지 및 프로모션 페이지 디자인</li>
+    <li>브랜드 SNS 및 온라인 마케팅 콘텐츠 제작</li>
+    <li>제품 특성과 판매 목적에 맞춘 이미지·텍스트 구성 및 시각화</li>
+</ul>
+    </div>
+</div>
+
+</section>
+
+<section class="pl-group cr-group" id="c07">
+
+<div class="pl-group-head cr-head">
+    <h2>와이더플래닛</h2>
+    <p class="cr-meta"><span>디자인팀 · 프리랜서 디자이너</span><span>2011.10 ~ 2012.01</span></p>
+</div>
+
+<div class="cr-row">
+    <h3 class="cr-label">주요 업무</h3>
+    <div class="cr-body">
+<ul class="cr-list">
+    <li>모바일 애플리케이션 및 커머스 서비스 UX/UI 디자인</li>
+    <li>서비스 특성에 따른 화면 구조 및 사용자 흐름 설계</li>
+    <li>모바일 환경을 고려한 UI 구성 및 화면 디자인</li>
+    <li>상품·콘텐츠 탐색 및 정보 확인을 고려한 모바일 UI 구성</li>
+    <li>초기 스타트업 서비스의 UI 요소 및 디자인 가이드 정리</li>
+    <li>기획·개발 담당자와 협업하여 디자인 시안 및 산출물 제작</li>
+</ul>
+    </div>
+</div>
+<div class="cr-row">
+    <h3 class="cr-label">주요 프로젝트</h3>
+    <div class="cr-body">
+<div class="cr-project">
+    <h3>모바일 앱·커머스 서비스</h3>
+</div>
+<ul class="cr-list">
+    <li>모바일 서비스의 사용자 흐름 및 주요 화면 UX/UI 설계·디자인</li>
+    <li>상품 및 콘텐츠 탐색, 정보 확인 등 주요 사용자 행동을 고려한 화면 구성</li>
+    <li>모바일 환경에 맞춘 UI 요소 및 화면 디자인</li>
+</ul>
+<div class="cr-project">
+    <h3>초기 디자인 체계 구축</h3>
+</div>
+<ul class="cr-list">
+    <li>스타트업 초기 서비스의 화면 디자인을 위한 UI 요소 및 스타일 가이드 정리</li>
+    <li>서비스 전반의 일관된 UI 적용을 위한 디자인 기준 및 화면 구성 정립</li>
+</ul>
+    </div>
+</div>
+
+</section>
+
+<section class="pl-group cr-group" id="c08">
+
+<div class="pl-group-head cr-head">
+    <h2>(주)SK브로드밴드</h2>
+    <p class="cr-meta"><span>운영팀 · 팀장</span><span>2010.03 ~ 2010.09</span></p>
+</div>
+
+<div class="cr-row">
+    <h3 class="cr-label">주요 업무</h3>
+    <div class="cr-body">
+<ul class="cr-list">
+    <li>운영팀 팀장으로 프리랜서 디자이너 운영 및 업무 분배, 일정·품질 관리</li>
+    <li>SK브로드밴드 온라인 이벤트·프로모션 디자인 총괄</li>
+    <li>프로모션 목적과 콘텐츠 특성에 따른 페이지 및 비주얼 디자인</li>
+    <li>온라인 이벤트에 필요한 배너·페이지 등 디자인 산출물 제작</li>
+    <li>내부 담당자와 협업하여 운영 일정에 맞춘 디자인 제작·수정·적용</li>
+</ul>
+    </div>
+</div>
+<div class="cr-row">
+    <h3 class="cr-label">주요 프로젝트</h3>
+    <div class="cr-body">
+<div class="cr-project">
+    <h3>SK브로드밴드 온라인 이벤트·프로모션</h3>
+    <a href="https://psychedelic-decimal-282.notion.site/SK-1d77c886d29180b89c33fb48541f1f11" class="cr-case" target="_blank" rel="noopener">Notion ↗</a>
+</div>
+<ul class="cr-list">
+    <li>온라인 이벤트 및 프로모션 페이지 디자인</li>
+    <li>이벤트 성격과 콘텐츠에 맞춘 비주얼 및 화면 구성</li>
+    <li>프로모션 일정에 따른 디자인 제작 및 수정·적용</li>
+</ul>
+    </div>
+</div>
+
+</section>
+
+<section class="pl-group cr-group" id="c09">
+
+<div class="pl-group-head cr-head">
+    <h2>(주)이모션글로벌</h2>
+    <p class="cr-meta"><span>RED · 선임디자이너 (디자인PM)</span><span>2006.09 ~ 2010.02</span></p>
+</div>
+
+<div class="cr-row">
+    <h3 class="cr-label">주요 업무</h3>
+    <div class="cr-body">
+<ul class="cr-list">
+    <li>프로젝트별 디자인PM으로 디자인팀을 이끌며 디자인 방향 설정, 일정·산출물·품질 관리</li>
+    <li>대기업 및 주요 브랜드 웹사이트 구축·리뉴얼 디자인</li>
+    <li>웹사이트 메인 시안 및 주요 화면 디자인</li>
+    <li>브랜드와 서비스 특성, 프로젝트 요구사항을 반영한 웹 UI 및 콘텐츠 구성·디자인</li>
+    <li>기획·개발·고객사 담당자와 협업하여 프로젝트 진행</li>
+    <li>신규 웹사이트 구축 및 리뉴얼 제안 디자인 제작</li>
+</ul>
+    </div>
+</div>
+<div class="cr-row">
+    <h3 class="cr-label">주요 프로젝트</h3>
+    <div class="cr-body">
+<div class="cr-project">
+    <h3>대형 브랜드 웹사이트 구축·리뉴얼</h3>
+</div>
+<ul class="cr-list">
+    <li><a href="https://psychedelic-decimal-282.notion.site/1d57c886d2918050bab6f7b9caee7bba" class="cr-inline" target="_blank" rel="noopener">삼성그룹<i>↗</i></a>, <a href="https://psychedelic-decimal-282.notion.site/1d77c886d29180ccb4b4f8e1990640f4" class="cr-inline" target="_blank" rel="noopener">삼성증권<i>↗</i></a>, <a href="https://psychedelic-decimal-282.notion.site/1d77c886d2918006904ed0119c8a5fb2" class="cr-inline" target="_blank" rel="noopener">르노삼성<i>↗</i></a>, <a href="https://psychedelic-decimal-282.notion.site/Pantech-Global-Site-1d77c886d2918025b305c8083edef081" class="cr-inline" target="_blank" rel="noopener">팬택글로벌<i>↗</i></a>, <a href="https://psychedelic-decimal-282.notion.site/CGV-1d77c886d291803a89beeeca2178657f" class="cr-inline" target="_blank" rel="noopener">CGV<i>↗</i></a>, 기업은행, 나이키, 시세이도, <a href="https://psychedelic-decimal-282.notion.site/1d57c886d291801ca216ef32c36b58a3" class="cr-inline" target="_blank" rel="noopener">현대하이카다이렉트<i>↗</i></a>, <a href="https://psychedelic-decimal-282.notion.site/HyundaeCapital-1d77c886d29180b3a942e9b22f74248f" class="cr-inline" target="_blank" rel="noopener">현대캐피탈<i>↗</i></a> 등 주요 브랜드 프로젝트 참여</li>
+    <li>브랜드 특성과 서비스 목적을 반영한 웹사이트 메인 및 주요 화면 디자인</li>
+    <li>프로젝트별 디자인 방향 수립 및 UI 구성·디자인</li>
+    <li>구축·리뉴얼 과정에서 디자인 산출물 제작 및 협업</li>
+</ul>
+<div class="cr-project">
+    <h3>디자인 PM</h3>
+</div>
+<ul class="cr-list">
+    <li>프로젝트별 디자인 일정 및 산출물 관리</li>
+    <li>기획·개발·고객사 담당자와 디자인 관련 업무 조율</li>
+    <li>디자인 시안 검토 및 프로젝트 진행 과정의 디자인 품질 관리</li>
+</ul>
+<div class="cr-project">
+    <h3>웹사이트 제안 디자인</h3>
+</div>
+<ul class="cr-list">
+    <li>신규 웹사이트 구축 및 리뉴얼 제안 프로젝트 참여</li>
+    <li>제안 목적과 브랜드 특성을 반영한 메인 시안 및 디자인 콘셉트 제작</li>
+</ul>
+    </div>
+</div>
+
+</section>
+
+<section class="pl-group cr-group" id="c10">
+
+<div class="pl-group-head cr-head">
+    <h2>(주)마우스닷컴</h2>
+    <p class="cr-meta"><span>디자인팀 · 주임디자이너 (디자인 PL)</span><span>2006.04 ~ 2006.07</span></p>
+</div>
+
+<div class="cr-row">
+    <h3 class="cr-label">주요 업무</h3>
+    <div class="cr-body">
+<ul class="cr-list">
+    <li>디자인 PL로 2~3명 디자이너와 함께 프로젝트 디자인 방향 설정 및 산출물 관리</li>
+    <li>공공기관 및 대기업 웹사이트 구축 프로젝트 시안 및 UI 디자인</li>
+    <li>프로젝트별 웹사이트 메인 및 주요 화면 디자인</li>
+    <li>기획·개발 담당자와 협업하여 웹사이트 구축 디자인 진행</li>
+</ul>
+    </div>
+</div>
+<div class="cr-row">
+    <h3 class="cr-label">주요 프로젝트</h3>
+    <div class="cr-body">
+<ul class="cr-list">
+    <li>푸르지오 웹사이트 구축 디자인</li>
+    <li><a href="https://psychedelic-decimal-282.notion.site/1d77c886d291803bab3fd2d3edfead0c" class="cr-inline" target="_blank" rel="noopener">웅진코웨이<i>↗</i></a> 웹사이트 구축 디자인</li>
+    <li>정보화추진위원회, KTF MF 등 공공기관 및 기업 웹사이트 구축 프로젝트 디자인</li>
+</ul>
+    </div>
+</div>
+
+</section>
+
+<section class="pl-group cr-group" id="c11">
+
+<div class="pl-group-head cr-head">
+    <h2>프리랜서</h2>
+    <p class="cr-meta"><span>디자이너</span><span>2005.07 ~ 2006.04</span></p>
+</div>
+
+<div class="cr-row">
+    <h3 class="cr-label">주요 업무</h3>
+    <div class="cr-body">
+<ul class="cr-list">
+    <li>기업 및 금융 서비스의 웹·UI 디자인 프로젝트 수행</li>
+    <li>프로젝트 특성에 따라 단독 또는 기획·개발·디자인으로 구성된 프로젝트팀으로 참여</li>
+    <li>웹사이트 구축 및 운영 서비스의 UI 디자인, 주요 화면 시안 및 콘텐츠 디자인</li>
+    <li>금융 업무 시스템의 사용 환경을 고려한 UI 설계 및 화면 디자인</li>
+</ul>
+    </div>
+</div>
+<div class="cr-row">
+    <h3 class="cr-label">주요 프로젝트</h3>
+    <div class="cr-body">
+<div class="cr-project">
+    <h3>은행연합회 거래 시스템 UI 디자인</h3>
+</div>
+<ul class="cr-list">
+    <li>금융 업무 환경과 사용 목적을 고려한 화면 구성 및 UI 설계·디자인</li>
+    <li>주요 화면 디자인 및 UI 산출물 제작 단독 수행</li>
+</ul>
+<div class="cr-project">
+    <h3>두산인프라코어 웹사이트 구축</h3>
+    <a href="https://psychedelic-decimal-282.notion.site/1d77c886d2918068bde4d46069f49f52" class="cr-case" target="_blank" rel="noopener">Notion ↗</a>
+</div>
+<ul class="cr-list">
+    <li>프리랜서 디자이너·기획·개발자로 구성된 프로젝트팀에서 디자이너로 참여</li>
+    <li>웹사이트 주요 화면 및 UI 디자인, 기획·개발 담당자와 협업하여 구축 디자인 진행</li>
+</ul>
+<div class="cr-project">
+    <h3>DAUM 커뮤니케이션 Csagent 운영</h3>
+</div>
+<ul class="cr-list">
+    <li>Csagent 서비스 운영에 필요한 화면 및 콘텐츠 디자인</li>
+    <li>운영 과정에서 발생하는 디자인 업무 단독 수행</li>
+</ul>
+    </div>
+</div>
+
+</section>
+
+<section class="pl-group cr-group" id="c12">
+
+<div class="pl-group-head cr-head">
+    <h2>(주)애니엠커뮤니케이션</h2>
+    <p class="cr-meta"><span>디자인팀 · 대리</span><span>2004.06 ~ 2005.07</span></p>
+</div>
+
+<div class="cr-row">
+    <h3 class="cr-label">주요 업무</h3>
+    <div class="cr-body">
+<ul class="cr-list">
+    <li>중국 주택·부동산 전자상거래 사이트 기획 및 디자인 단독 담당</li>
+    <li>서비스 목적과 사용자 이용 흐름을 분석하여 사이트 구조 및 콘텐츠 구성</li>
+    <li>메뉴 및 정보구조 설계부터 주요 화면 UI 및 비주얼 디자인까지 진행</li>
+</ul>
+    </div>
+</div>
+<div class="cr-row">
+    <h3 class="cr-label">주요 프로젝트</h3>
+    <div class="cr-body">
+<div class="cr-project">
+    <h3>중국 주택·부동산 전자상거래 사이트 구축</h3>
+</div>
+<ul class="cr-list">
+    <li>중국 주택·부동산 시장을 대상으로 한 전자상거래 서비스 기획</li>
+    <li>서비스 구조, 메뉴 및 콘텐츠 구성 등 사이트 기획 전반 담당</li>
+    <li>사용자 흐름에 따른 화면 구성 및 UI 디자인</li>
+    <li>웹사이트 전체 디자인 및 결과물 제작</li>
+</ul>
+    </div>
+</div>
+
+</section>
+
+<section class="pl-group cr-group" id="c13">
+
+<div class="pl-group-head cr-head">
+    <h2>LG전자(주)</h2>
+    <p class="cr-meta"><span>프리랜서 디자이너</span><span>2003.09 ~ 2004.06</span></p>
+</div>
+
+<div class="cr-row">
+    <h3 class="cr-label">주요 업무</h3>
+    <div class="cr-body">
+<ul class="cr-list">
+    <li>LG전자 글로벌 B2C 웹사이트 구축 프로젝트 디자인 참여</li>
+    <li>국가별로 구성된 디자인·기획·개발 프로젝트팀에서 카자흐스탄 사이트 디자인 전담</li>
+    <li>글로벌 브랜드 기준과 현지 시장·서비스 특성을 고려한 B2C 웹사이트 UI 및 비주얼 디자인</li>
+    <li>기획·개발 담당자와 협업하여 디자인 산출물 제작 및 구축 진행</li>
+</ul>
+    </div>
+</div>
+<div class="cr-row">
+    <h3 class="cr-label">주요 프로젝트</h3>
+    <div class="cr-body">
+<div class="cr-project">
+    <h3>LG전자 글로벌 B2C 플랫폼 - 카자흐스탄 사이트</h3>
+    <a href="https://psychedelic-decimal-282.notion.site/LG-1d77c886d29180f0ac48e586f63921a9" class="cr-case" target="_blank" rel="noopener">Notion ↗</a>
+</div>
+<ul class="cr-list">
+    <li>카자흐스탄 사이트의 주요 화면 및 UI 디자인, 콘텐츠 구성</li>
+    <li>글로벌 브랜드 기준을 유지하면서 현지 콘텐츠와 서비스 특성에 맞춰 디자인 적용</li>
+</ul>
+    </div>
+</div>
+
+</section>
+
+<section class="pl-group cr-group" id="c14">
+
+<div class="pl-group-head cr-head">
+    <h2>(유한)세경세무법인</h2>
+    <p class="cr-meta"><span>디자인팀 · 사원</span><span>2002.06 ~ 2003.09</span></p>
+</div>
+
+<div class="cr-row">
+    <h3 class="cr-label">주요 업무</h3>
+    <div class="cr-body">
+<ul class="cr-list">
+    <li>기업 홈페이지 및 분당 부동산 포털 구축·운영 디자인</li>
+    <li>홈페이지 콘텐츠 업데이트 및 페이지 디자인</li>
+    <li>부동산 포털 콘텐츠 및 화면 디자인</li>
+    <li>운영 과정에서 발생하는 디자인 수정 및 유지보수</li>
+</ul>
+    </div>
+</div>
+
+</section>
+
+<section class="pl-group cr-group" id="c15">
+
+<div class="pl-group-head cr-head">
+    <h2>시티러버</h2>
+    <p class="cr-meta"><span>디자인팀 · 인턴</span><span>2002.02 ~ 2002.06</span></p>
+</div>
+
+<div class="cr-row">
+    <h3 class="cr-label">주요 업무</h3>
+    <div class="cr-body">
+<ul class="cr-list">
+    <li>KT 관련 웹사이트 운영 디자인 지원</li>
+    <li>웹페이지 콘텐츠 및 화면 디자인 수정·제작</li>
+    <li>웹사이트 운영에 필요한 디자인 업무 지원</li>
+    <li>디자인 산출물 제작 및 수정 업무</li>
+</ul>
+    </div>
+</div>
+
+</section>
+
+</div>
+
+</div>
+
+</main>
+
+
+<footer>
+
+<div class="footer-title">
+    From Complexity to Clarity.
+</div>
+
+<div class="footer-link">
+    uxxxu.studio
+</div>
+
+<a href="index.html" class="footer-back">
+    ← Back to Home
+</a>
+
+</footer>
+
+<script>
+(function(){
+    var links=document.querySelectorAll('.pl-index nav a');
+    var line=document.querySelector('.pl-index-line');
+    var map={};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+    function moveTo(a){
+        if(!line||!a) return;
+        links.forEach(function(l){ l.classList.toggle('is-active', l===a); });
+        var nav=a.parentNode;
+        if(nav.scrollWidth>nav.clientWidth){
+            nav.scrollTo({left:a.offsetLeft-26, behavior:'smooth'});
+        }
+        var y=a.offsetTop+a.offsetHeight/2;
+        line.style.transform='translateY('+y+'px)';
+        line.style.opacity='1';
+    }
+    var io=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+            if(e.isIntersecting) moveTo(map[e.target.id]);
+        });
+    },{rootMargin:'-40% 0px -55% 0px'});
+    document.querySelectorAll('.pl-group').forEach(function(sec){ io.observe(sec); });
+})();
+</script>
+
+<script type="module">
+import('./js/hero3d.js?v=20261030')
+    .then(function(m){ m.initProfile3D('pl-object'); })
+    .catch(function(e){ console.error('Profile object init failed:', e); });
+</script>
+
+</body>
+
+</html>
