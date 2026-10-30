@@ -563,7 +563,7 @@ export function initSectionObject(containerId, assetInput = "U") {
 /* =========================================================
    PORTFOLIO SECTION 3D OBJECT (initPortfolio3D) - "W" (모션 및 잘림 수정 버전)
 ========================================================= */
-export function initPortfolio3D(containerId) {
+export function initPortfolio3D(containerId, options = {}) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
@@ -643,6 +643,20 @@ export function initPortfolio3D(containerId) {
 
       const fillMesh = new THREE.Mesh(geometry, material);
       characterGroup.add(fillMesh);
+
+      // options.solidFace: 앞뒷면을 흰색으로 채워 뒤 텍스트를 가림 (projects.html 전용, 기본값 off)
+      if (options.solidFace) {
+        const faceOpacity = typeof options.solidFace === "number" ? options.solidFace : 1;
+        const faceMat = new THREE.MeshBasicMaterial({
+          color: 0xffffff,
+          transparent: faceOpacity < 1,
+          opacity: faceOpacity,
+          depthWrite: false,
+        });
+        const faceMesh = new THREE.Mesh(geometry, faceMat);
+        faceMesh.renderOrder = -1;
+        characterGroup.add(faceMesh);
+      }
 
       const edges = new THREE.EdgesGeometry(geometry, 25);
       const lineSegments = new THREE.LineSegments(edges, lineMat);
