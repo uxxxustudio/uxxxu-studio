@@ -227,9 +227,122 @@ href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretend
 }
 
 
-/* UX Decision: 웹 화면 / 인쇄 미리보기 두 장 */
-.workflow-image img + img{
-    margin-top:16px;
+/* UX Decision: 웹 화면 / 인쇄 미리보기 두 장을 세로로, 작게 */
+.workflow-image.is-pair{
+    display:grid;
+    gap:28px;
+    width:100%;
+    max-width:520px;
+    justify-self:end;
+    overflow:visible;
+    padding:24px 0;
+}
+
+/* UX Decision 제목 옆 인쇄 버튼 (Career 페이지 버튼과 같은 모양, 흰색↔검정 반복) */
+.ux-print-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:56px;
+    height:56px;
+    margin-left:20px;
+    vertical-align:middle;
+    position:relative;
+    top:-.08em;
+    border:1px solid #111;
+    border-radius:50%;
+    background:#fff;
+    animation:ux-print-bg 2.4s ease-in-out infinite alternate;
+}
+
+.ux-print-btn img{
+    width:24px;
+    height:24px;
+    object-fit:contain;
+    animation:ux-print-icon 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes ux-print-bg{
+    0%, 30%{ background:#fff; }
+    70%, 100%{ background:#111; }
+}
+
+@keyframes ux-print-icon{
+    0%, 30%{ filter:invert(0); }
+    70%, 100%{ filter:invert(1); }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .ux-print-btn,
+    .ux-print-btn img{
+        animation:none;
+    }
+}
+
+/* 텍스트를 첫 번째 이미지 상단에 맞춤 (이미지 영역 위 여백 24px과 동일) */
+.workflow-item.is-top{
+    align-items:start;
+}
+
+.workflow-item.is-top .workflow-text{
+    padding-top:24px;
+}
+
+/* 다른 캡처 이미지처럼 창 느낌: 둥근 모서리 + 테두리 + 부드러운 그림자 */
+.workflow-image.is-pair img{
+    border:1px solid #e5e5e5;
+    border-radius:12px;
+    box-shadow:0 18px 40px rgba(0,0,0,.12), 0 3px 8px rgba(0,0,0,.06);
+}
+
+@media(max-width:980px){
+    .ux-decision-title{
+        word-break:keep-all;
+    }
+
+    .ux-decision-title br{
+        display:none;
+    }
+
+    .ux-print-btn{
+        width:44px;
+        height:44px;
+        margin-left:12px;
+    }
+
+    .ux-print-btn img{
+        width:20px;
+        height:20px;
+    }
+
+    .workflow-item.is-top .workflow-text{
+        padding-top:0;
+    }
+
+    .workflow-image.is-pair{
+        max-width:none;
+        justify-self:stretch;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:12px;
+        padding:12px 0;
+    }
+
+    .workflow-image.is-pair img{
+        border-radius:8px;
+        box-shadow:0 8px 20px rgba(0,0,0,.12), 0 2px 5px rgba(0,0,0,.06);
+    }
+}
+
+
+/* Result 섹션 하단 여백 (푸터 전) */
+.overview.outcome{
+    padding-bottom:240px;
+}
+
+@media(max-width:980px){
+    .overview.outcome{
+        padding-bottom:160px;
+    }
 }
 
 </style>
@@ -737,9 +850,9 @@ alt="Claude Design System으로 규칙을 정리한 화면">
 UX Decision
 </div>
 
-<h2>
+<h2 class="ux-decision-title">
 웹에서 보던 경력 정보를<br>
-출력 가능한 이력서 형태로 전환했습니다.
+출력 가능한 이력서 형태로 전환했습니다.<span class="ux-print-btn" aria-hidden="true"><img src="../assets/images/printer.png" alt=""></span>
 </h2>
 
 <p class="overview-text">
@@ -749,7 +862,7 @@ UX Decision
 
 <div class="workflow-list">
 
-<div class="workflow-item">
+<div class="workflow-item is-top">
 
 <div class="workflow-text">
 
@@ -776,7 +889,7 @@ Career 제목 옆 라인 위에 인쇄 버튼을 두고, 출력물 첫 장에는
 
 </div>
 
-<div class="workflow-image">
+<div class="workflow-image is-pair">
 <img src="images/uxxxu-ai/cap5.png"
 alt="경력기술서 웹 화면과 인쇄 버튼">
 <img src="images/uxxxu-ai/cap6.png"
