@@ -1132,38 +1132,22 @@
     .cr-cap-list li.is-open p{
         display:block;
     }
+    .cr-cap-view{
+        position:relative;
+    }
     .cr-cap-track{
         position:relative;
         height:44px;
-        margin:6px 26px 0;
+        margin-top:6px;
+        overflow:hidden;
         touch-action:none;
     }
-    .cr-cap-track::before{
-        content:"";
+    .cr-cap-line{
         position:absolute;
         top:50%;
-        left:0;
-        right:0;
         height:1px;
         margin-top:-.5px;
         background:#111;
-    }
-    .cr-cap-dot{
-        position:absolute;
-        top:50%;
-        width:12px;
-        height:12px;
-        padding:0;
-        border:0;
-        border-radius:50%;
-        background:transparent;
-        transform:translate(-50%,-50%);
-        cursor:pointer;
-    }
-    .cr-cap-dot::before{
-        content:"";
-        position:absolute;
-        inset:-14px;
     }
     .cr-cap-avatar{
         position:absolute;
@@ -2370,67 +2354,89 @@ function crPrint(){
         });
         var track=document.createElement('div');
         track.className='cr-cap-track';
+        var line=document.createElement('i');
+        line.className='cr-cap-line';
         var panels=view.children, n=panels.length;
         var go=function(i){
+            i=Math.max(0,Math.min(n-1,i));
             var pnl=panels[i];
             view.scrollTo({left:pnl.offsetLeft-(view.clientWidth-pnl.offsetWidth)/2, behavior:'smooth'});
         };
-        for(var k=0;k<n;k++){
-            (function(i){
-                var dot=document.createElement('button');
-                dot.type='button';
-                dot.className='cr-cap-dot';
-                dot.style.left=(i/(n-1)*100)+'%';
-                dot.setAttribute('aria-label',groups[i].name+' 보기');
-                dot.addEventListener('click',function(){ go(i); });
-                track.appendChild(dot);
-            })(k);
-        }
         var av=document.createElement('img');
         av.className='cr-cap-avatar';
         av.src='assets/images/NaeunK_icon.png';
         av.alt='';
         av.draggable=false;
-        track.appendChild(av);
+        track.append(line,av);
         cap.append(view,track);
         doList.classList.add('is-grouped');
         doList.after(cap);
 
+        /* 아바타는 지금 보는 묶음의 가운데, 선은 첫 묶음 가운데~마지막 묶음 가운데 */
+        var center=function(i){ return panels[i].offsetLeft+panels[i].offsetWidth/2-view.scrollLeft; };
         var maxScroll=function(){ return Math.max(1,view.scrollWidth-view.clientWidth); };
         var sync=function(){
-            var p=Math.min(1,Math.max(0,view.scrollLeft/maxScroll()));
-            av.style.left=(p*100)+'%';
-            var cur=Math.round(p*(n-1));
-            for(var i=0;i<n;i++) panels[i].classList.toggle('is-active',i===cur);
+            var t=Math.min(1,Math.max(0,view.scrollLeft/maxScroll()))*(n-1);
+            var i=Math.min(n-2,Math.floor(t)), f=t-i;
+            var x=center(i)+(center(i+1)-center(i))*f;
+            av.style.left=x+'px';
+            line.style.left=center(0)+'px';
+            line.style.width=(center(n-1)-center(0))+'px';
+            var cur=Math.round(t);
+            for(var k=0;k<n;k++) panels[k].classList.toggle('is-active',k===cur);
         };
         view.addEventListener('scroll',sync,{passive:true});
         window.addEventListener('resize',sync);
         sync();
 
-        var dragging=false;
-        var fromX=function(x){
-            var r=track.getBoundingClientRect();
-            return Math.min(1,Math.max(0,(x-r.left)/r.width));
-        };
+        /* 아바타를 끌면 선을 따라 다른 묶음으로 이동 */
+        var dragging=false, startX=0, startScroll=0;
         av.addEventListener('pointerdown',function(e){
             dragging=true;
+            startX=e.clientX;
+            startScroll=view.scrollLeft;
             av.classList.add('is-drag');
             av.setPointerCapture(e.pointerId);
             view.style.scrollSnapType='none';
         });
         av.addEventListener('pointermove',function(e){
             if(!dragging) return;
-            view.scrollLeft=fromX(e.clientX)*maxScroll();
+            view.scrollLeft=startScroll+(e.clientX-startX);
         });
-        var end=function(e){
+        var end=function(){
             if(!dragging) return;
             dragging=false;
             av.classList.remove('is-drag');
             view.style.scrollSnapType='';
-            go(Math.round(fromX(e.clientX)*(n-1)));
+            go(Math.round(view.scrollLeft/maxScroll()*(n-1)));
         };
         av.addEventListener('pointerup',end);
         av.addEventListener('pointercancel',end);
+
+        /* 자동 넘김: 화면에 보일 때만 3.5초마다 다음 묶음으로, 사용자가 만지면 잠시 멈춤 */
+        if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+            var timer=null, idle=null, visible=false, cur=0;
+            var hasOpen=function(){ return !!cap.querySelector('.cr-cap-list li.is-open'); };
+            var step=function(){
+                if(dragging||hasOpen()) return;
+                cur=Math.round(view.scrollLeft/maxScroll()*(n-1));
+                go(cur>=n-1?0:cur+1);
+            };
+            var play=function(){ stop(); if(visible) timer=setInterval(step,3500); };
+            var stop=function(){ clearInterval(timer); timer=null; };
+            var hold=function(){
+                stop();
+                clearTimeout(idle);
+                idle=setTimeout(play,6000);
+            };
+            ['pointerdown','touchstart','wheel'].forEach(function(ev){
+                cap.addEventListener(ev,hold,{passive:true});
+            });
+            new IntersectionObserver(function(es){
+                visible=es[0].isIntersecting;
+                if(visible) play(); else { stop(); clearTimeout(idle); }
+            },{threshold:.5}).observe(cap);
+        }
     }
     document.querySelectorAll('.cr-body > .cr-list:first-child').forEach(function(ul){
         var n=ul.children.length-3;
