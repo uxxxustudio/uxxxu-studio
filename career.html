@@ -1063,6 +1063,43 @@
         position:relative;
         margin:28px -26px 0;
     }
+    /* 노트북 캐릭터: 모바일에서는 From Complexity 문구 왼쪽으로 이동 */
+    .cr-bridge .container.has-fig{
+        display:flex;
+        align-items:stretch;
+        gap:8px;
+    }
+    .has-fig .cr-figure{
+        flex:0 0 38%;
+        align-self:flex-end;
+        margin:0;
+        padding:0;
+        border:0;
+    }
+    .has-fig .cr-laptop{
+        width:100%;
+    }
+    .cr-bridge-text{
+        display:flex;
+        flex-direction:column;
+        justify-content:space-between;
+        flex:1;
+        min-width:0;
+    }
+    .has-fig h2{
+        font-size:32px;
+    }
+    .has-fig h2 span{
+        display:block;
+        padding-left:.9em;
+    }
+    .has-fig p{
+        margin-top:12px;
+        padding-left:26px;
+        font-size:14px;
+        line-height:1.6;
+        word-break:keep-all;
+    }
     .cr-cap::before{
         content:"";
         position:absolute;
@@ -1074,7 +1111,7 @@
     }
     .cr-cap-view{
         display:flex;
-        padding:32px 14% 0;
+        padding:32px 14vw 0;
         overflow-x:auto;
         scroll-snap-type:x mandatory;
         scrollbar-width:none;
@@ -1084,7 +1121,7 @@
         display:none;
     }
     .cr-cap-panel{
-        flex:0 0 72%;
+        flex:0 0 72vw;
         padding:0 12px;
         text-align:center;
         scroll-snap-align:center;
@@ -2321,6 +2358,15 @@ function crPrint(){
             btn.setAttribute('aria-label',open?'상세 내용 접기':'상세 내용 펼치기');
         });
     });
+    var fig=document.querySelector('.cr-figure');
+    var bridge=document.querySelector('.cr-bridge .container');
+    if(fig&&bridge){
+        var txt=document.createElement('div');
+        txt.className='cr-bridge-text';
+        while(bridge.firstChild) txt.appendChild(bridge.firstChild);
+        bridge.append(fig,txt);
+        bridge.classList.add('has-fig');
+    }
     var doList=document.querySelector('.cr-do');
     if(doList){
         var lis=doList.querySelectorAll(':scope > li');
