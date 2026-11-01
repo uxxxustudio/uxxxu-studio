@@ -314,6 +314,19 @@ function initPortfolioHoverThumbnail() {
 
     const image = preview.querySelector("#portfolio-preview-image");
 
+    /* 모바일용: 마우스오버가 없으니 각 줄에 작은 썸네일을 항상 표시 (PC에서는 CSS로 숨김) */
+    projects.forEach((project) => {
+        const thumb = project.dataset.thumb;
+        if (!thumb || project.querySelector(".project-thumb")) return;
+        const img = document.createElement("img");
+        img.className = "project-thumb";
+        img.src = thumb;
+        img.alt = "";
+        img.loading = "lazy";
+        img.setAttribute("aria-hidden", "true");
+        project.appendChild(img);
+    });
+
     projects.forEach((project) => {
 
         project.addEventListener("mouseenter", () => {
