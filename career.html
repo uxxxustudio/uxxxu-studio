@@ -1060,8 +1060,17 @@
         display:none;
     }
     .cr-cap{
+        position:relative;
         margin:28px -26px 0;
-        border-top:1px solid #111;
+    }
+    .cr-cap::before{
+        content:"";
+        position:absolute;
+        top:0;
+        left:26px;
+        right:26px;
+        height:1px;
+        background:#111;
     }
     .cr-cap-view{
         display:flex;
