@@ -2435,8 +2435,10 @@ function crPrint(){
             var i=Math.min(n-2,Math.floor(t)), f=t-i;
             var x=center(i)+(center(i+1)-center(i))*f;
             av.style.left=x+'px';
-            line.style.left=center(0)+'px';
-            line.style.width=(center(n-1)-center(0))+'px';
+            /* 선은 위 What I Do 구분선과 같은 폭(좌우 26px 여백) 안에서만 보이게 */
+            var g=26, L=Math.max(center(0),g), R=Math.min(center(n-1),track.clientWidth-g);
+            line.style.left=L+'px';
+            line.style.width=Math.max(0,R-L)+'px';
             var cur=Math.round(t);
             for(var k=0;k<n;k++) panels[k].classList.toggle('is-active',k===cur);
         };
