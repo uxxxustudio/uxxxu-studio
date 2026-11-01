@@ -1236,7 +1236,7 @@
 <section class="cr-overview">
 <div class="container cr-about">
 
-<button type="button" class="cr-print-btn" onclick="window.print()" aria-label="경력기술서 인쇄" title="인쇄">
+<button type="button" class="cr-print-btn" onclick="crPrint()" aria-label="경력기술서 인쇄" title="인쇄">
     <img src="assets/images/printer.png" alt="">
 </button>
 
@@ -2071,6 +2071,29 @@ import('./js/hero3d.js?v=20261030')
     .catch(function(e){ console.error('Profile object init failed:', e); });
 </script>
 
+<script>
+/* 인쇄: 인앱 브라우저(카카오톡·인스타그램 등)는 window.print()를 무시하므로 외부 브라우저로 연결 */
+function crPrint(){
+    var ua=navigator.userAgent||'';
+    var url=location.href.split('#')[0];
+    var inApp=/KAKAOTALK|Instagram|FBAN|FBAV|FB_IAB|NAVER\(inapp|Line\/|DaumApps|everytimeApp|SamsungBrowser\/[^ ]+ CrossApp|; wv\)/i.test(ua);
+    if(inApp){
+        if(/KAKAOTALK/i.test(ua)){
+            location.href='kakaotalk://web/openExternal?url='+encodeURIComponent(url);
+            return;
+        }
+        if(/Android/i.test(ua)){
+            location.href='intent://'+url.replace(/^https?:\/\//,'')+'#Intent;scheme=https;package=com.android.chrome;end';
+            return;
+        }
+        alert('이 앱 안에서는 인쇄가 지원되지 않아요.\n우측 상단 메뉴에서 “Safari로 열기”를 선택한 뒤 다시 눌러주세요.');
+        return;
+    }
+    try{ window.print(); }catch(e){
+        alert('인쇄를 지원하지 않는 브라우저예요. 브라우저 메뉴의 공유 → 프린트를 이용해주세요.');
+    }
+}
+</script>
 </body>
 
 </html>
