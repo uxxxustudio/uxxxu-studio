@@ -981,6 +981,79 @@
 
 }
 /* ==================================================
+   MOBILE: 경력 상세 접기 (PC·인쇄에는 영향 없음)
+================================================== */
+@media screen and (max-width:767px){
+    .cr-project.cr-acc{
+        position:relative;
+        padding-right:40px;
+        margin-top:22px;
+        cursor:pointer;
+        -webkit-tap-highlight-color:transparent;
+    }
+    .cr-acc-btn{
+        position:absolute;
+        top:2px;
+        right:0;
+        width:26px;
+        height:26px;
+        padding:0;
+        border:1px solid #d6d6d6;
+        border-radius:50%;
+        background:#fff;
+        cursor:pointer;
+    }
+    .cr-acc-btn::before,
+    .cr-acc-btn::after{
+        content:"";
+        position:absolute;
+        top:50%;
+        left:50%;
+        width:10px;
+        height:1.5px;
+        margin:-.75px 0 0 -5px;
+        background:#111;
+        transition:transform .25s ease;
+    }
+    .cr-acc-btn::after{
+        transform:rotate(90deg);
+    }
+    .cr-acc.is-open .cr-acc-btn::after{
+        transform:rotate(0deg);
+    }
+    .cr-acc .cr-case{
+        display:none;
+    }
+    .cr-acc + .cr-list,
+    .cr-acc-link{
+        display:none;
+    }
+    .cr-acc.is-open + .cr-list,
+    .cr-acc.is-open + .cr-list + .cr-acc-link{
+        display:block;
+    }
+    .cr-acc-link{
+        margin-top:10px;
+        padding-left:14px;
+    }
+    .cr-clamp:not(.is-open) li:nth-child(n+4){
+        display:none;
+    }
+    .cr-more{
+        margin-top:8px;
+        padding:4px 0;
+        border:0;
+        background:none;
+        font-size:13px;
+        font-weight:500;
+        color:#111;
+        text-decoration:underline;
+        text-underline-offset:3px;
+        cursor:pointer;
+    }
+}
+
+/* ==================================================
    PRINT (A4)
 ================================================== */
 
@@ -2093,6 +2166,50 @@ function crPrint(){
         alert('인쇄를 지원하지 않는 브라우저예요. 브라우저 메뉴의 공유 → 프린트를 이용해주세요.');
     }
 }
+</script>
+<script>
+/* 모바일: 프로젝트 상세는 접고, 주요 업무는 3줄만 먼저 보여줌 */
+(function(){
+    if(!window.matchMedia('screen and (max-width:767px)').matches) return;
+    document.querySelectorAll('.cr-project').forEach(function(pj){
+        var list=pj.nextElementSibling;
+        if(!list||!list.classList.contains('cr-list')) return;
+        pj.classList.add('cr-acc');
+        var btn=document.createElement('button');
+        btn.type='button';
+        btn.className='cr-acc-btn';
+        btn.setAttribute('aria-expanded','false');
+        btn.setAttribute('aria-label','상세 내용 펼치기');
+        pj.appendChild(btn);
+        var link=pj.querySelector('.cr-case');
+        if(link){
+            var wrap=document.createElement('div');
+            wrap.className='cr-acc-link';
+            wrap.appendChild(link.cloneNode(true));
+            list.after(wrap);
+        }
+        pj.addEventListener('click',function(e){
+            if(e.target.closest('a')) return;
+            var open=pj.classList.toggle('is-open');
+            btn.setAttribute('aria-expanded',open);
+            btn.setAttribute('aria-label',open?'상세 내용 접기':'상세 내용 펼치기');
+        });
+    });
+    document.querySelectorAll('.cr-body > .cr-list:first-child').forEach(function(ul){
+        var n=ul.children.length-3;
+        if(n<2) return;
+        ul.classList.add('cr-clamp');
+        var more=document.createElement('button');
+        more.type='button';
+        more.className='cr-more';
+        more.textContent='+ '+n+'개 더 보기';
+        ul.after(more);
+        more.addEventListener('click',function(){
+            var open=ul.classList.toggle('is-open');
+            more.textContent=open?'접기':'+ '+n+'개 더 보기';
+        });
+    });
+})();
 </script>
 </body>
 
