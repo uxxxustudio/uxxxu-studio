@@ -1509,10 +1509,10 @@ footer {
 
     /* 모바일 About 하단 정리: 경력 요약은 소개문 아래로, 하단은 CONTACT 한 줄 */
     #about { padding-bottom: 64px; }
-    #about .about-years-mo { display: block; margin-top: 22px; font-size: 14px; font-weight: 500; line-height: 1.4; letter-spacing: -.02em; color: #111; }
+    #about .about-years-mo { display: block; margin: 0 0 26px; font-size: 14px; font-weight: 500; line-height: 1.4; letter-spacing: -.02em; color: #111; }
     #about .about-meta,
     #about .about-links { display: none; }
-    #about .about-bottom { display: block; margin-top: 64px; padding-top: 24px; }
+    #about .about-bottom { display: block; margin-top: 72px; padding-top: 0; border-top: 0; } /* 타임라인 선과 반복되지 않게 구분선 제거, 간격으로만 구분 */
     #about .about-contact-mo { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
     #about .about-contact-label { font-size: 10px; font-weight: 500; line-height: 1; letter-spacing: .18em; color: #888; }
     #about .about-email-copy { display: inline-flex; align-items: center; gap: 12px; padding: 0; border: 0; background: none; font: inherit; font-size: 15px; font-weight: 500; letter-spacing: -.01em; color: #111; cursor: pointer; -webkit-tap-highlight-color: transparent; }
