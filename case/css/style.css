@@ -1521,3 +1521,75 @@ h3[style*="font-size:32px"]{
 .progress-timeline .progress-subtitle {
     margin-top: 50px !important;
 }
+
+/* Mobility case — 2열/3열 이미지 그리드 */
+.ui-grid.grid-2{grid-template-columns:repeat(2,1fr);}
+.ui-grid.grid-3{grid-template-columns:repeat(3,1fr);}
+@media(max-width:980px){
+  .ui-grid.grid-2,.ui-grid.grid-3{grid-template-columns:1fr;}
+}
+.insight-row-grid.cols-3{grid-template-columns:repeat(3,1fr);}
+@media(max-width:980px){
+  .insight-row-grid.cols-3{grid-template-columns:1fr !important;}
+  .insight-row-grid.cols-3 .insight-col{padding-left:0;padding-right:0;}
+}
+
+/* Benchmark 리스트 — 모바일에서 이름/설명 세로 배치 (기존 1084행 규칙이 미디어쿼리보다 뒤에 있어 덮어쓰던 문제) */
+@media(max-width:980px){
+  .benchmark-row{grid-template-columns:1fr;gap:6px;}
+}
+
+/* Mobility case — 모바일 간격·위계 정리 (이 페이지에만 적용) */
+@media(max-width:980px){
+  .case-mobility section{padding-top:64px !important;padding-bottom:64px !important;}
+  .case-mobility section.hero{padding-top:150px !important;}
+  .case-mobility section h2{font-size:24px;}
+  .case-mobility .overview-text{margin-bottom:32px;}
+  .case-mobility .sub-heading{margin-top:80px !important;font-size:22px !important;}
+  .case-mobility .ui-grid.thumbs,.case-mobility .ui-grid.thumbs-problem{grid-template-columns:repeat(2,1fr) !important;gap:8px !important;}
+  .case-mobility .thumbs .m-hide{display:none;}
+  .case-mobility .insight-row-grid.cols-3 .insight-col p{display:block;}
+  .case-mobility .insight-row-grid.cols-3 .insight-col{padding-top:20px;padding-bottom:20px;}
+}
+
+/* Mobility case — 시나리오 썸네일 (데스크톱 4열, 같은 비율) */
+.case-mobility .ui-grid.grid-4{grid-template-columns:repeat(4,1fr);gap:16px;}
+.case-mobility .thumbs .ui-image img{aspect-ratio:2/1;object-fit:cover;}
+
+/* Mobility case — 이용 흐름: 가벼운 타임라인 (웨어러블 진행 타임라인의 선·점 언어를 축소) */
+.case-mobility .flow-steps{list-style:none;margin:72px 0 0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border-top:1px solid #d8d8d8;}
+.case-mobility .flow-steps li{position:relative;padding:28px 16px 0 0;}
+.case-mobility .flow-steps li::before{content:"";position:absolute;top:-5px;left:0;width:9px;height:9px;border-radius:50%;background:#111;}
+.case-mobility .flow-steps strong{display:block;font-size:16px;font-weight:700;color:#111;line-height:1.4;}
+.case-mobility .flow-steps span{display:block;margin-top:6px;font-size:14px;line-height:1.6;color:#777;}
+
+/* Mobility case — 시나리오: 썸네일 + 설명 */
+.case-mobility .scenario-list{margin-top:48px;border-top:1px solid #ececec;}
+.case-mobility .scenario-row{display:grid;grid-template-columns:280px 1fr;gap:32px;align-items:center;padding:24px 0;border-bottom:1px solid #ececec;}
+.case-mobility .scenario-thumb{overflow:hidden;border-radius:18px;}
+.case-mobility .scenario-thumb img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;}
+.case-mobility .scenario-text h3{font-size:17px;font-weight:700;margin:0 0 8px;}
+.case-mobility .scenario-text p{font-size:15px;line-height:1.7;color:#666;margin:0;}
+.case-mobility .scenario-text strong{color:#111;font-weight:600;}
+@media(max-width:980px){
+  .case-mobility .scenario-row{grid-template-columns:132px 1fr;gap:16px;padding:16px 0;}
+  .case-mobility .scenario-thumb{border-radius:12px;}
+  .case-mobility .scenario-text h3{font-size:16px;margin-bottom:4px;}
+  .case-mobility .scenario-text p{font-size:14px;line-height:1.6;}
+  .case-mobility .flow-steps{grid-template-columns:1fr;border-top:0;border-left:1px solid #d8d8d8;margin:48px 0 0 4px;}
+  .case-mobility .flow-steps li{padding:0 0 22px 24px;}
+  .case-mobility .flow-steps li:last-child{padding-bottom:0;}
+  .case-mobility .flow-steps li::before{top:6px;left:-5px;}
+  .case-mobility .flow-steps strong{font-size:15px;}
+  .case-mobility .flow-steps span{margin-top:2px;font-size:13px;}
+}
+
+/* 케이스 공통 — 프로젝트 정보: 데스크톱은 줄바꿈, 모바일은 쉼표로 이어서 */
+.project-info strong span{display:block;}
+@media(max-width:980px){
+  .project-info{row-gap:28px;}
+  .project-info > div:last-child{grid-column:1/-1;}
+  .project-info strong{font-size:15px;font-weight:600;line-height:1.6;}
+  .project-info strong span{display:inline;}
+  .project-info strong span:not(:last-child)::after{content:", ";}
+}
