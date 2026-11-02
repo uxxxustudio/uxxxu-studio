@@ -1162,8 +1162,8 @@ header nav {
     #about .about-statement,
     #about .about-meta { display: none; }
     #about .about-years-pc { display: block; }
-    #about .about-count-text { margin: 0; font-size: 17px; font-weight: 500; line-height: 1.3; letter-spacing: -.02em; color: #777; white-space: nowrap; }
-    #about .about-rotate { display: inline-block; margin-left: 2px; font-family: Georgia, "Times New Roman", serif; font-style: italic; font-weight: 400; font-size: 1.5em; letter-spacing: -.02em; color: #111; perspective: 400px; }
+    #about .about-count-text { margin: 0; font-size: 17px; font-weight: 500; line-height: 1.3; letter-spacing: -.02em; color: #111; white-space: nowrap; } /* 모바일과 같이 앞부분도 검정 */
+    #about .about-rotate { display: inline-block; margin-left: 2px; font-family: Georgia, "Times New Roman", serif; font-style: italic; font-weight: 400; font-size: 1.35em; letter-spacing: -.02em; color: #111; perspective: 400px; }
     #about .about-bottom { margin-top: -36px; padding-top: 0; border-top: 0; } /* 위 wrap 간격(80px)을 상쇄해 이메일이 문단 아래 약 44px에 오도록 */
     #about .about-links { grid-column: 1; grid-row: 1; }
 }
@@ -1544,6 +1544,14 @@ footer {
     #about .about-contact-mo { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
     #about .about-email-copy { font-size: 15px; }
     #about .about-contact-label { font-size: 10px; font-weight: 500; line-height: 1; letter-spacing: .18em; color: #888; }
+
+    /* 타임라인 점: THEN→NOW 이동이 끝난 뒤(0.5s 지연 + 1.8s 이동) 숨 쉬듯 커졌다 작아짐 */
+    #about .about-timeline.is-in .about-timeline-point { animation: about-point-breathe 2.4s ease-in-out 2.4s infinite; }
+}
+
+@keyframes about-point-breathe {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50%      { transform: translate(-50%, -50%) scale(1.4); }
 }
 
 
