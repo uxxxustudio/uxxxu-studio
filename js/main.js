@@ -248,7 +248,7 @@ async function initPortfolioFeature() {
     try {
         const { initPortfolio3D } = await import("./hero3d.js");
         if (document.getElementById("portfolio-object")) {
-            initPortfolio3D("portfolio-object");
+            initPortfolio3D("portfolio-object", { solidFace: 0.7 }); // 프로젝트 목록 페이지 W와 같은 흰색 면 불투명도
         }
     } catch (error) {
         console.error(
