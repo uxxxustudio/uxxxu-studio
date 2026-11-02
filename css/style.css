@@ -1448,6 +1448,8 @@ footer {
     #portfolio .portfolio-heading h2 { font-size: 48px; line-height: .94; font-weight: 800; margin: 0 0 10px; }
     #portfolio .portfolio-heading p { margin: 0; line-height: 1.6; }
     #portfolio-w-container { display: none; }
+    /* 모바일 W: PROJECT 제목 오른쪽으로 올리고 PC보다 조금 작게 (제목 끝에 살짝 걸쳐 덩어리감 유지) */
+    #portfolio-object { top: -30px !important; right: -40px !important; width: 340px !important; height: 260px !important; }
 
     #portfolio .portfolio-grid { position: relative; display: flex; flex-direction: column; width: 100%; margin-top: 28px !important; padding: 0 !important; border-top: 1px solid #e5e5e5; }
     /* 모바일 웍스: 제목 바로 뒤에 작은 썸네일, 제목 끝이 살짝 걸침 (PC 오버 느낌) */
