@@ -1141,6 +1141,10 @@ header nav {
     letter-spacing: .01em;
 }
 
+/* 모바일 전용 요소 (PC에서는 숨김) */
+#about .about-years-mo,
+#about .about-contact-mo { display: none; }
+
 #about .about-links {
     display: flex;
     flex-direction: column;
@@ -1461,7 +1465,7 @@ footer {
     #portfolio .portfolio-heading p { margin: 0; line-height: 1.6; }
     #portfolio-w-container { display: none; }
     /* 모바일 W: PROJECT 제목 오른쪽으로 올리고 PC보다 조금 작게 (제목 끝에 살짝 걸쳐 덩어리감 유지) */
-    #portfolio-object { top: -17px !important; right: -23px !important; width: 306px !important; height: 234px !important; }
+    #portfolio-object { top: -17px !important; right: -33px !important; width: 306px !important; height: 234px !important; }
 
     #portfolio .portfolio-grid { position: relative; display: flex; flex-direction: column; width: 100%; margin-top: 28px !important; padding: 0 !important; border-top: 1px solid #e5e5e5; }
     /* 모바일 웍스: 제목 바로 뒤에 작은 썸네일, 제목 끝이 살짝 걸침 (PC 오버 느낌) */
@@ -1502,6 +1506,22 @@ footer {
     #about .about-bottom { display: grid; grid-template-columns: 1fr; gap: 42px; margin-top: 70px; padding-top: 28px; }
     #about .about-links { gap: 18px; }
     #about .about-links a { font-size: 15px; }
+
+    /* 모바일 About 하단 정리: 경력 요약은 소개문 아래로, 하단은 CONTACT 한 줄 */
+    #about { padding-bottom: 64px; }
+    #about .about-years-mo { display: block; margin-top: 22px; font-size: 14px; font-weight: 500; line-height: 1.4; letter-spacing: -.02em; color: #111; }
+    #about .about-meta,
+    #about .about-links { display: none; }
+    #about .about-bottom { display: block; margin-top: 64px; padding-top: 24px; }
+    #about .about-contact-mo { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    #about .about-contact-label { font-size: 10px; font-weight: 500; line-height: 1; letter-spacing: .18em; color: #888; }
+    #about .about-email-copy { display: inline-flex; align-items: center; gap: 12px; padding: 0; border: 0; background: none; font: inherit; font-size: 15px; font-weight: 500; letter-spacing: -.01em; color: #111; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    #about .about-email-icon { position: relative; display: inline-flex; align-items: center; justify-content: center; flex: none; width: 30px; height: 30px; border-radius: 50%; background: #111; color: #fff; transition: background .25s ease, color .25s ease; }
+    #about .about-email-icon svg { position: absolute; width: 14px; height: 14px; transition: opacity .2s ease, transform .2s ease; }
+    #about .about-email-icon .icon-check { opacity: 0; transform: scale(.6); }
+    #about .about-email-copy.is-copied .about-email-icon { background: rgb(31, 242, 115); color: #111; }
+    #about .about-email-copy.is-copied .icon-copy { opacity: 0; transform: scale(.6); }
+    #about .about-email-copy.is-copied .icon-check { opacity: 1; transform: scale(1); }
 }
 
 

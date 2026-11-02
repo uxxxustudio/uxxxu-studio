@@ -427,3 +427,43 @@ function initAboutProfilePosition() {
     }
 
 }
+
+
+/* =========================================================
+   About 모바일: 이메일 주소 복사 (메일 앱 대신 클립보드 복사, 아이콘이 잠깐 체크로 바뀜)
+========================================================= */
+document.addEventListener("click", (e) => {
+    const button = e.target.closest(".about-email-copy");
+    if (!button) return;
+
+    const email = button.dataset.email;
+    const done = () => {
+        button.classList.add("is-copied");
+        button.setAttribute("aria-label", "이메일 주소가 복사되었습니다");
+        clearTimeout(button._copyTimer);
+        button._copyTimer = setTimeout(() => {
+            button.classList.remove("is-copied");
+            button.setAttribute("aria-label", "이메일 주소 복사");
+        }, 1600);
+    };
+
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(email).then(done).catch(() => { if (fallbackCopy(email)) done(); });
+    } else if (fallbackCopy(email)) {
+        done();
+    }
+});
+
+function fallbackCopy(text) {
+    const field = document.createElement("textarea");
+    field.value = text;
+    field.setAttribute("readonly", "");
+    field.style.position = "fixed";
+    field.style.opacity = "0";
+    document.body.appendChild(field);
+    field.select();
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch (err) { ok = false; }
+    document.body.removeChild(field);
+    return ok;
+}
