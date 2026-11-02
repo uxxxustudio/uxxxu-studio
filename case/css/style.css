@@ -73,6 +73,8 @@ overflow:visible;
 
 padding:34px 64px;
 
+min-height:110px; /* 인덱스 헤더(PDF 버튼 42px + 위아래 34px)와 같은 높이 → 로고 세로 위치 일치 */
+
 display:flex;
 
 align-items:center;
@@ -481,21 +483,15 @@ padding:0 26px;
 
 header{
 
-height:72px;
+min-height:94px; /* 인덱스 모바일 헤더(메뉴 버튼 42px + 위아래 26px)와 같은 높이 */
 
-padding:0 20px;
-
-}
-
-.logo{
-
-font-size:24px;
+padding:0 26px;
 
 }
 
 .back{
 
-right:20px;
+right:26px;
 
 font-size:13px;
 
