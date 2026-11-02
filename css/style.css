@@ -347,6 +347,16 @@ header nav {
     to { filter: none; }
 }
 
+/* 줄간격(.90)보다 y·p 등 디센더가 아래로 나가서, iPad(WebKit)에서 필터·레이어 영역에 잘리는 문제 방지
+   글자 박스 아래만 여유를 넣고 같은 만큼 margin으로 되돌려 배치는 그대로 */
+.hero h1 .title-line-1,
+.hero h1 .title-line-2,
+.hero h1 .title-morph,
+.hero h1 .title-ghost {
+    padding-bottom: .2em;
+    margin-bottom: -.2em;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .hero h1 .title-line-1,
     .hero h1 .title-line-2,
