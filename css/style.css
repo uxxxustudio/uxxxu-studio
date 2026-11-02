@@ -1118,7 +1118,7 @@ header nav {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 300px; /* 위 about-main과 같은 열 구성 → 이메일이 타임라인 왼쪽 선에 맞음 */
     gap: 80px;
-    margin: 72px 0 0; /* 타임라인과 하단 단락 사이 간격 (120 → 72) */
+    margin: 24px 0 0; /* 타임라인과 하단 단락 사이 간격 (120 → 72 → 24): 푸터처럼 떨어져 보이지 않게 */
     padding: 34px 0 0;
     border-top: 1px solid #e5e5e5;
 }
@@ -1150,6 +1150,23 @@ header nav {
 #about .about-email-copy.is-copied .icon-copy { opacity: 0; transform: scale(.6); }
 #about .about-email-copy.is-copied .icon-check { opacity: 1; transform: scale(1); }
 @media (hover: hover) { #about .about-email-copy:hover .about-email-icon { background: rgb(31, 242, 115); color: #111; } } /* 터치 기기에서는 hover가 남지 않도록 */
+
+/* PC About: 오른쪽은 타임라인 대신 "20+ years of ___" 한 줄 (앞부분 고정, 분야 단어만 바뀜),
+   이메일은 왼쪽 소개 문단 아래로. 하단 구분선 띠 없음 */
+#about .about-years-pc { display: none; }
+#about .about-rotate { perspective: 400px; }
+#about .about-flip { display: inline-block; transform-origin: 50% 50%; will-change: transform; }
+@media (min-width: 1181px) {
+    #about .about-timeline-label,
+    #about .about-timeline-line,
+    #about .about-statement,
+    #about .about-meta { display: none; }
+    #about .about-years-pc { display: block; }
+    #about .about-count-text { margin: 0; font-size: 17px; font-weight: 500; line-height: 1.3; letter-spacing: -.02em; color: #777; white-space: nowrap; }
+    #about .about-rotate { display: inline-block; margin-left: 2px; font-family: Georgia, "Times New Roman", serif; font-style: italic; font-weight: 400; font-size: 1.5em; letter-spacing: -.02em; color: #111; perspective: 400px; }
+    #about .about-bottom { margin-top: -36px; padding-top: 0; border-top: 0; } /* 위 wrap 간격(80px)을 상쇄해 이메일이 문단 아래 약 44px에 오도록 */
+    #about .about-links { grid-column: 1; grid-row: 1; }
+}
 
 /* 모바일 전용 요소 (PC에서는 숨김) */
 #about .about-years-mo,
@@ -1520,6 +1537,7 @@ footer {
     /* 모바일 About 하단 정리: 경력 요약은 소개문 아래로, 하단은 CONTACT 한 줄 */
     #about { padding-bottom: 64px; }
     #about .about-years-mo { display: block; margin: 0 0 26px; font-size: 14px; font-weight: 500; line-height: 1.4; letter-spacing: -.02em; color: #111; }
+    #about .about-years-mo .about-rotate { display: inline-block; margin-left: 1px; font-family: Georgia, "Times New Roman", serif; font-style: italic; font-weight: 400; font-size: 1.35em; letter-spacing: -.02em; color: #111; white-space: nowrap; }
     #about .about-meta,
     #about .about-links { display: none; }
     #about .about-bottom { display: block; margin-top: 72px; padding-top: 0; border-top: 0; } /* 타임라인 선과 반복되지 않게 구분선 제거, 간격으로만 구분 */

@@ -31,6 +31,7 @@ async function loadComponent(id, file) {
         initProfileFeature();
         initAboutMotion();
         initAboutProfilePosition();
+        initAboutCount();
     }
 }
 
@@ -466,4 +467,82 @@ function fallbackCopy(text) {
     try { ok = document.execCommand("copy"); } catch (err) { ok = false; }
     document.body.removeChild(field);
     return ok;
+}
+
+
+/* =========================================================
+   About PC: "20+ years of ___" 분야 단어 교체
+   글자 하나하나가 제각각 오른쪽/왼쪽으로 뒤집히며 다음 단어 글자로 바뀜
+   (방향·시작 시점은 글자마다 무작위, 마지막 단어는 AI-assisted design)
+========================================================= */
+
+function initAboutCount() {
+
+    /* PC는 about-years-pc, 모바일은 about-years-mo 안의 단어 중 화면에 보이는 쪽만 움직임 */
+    const word = [...document.querySelectorAll("#about .about-rotate")].find(el => el.getClientRects().length > 0);
+    if (!word) return;
+    const box = word.parentElement;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!("IntersectionObserver" in window) || !Element.prototype.animate) return;
+
+    const words = (word.dataset.words || "").split("|").filter(Boolean);
+    if (words.length < 2) return;
+
+    const ch = (c) => (c === undefined || c === " ") ? "\u00a0" : c;
+    let i = 0, current = words[0], busy = false;
+    word.setAttribute("aria-label", current);
+
+    const flipTo = (next) => {
+        busy = true;
+        const n = Math.max(current.length, next.length);
+        word.setAttribute("aria-label", next);
+        word.textContent = "";
+
+        const spans = [];
+        for (let k = 0; k < n; k++) {
+            const s = document.createElement("span");
+            s.className = "about-flip";
+            s.setAttribute("aria-hidden", "true");
+            s.textContent = ch(current[k]);
+            word.appendChild(s);
+            spans.push(s);
+        }
+
+        let done = 0;
+        const finish = () => {
+            if (++done < n) return;
+            word.textContent = next;
+            current = next;
+            busy = false;
+        };
+
+        spans.forEach((s, k) => {
+            const to = ch(next[k]);
+            if (s.textContent === to) { finish(); return; }
+            const dir = Math.random() < .5 ? 1 : -1;
+            const delay = Math.random() * 250;
+            s.animate(
+                [{ transform: "rotateY(0deg)" }, { transform: `rotateY(${90 * dir}deg)` }],
+                { duration: 200, delay, easing: "ease-in", fill: "forwards" }
+            ).onfinish = () => {
+                s.textContent = to;
+                s.animate(
+                    [{ transform: `rotateY(${-90 * dir}deg)` }, { transform: "rotateY(0deg)" }],
+                    { duration: 240, easing: "ease-out", fill: "forwards" }
+                ).onfinish = finish;
+            };
+        });
+    };
+
+    const io = new IntersectionObserver((entries, obs) => {
+        if (!entries[0].isIntersecting) return;
+        obs.disconnect();
+        setInterval(() => {
+            if (busy) return;
+            i = (i + 1) % words.length;
+            flipTo(words[i]);
+        }, 2600);
+    }, { threshold: 0.4 });
+
+    io.observe(box);
 }
