@@ -1333,6 +1333,8 @@ footer {
     .hero-message-ux { left: 26px; top: 53%; width: calc(100% - 52px); }
     .hero-message h2 { font-size: 20px; margin-bottom: 12px; }
     .hero-message p { font-size: 14px; line-height: 1.65; }
+    .hero-message p { word-break: keep-all; } /* 좁은 화면에서 단어 중간 줄바꿈 방지 */
+    .hero-message p br { display: none; }
     .hero-message-ux .hero-action { margin-top: 90px; display: flex; flex-direction: column !important; align-items: flex-start !important; gap: 18px !important; }
 
     /* EXPERIENCE MOBILE LAYOUT */
