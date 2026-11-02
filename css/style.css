@@ -1118,7 +1118,7 @@ header nav {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 300px; /* 위 about-main과 같은 열 구성 → 이메일이 타임라인 왼쪽 선에 맞음 */
     gap: 80px;
-    margin: 120px 0 0;
+    margin: 72px 0 0; /* 타임라인과 하단 단락 사이 간격 (120 → 72) */
     padding: 34px 0 0;
     border-top: 1px solid #e5e5e5;
 }
@@ -1140,6 +1140,16 @@ header nav {
     color: #888;
     letter-spacing: .01em;
 }
+
+/* 이메일 복사 버튼 (PC·모바일 공통): 메일 앱 대신 주소 복사 */
+#about .about-email-copy { display: inline-flex; align-items: center; gap: 12px; padding: 0; border: 0; background: none; font: inherit; font-size: 16px; font-weight: 500; letter-spacing: -.01em; color: #111; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+#about .about-email-icon { position: relative; display: inline-flex; align-items: center; justify-content: center; flex: none; width: 30px; height: 30px; border-radius: 50%; background: #111; color: #fff; transition: background .25s ease, color .25s ease; }
+#about .about-email-icon svg { position: absolute; width: 14px; height: 14px; transition: opacity .2s ease, transform .2s ease; }
+#about .about-email-icon .icon-check { opacity: 0; transform: scale(.6); }
+#about .about-email-copy.is-copied .about-email-icon { background: rgb(31, 242, 115); color: #111; }
+#about .about-email-copy.is-copied .icon-copy { opacity: 0; transform: scale(.6); }
+#about .about-email-copy.is-copied .icon-check { opacity: 1; transform: scale(1); }
+@media (hover: hover) { #about .about-email-copy:hover .about-email-icon { background: rgb(31, 242, 115); color: #111; } } /* 터치 기기에서는 hover가 남지 않도록 */
 
 /* 모바일 전용 요소 (PC에서는 숨김) */
 #about .about-years-mo,
@@ -1313,7 +1323,7 @@ footer {
     #about .about-copy h3 { font-size: clamp(40px, 7vw, 58px); }
     #about .about-timeline { width: min(100%, 560px); margin-top: 0; }
     #about .about-copy { --about-h2: clamp(44px, 8vw, 68px); }
-    #about .about-bottom { grid-column: auto; grid-template-columns: 1fr 1fr; gap: 50px; margin-top: 90px; }
+    #about .about-bottom { grid-column: auto; grid-template-columns: 1fr 1fr; gap: 50px; margin-top: 64px; }
 
     footer { padding: 30px 26px; }
     .footer-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
@@ -1514,14 +1524,8 @@ footer {
     #about .about-links { display: none; }
     #about .about-bottom { display: block; margin-top: 72px; padding-top: 0; border-top: 0; } /* 타임라인 선과 반복되지 않게 구분선 제거, 간격으로만 구분 */
     #about .about-contact-mo { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    #about .about-email-copy { font-size: 15px; }
     #about .about-contact-label { font-size: 10px; font-weight: 500; line-height: 1; letter-spacing: .18em; color: #888; }
-    #about .about-email-copy { display: inline-flex; align-items: center; gap: 12px; padding: 0; border: 0; background: none; font: inherit; font-size: 15px; font-weight: 500; letter-spacing: -.01em; color: #111; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-    #about .about-email-icon { position: relative; display: inline-flex; align-items: center; justify-content: center; flex: none; width: 30px; height: 30px; border-radius: 50%; background: #111; color: #fff; transition: background .25s ease, color .25s ease; }
-    #about .about-email-icon svg { position: absolute; width: 14px; height: 14px; transition: opacity .2s ease, transform .2s ease; }
-    #about .about-email-icon .icon-check { opacity: 0; transform: scale(.6); }
-    #about .about-email-copy.is-copied .about-email-icon { background: rgb(31, 242, 115); color: #111; }
-    #about .about-email-copy.is-copied .icon-copy { opacity: 0; transform: scale(.6); }
-    #about .about-email-copy.is-copied .icon-check { opacity: 1; transform: scale(1); }
 }
 
 
