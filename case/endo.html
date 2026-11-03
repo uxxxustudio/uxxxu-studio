@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>ENDO-ROBOTICS | uxxxu.studio</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<meta name="description"
+content="ENDO-ROBOTICS Endoscopic Surgery HMI Case Study">
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+
+<style>
+/* ENDO-ROBOTICS 전용 (이 페이지에만 적용) */
+.u-hero-band{background:#d6dce6 url(images/ENDO/endo_02_bg.png) right center/cover no-repeat;margin-top:90px;height:640px;padding:0;position:relative;overflow:hidden;}
+.u-hero-band img{display:block;position:absolute;left:0;bottom:-3%;height:110%;width:auto;max-width:none;margin:0;-webkit-mask-image:linear-gradient(to right,#000 80%,transparent 100%);mask-image:linear-gradient(to right,#000 80%,transparent 100%);}
+
+.u-problems{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;}
+.u-problem{padding-top:24px;border-top:1px solid #111;}
+.u-problem h3{font-size:22px;font-weight:700;line-height:1.35;letter-spacing:-.03em;margin:0 0 12px;}
+.u-problem p{font-size:16px;line-height:1.7;color:#666;margin:0;}
+.u-role{display:grid;grid-template-columns:200px 1fr;gap:36px;margin-top:64px;padding-top:24px;border-top:1px solid #ececec;}
+.u-role small{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#999;}
+.u-role p{font-size:18px;font-weight:600;line-height:1.6;margin:0;}
+
+.u-flow{display:grid;grid-template-columns:repeat(3,1fr);gap:56px 32px;margin-top:64px;align-items:start;}
+.u-flow figure{margin:0;}
+.u-flow img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;}
+.u-flow figcaption{margin-top:20px;}
+.u-flow h3{font-size:20px;font-weight:700;letter-spacing:-.03em;margin:0 0 12px;}
+.u-flow p{font-size:15px;line-height:1.7;color:#666;margin:0;}
+
+.u-dashboard{max-width:760px;margin-top:64px;}
+.u-dashboard img{display:block;width:100%;border-radius:12px;}
+
+.u-flow p{font-size:15px;line-height:1.6;color:#555;margin:0;}
+.u-pair + .u-pair{margin-top:10px;}
+.u-pair{display:grid;grid-template-columns:40px 1fr;gap:6px 12px;margin:0;font-size:15px;line-height:1.6;}
+.u-pair dt{color:#999;}
+.u-pair dd{margin:0;color:#555;}
+.u-pair dd strong{color:#111;font-weight:600;}
+.u-dash-pair{margin-top:28px;max-width:760px;}
+.u-reflection{padding-bottom:280px;}
+
+@media(max-width:980px){
+.u-reflection{padding-bottom:160px;}
+.u-dashboard{max-width:none;margin-top:40px;}
+.u-hero-band{margin-top:56px;height:300px;padding:0;}
+.u-hero-band img{height:110%;width:auto;}
+.u-problems{grid-template-columns:1fr;gap:0;}
+.u-problem{display:grid;grid-template-columns:104px 1fr;gap:16px;padding:20px 0;border-top:1px solid #e5e5e5;}
+.u-problem:first-child{border-top-color:#111;}
+.u-problem h3{font-size:17px;margin:0;}
+.u-problem p{font-size:15px;}
+.u-role{grid-template-columns:1fr;gap:10px;margin-top:40px;}
+.u-role p{font-size:16px;}
+.u-flow{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;margin:40px -26px 0;padding:0 26px 8px;scrollbar-width:none;}
+.u-flow::-webkit-scrollbar{display:none;}
+.u-flow figure{flex:0 0 82%;scroll-snap-align:start;}
+.u-flow figcaption{margin-top:16px;}
+.u-flow h3{font-size:17px;}
+.u-flow p{font-size:14px;}
+}
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<a href="../index.html" class="logo">
+    uxxxu.studio
+</a>
+
+<a href="../index.html"
+class="back">
+    ← Back to Portfolio
+</a>
+
+</header>
+
+
+<main>
+
+<!-- ==================================================
+     01. PROJECT
+================================================== -->
+<section class="hero">
+<div class="container">
+<div class="eyebrow">
+    PRODUCT · MEDICAL DEVICE
+</div>
+<h1>
+    ENDO-<br>ROBOTICS
+</h1>
+<p class="subtitle">
+    내시경 수술 장비 HMI<br>의료기기 제품 UX 제안
+</p>
+<div class="project-info">
+<div>
+<small>Category</small>
+<strong><span>UX/UI Design</span><span>Product UX</span></strong>
+</div>
+<div>
+<small>Year</small>
+<strong>
+    2025
+</strong>
+</div>
+<div>
+<small>Tools</small>
+<strong><span>Figma</span><span>Adobe CC</span></strong>
+</div>
+<div>
+<small>Contribution</small>
+<strong><span>UX/UI 100%</span><span>제품 디자인 제외</span></strong>
+</div>
+</div>
+</div>
+<div class="u-hero-band">
+<img src="images/ENDO/endo_01_crop.png" alt="ENDO-ROBOTICS">
+</div>
+</section>
+
+<!-- ==================================================
+     02. OVERVIEW
+================================================== -->
+<section class="overview">
+<div class="container">
+<div class="section-title">
+    Overview
+</div>
+<h2>
+    수술 중에도 화면에 오래 머물지 않고<br>장비를 다룰 수 있도록 설계했습니다.
+</h2>
+<p class="overview-text">
+내시경 수술 로봇 장비에 들어가는 HMI 제안 프로젝트입니다.<br>
+검사 부위 선택부터 내시경 위치 확인, 세부 조작까지의 흐름을 최소한의 단계로 정리하고,
+하드웨어 버튼과 맞물리는 화면으로 설계했습니다.
+</p>
+<div class="u-problems">
+<div class="u-problem">
+<h3>메뉴를 찾는 부담</h3>
+<p>수술 중에는 화면을 오래 보며 메뉴를 찾기 어려움</p>
+</div>
+<div class="u-problem">
+<h3>위치 파악</h3>
+<p>수치와 텍스트만으로는 내시경의 현재 위치를 파악하기 어려움</p>
+</div>
+<div class="u-problem">
+<h3>조작 불일치</h3>
+<p>물리 버튼의 순서와 화면 흐름이 맞지 않으면 오조작이 생김</p>
+</div>
+</div>
+<div class="u-role">
+<small>My Role</small>
+<p>제품 UX 기획 · HMI 화면 구조 설계 · 하드웨어 버튼 연동 흐름 · GUI·아이콘·의료 시각화</p>
+</div>
+</div>
+</section>
+
+<!-- ==================================================
+     FINAL UI
+================================================== -->
+<section class="ui-design">
+<div class="container">
+<div class="section-title">
+    Final UI
+</div>
+<h2>
+    하드웨어 버튼과 맞물리는<br>HMI 화면을 설계했습니다.
+</h2>
+<p class="overview-text">
+의료진이 화면과 장비 사이를 오가는 시간을 줄이도록, 화면의 선택 흐름을 물리 버튼의 조작 순서와 일치시켰습니다.
+</p>
+
+<div class="u-flow">
+<figure>
+<img src="images/ENDO/ENDO_type1_01_intro.png" alt="Intro" loading="lazy">
+<figcaption>
+<h3>Intro</h3>
+<p>장비 상태와 시작 동작을 한눈에 확인하는 첫 화면</p>
+</figcaption>
+</figure>
+<figure>
+<img src="images/ENDO/ENDO_type1_02_menu.png" alt="Menu" loading="lazy">
+<figcaption>
+<h3>Menu</h3>
+<dl class="u-pair">
+<dt>문제</dt><dd><strong>메뉴를 찾는 부담</strong> · 수술 중 메뉴를 찾기 어려움</dd>
+<dt>해결</dt><dd>위·대장·종료 3개의 큰 카드로 단순화</dd>
+</dl>
+</figcaption>
+</figure>
+<figure>
+<img src="images/ENDO/ENDO_type1_03_page.png" alt="Control" loading="lazy">
+<figcaption>
+<h3>Control</h3>
+<dl class="u-pair">
+<dt>문제</dt><dd><strong>위치 파악</strong> · 수치·텍스트로는 위치를 알기 어려움</dd>
+<dt>해결</dt><dd>3D 장기 위에 현재 위치와 부위명 표시</dd>
+</dl>
+<dl class="u-pair">
+<dt>문제</dt><dd><strong>조작 불일치</strong> · 버튼 순서와 화면 흐름이 다름</dd>
+<dt>해결</dt><dd>이전·선택·다음 버튼 순서에 맞춘 화면 구성</dd>
+</dl>
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+
+<!-- ==================================================
+     REFLECTION
+================================================== -->
+<section class="overview u-reflection">
+<div class="container">
+<div class="section-title">
+    Reflection
+</div>
+<h2>
+    화면과 장비를<br>하나의 조작 흐름으로 연결했습니다.
+</h2>
+<p class="overview-text">
+수술 환경에서는 화면을 익히는 데 시간을 쓰기 어렵다는 점을 기준으로, 선택지를 줄이고 위치 정보를 시각적으로 보여주는 데 집중했습니다.<br>
+화면 설계와 하드웨어 버튼 흐름을 함께 고려해야 장비 UI가 완성된다는 점을 확인한 프로젝트입니다.
+</p>
+</div>
+</section>
+
+<!-- ==================================================
+     FOOTER
+================================================== -->
+<footer>
+<div class="footer-title">
+    UX/UI Design
+</div>
+<div class="footer-link">
+    ENDO-ROBOTICS
+</div>
+<a href="../index.html" class="footer-back">
+    ← Back to Portfolio
+</a>
+</footer>
+<script src="../js/main.js"></script>
+</main>
+</body>
+</html>

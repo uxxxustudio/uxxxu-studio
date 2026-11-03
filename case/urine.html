@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>URINE CHECK-IT | uxxxu.studio</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<meta name="description"
+content="URINE CHECK-IT Digital Urine Analyzer GUI Case Study">
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+
+<style>
+/* URINE CHECK-IT 전용 (이 페이지에만 적용) */
+.u-hero-band{background:#677A78;margin-top:90px;padding:100px max(64px, calc((100% - 1152px) / 2)) 0;}
+.u-hero-band img{display:block;width:auto;max-width:100%;max-height:560px;margin:0 0 0 auto;}
+
+.u-problems{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;}
+.u-problem{padding-top:24px;border-top:1px solid #111;}
+.u-problem h3{font-size:22px;font-weight:700;line-height:1.35;letter-spacing:-.03em;margin:0 0 12px;}
+.u-problem p{font-size:16px;line-height:1.7;color:#666;margin:0;}
+.u-role{display:grid;grid-template-columns:200px 1fr;gap:36px;margin-top:64px;padding-top:24px;border-top:1px solid #ececec;}
+.u-role small{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#999;}
+.u-role p{font-size:18px;font-weight:600;line-height:1.6;margin:0;}
+
+.u-flow{display:grid;grid-template-columns:1fr 1fr;gap:56px 32px;margin-top:64px;align-items:start;}
+.u-flow figure{margin:0;}
+.u-flow img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;}
+.u-flow figcaption{margin-top:20px;}
+.u-flow h3{font-size:20px;font-weight:700;letter-spacing:-.03em;margin:0 0 12px;}
+.u-flow p{font-size:15px;line-height:1.7;color:#666;margin:0;}
+
+.u-dashboard{max-width:760px;margin-top:64px;}
+.u-dashboard img{display:block;width:100%;border-radius:12px;}
+
+.u-pair{display:grid;grid-template-columns:40px 1fr;gap:6px 12px;margin:0;font-size:15px;line-height:1.6;}
+.u-pair dt{color:#999;}
+.u-pair dd{margin:0;color:#555;}
+.u-pair dd strong{color:#111;font-weight:600;}
+.u-dash-pair{margin-top:28px;max-width:760px;}
+.u-reflection{padding-bottom:280px;}
+
+@media(max-width:980px){
+.u-reflection{padding-bottom:160px;}
+.u-dashboard{max-width:none;margin-top:40px;}
+.u-hero-band{margin-top:56px;padding:40px 26px 0;}
+.u-hero-band img{max-height:none;width:100%;}
+.u-problems{grid-template-columns:1fr;gap:0;}
+.u-problem{display:grid;grid-template-columns:104px 1fr;gap:16px;padding:20px 0;border-top:1px solid #e5e5e5;}
+.u-problem:first-child{border-top-color:#111;}
+.u-problem h3{font-size:17px;margin:0;}
+.u-problem p{font-size:15px;}
+.u-role{grid-template-columns:1fr;gap:10px;margin-top:40px;}
+.u-role p{font-size:16px;}
+.u-flow{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;margin:40px -26px 0;padding:0 26px 8px;scrollbar-width:none;}
+.u-flow::-webkit-scrollbar{display:none;}
+.u-flow figure{flex:0 0 82%;scroll-snap-align:start;}
+.u-flow figcaption{margin-top:16px;}
+.u-flow h3{font-size:17px;}
+.u-flow p{font-size:14px;}
+}
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<a href="../index.html" class="logo">
+    uxxxu.studio
+</a>
+
+<a href="../index.html"
+class="back">
+    ← Back to Portfolio
+</a>
+
+</header>
+
+
+<main>
+
+<!-- ==================================================
+     01. PROJECT
+================================================== -->
+<section class="hero">
+<div class="container">
+<div class="eyebrow">
+    PRODUCT · MEDICAL DEVICE
+</div>
+<h1>
+    URINE<br>CHECK-IT
+</h1>
+<p class="subtitle">
+    디지털 소변 검사기 GUI<br>D&amp;C Biotechnology 제품 UX 제안
+</p>
+<div class="project-info">
+<div>
+<small>Category</small>
+<strong><span>UX/UI Design</span><span>Product UX</span></strong>
+</div>
+<div>
+<small>Year</small>
+<strong>
+    2025
+</strong>
+</div>
+<div>
+<small>Tools</small>
+<strong><span>Figma</span><span>Adobe CC</span></strong>
+</div>
+<div>
+<small>Contribution</small>
+<strong><span>UX/UI 100%</span><span>제품 디자인 제외</span></strong>
+</div>
+</div>
+</div>
+<div class="u-hero-band">
+<img src="images/urine/hero_urine_crop.png" alt="URINE CHECK-IT">
+</div>
+</section>
+
+<!-- ==================================================
+     02. OVERVIEW
+================================================== -->
+<section class="overview">
+<div class="container">
+<div class="section-title">
+    Overview
+</div>
+<h2>
+    처음 쓰는 사용자도<br>안내 없이 검사를 마칠 수 있도록 설계했습니다.
+</h2>
+<p class="overview-text">
+D&amp;C Biotechnology의 디지털 소변 검사기에 들어가는 GUI 제안 프로젝트입니다.<br>
+컵을 넣는 순간부터 스캔, 분석, 결과 확인까지 검사 과정을
+한 화면에 한 동작씩 나누고,
+10개 항목의 분석 결과를 한 화면에서 읽을 수 있도록 정리했습니다.
+</p>
+<div class="u-problems">
+<div class="u-problem">
+<h3>검사 순서</h3>
+<p>처음 쓰는 사용자는 무엇부터 해야 하는지 알기 어려움</p>
+</div>
+<div class="u-problem">
+<h3>대기 중 불안</h3>
+<p>스캔과 분석 중 진행 상황이 보이지 않으면 기기가 멈춘 것처럼 느껴짐</p>
+</div>
+<div class="u-problem">
+<h3>많은 결과 항목</h3>
+<p>10개 항목의 수치를 한 번에 보여주면 중요한 값을 파악하기 어려움</p>
+</div>
+</div>
+<div class="u-role">
+<small>My Role</small>
+<p>제품 UX 기획 · 검사 단계별 화면 흐름 설계 · GUI 디자인 · 결과 대시보드·데이터 시각화</p>
+</div>
+</div>
+</section>
+
+<!-- ==================================================
+     SCREEN FLOW
+================================================== -->
+<section class="ui-design">
+<div class="container">
+<div class="section-title">
+    Screen Flow
+</div>
+<h2>
+    검사 과정을<br>한 화면에 한 동작씩 나누었습니다.
+</h2>
+<p class="overview-text">
+컵 삽입부터 결과 확인까지, 사용자가 각 단계에서 하나의 동작에만 집중할 수 있도록 화면 흐름을 설계했습니다.
+</p>
+
+<div class="u-flow">
+<figure>
+<img src="images/urine/final_ver_URINE_CHECKIT_main.png" alt="Main" loading="lazy">
+<figcaption>
+<h3>Main</h3>
+<dl class="u-pair">
+<dt>문제</dt><dd><strong>검사 순서</strong> · 처음 쓰는 사용자가 무엇부터 해야 할지 모름</dd>
+<dt>해결</dt><dd>시작 버튼 하나만 둔 첫 화면</dd>
+</dl>
+</figcaption>
+</figure>
+<figure>
+<img src="images/urine/final_ver_URINE_CHECKIT_insert_cup.png" alt="Insert Cup" loading="lazy">
+<figcaption>
+<h3>Insert Cup</h3>
+<dl class="u-pair">
+<dt>문제</dt><dd><strong>검사 순서</strong> · 컵을 어디에 어떻게 넣는지 알기 어려움</dd>
+<dt>해결</dt><dd>컵 삽입 위치를 그래픽으로 안내</dd>
+</dl>
+</figcaption>
+</figure>
+<figure>
+<img src="images/urine/final_ver_URINE_CHECKIT_Scanning.png" alt="Scanning" loading="lazy">
+<figcaption>
+<h3>Scanning</h3>
+<dl class="u-pair">
+<dt>문제</dt><dd><strong>대기 중 불안</strong> · 스캔 중 화면이 그대로면 기기가 멈춘 듯 느껴짐</dd>
+<dt>해결</dt><dd>지금 스캔 중임을 화면에 표시</dd>
+</dl>
+</figcaption>
+</figure>
+<figure>
+<img src="images/urine/final_ver_URINE_CHECKIT_analyzing.png" alt="Analyzing" loading="lazy">
+<figcaption>
+<h3>Analyzing</h3>
+<dl class="u-pair">
+<dt>문제</dt><dd><strong>대기 중 불안</strong> · 분석이 얼마나 남았는지 알 수 없음</dd>
+<dt>해결</dt><dd>분석 진행률을 %로 표시</dd>
+</dl>
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+
+<!-- ==================================================
+     RESULT DASHBOARD
+================================================== -->
+<section class="ui-design">
+<div class="container">
+<div class="section-title">
+    Result Dashboard
+</div>
+<h2>
+    10개 검사 항목을<br>한 화면에서 읽을 수 있도록 정리했습니다.
+</h2>
+<p class="overview-text">
+결과 화면은 수치를 읽는 영역과 비율을 보는 영역을 나누어, 많은 항목을 한 화면에서 읽을 수 있도록 정보 위계를 설계했습니다.
+</p>
+<dl class="u-pair u-dash-pair">
+<dt>문제</dt><dd><strong>많은 결과 항목</strong> · 10개 항목의 수치를 한 번에 보여주면 중요한 값을 파악하기 어려움</dd>
+<dt>해결</dt><dd>10개 항목을 수치 목록과 원형·막대 차트로 나눠 한 화면에 정리</dd>
+</dl>
+
+<div class="ui-image single-image u-dashboard">
+<img
+src="images/urine/final_ver_URINE_CHECKIT_Dashboard.png"
+alt="Result Dashboard">
+</div>
+
+</div>
+</section>
+
+<!-- ==================================================
+     REFLECTION
+================================================== -->
+<section class="overview u-reflection">
+<div class="container">
+<div class="section-title">
+    Reflection
+</div>
+<h2>
+    화면 하나보다<br>검사 전 과정의 흐름을 먼저 설계했습니다.
+</h2>
+<p class="overview-text">
+대기 시간이 있는 장비일수록 진행 상태를 보여주는 화면이 사용자의 신뢰에 영향을 준다는 점을 확인했습니다.<br>
+각 단계에서 지금 무엇을 해야 하는지, 기기가 무엇을 하고 있는지가 먼저 보이도록 정리한 프로젝트입니다.
+</p>
+</div>
+</section>
+
+<!-- ==================================================
+     FOOTER
+================================================== -->
+<footer>
+<div class="footer-title">
+    UX/UI Design
+</div>
+<div class="footer-link">
+    URINE CHECK-IT
+</div>
+<a href="../index.html" class="footer-back">
+    ← Back to Portfolio
+</a>
+</footer>
+<script src="../js/main.js"></script>
+</main>
+</body>
+</html>
