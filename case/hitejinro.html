@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>HITE JINRO | uxxxu.studio</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<meta name="description"
+content="HITE JINRO EBills Enterprise Workflow UI Redesign Case Study">
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+
+<style>
+/* HITE JINRO 전용 (이 페이지에만 적용) */
+.h-hero-band{background:radial-gradient(90% 120% at 12% 100%, rgba(70,130,100,.7) 0%, rgba(70,130,100,0) 60%), linear-gradient(135deg, #24604a 0%, #1d5440 45%, #163f30 100%);margin-top:90px;height:660px;box-sizing:border-box;overflow:hidden;padding:80px max(64px, calc((100% - 1152px) / 2)) 0;}
+.h-hero-band img{display:block;width:88%;max-width:1040px;height:auto;margin:0 0 0 auto;border-radius:10px 10px 0 0;box-shadow:0 30px 80px rgba(0,0,0,.35);}
+
+.u-problems{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;}
+.u-problem{padding-top:24px;border-top:1px solid #111;}
+.u-problem h3{font-size:22px;font-weight:700;line-height:1.35;letter-spacing:-.03em;margin:0 0 12px;}
+.u-problem p{font-size:16px;line-height:1.7;color:#666;margin:0;}
+.u-role{display:grid;grid-template-columns:200px 1fr;gap:36px;margin-top:64px;padding-top:24px;border-top:1px solid #ececec;}
+.u-role small{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#999;}
+.u-role p{font-size:18px;font-weight:600;line-height:1.6;margin:0;}
+
+.h-shot{margin:64px 0 0;}
+.h-shot img{display:block;width:100%;border-radius:12px;border:1px solid #ececec;}
+.h-shot figcaption{margin-top:16px;font-size:14px;color:#999;}
+
+.h-ba{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:64px;align-items:start;}
+.h-ba figure{margin:0;}
+.h-ba img{display:block;width:100%;aspect-ratio:1920/970;object-fit:cover;object-position:center top;box-sizing:border-box;border-radius:12px;border:1px solid #ececec;}
+.h-ba figcaption{margin-top:16px;}
+.h-ba h3{font-size:20px;font-weight:700;letter-spacing:-.03em;margin:0 0 8px;}
+.h-ba p{font-size:15px;line-height:1.7;color:#666;margin:0;}
+
+.u-flow{display:grid;grid-template-columns:1fr 1fr;gap:56px 32px;margin-top:64px;align-items:start;}
+.u-flow figure{margin:0;}
+.u-flow img{display:block;width:100%;border-radius:12px;border:1px solid #ececec;}
+.u-flow figcaption{margin-top:20px;}
+.u-flow h3{font-size:20px;font-weight:700;letter-spacing:-.03em;margin:0 0 12px;}
+.u-flow p{font-size:15px;line-height:1.7;color:#666;margin:0;}
+.h-flow-3{grid-template-columns:repeat(3,1fr);}
+/* Dashboard: 두 이미지 크기가 달라 같은 높이의 회색 프레임 안 가운데에 배치 */
+.h-dash img{box-sizing:border-box;aspect-ratio:4/3;object-fit:contain;background:#f3f4f3;padding:28px;border:0;}
+
+.u-pair{display:grid;grid-template-columns:40px 1fr;gap:6px 12px;margin:0;font-size:15px;line-height:1.6;}
+.u-pair dt{color:#999;}
+.u-pair dd{margin:0;color:#555;}
+.u-pair dd strong{color:#111;font-weight:600;}
+.u-reflection{padding-bottom:280px;}
+
+@media(max-width:980px){
+.hero{padding-bottom:0;}
+section{padding:64px 0;}
+.overview-text{margin-bottom:40px;}
+.u-reflection{padding-bottom:160px;}
+.h-hero-band{margin-top:56px;height:auto;padding:32px 0 0 26px;}
+.h-hero-band img{width:100%;border-radius:8px 0 0 0;}
+.u-problems{grid-template-columns:1fr;gap:0;}
+.u-problem{display:grid;grid-template-columns:104px 1fr;gap:16px;padding:20px 0;border-top:1px solid #e5e5e5;}
+.u-problem:first-child{border-top-color:#111;}
+.u-problem h3{font-size:17px;margin:0;}
+.u-problem p{font-size:15px;}
+.u-role{grid-template-columns:1fr;gap:10px;margin-top:40px;}
+.u-role p{font-size:16px;}
+.h-shot{margin-top:40px;}
+.h-ba{grid-template-columns:1fr;gap:40px;margin-top:40px;}
+.h-ba h3,.u-flow h3{font-size:17px;}
+.h-ba p,.u-flow p{font-size:14px;}
+.u-flow,.h-flow-3{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:26px;margin:40px -26px 0;padding:0 26px 8px;scrollbar-width:none;}
+.u-flow::-webkit-scrollbar{display:none;}
+.u-flow figure{flex:0 0 88%;scroll-snap-align:start;}
+.u-flow figcaption{margin-top:16px;}
+}
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<a href="../index.html" class="logo">
+    uxxxu.studio
+</a>
+
+<a href="../index.html"
+class="back">
+    ← Back to Portfolio
+</a>
+
+</header>
+
+
+<main>
+
+<!-- ==================================================
+     01. PROJECT
+================================================== -->
+<section class="hero">
+<div class="container">
+<div class="eyebrow">
+    B2B · ENTERPRISE SYSTEM
+</div>
+<h1>
+    HITE<br>JINRO
+</h1>
+<p class="subtitle">
+    전자전표 통합 시스템(EBills) UI 개편<br>Enterprise Workflow UI Redesign
+</p>
+<div class="project-info">
+<div>
+<small>Category</small>
+<strong><span>UX/UI Design</span><span>Enterprise System</span></strong>
+</div>
+<div>
+<small>Year</small>
+<strong>
+    2022
+</strong>
+</div>
+<div>
+<small>Tools</small>
+<strong><span>Figma</span><span>Adobe CC</span></strong>
+</div>
+<div>
+<small>Contribution</small>
+<strong><span>UX/UI 100%</span><span>Freelance</span></strong>
+</div>
+</div>
+</div>
+<div class="h-hero-band">
+<img src="images/hitejinro/01_main_type_02.jpg" alt="HITE JINRO EBills 메인 화면">
+</div>
+</section>
+
+<!-- ==================================================
+     02. OVERVIEW
+================================================== -->
+<section class="overview">
+<div class="container">
+<div class="section-title">
+    Overview
+</div>
+<h2>
+    흩어진 전표 업무를<br>하나의 메인과 같은 화면 규칙으로 정리했습니다.
+</h2>
+<p class="overview-text">
+ERP와 연동되는 하이트진로 사내 전자전표 시스템(EBills)의 UI 개편 프로젝트입니다.<br>
+전표처리, 품의서, 법인카드, 전자세금계산서 업무를 하나의 시스템에서 처리하는 1920×970 업무 환경을 대상으로,
+메인 대시보드와 업무 화면 전반을 다시 설계하고 개발 적용을 위한 화면·오브젝트 가이드를 제작했습니다.
+</p>
+<div class="u-problems">
+<div class="u-problem">
+<h3>제각각인 화면</h3>
+<p>화면마다 구성이 다르고, 입력폼이 1행 6컬럼으로 촘촘해 읽고 입력하기 어려움</p>
+</div>
+<div class="u-problem">
+<h3>보이지 않는 현황</h3>
+<p>처리해야 할 전표와 결재 현황을 보려면 메뉴를 하나씩 들어가야 함</p>
+</div>
+<div class="u-problem">
+<h3>복잡한 처리 단계</h3>
+<p>단계가 많은 전자세금계산서 업무는 흐름과 예외 경로를 파악하기 어려움</p>
+</div>
+</div>
+<div class="u-role">
+<small>My Role</small>
+<p>업무 흐름 분석 및 화면 구조 설계 · 메인 대시보드·전표 상태 요약 UI · 전자세금계산서 처리절차 시각화 · 업무 화면 레이아웃 3종 · 화면·오브젝트 가이드</p>
+</div>
+</div>
+</section>
+
+<!-- ==================================================
+     PROCESS
+================================================== -->
+<section class="ui-design">
+<div class="container">
+<div class="section-title">
+    Process
+</div>
+<h2>
+    기존 구조를 다듬는 안과<br>새 구조를 제안하는 안을 함께 검토했습니다.
+</h2>
+<p class="overview-text">
+고객사는 기존 레이아웃을 유지한 개선안과 새로운 구조의 개편안을 함께 보길 원했습니다.
+Type 1은 기존 레이아웃을 유지하며 색감과 폰트를 정리했고, Type 2는 화면 구조를 새로 잡고 입력폼을 1행 4컬럼으로 바꿔 정보 밀도를 조정했습니다.
+고객사는 Type 2를 선택했고, 이후 피드백을 반영해 배너 영역을 줄이고 메뉴를 위로 올려 업무 화면 영역을 넓혔습니다.
+</p>
+
+<div class="h-ba">
+<figure>
+<img src="images/hitejinro/before_system.png" alt="개편 전 화면" loading="lazy">
+<figcaption>
+<h3>Before</h3>
+<p>상단 메뉴와 조회조건, 목록이 같은 무게로 이어져 어디부터 봐야 할지 알기 어려운 구조</p>
+</figcaption>
+</figure>
+<figure>
+<img src="images/hitejinro/02_sub_02_ci_green.jpg" alt="개편 후 조회 화면" loading="lazy">
+<figcaption>
+<h3>After</h3>
+<p>좌측 메뉴와 탭으로 위치를 고정하고, 조회조건 배경을 그리드 헤더와 같은 계열로 맞춰 조회와 결과가 하나의 흐름으로 읽히도록 정리</p>
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+
+<!-- ==================================================
+     DASHBOARD
+================================================== -->
+<section class="ui-design">
+<div class="container">
+<div class="section-title">
+    Dashboard
+</div>
+<h2>
+    로그인하자마자<br>처리할 일이 보이도록 메인을 설계했습니다.
+</h2>
+<p class="overview-text">
+업무별 전표 상태를 메인에 모으고, 가장 단계가 많은 전자세금계산서 처리절차를 한 화면에 시각화했습니다.
+</p>
+
+<div class="u-flow h-dash">
+<figure>
+<img src="images/hitejinro/main_status_crop.jpg" alt="전표 상태 요약" loading="lazy">
+<figcaption>
+<h3>Status Summary</h3>
+<dl class="u-pair">
+<dt>문제</dt><dd><strong>보이지 않는 현황</strong> · 결재 현황을 보려면 메뉴를 하나씩 확인해야 함</dd>
+<dt>해결</dt><dd>전표처리·품의서·ERP 전표·전자세금계산서별로 입력중, 결재 요청 대기, 결재 요청중, 결재 진행중 건수를 요약하고 건수를 강조색으로 표시</dd>
+</dl>
+</figcaption>
+</figure>
+<figure>
+<img src="images/hitejinro/main_flow_crop.jpg" alt="전자세금계산서 처리절차" loading="lazy">
+<figcaption>
+<h3>Tax Invoice Flow</h3>
+<dl class="u-pair">
+<dt>문제</dt><dd><strong>복잡한 처리 단계</strong> · 다음 단계와 예외 경로를 파악하기 어려움</dd>
+<dt>해결</dt><dd>정표·대사 두 흐름으로 나눠 발행부터 최종승인까지 단계별로 표시하고, 부결 시 되돌아가는 경로까지 함께 표시</dd>
+</dl>
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+
+<!-- ==================================================
+     SCREEN LAYOUT
+================================================== -->
+<section class="ui-design">
+<div class="container">
+<div class="section-title">
+    Screen Layout
+</div>
+<h2>
+    어떤 메뉴에 들어가도<br>같은 규칙으로 읽히는 화면을 만들었습니다.
+</h2>
+<p class="overview-text">
+<strong>제각각인 화면</strong> 문제를 해결하기 위해 업무 화면을 조회형, 조회·입력형, 입력형 세 가지 레이아웃으로 정리했습니다.
+</p>
+
+<div class="u-flow h-flow-3">
+<figure>
+<img src="images/hitejinro/02_sub_02_ci_green.jpg" alt="조회형" loading="lazy">
+<figcaption>
+<h3>List</h3>
+<p>상단 조회조건과 하단 그리드. 진행상태 컬럼으로 목록에서 바로 상태를 확인하고, 하단에 전표처리·전표이관 액션 배치</p>
+</figcaption>
+</figure>
+<figure>
+<img src="images/hitejinro/02_sub_03_form.jpg" alt="조회·입력형" loading="lazy">
+<figcaption>
+<h3>List · Form</h3>
+<p>상단 그리드에서 항목을 선택하면 같은 화면 아래 입력폼에서 기본사항을 바로 입력</p>
+</figcaption>
+</figure>
+<figure>
+<img src="images/hitejinro/02_sub_04_form.jpg" alt="입력형" loading="lazy">
+<figcaption>
+<h3>Form</h3>
+<p>입력폼을 1행 6컬럼에서 4컬럼으로 조정하고, 검색·초기화 같은 보조 버튼은 입력 필드 옆에 배치</p>
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+
+<!-- ==================================================
+     DESIGN CONCEPT
+================================================== -->
+<section class="ui-design">
+<div class="container">
+<div class="section-title">
+    Design Concept
+</div>
+<h2>
+    오래 보는 업무 화면에<br>브랜드의 그린을 차분하게 담았습니다.
+</h2>
+<p class="overview-text">
+기존 시스템의 딱딱하고 복잡한 분위기를 바꾸기 위해, 하이트진로의 대표 제품인 테라의 브랜드 컬러를 메인 UI에 적용했습니다.
+그린 계열은 브랜드 정체성을 담으면서 장시간 업무 화면을 보는 사용자의 시각적 피로를 줄이는 색이고,
+화면 전체는 장식을 덜어내고 정보가 먼저 읽히도록 구성했습니다. 메인과 서브 화면 3종의 가이드, 테이블·탭·조회 영역을 정리한 오브젝트 가이드도 함께 제작해 개발팀이 같은 기준으로 구현할 수 있도록 했습니다.
+</p>
+
+<figure class="h-shot">
+<img src="images/hitejinro/01_main_type_yellow.jpg" alt="메인 대안 시안" loading="lazy">
+<figcaption>메인 대안 시안 — 배너 컬러를 달리해 비교한 안</figcaption>
+</figure>
+</div>
+</section>
+
+<!-- ==================================================
+     RESULT
+================================================== -->
+<section class="overview u-reflection">
+<div class="container">
+<div class="section-title">
+    Result
+</div>
+<h2>
+    실제 전자전표 시스템에 적용되었습니다.
+</h2>
+<p class="overview-text">
+개편된 화면은 실제 시스템에 적용되었고, 그린 계열의 차분한 화면과 정리된 업무 흐름에 대해 내부 사용자의 만족도가 높았습니다.<br>
+전표처리, 품의서, 법인카드, 전자세금계산서로 흩어져 있던 업무를 하나의 메인과 같은 화면 규칙 안에서 처리할 수 있게 된 프로젝트입니다.
+</p>
+</div>
+</section>
+
+<!-- ==================================================
+     FOOTER
+================================================== -->
+<footer>
+<div class="footer-title">
+    UX/UI Design
+</div>
+<div class="footer-link">
+    HITE JINRO
+</div>
+<a href="../index.html" class="footer-back">
+    ← Back to Portfolio
+</a>
+</footer>
+<script src="../js/main.js"></script>
+</main>
+</body>
+</html>

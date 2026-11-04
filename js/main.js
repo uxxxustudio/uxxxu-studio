@@ -328,6 +328,34 @@ function initPortfolioHoverThumbnail() {
         project.appendChild(img);
     });
 
+    /* 모바일: 화면 가운데 띠를 지나는 줄만 썸네일을 열어 PC 호버 느낌을 스크롤로 대신함 */
+    const mobileQuery = window.matchMedia("(max-width: 767px)");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!reduceMotion && "IntersectionObserver" in window) {
+        const centerObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                entry.target.classList.toggle("is-active", entry.isIntersecting);
+            });
+        }, { rootMargin: "-45% 0px -45% 0px" });
+
+        const syncScrollThumb = () => {
+            if (mobileQuery.matches) {
+                grid.classList.add("is-scroll-thumb");
+                projects.forEach((project) => centerObserver.observe(project));
+            } else {
+                grid.classList.remove("is-scroll-thumb");
+                projects.forEach((project) => {
+                    centerObserver.unobserve(project);
+                    project.classList.remove("is-active");
+                });
+            }
+        };
+
+        syncScrollThumb();
+        mobileQuery.addEventListener("change", syncScrollThumb);
+    }
+
     projects.forEach((project) => {
 
         project.addEventListener("mouseenter", () => {
