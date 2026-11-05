@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>판교박물관 | uxxxu.studio</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<meta name="description"
+content="판교박물관 어린이 유물 학습 체험 게임 '판교 RUN', '유물 PANG' UX/UI Case Study">
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+
+<style>
+
+/* ==================================================
+   PAGE-LOCAL : 판교박물관
+   aiethics.html 페이지 로컬 스타일 값 재사용
+   (게임 화면 비율 1280x1024 → 5:4 만 다름)
+   라벨(eyebrow/section-title) 없는 버전 테스트 - 판교에만 적용
+================================================== */
+
+.hero h1,
+.overview h2,
+.problem-solving h2,
+.ui-design h2,
+.overview-text,
+.problem-item h3,
+.problem-item p,
+.pg-row p{
+    word-break:keep-all;
+}
+
+.hero .hero-image img{
+    display:block;
+    width:100%;
+    height:auto;
+}
+
+.ui-design h2{
+    font-size:clamp(32px,3.4vw,42px);
+    font-weight:800;
+    line-height:1.25;
+    letter-spacing:-.03em;
+    max-width:900px;
+    margin-bottom:24px;
+}
+
+.ui-design h2 span{
+    display:inline-block;
+    margin-left:10px;
+    font-size:18px;
+    font-weight:400;
+    letter-spacing:-.02em;
+    color:#888;
+}
+
+.ui-design .overview-text{
+    font-size:18px;
+    line-height:1.8;
+    margin-bottom:56px;
+}
+
+.ui-design .overview-text.pg-sub{
+    margin:80px 0 0;
+}
+
+/* 단계별 난이도 : 판 크기를 점 그리드로 시각화 */
+.pg-stages{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    column-gap:28px;
+    border-top:1px solid #111;
+}
+
+.pg-stage{
+    padding:28px 0 32px;
+}
+
+.pg-stage h3{
+    font-size:18px;
+    font-weight:700;
+    letter-spacing:-.02em;
+    color:#111;
+}
+
+.pg-board-wrap{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:300px;          /* 가장 큰 판(7x6, 260px) + 여백 20px x2 — 세 박스 동일 크기 */
+    max-width:100%;
+    height:262px;         /* 7x6 판 높이 222px + 여백 20px x2 */
+    margin:24px 0;
+    padding:20px;
+    border-radius:20px;
+    background:#8a6640;   /* 게임판 흙색 계열 (블록 대비를 위해 어둡게) */
+}
+
+.pg-board{
+    display:grid;
+    gap:6px;
+    width:calc(var(--cols) * 38px - 6px);
+    max-width:100%;
+}
+
+.pg-board i{
+    display:block;
+    aspect-ratio:1;
+    padding:12%;
+    border-radius:6px;
+    background:rgba(255,248,236,.6);
+    transition:transform .3s cubic-bezier(.2,.7,.2,1), opacity .25s ease, box-shadow .2s ease;
+}
+
+/* 매칭 데모 모션 */
+.pg-board i.is-match{
+    box-shadow:0 0 0 2px #4caf50, 0 0 10px rgba(76,175,80,.55);
+}
+
+.pg-board i.is-pop{
+    transform:scale(.2);
+    opacity:0;
+}
+
+.pg-board i.is-drop{
+    transform:translateY(-14px);
+    opacity:0;
+    transition:none;
+}
+
+@media (prefers-reduced-motion: reduce){
+    .pg-board i{ transition:none; }
+}
+
+.pg-board img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+/* 판교 RUN 수집 슬롯 데모 */
+.pg-collect{
+    display:grid;
+    grid-template-columns:repeat(6,minmax(0,1fr));
+    gap:16px;
+    margin-top:30px;
+    padding:28px;
+    border-radius:20px;
+    background:#8a6640;
+}
+
+.pg-slot{
+    text-align:center;
+}
+
+.pg-slot i{
+    position:relative;
+    display:block;
+    aspect-ratio:1;
+    max-width:110px;
+    margin:0 auto;
+    border-radius:12px;
+    background:rgba(255,248,236,.16);
+    transition:background .3s ease, box-shadow .3s ease;
+}
+
+.pg-slot i::before{
+    content:"?";
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    font-weight:800;
+    font-style:normal;
+    color:rgba(255,248,236,.55);
+    transition:opacity .2s ease;
+}
+
+.pg-slot img{
+    position:absolute;
+    inset:12%;
+    width:76%;
+    height:76%;
+    object-fit:contain;
+    opacity:0;
+    transform:scale(.4);
+    transition:transform .4s cubic-bezier(.2,.7,.2,1), opacity .25s ease;
+}
+
+.pg-slot.is-on i{
+    background:rgba(255,248,236,.6);
+    box-shadow:0 0 0 2px #4caf50, 0 0 12px rgba(76,175,80,.5);
+}
+
+.pg-slot.is-on.is-settled i{
+    box-shadow:none;
+}
+
+.pg-slot.is-on i::before{ opacity:0; }
+
+.pg-slot.is-on img{
+    opacity:1;
+    transform:scale(1);
+}
+
+.pg-slot strong{
+    display:block;
+    margin-top:12px;
+    font-size:14px;
+    font-weight:600;
+    line-height:1.4;
+    letter-spacing:-.02em;
+    color:#fff;
+    word-break:keep-all;
+}
+
+.pg-slot small{
+    display:block;
+    margin-top:2px;
+    font-size:13px;
+    letter-spacing:-.02em;
+    color:rgba(255,255,255,.6);
+}
+
+/* 스토리보드 흐름 */
+.pg-flow{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:28px 16px;
+    margin-top:30px;
+}
+
+.pg-flow figure{
+    margin:0;
+}
+
+.pg-flow div{
+    aspect-ratio:4 / 3;
+    overflow:hidden;
+    border-radius:12px;
+    border:1px solid #ececec;
+}
+
+.pg-flow img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.pg-flow figcaption{
+    margin-top:10px;
+    font-size:13px;
+    letter-spacing:-.02em;
+    color:#888;
+}
+
+.pg-flow figcaption b{
+    font-weight:600;
+    color:#111;
+}
+
+.pg-stage p{
+    font-size:15px;
+    line-height:1.6;
+    letter-spacing:-.02em;
+    color:#666;
+}
+
+.pg-stage p strong{
+    font-weight:600;
+    color:#111;
+}
+
+.pg-rows{
+    margin-top:56px;
+    border-top:1px solid #ececec;
+}
+
+.pg-row{
+    display:grid;
+    grid-template-columns:200px minmax(0,1fr);
+    gap:28px;
+    padding:28px 0;
+    border-bottom:1px solid #ececec;
+}
+
+.pg-row span{
+    font-size:15px;
+    font-weight:600;
+    line-height:1.6;
+    letter-spacing:-.02em;
+    color:#111;
+}
+
+.pg-row p{
+    font-size:15px;
+    line-height:1.6;
+    letter-spacing:-.02em;
+    color:#666;
+}
+
+.pg-shots{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:28px;
+    margin-top:30px;
+}
+
+.pg-shot{
+    margin:0;
+}
+
+.pg-shot div{
+    aspect-ratio:5 / 4;
+    overflow:hidden;
+    border-radius:20px;
+    border:1px solid #ececec;
+    background:#fff;
+}
+
+.pg-shot img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* 스토리보드 → 최종 비교 : 같은 크기 2열 + 변경 내용 */
+.pg-compare{
+    margin-top:72px;
+    padding-top:32px;
+    border-top:1px solid #ececec;
+}
+
+.pg-flow + .pg-compare{
+    margin-top:80px;
+}
+
+.pg-compare h3{
+    font-size:20px;
+    font-weight:700;
+    letter-spacing:-.02em;
+    color:#111;
+}
+
+.pg-compare .pg-shots{
+    margin-top:20px;
+}
+
+.pg-compare ul{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:0 28px;
+    margin-top:20px;
+    list-style:none;
+}
+
+.pg-compare li{
+    display:grid;
+    grid-template-columns:80px minmax(0,1fr);
+    gap:12px;
+    padding:14px 0;
+    border-top:1px solid #ececec;
+    font-size:15px;
+    line-height:1.5;
+    letter-spacing:-.02em;
+    color:#666;
+    word-break:keep-all;
+}
+
+.pg-compare li b{
+    font-weight:600;
+    color:#111;
+}
+
+/* After Play : 유물 확인 화면 + 설명 2열 */
+.pg-after{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:28px;
+    align-items:center;
+    margin-top:30px;
+}
+
+.pg-after .pg-rows{
+    margin-top:0;
+}
+
+.pg-after .pg-row{
+    grid-template-columns:100px minmax(0,1fr);
+    gap:16px;
+}
+
+.pg-shot figcaption{
+    margin-top:12px;
+    font-size:13px;
+    letter-spacing:-.02em;
+    color:#888;
+}
+
+@media(max-width:980px){
+
+    .pg-row{
+        grid-template-columns:1fr;
+        gap:8px;
+        padding:22px 0;
+    }
+
+    .pg-shots{
+        grid-template-columns:1fr;
+        gap:16px;
+    }
+
+    .pg-stages{
+        grid-template-columns:1fr;
+    }
+
+    .pg-collect{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        padding:20px;
+        gap:20px 12px;
+    }
+
+    .pg-flow{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .pg-compare ul{
+        grid-template-columns:1fr;
+    }
+
+    .pg-after{
+        grid-template-columns:1fr;
+    }
+
+    .pg-board-wrap{
+        width:100%;
+        height:auto;
+        min-height:0;
+    }
+
+    .pg-stage{
+        padding:24px 0 28px;
+        border-bottom:1px solid #ececec;
+    }
+
+}
+
+
+/* ==================================================
+   간격 통일 (판교 페이지 한정)
+   - 섹션 사이 200px (위아래 100px), 마지막 섹션은 푸터 앞 여유 확보
+   - 본문 문단 → 콘텐츠 48px, 보조 문단 앞 80px / 뒤 40px
+================================================== */
+
+main .problem-solving{
+    padding-top:100px;
+}
+
+main section.outcome{
+    padding-bottom:260px;
+}
+
+main .overview-text,
+main .problem-solving .overview-text,
+main .ui-design .overview-text{
+    margin-bottom:48px;
+}
+
+main .overview-text.pg-sub,
+main .ui-design .overview-text.pg-sub{
+    margin:80px 0 40px;
+}
+
+.pg-shots,
+.pg-rows,
+.pg-collect,
+.pg-flow,
+.pg-after{
+    margin-top:0;
+}
+
+.pg-compare,
+.pg-flow + .pg-compare,
+.pg-stages + .pg-shots{
+    margin-top:80px;
+}
+
+@media(max-width:980px){
+
+    main section.outcome{
+        padding-bottom:180px;
+    }
+
+    main .overview-text.pg-sub,
+    main .ui-design .overview-text.pg-sub{
+        margin:56px 0 32px;
+    }
+
+    .pg-compare,
+    .pg-flow + .pg-compare,
+    .pg-stages + .pg-shots{
+        margin-top:56px;
+    }
+
+}
+
+
+/* ==================================================
+   레이아웃 보정 2 : 세로로 길게 늘어지지 않게
+================================================== */
+
+/* 스토리보드 : 가로 슬라이드 */
+.pg-slider{
+    position:relative;
+}
+
+.pg-slider-nav{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+    margin-bottom:16px;
+}
+
+.pg-slider-nav button{
+    width:40px;
+    height:40px;
+    border-radius:999px;
+    border:1px solid #111;
+    background:#fff;
+    color:#111;
+    font-size:15px;
+    cursor:pointer;
+    transition:background .2s ease, color .2s ease, opacity .2s ease;
+}
+
+.pg-slider-nav button:hover{
+    background:#111;
+    color:#fff;
+}
+
+.pg-slider-nav button:disabled{
+    opacity:.25;
+    cursor:default;
+    background:#fff;
+    color:#111;
+}
+
+.pg-slider .pg-flow{
+    display:grid;
+    grid-template-columns:none;
+    grid-auto-flow:column;
+    grid-auto-columns:calc((100% - 32px) / 3);
+    gap:16px;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    scroll-behavior:smooth;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+}
+
+.pg-slider .pg-flow::-webkit-scrollbar{
+    display:none;
+}
+
+.pg-slider .pg-flow figure{
+    scroll-snap-align:start;
+}
+
+/* 플레이 이후 · 개요 표 : 촘촘한 목록 */
+.pg-after{
+    align-items:start;
+}
+
+.pg-after .pg-row,
+.overview .pg-row{
+    padding:16px 0;
+}
+
+@media(max-width:980px){
+
+    /* 이미지 2열 유지 */
+    .pg-shots{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:12px;
+    }
+
+    .pg-shot figcaption{
+        margin-top:8px;
+        font-size:12px;
+    }
+
+    .pg-shot div{
+        border-radius:12px;
+    }
+
+    /* 단계별 판 3열 유지 (판이 칸 폭에 맞춰 축소) */
+    .pg-stages{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        column-gap:10px;
+    }
+
+    .pg-stage,
+    .pg-stage:first-child,
+    .pg-stage:last-child{
+        padding:20px 0 0;
+        border-bottom:0;
+    }
+
+    .pg-stage h3{
+        font-size:15px;
+    }
+
+    .pg-board-wrap{
+        width:100%;
+        height:auto;
+        aspect-ratio:1;
+        margin:12px 0;
+        padding:8px;
+        border-radius:12px;
+    }
+
+    .pg-board{
+        gap:3px;
+    }
+
+    .pg-board i{
+        border-radius:3px;
+        padding:8%;
+    }
+
+    .pg-stage p{
+        font-size:12px;
+        line-height:1.5;
+    }
+
+    /* 스토리보드 슬라이드 : 2장씩 */
+    .pg-slider .pg-flow{
+        grid-auto-columns:calc((100% - 12px) / 2);
+        gap:12px;
+    }
+
+    .pg-slider-nav button{
+        width:34px;
+        height:34px;
+        font-size:13px;
+    }
+
+    /* 바꾼 점 2열 */
+    .pg-compare ul{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:0 12px;
+    }
+
+    .pg-compare li{
+        grid-template-columns:1fr;
+        gap:2px;
+        padding:12px 0;
+        font-size:13px;
+    }
+
+    /* 플레이 이후 : 이미지 위, 목록 3열 */
+    .pg-after{
+        grid-template-columns:1fr;
+        gap:16px;
+    }
+
+    .pg-after .pg-rows{
+        display:grid;
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        gap:0 12px;
+        border-top:0;
+    }
+
+    .pg-after .pg-row{
+        grid-template-columns:1fr;
+        gap:4px;
+        padding:12px 0;
+        border-top:1px solid #ececec;
+        border-bottom:0;
+    }
+
+    .pg-after .pg-row span,
+    .overview .pg-row span{
+        font-size:13px;
+    }
+
+    .pg-after .pg-row p{
+        font-size:12px;
+        line-height:1.5;
+    }
+
+    /* 개요 표 2열 */
+    .overview .pg-rows{
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:0 12px;
+        border-top:0;
+    }
+
+    .overview .pg-row{
+        grid-template-columns:1fr;
+        gap:4px;
+        padding:14px 0;
+        border-top:1px solid #ececec;
+        border-bottom:0;
+    }
+
+    .overview .pg-row p{
+        font-size:13px;
+        line-height:1.5;
+    }
+
+}
+
+
+@media(max-width:980px){
+
+    /* 수집 슬롯 : 한 줄 6칸으로 축소 (위 게임 화면보다 작게) */
+    .pg-collect{
+        grid-template-columns:repeat(6,minmax(0,1fr));
+        gap:6px;
+        padding:14px 12px;
+        border-radius:12px;
+    }
+
+    .pg-slot i{
+        border-radius:6px;
+    }
+
+    .pg-slot i::before{
+        font-size:16px;
+    }
+
+    .pg-slot strong{
+        margin-top:6px;
+        font-size:10px;
+        line-height:1.3;
+    }
+
+    .pg-slot small{
+        margin-top:1px;
+        font-size:9px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<a href="../index.html" class="logo">
+    uxxxu.studio
+</a>
+
+<a href="../projects.html"
+class="back">
+    ← Back to Portfolio
+</a>
+
+</header>
+
+
+<main>
+
+
+<!-- ==================================================
+     PROJECT
+================================================== -->
+
+<section class="hero">
+
+<div class="container">
+
+<h1>
+    판교박물관
+</h1>
+
+
+<p class="subtitle">
+    판교 출토 유물 학습 체험 게임
+    UX/UI 디자인
+</p>
+
+
+<div class="project-info">
+
+
+<div>
+
+<small>Category</small>
+
+<strong><span>Exhibition</span><span>Game UX/UI</span></strong>
+
+</div>
+
+
+<div>
+
+<small>Year</small>
+
+<strong>
+    2025
+</strong>
+
+</div>
+
+
+<div>
+
+<small>Tools</small>
+
+<strong><span>ChatGPT</span></strong>
+
+</div>
+
+
+<div>
+
+<small>My Role</small>
+
+<strong><span>UX/UI Design</span><span>Game Concept</span><span>Character</span><span>AI Visual</span></strong>
+
+</div>
+
+
+</div>
+
+
+<div class="hero-image">
+
+<img
+src="images/pangyo/run_title.webp"
+alt="판교 RUN 타이틀 화면">
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     OVERVIEW
+================================================== -->
+
+<section class="overview">
+
+<div class="container">
+
+
+<h2>
+    같은 유물을<br>
+    두 가지 놀이로 만나게 했습니다.
+</h2>
+
+
+<p class="overview-text">
+
+판교 지역에서 출토된 유물을 어린이가 놀이로 익힐 수 있도록 새로 제작한 체험형 게임 콘텐츠입니다.<br>
+
+몸으로 달리며 모으는 러닝게임 '판교 RUN'과 눈으로 구분해 맞추는 퍼즐게임 '유물 PANG',
+두 가지 방식으로 같은 유물을 반복해서 만나도록 설계했습니다.
+
+</p>
+
+
+<div class="pg-rows">
+
+<div class="pg-row">
+    <span>대상</span>
+    <p>유치원생부터 초등학생. 여러 관람객이 차례로 이용하는 박물관 체험 공간</p>
+</div>
+
+<div class="pg-row">
+    <span>입력 방식</span>
+    <p>1280×1024 터치 키오스크</p>
+</div>
+
+<div class="pg-row">
+    <span>게임</span>
+    <p>판교 RUN (러닝·수집) · 유물 PANG (3매치 퍼즐)</p>
+</div>
+
+<div class="pg-row">
+    <span>유물</span>
+    <p>박물관에서 받은 판교 출토 유물 18점(시대·재질·크기·설명)을 두 게임에 나눠 사용.
+    판교 RUN은 빗살무늬토기, 반달돌칼, 철마, 청동거울, 청자과형주자, 청자상감운학문매병 6점</p>
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     DESIGN CONCEPT
+================================================== -->
+
+<section class="problem-solving">
+
+<div class="container">
+
+<h2>
+    기획을 화면으로 옮기며<br>
+    유물이 남도록 다듬었습니다.
+</h2>
+
+<p class="overview-text">
+
+전달받은 기획 스토리보드를 실제 게임 화면으로 디자인하면서,
+어린이 관람객에게 유물이 정확히 전달되도록 기획서와 다른 부분은 직접 판단해 바꿨습니다.
+
+</p>
+
+
+<div class="problem-flow">
+
+
+<div class="problem-item">
+
+<h3>
+    자리표시 도형을 실제 유물로
+</h3>
+
+<p>
+    스토리보드의 유물은 같은 모양의 회색 항아리였습니다.
+    박물관에서 받은 유물 목록과 사진을 바탕으로 유물 하나하나를 일러스트로 만들어,
+    아이들이 게임 속에서 실제 유물의 형태와 문양을 보게 했습니다.
+</p>
+
+</div>
+
+
+<div class="problem-item">
+
+<h3>
+    피해야 할 것은 유물과 확실히 다르게
+</h3>
+
+<p>
+    기획서의 장애물은 무너진 기와와 유적지 기둥, 함정은 바닥 균열이었습니다.
+    이를 두더지와 구멍으로 바꿔, 모아야 할 유물과 피해야 할 장애물이 한눈에 구분되게 했습니다.
+</p>
+
+</div>
+
+
+<div class="problem-item">
+
+<h3>
+    결과 화면은 유물 카드로
+</h3>
+
+<p>
+    스토리보드의 결과 화면은 획득률 원형 그래프와 정보 칸이었습니다.
+    최종 화면은 유물마다 시대·재질·크기와 설명을 담은 카드로 바꿔,
+    방금 모은 유물을 한 장씩 다시 읽을 수 있게 했습니다.
+</p>
+
+</div>
+
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     GAME 1
+================================================== -->
+
+<section class="ui-design">
+
+<div class="container">
+
+
+<h2>
+    판교 RUN <span>러닝게임</span>
+</h2>
+
+
+<p class="overview-text">
+
+고고학자 캐릭터가 유적지를 달리며 양옆으로 움직여 유물을 모으는 러닝게임입니다.
+라인을 고정하지 않아 어린 아이도 정확한 위치를 맞추지 않고 자유롭게 조작할 수 있습니다.<br>
+
+화면 하단에는 모아야 할 유물 6칸을 물음표로 비워 두고,
+유물을 얻으면 획득 이펙트가 해당 칸의 게이지로 이어지도록 연출해
+무엇을 모으고 있는지 플레이 내내 보이게 했습니다.
+구멍과 두더지에 부딪히면 하트가 하나 줄어듭니다.
+
+</p>
+
+
+<div class="pg-shots">
+
+<figure class="pg-shot">
+<div><img src="images/pangyo/run_title.webp"
+alt="판교 RUN 타이틀 화면" loading="lazy"></div>
+<figcaption>타이틀</figcaption>
+</figure>
+
+<figure class="pg-shot">
+<div><img src="images/pangyo/run_play.webp"
+alt="판교 RUN 플레이 화면 - 하단 유물 수집 슬롯" loading="lazy"></div>
+<figcaption>플레이 · 하단 유물 수집 슬롯</figcaption>
+</figure>
+
+</div>
+
+
+<p class="overview-text pg-sub">
+
+모아야 할 유물은 신석기부터 조선까지 6점입니다.
+플레이가 끝나면 모은 유물의 시대·재질·크기와 설명을 유물 확인 화면에서 다시 봅니다.
+
+</p>
+
+
+<div class="pg-collect" aria-label="판교 RUN 수집 유물 6점">
+<div class="pg-slot"><i><img src="images/pangyo/r_pot.webp" alt=""></i><strong>빗살무늬<wbr>토기</strong><small>신석기</small></div>
+<div class="pg-slot"><i><img src="images/pangyo/r_knife.webp" alt=""></i><strong>반달돌칼</strong><small>청동기</small></div>
+<div class="pg-slot"><i><img src="images/pangyo/r_mirror.webp" alt=""></i><strong>청동거울</strong><small>고려</small></div>
+<div class="pg-slot"><i><img src="images/pangyo/r_ewer.webp" alt=""></i><strong>청자<wbr>과형주자</strong><small>고려</small></div>
+<div class="pg-slot"><i><img src="images/pangyo/r_vase.webp" alt=""></i><strong>청자상감<wbr>운학문매병</strong><small>고려</small></div>
+<div class="pg-slot"><i><img src="images/pangyo/r_horse.webp" alt=""></i><strong>철마</strong><small>조선</small></div>
+</div>
+
+
+
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     STORYBOARD
+================================================== -->
+
+<section class="ui-design">
+
+<div class="container">
+
+
+<h2>
+    스토리보드를<br>
+    게임 화면으로
+</h2>
+
+
+<p class="overview-text">
+
+판교 RUN은 타이틀부터 랭킹까지 화면 흐름이 정리된 기획 스토리보드를 전달받아 시작했습니다.
+회색 와이어프레임으로 된 화면마다 배경, 캐릭터, 유물, UI를 디자인해 실제 게임 화면으로 만들었고,
+기획서와 다른 부분은 디자인 단계에서 직접 판단해 바꿨습니다.
+
+</p>
+
+
+<div class="pg-slider">
+
+<div class="pg-slider-nav">
+    <button type="button" class="pg-prev" aria-label="이전 화면">←</button>
+    <button type="button" class="pg-next" aria-label="다음 화면">→</button>
+</div>
+
+<div class="pg-flow">
+
+<figure>
+<div><img src="images/pangyo/sb_01_title.webp" alt="스토리보드 - 타이틀 화면" loading="lazy"></div>
+<figcaption><b>타이틀</b> · 터치로 시작</figcaption>
+</figure>
+
+<figure>
+<div><img src="images/pangyo/sb_02_guide.webp" alt="스토리보드 - 게임 방법 화면" loading="lazy"></div>
+<figcaption><b>게임 방법</b> · 3컷 그림 설명</figcaption>
+</figure>
+
+<figure>
+<div><img src="images/pangyo/sb_03_start.webp" alt="스토리보드 - 시작 화면" loading="lazy"></div>
+<figcaption><b>시작</b> · 3초 카운트</figcaption>
+</figure>
+
+<figure>
+<div><img src="images/pangyo/sb_04_play.webp" alt="스토리보드 - 플레이 화면" loading="lazy"></div>
+<figcaption><b>플레이</b> · 유물 수집 · 장애물 회피</figcaption>
+</figure>
+
+<figure>
+<div><img src="images/pangyo/sb_05_over.webp" alt="스토리보드 - 게임 오버 화면" loading="lazy"></div>
+<figcaption><b>게임 오버</b> · 하트 소진 또는 시간 종료</figcaption>
+</figure>
+
+<figure>
+<div><img src="images/pangyo/sb_06_collect.webp" alt="스토리보드 - 유물 확인 화면" loading="lazy"></div>
+<figcaption><b>유물 확인</b> · 획득률 · 100% 강조</figcaption>
+</figure>
+
+<figure>
+<div><img src="images/pangyo/sb_07_rank.webp" alt="스토리보드 - 랭킹 화면" loading="lazy"></div>
+<figcaption><b>랭킹</b> · 이니셜 · 방명록 입력</figcaption>
+</figure>
+
+</div>
+
+</div>
+
+
+<div class="pg-compare">
+
+<h3>스토리보드에서 바꾼 점</h3>
+
+<ul>
+    <li><b>배경</b>도시 블록 → 발굴 현장의 들판</li>
+    <li><b>장애물</b>기와·균열 → 두더지·구멍</li>
+    <li><b>유물</b>노란 원 → 실제 유물 일러스트</li>
+    <li><b>결과 화면</b>원형 그래프·빈 정보 칸 → 시대·재질·크기와 설명을 담은 유물 카드</li>
+</ul>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     GAME 2
+================================================== -->
+
+<section class="ui-design">
+
+<div class="container">
+
+
+<h2>
+    유물 PANG <span>퍼즐게임</span>
+</h2>
+
+
+<p class="overview-text">
+
+유물 블록을 드래그해 같은 유물 3개 이상을 일직선으로 맞추는 퍼즐입니다.
+한 번에 많이 깰수록 제한 시간이 늘어나 반복 플레이를 유도합니다.<br>
+
+단계가 오를수록 유물 종류와 판 크기가 함께 늘어납니다.
+작은 블록 안에서도 유물이 바로 구분되도록, 각 유물의 가장 강한 형태 하나를 남기는 방향으로 단순화했습니다.
+청화백자접시는 壽 자, 청동거울은 꽃 모양 외곽선, 철마는 말의 실루엣입니다.
+
+</p>
+
+
+<div class="pg-stages">
+
+<div class="pg-stage">
+    <h3>1단계</h3>
+    <div class="pg-board-wrap"><div class="pg-board" data-cols="6" data-rows="5" data-types="3" aria-hidden="true"></div></div>
+    <p><strong>유물 3종</strong> · 6×5 판<br>청화백자접시 · 청동거울 · 철마</p>
+</div>
+
+<div class="pg-stage">
+    <h3>2단계</h3>
+    <div class="pg-board-wrap"><div class="pg-board" data-cols="6" data-rows="5" data-types="4" aria-hidden="true"></div></div>
+    <p><strong>유물 4종</strong> · 6×5 판<br>+ 빗살무늬토기</p>
+</div>
+
+<div class="pg-stage">
+    <h3>3단계</h3>
+    <div class="pg-board-wrap"><div class="pg-board" data-cols="7" data-rows="6" data-types="5" aria-hidden="true"></div></div>
+    <p><strong>유물 5종</strong> · 7×6 판<br>+ 토우</p>
+</div>
+
+</div>
+
+
+<div class="pg-shots">
+
+<figure class="pg-shot">
+<div><img src="images/pangyo/pang_title.webp"
+alt="유물 PANG 타이틀 화면" loading="lazy"></div>
+<figcaption>타이틀</figcaption>
+</figure>
+
+<figure class="pg-shot">
+<div><img src="images/pangyo/pang_onsite.webp"
+alt="박물관에 설치된 유물 PANG 3단계 플레이 화면" loading="lazy"></div>
+<figcaption>현장 설치 · 3단계 플레이</figcaption>
+</figure>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     ITERATION
+================================================== -->
+
+<section class="ui-design">
+
+<div class="container">
+
+
+<h2>
+    컨셉보다<br>
+    알아보기 쉬운 쪽을 택했습니다.
+</h2>
+
+
+<p class="overview-text">
+
+블록은 처음에 발굴 현장의 느낌을 주려고 흙에 파묻힌 듯한 음영으로 표현했습니다.
+이후 내부 회의에서 유물 카드가 더 명확하게 보여야 한다는 결론을 내려,
+블록을 경계가 분명한 사각 타일로 바꾸고 선택 상태를 초록 하이라이트로 구분해 최종안을 완성했습니다.
+
+</p>
+
+
+<div class="pg-shots">
+
+<figure class="pg-shot">
+<div><img src="images/pangyo/pang_ver1.webp"
+alt="유물 PANG 초기안 - 음영으로 표현한 블록" loading="lazy"></div>
+<figcaption>초기안 · 발굴 느낌의 음영 블록</figcaption>
+</figure>
+
+<figure class="pg-shot">
+<div><img src="images/pangyo/pang_ver2.webp"
+alt="유물 PANG 최종안 - 경계가 분명한 사각 타일" loading="lazy"></div>
+<figcaption>최종안 · 경계가 분명한 사각 타일</figcaption>
+</figure>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     AFTER PLAY
+================================================== -->
+
+<section class="ui-design">
+
+<div class="container">
+
+
+<h2>
+    게임이 끝난 뒤에<br>
+    유물을 다시 만납니다.
+</h2>
+
+
+<p class="overview-text">
+
+게임이 끝나면 모은 유물을 카드로 넘겨 보며 시대·재질·크기와 설명을 확인합니다.
+이어서 랭킹을 남기고, 잠시 뒤 타이틀로 돌아가 다음 관람객이 바로 시작합니다.
+
+</p>
+
+
+<div class="pg-after">
+
+<figure class="pg-shot">
+<div><img src="images/pangyo/run_collect.webp"
+alt="판교 RUN 유물 확인 화면 - 철마, 청동거울, 청화백자접시" loading="lazy"></div>
+<figcaption>판교 RUN · 유물 확인</figcaption>
+</figure>
+
+<div class="pg-rows">
+
+<div class="pg-row">
+    <span>획득 유물</span>
+    <p>모은 유물을 카드로 넘겨 보며 시대·재질·크기와 설명 확인</p>
+</div>
+
+<div class="pg-row">
+    <span>랭킹</span>
+    <p>판교 RUN은 순위 화면으로 이어지고, 가상 키보드로 이니셜과 방명록을 남김</p>
+</div>
+
+<div class="pg-row">
+    <span>자동 복귀</span>
+    <p>입력 후 10초가 지나면 타이틀로 자동 복귀해 다음 관람객이 바로 시작</p>
+</div>
+
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     ROLE
+================================================== -->
+
+<section class="overview outcome">
+
+<div class="container">
+
+
+<h2>
+    콘셉트부터 유물 비주얼까지<br>
+    함께 만들었습니다.
+</h2>
+
+
+<p class="overview-text">
+
+고고학자 캐릭터와 두더지 등 등장 캐릭터를 직접 디자인했습니다.
+유물 이미지는 박물관에서 받은 실제 유물 목록과 사진을 바탕으로 ChatGPT를 활용해 직접 제작했습니다.
+실물의 형태와 문양을 기준으로 삼아, 게임 그래픽 톤과 어린이 관람객에 맞는 친근한 일러스트로 다시 그렸습니다.
+
+</p>
+
+
+<div class="pg-rows">
+
+<div class="pg-row">
+    <span>기여도</span>
+    <p>UX/UI 디자인 100%, 게임 콘셉트 참여, 캐릭터 디자인, AI 유물 비주얼 제작</p>
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     FOOTER
+================================================== -->
+
+<footer>
+
+<div class="footer-title">
+    Exhibition · Game UX/UI
+</div>
+
+<div class="footer-link">
+    판교박물관
+</div>
+
+<a href="../projects.html" class="footer-back">
+    ← Back to Portfolio
+</a>
+
+</footer>
+
+
+<script src="../js/main.js"></script>
+
+<script>
+
+/* 스토리보드 슬라이드 버튼 */
+(function(){
+    var box = document.querySelector('.pg-slider');
+    if (!box) return;
+    var track = box.querySelector('.pg-flow');
+    var prev = box.querySelector('.pg-prev'), next = box.querySelector('.pg-next');
+    function step(){ var f = track.querySelector('figure'); return f ? f.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 0) : 300; }
+    function sync(){
+        prev.disabled = track.scrollLeft <= 2;
+        next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+    }
+    prev.addEventListener('click', function(){ track.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    next.addEventListener('click', function(){ track.scrollBy({ left:  step(), behavior: 'smooth' }); });
+    track.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    sync();
+})();
+
+/* 판교 RUN 수집 슬롯 : ? 칸이 유물로 하나씩 채워지는 장면 반복 */
+(function(){
+
+    var box = document.querySelector('.pg-collect');
+    if (!box) return;
+
+    var slots = box.querySelectorAll('.pg-slot');
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduce) {
+        Array.prototype.forEach.call(slots, function(s){ s.classList.add('is-on','is-settled'); });
+        return;
+    }
+
+    var visible = false;
+    if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function(e){ visible = e[0].isIntersecting; }).observe(box);
+    } else { visible = true; }
+
+    function wait(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+
+    (async function(){
+        while (true) {
+            if (!visible || document.hidden) { await wait(500); continue; }
+            for (var i = 0; i < slots.length; i++) {
+                slots[i].classList.add('is-on');
+                (function(s){ setTimeout(function(){ s.classList.add('is-settled'); }, 600); })(slots[i]);
+                await wait(750);
+            }
+            await wait(1800);
+            Array.prototype.forEach.call(slots, function(s){ s.classList.remove('is-on','is-settled'); });
+            await wait(900);
+        }
+    })();
+
+})();
+
+/* 유물 PANG 단계별 판 : 실제 유물 아이콘으로 채우고, 3개 맞추기 예시 모션을 반복 */
+(function(){
+
+    var icons = ['a_plate','a_mirror','a_horse','a_pot','a_figure'];
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function src(t){ return 'images/pangyo/' + icons[t] + '.webp'; }
+    function rand(n){ return Math.floor(Math.random() * n); }
+    function wait(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+
+    function Board(el){
+
+        this.el    = el;
+        this.cols  = +el.getAttribute('data-cols');
+        this.rows  = +el.getAttribute('data-rows');
+        this.types = +el.getAttribute('data-types');
+        this.grid  = [];
+        this.cells = [];
+        this.visible = false;
+
+        el.style.setProperty('--cols', this.cols);
+        el.style.gridTemplateColumns = 'repeat(' + this.cols + ',minmax(0,1fr))';
+
+        for (var i = 0; i < this.cols * this.rows; i++) {
+            var t = this.safeType(i);
+            this.grid.push(t);
+            var cell = document.createElement('i');
+            var img = document.createElement('img');
+            img.alt = '';
+            img.src = src(t);
+            cell.appendChild(img);
+            el.appendChild(cell);
+            this.cells.push(cell);
+        }
+    }
+
+    /* 처음부터 3개가 붙어 있지 않도록 */
+    Board.prototype.safeType = function(i){
+        var c = i % this.cols, g = this.grid, t, n = 0;
+        do {
+            t = rand(this.types); n++;
+        } while (n < 20 && (
+            (c >= 2 && g[i-1] === t && g[i-2] === t) ||
+            (i >= this.cols * 2 && g[i-this.cols] === t && g[i-this.cols*2] === t)
+        ));
+        return t;
+    };
+
+    Board.prototype.at = function(r, c){
+        if (r < 0 || c < 0 || r >= this.rows || c >= this.cols) return -1;
+        return this.grid[r * this.cols + c];
+    };
+
+    /* 위치 i 를 포함한 가로·세로 3개 이상 묶음 */
+    Board.prototype.runAt = function(i){
+        var r = Math.floor(i / this.cols), c = i % this.cols, t = this.grid[i];
+        var h = [i], v = [i], k;
+        for (k = c-1; this.at(r,k) === t; k--) h.push(r*this.cols+k);
+        for (k = c+1; this.at(r,k) === t; k++) h.push(r*this.cols+k);
+        for (k = r-1; this.at(k,c) === t; k--) v.push(k*this.cols+c);
+        for (k = r+1; this.at(k,c) === t; k++) v.push(k*this.cols+c);
+        var out = [];
+        if (h.length >= 3) out = out.concat(h);
+        if (v.length >= 3) out = out.concat(v.filter(function(x){ return x !== i; }));
+        return out.length >= 3 ? out : [];
+    };
+
+    /* 바꾸면 3개가 맞는 이웃 쌍 찾기 */
+    Board.prototype.findMove = function(){
+        var moves = [], g = this.grid;
+        for (var i = 0; i < g.length; i++) {
+            var nb = [];
+            if (i % this.cols < this.cols - 1) nb.push(i + 1);
+            if (i + this.cols < g.length)      nb.push(i + this.cols);
+            for (var n = 0; n < nb.length; n++) {
+                var j = nb[n];
+                if (g[i] === g[j]) continue;
+                var tmp = g[i]; g[i] = g[j]; g[j] = tmp;
+                var m = this.runAt(i).concat(this.runAt(j));
+                g[j] = g[i]; g[i] = tmp;
+                if (m.length) moves.push([i, j]);
+            }
+        }
+        return moves.length ? moves[rand(moves.length)] : null;
+    };
+
+    Board.prototype.step = async function(){
+
+        var mv = this.findMove();
+        if (!mv) return;
+
+        var a = mv[0], b = mv[1];
+        var A = this.cells[a], B = this.cells[b];
+        var dx = B.offsetLeft - A.offsetLeft, dy = B.offsetTop - A.offsetTop;
+
+        /* 1. 두 블록 자리 바꾸기 */
+        A.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+        B.style.transform = 'translate(' + (-dx) + 'px,' + (-dy) + 'px)';
+        await wait(320);
+
+        var tmp = this.grid[a]; this.grid[a] = this.grid[b]; this.grid[b] = tmp;
+        A.style.transition = B.style.transition = 'none';
+        A.style.transform = B.style.transform = '';
+        A.firstChild.src = src(this.grid[a]);
+        B.firstChild.src = src(this.grid[b]);
+        void A.offsetWidth;
+        A.style.transition = B.style.transition = '';
+
+        /* 2. 맞춰진 유물 표시 */
+        var hit = this.runAt(a).concat(this.runAt(b));
+        hit = hit.filter(function(x, k){ return hit.indexOf(x) === k; });
+        var self = this;
+        hit.forEach(function(i){ self.cells[i].classList.add('is-match'); });
+        await wait(420);
+
+        /* 3. 팡 */
+        hit.forEach(function(i){ self.cells[i].classList.add('is-pop'); });
+        await wait(260);
+
+        /* 4. 새 유물 채우기 */
+        hit.forEach(function(i){
+            var c = self.cells[i];
+            self.grid[i] = -1;
+            c.classList.remove('is-match','is-pop');
+            c.classList.add('is-drop');
+        });
+        hit.forEach(function(i){
+            var n = 0;
+            do { self.grid[i] = rand(self.types); n++; }
+            while (n < 20 && self.runAt(i).length);   /* 새로 채운 칸이 바로 3개가 되지 않게 */
+            self.cells[i].firstChild.src = src(self.grid[i]);
+        });
+        void this.el.offsetWidth;
+        hit.forEach(function(i){ self.cells[i].classList.remove('is-drop'); });
+        await wait(400);
+    };
+
+    Board.prototype.loop = async function(delay){
+        await wait(delay);
+        while (true) {
+            if (this.visible && !document.hidden) await this.step();
+            await wait(1300);
+        }
+    };
+
+    var boards = [];
+    Array.prototype.forEach.call(document.querySelectorAll('.pg-board'), function(el){
+        boards.push(new Board(el));
+    });
+
+    if (reduce) return;
+
+    if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function(entries){
+            entries.forEach(function(e){
+                boards.forEach(function(b){ if (b.el === e.target) b.visible = e.isIntersecting; });
+            });
+        });
+        boards.forEach(function(b){ io.observe(b.el); });
+    } else {
+        boards.forEach(function(b){ b.visible = true; });
+    }
+
+    boards.forEach(function(b, k){ b.loop(400 + k * 650); });
+
+})();
+
+</script>
+
+</main>
+
+</body>
+
+</html>
