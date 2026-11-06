@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>서울백제어린이박물관 | uxxxu.studio</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<meta name="description"
+content="서울백제어린이박물관 어린이 체험 전시 콘텐츠 4종 UX/UI Case Study">
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+
+<style>
+
+
+/* ==================================================
+   PAGE-LOCAL : 판교박물관
+   aiethics.html 페이지 로컬 스타일 값 재사용
+   (게임 화면 비율 1280x1024 → 5:4 만 다름)
+   라벨(eyebrow/section-title) 없는 버전 테스트 - 판교에만 적용
+================================================== */
+
+.hero h1,
+.overview h2,
+.problem-solving h2,
+.ui-design h2,
+.overview-text,
+.problem-item h3,
+.problem-item p,
+.pg-row p{
+    word-break:keep-all;
+}
+
+.hero .hero-image img{
+    display:block;
+    width:100%;
+    height:auto;
+}
+
+.ui-design h2{
+    font-size:clamp(32px,3.4vw,42px);
+    font-weight:800;
+    line-height:1.25;
+    letter-spacing:-.03em;
+    max-width:900px;
+    margin-bottom:24px;
+}
+
+.ui-design h2 span{
+    display:inline-block;
+    margin-left:10px;
+    font-size:18px;
+    font-weight:400;
+    letter-spacing:-.02em;
+    color:#888;
+}
+
+.ui-design .overview-text{
+    font-size:18px;
+    line-height:1.8;
+    margin-bottom:56px;
+}
+
+.ui-design .overview-text.pg-sub{
+    margin:80px 0 0;
+}
+
+/* 단계별 난이도 : 판 크기를 점 그리드로 시각화 */
+.pg-stages{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    column-gap:28px;
+    border-top:1px solid #111;
+}
+
+.pg-stage{
+    padding:28px 0 32px;
+}
+
+.pg-stage h3{
+    font-size:18px;
+    font-weight:700;
+    letter-spacing:-.02em;
+    color:#111;
+}
+
+.pg-board-wrap{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:300px;          /* 가장 큰 판(7x6, 260px) + 여백 20px x2 — 세 박스 동일 크기 */
+    max-width:100%;
+    height:262px;         /* 7x6 판 높이 222px + 여백 20px x2 */
+    margin:24px 0;
+    padding:20px;
+    border-radius:20px;
+    background:#8a6640;   /* 게임판 흙색 계열 (블록 대비를 위해 어둡게) */
+}
+
+.pg-board{
+    display:grid;
+    gap:6px;
+    width:calc(var(--cols) * 38px - 6px);
+    max-width:100%;
+}
+
+.pg-board i{
+    display:block;
+    aspect-ratio:1;
+    padding:12%;
+    border-radius:6px;
+    background:rgba(255,248,236,.6);
+    transition:transform .3s cubic-bezier(.2,.7,.2,1), opacity .25s ease, box-shadow .2s ease;
+}
+
+/* 매칭 데모 모션 */
+.pg-board i.is-match{
+    box-shadow:0 0 0 2px #4caf50, 0 0 10px rgba(76,175,80,.55);
+}
+
+.pg-board i.is-pop{
+    transform:scale(.2);
+    opacity:0;
+}
+
+.pg-board i.is-drop{
+    transform:translateY(-14px);
+    opacity:0;
+    transition:none;
+}
+
+@media (prefers-reduced-motion: reduce){
+    .pg-board i{ transition:none; }
+}
+
+.pg-board img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+/* 판교 RUN 수집 슬롯 데모 */
+.pg-collect{
+    display:grid;
+    grid-template-columns:repeat(6,minmax(0,1fr));
+    gap:16px;
+    margin-top:30px;
+    padding:28px;
+    border-radius:20px;
+    background:#8a6640;
+}
+
+.pg-slot{
+    text-align:center;
+}
+
+.pg-slot i{
+    position:relative;
+    display:block;
+    aspect-ratio:1;
+    max-width:110px;
+    margin:0 auto;
+    border-radius:12px;
+    background:rgba(255,248,236,.16);
+    transition:background .3s ease, box-shadow .3s ease;
+}
+
+.pg-slot i::before{
+    content:"?";
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    font-weight:800;
+    font-style:normal;
+    color:rgba(255,248,236,.55);
+    transition:opacity .2s ease;
+}
+
+.pg-slot img{
+    position:absolute;
+    inset:12%;
+    width:76%;
+    height:76%;
+    object-fit:contain;
+    opacity:0;
+    transform:scale(.4);
+    transition:transform .4s cubic-bezier(.2,.7,.2,1), opacity .25s ease;
+}
+
+.pg-slot.is-on i{
+    background:rgba(255,248,236,.6);
+    box-shadow:0 0 0 2px #4caf50, 0 0 12px rgba(76,175,80,.5);
+}
+
+.pg-slot.is-on.is-settled i{
+    box-shadow:none;
+}
+
+.pg-slot.is-on i::before{ opacity:0; }
+
+.pg-slot.is-on img{
+    opacity:1;
+    transform:scale(1);
+}
+
+.pg-slot strong{
+    display:block;
+    margin-top:12px;
+    font-size:14px;
+    font-weight:600;
+    line-height:1.4;
+    letter-spacing:-.02em;
+    color:#fff;
+    word-break:keep-all;
+}
+
+.pg-slot small{
+    display:block;
+    margin-top:2px;
+    font-size:13px;
+    letter-spacing:-.02em;
+    color:rgba(255,255,255,.6);
+}
+
+/* 스토리보드 흐름 */
+.pg-flow{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:28px 16px;
+    margin-top:30px;
+}
+
+.pg-flow figure{
+    margin:0;
+}
+
+.pg-flow div{
+    aspect-ratio:4 / 3;
+    overflow:hidden;
+    border-radius:12px;
+    border:1px solid #ececec;
+}
+
+.pg-flow img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.pg-flow figcaption{
+    margin-top:10px;
+    font-size:13px;
+    letter-spacing:-.02em;
+    color:#888;
+}
+
+.pg-flow figcaption b{
+    font-weight:600;
+    color:#111;
+}
+
+.pg-stage p{
+    font-size:15px;
+    line-height:1.6;
+    letter-spacing:-.02em;
+    color:#666;
+}
+
+.pg-stage p strong{
+    font-weight:600;
+    color:#111;
+}
+
+.pg-rows{
+    margin-top:56px;
+    border-top:1px solid #ececec;
+}
+
+.pg-row{
+    display:grid;
+    grid-template-columns:200px minmax(0,1fr);
+    gap:28px;
+    padding:28px 0;
+    border-bottom:1px solid #ececec;
+}
+
+.pg-row span{
+    font-size:15px;
+    font-weight:600;
+    line-height:1.6;
+    letter-spacing:-.02em;
+    color:#111;
+}
+
+.pg-row p{
+    font-size:15px;
+    line-height:1.6;
+    letter-spacing:-.02em;
+    color:#666;
+}
+
+.pg-shots{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:28px;
+    margin-top:30px;
+}
+
+.pg-shot{
+    margin:0;
+}
+
+.pg-shot div{
+    aspect-ratio:5 / 4;
+    overflow:hidden;
+    border-radius:20px;
+    border:1px solid #ececec;
+    background:#fff;
+}
+
+.pg-shot img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* 스토리보드 → 최종 비교 : 같은 크기 2열 + 변경 내용 */
+.pg-compare{
+    margin-top:72px;
+    padding-top:32px;
+    border-top:1px solid #ececec;
+}
+
+.pg-flow + .pg-compare{
+    margin-top:80px;
+}
+
+.pg-compare h3{
+    font-size:20px;
+    font-weight:700;
+    letter-spacing:-.02em;
+    color:#111;
+}
+
+.pg-compare .pg-shots{
+    margin-top:20px;
+}
+
+.pg-compare ul{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:0 28px;
+    margin-top:20px;
+    list-style:none;
+}
+
+.pg-compare li{
+    display:grid;
+    grid-template-columns:80px minmax(0,1fr);
+    gap:12px;
+    padding:14px 0;
+    border-top:1px solid #ececec;
+    font-size:15px;
+    line-height:1.5;
+    letter-spacing:-.02em;
+    color:#666;
+    word-break:keep-all;
+}
+
+.pg-compare li b{
+    font-weight:600;
+    color:#111;
+}
+
+/* After Play : 유물 확인 화면 + 설명 2열 */
+.pg-after{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:28px;
+    align-items:center;
+    margin-top:30px;
+}
+
+.pg-after .pg-rows{
+    margin-top:0;
+}
+
+.pg-after .pg-row{
+    grid-template-columns:100px minmax(0,1fr);
+    gap:16px;
+}
+
+.pg-shot figcaption{
+    margin-top:12px;
+    font-size:13px;
+    letter-spacing:-.02em;
+    color:#888;
+}
+
+@media(max-width:980px){
+
+    .pg-row{
+        grid-template-columns:1fr;
+        gap:8px;
+        padding:22px 0;
+    }
+
+    .pg-shots{
+        grid-template-columns:1fr;
+        gap:16px;
+    }
+
+    .pg-stages{
+        grid-template-columns:1fr;
+    }
+
+    .pg-collect{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        padding:20px;
+        gap:20px 12px;
+    }
+
+    .pg-flow{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .pg-compare ul{
+        grid-template-columns:1fr;
+    }
+
+    .pg-after{
+        grid-template-columns:1fr;
+    }
+
+    .pg-board-wrap{
+        width:100%;
+        height:auto;
+        min-height:0;
+    }
+
+    .pg-stage{
+        padding:24px 0 28px;
+        border-bottom:1px solid #ececec;
+    }
+
+}
+
+
+/* ==================================================
+   간격 통일 (판교 페이지 한정)
+   - 섹션 사이 200px (위아래 100px), 마지막 섹션은 푸터 앞 여유 확보
+   - 본문 문단 → 콘텐츠 48px, 보조 문단 앞 80px / 뒤 40px
+================================================== */
+
+main .problem-solving{
+    padding-top:100px;
+}
+
+main section.outcome{
+    padding-bottom:260px;
+}
+
+main .overview-text,
+main .problem-solving .overview-text,
+main .ui-design .overview-text{
+    margin-bottom:48px;
+}
+
+main .overview-text.pg-sub,
+main .ui-design .overview-text.pg-sub{
+    margin:80px 0 40px;
+}
+
+.pg-shots,
+.pg-rows,
+.pg-collect,
+.pg-flow,
+.pg-after{
+    margin-top:0;
+}
+
+.pg-compare,
+.pg-flow + .pg-compare,
+.pg-stages + .pg-shots{
+    margin-top:80px;
+}
+
+@media(max-width:980px){
+
+    main section.outcome{
+        padding-bottom:180px;
+    }
+
+    main .overview-text.pg-sub,
+    main .ui-design .overview-text.pg-sub{
+        margin:56px 0 32px;
+    }
+
+    .pg-compare,
+    .pg-flow + .pg-compare,
+    .pg-stages + .pg-shots{
+        margin-top:56px;
+    }
+
+}
+
+
+/* ==================================================
+   레이아웃 보정 2 : 세로로 길게 늘어지지 않게
+================================================== */
+
+/* 스토리보드 : 가로 슬라이드 */
+.pg-slider{
+    position:relative;
+}
+
+.pg-slider-nav{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+    margin-bottom:16px;
+}
+
+.pg-slider-nav button{
+    width:40px;
+    height:40px;
+    border-radius:999px;
+    border:1px solid #111;
+    background:#fff;
+    color:#111;
+    font-size:15px;
+    cursor:pointer;
+    transition:background .2s ease, color .2s ease, opacity .2s ease;
+}
+
+.pg-slider-nav button:hover{
+    background:#111;
+    color:#fff;
+}
+
+.pg-slider-nav button:disabled{
+    opacity:.25;
+    cursor:default;
+    background:#fff;
+    color:#111;
+}
+
+.pg-slider .pg-flow{
+    display:grid;
+    grid-template-columns:none;
+    grid-auto-flow:column;
+    grid-auto-columns:calc((100% - 32px) / 3);
+    gap:16px;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    scroll-behavior:smooth;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+}
+
+.pg-slider .pg-flow::-webkit-scrollbar{
+    display:none;
+}
+
+.pg-slider .pg-flow figure{
+    scroll-snap-align:start;
+}
+
+/* 플레이 이후 · 개요 표 : 촘촘한 목록 */
+.pg-after{
+    align-items:start;
+}
+
+.pg-after .pg-row,
+.overview .pg-row{
+    padding:16px 0;
+}
+
+@media(max-width:980px){
+
+    /* 이미지 2열 유지 */
+    .pg-shots{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:12px;
+    }
+
+    .pg-shot figcaption{
+        margin-top:8px;
+        font-size:12px;
+    }
+
+    .pg-shot div{
+        border-radius:12px;
+    }
+
+    /* 단계별 판 3열 유지 (판이 칸 폭에 맞춰 축소) */
+    .pg-stages{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        column-gap:10px;
+    }
+
+    .pg-stage,
+    .pg-stage:first-child,
+    .pg-stage:last-child{
+        padding:20px 0 0;
+        border-bottom:0;
+    }
+
+    .pg-stage h3{
+        font-size:15px;
+    }
+
+    .pg-board-wrap{
+        width:100%;
+        height:auto;
+        aspect-ratio:1;
+        margin:12px 0;
+        padding:8px;
+        border-radius:12px;
+    }
+
+    .pg-board{
+        gap:3px;
+    }
+
+    .pg-board i{
+        border-radius:3px;
+        padding:8%;
+    }
+
+    .pg-stage p{
+        font-size:12px;
+        line-height:1.5;
+    }
+
+    /* 스토리보드 슬라이드 : 2장씩 */
+    .pg-slider .pg-flow{
+        grid-auto-columns:calc((100% - 12px) / 2);
+        gap:12px;
+    }
+
+    .pg-slider-nav button{
+        width:34px;
+        height:34px;
+        font-size:13px;
+    }
+
+    /* 바꾼 점 2열 */
+    .pg-compare ul{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:0 12px;
+    }
+
+    .pg-compare li{
+        grid-template-columns:1fr;
+        gap:2px;
+        padding:12px 0;
+        font-size:13px;
+    }
+
+    /* 플레이 이후 : 이미지 위, 목록 3열 */
+    .pg-after{
+        grid-template-columns:1fr;
+        gap:16px;
+    }
+
+    .pg-after .pg-rows{
+        display:grid;
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        gap:0 12px;
+        border-top:0;
+    }
+
+    .pg-after .pg-row{
+        grid-template-columns:1fr;
+        gap:4px;
+        padding:12px 0;
+        border-top:1px solid #ececec;
+        border-bottom:0;
+    }
+
+    .pg-after .pg-row span,
+    .overview .pg-row span{
+        font-size:13px;
+    }
+
+    .pg-after .pg-row p{
+        font-size:12px;
+        line-height:1.5;
+    }
+
+    /* 개요 표 2열 */
+    .overview .pg-rows{
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:0 12px;
+        border-top:0;
+    }
+
+    .overview .pg-row{
+        grid-template-columns:1fr;
+        gap:4px;
+        padding:14px 0;
+        border-top:1px solid #ececec;
+        border-bottom:0;
+    }
+
+    .overview .pg-row p{
+        font-size:13px;
+        line-height:1.5;
+    }
+
+}
+
+
+@media(max-width:980px){
+
+    /* 수집 슬롯 : 한 줄 6칸으로 축소 (위 게임 화면보다 작게) */
+    .pg-collect{
+        grid-template-columns:repeat(6,minmax(0,1fr));
+        gap:6px;
+        padding:14px 12px;
+        border-radius:12px;
+    }
+
+    .pg-slot i{
+        border-radius:6px;
+    }
+
+    .pg-slot i::before{
+        font-size:16px;
+    }
+
+    .pg-slot strong{
+        margin-top:6px;
+        font-size:10px;
+        line-height:1.3;
+    }
+
+    .pg-slot small{
+        margin-top:1px;
+        font-size:9px;
+    }
+
+}
+
+
+
+/* ==================================================
+   PAGE-LOCAL : 서울백제어린이박물관 (판교 페이지 스타일 재사용)
+================================================== */
+
+.pg-shot.is-portrait div{ aspect-ratio:3 / 4; }
+.pg-shot.is-wide div{ aspect-ratio:16 / 10; }
+.pg-shot.is-hd div{ aspect-ratio:16 / 9; }
+.pg-shot.is-doc div{ aspect-ratio:2 / 3; }
+.pg-shot.is-tall div{ aspect-ratio:9 / 16; }
+
+.pg-shot video{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.pg-shots + .pg-shots{
+    margin-top:28px;
+}
+
+.pg-shots.is-3{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+.pg-shots.is-4{ grid-template-columns:repeat(4,minmax(0,1fr)); }
+
+.pg-shots.is-site{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:16px;
+}
+
+.pg-shots.is-site .pg-shot div{
+    aspect-ratio:1;
+}
+
+.pg-compare + .pg-shots,
+.pg-shots + .pg-shots.is-site{
+    margin-top:56px;
+}
+
+.bj-wide{
+    margin:0;
+}
+
+.bj-wide + .bj-wide{
+    margin-top:28px;
+}
+
+.bj-wide img{
+    display:block;
+    width:100%;
+    height:auto;
+    border-radius:20px;
+    border:1px solid #ececec;
+}
+
+.bj-wide.is-hd img{
+    aspect-ratio:16 / 9;
+    object-fit:cover;
+}
+
+.bj-wide figcaption{
+    margin-top:12px;
+    font-size:13px;
+    letter-spacing:-.02em;
+    color:#888;
+}
+
+.bj-wide + .pg-shots,
+.pg-shots + .bj-wide{
+    margin-top:28px;
+}
+
+.pg-compare .pg-shots + .pg-shots{
+    margin-top:28px;
+}
+
+@media(max-width:980px){
+
+    .pg-shots.is-3{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+    .pg-shots.is-4{ grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
+    .pg-shots.is-site{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+    .pg-compare + .pg-shots,
+    .pg-shots + .pg-shots.is-site{ margin-top:32px; }
+
+    .pg-shots + .pg-shots,
+    .bj-wide + .bj-wide,
+    .bj-wide + .pg-shots,
+    .pg-shots + .bj-wide{
+        margin-top:16px;
+    }
+
+    .bj-wide img{ border-radius:12px; }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<a href="../index.html" class="logo">
+    uxxxu.studio
+</a>
+
+<a href="../projects.html"
+class="back">
+    ← Back to Portfolio
+</a>
+
+</header>
+
+
+<main>
+
+<section class="hero">
+
+<div class="container">
+
+<h1>
+    서울백제<wbr>어린이박물관
+</h1>
+
+<p class="subtitle">
+    어린이 체험 전시 콘텐츠 4종
+    UX/UI 디자인
+</p>
+
+<div class="project-info">
+
+<div>
+<small>Category</small>
+<strong><span>Exhibition</span><span>Interactive UX/UI</span></strong>
+</div>
+
+<div>
+<small>Year</small>
+<strong>2023</strong>
+</div>
+
+<div>
+<small>Tools</small>
+<strong><span>Photoshop</span><span>Illustrator</span></strong>
+</div>
+
+<div>
+<small>My Role</small>
+<strong><span>UX/UI Design</span><span>Character</span><span>Graphic</span></strong>
+</div>
+
+</div>
+
+<div class="hero-image">
+<img src="images/baekje/wall_site1.webp" alt="서울백제어린이박물관에 설치된 백제 아카이브 미디어월">
+</div>
+
+</div>
+
+</section>
+
+<section class="overview">
+
+<div class="container">
+
+
+<h2>
+    네 개의 코너,<br>
+    네 가지 몸의 움직임
+</h2>
+
+
+<p class="overview-text">
+
+서울백제어린이박물관 상설 전시에 설치된 어린이 체험형 디지털 콘텐츠 4종입니다.<br>
+
+점프해서 토성을 쌓고, 풀무 바를 움직여 철을 만들고, 발굴일지를 꾸며 출력하고,
+대형 미디어월에서 백제 유물을 눌러 봅니다. 코너마다 몸을 쓰는 방식이 달라,
+그 움직임이 화면에서 바로 결과로 보이도록 디자인했습니다.
+
+</p>
+
+
+<div class="pg-rows">
+
+<div class="pg-row">
+    <span>대상</span>
+    <p>유아부터 초등 중학년</p>
+</div>
+
+<div class="pg-row">
+    <span>콘텐츠</span>
+    <p>흙으로 만든 성 풍납동토성 · 바람을 불어 철을 만들어요 · 몽촌토성 발굴일지 · 백제 아카이브</p>
+</div>
+
+<div class="pg-row">
+    <span>입력 방식</span>
+    <p>점프(HOKUYO 센서) · 풀무 바 · 마우스와 프린터 · 미디어월 터치</p>
+</div>
+
+<div class="pg-row">
+    <span>화면</span>
+    <p>벽면 프로젝션과 바닥 발판 · 세로형 모니터 · 모니터 · 대형 미디어월</p>
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+<section class="problem-solving">
+
+<div class="container">
+
+<h2>
+    움직임이 곧<br>
+    전시 주제가 되도록 했습니다.
+</h2>
+
+<p class="overview-text">
+
+설치 공간과 화면 크기, 체험 방식이 코너마다 모두 달랐습니다.
+아이들이 설명을 읽지 않아도 몸을 움직이는 순간 무엇을 하고 있는지 알 수 있어야 했습니다.
+
+</p>
+
+
+<div class="problem-flow">
+
+
+<div class="problem-item">
+
+<h3>
+    동작마다 바로 보이는 결과
+</h3>
+
+<p>
+    점프하면 벽면의 흙층이 한 단 쌓이고, 풀무 바를 세게 빨리 움직일수록 불꽃이 커집니다.
+    바닥에는 발판과 안내 문구를 프로젝션해 어디서 점프해야 하는지 바로 보이게 했습니다.
+</p>
+
+</div>
+
+
+<div class="problem-item">
+
+<h3>
+    놀이 속에서도 느껴지는 주제
+</h3>
+
+<p>
+    토성 쌓기 화면은 몽촌토성의 능선 모양으로 만들고, 블록은 실제 흙 질감의 층으로 표현했습니다.
+    풀무질은 불꽃을 키워 칠지도를 완성하는 것으로 끝납니다.
+</p>
+
+</div>
+
+
+<div class="problem-item">
+
+<h3>
+    체험이 끝난 뒤에도 남는 것
+</h3>
+
+<p>
+    발굴일지는 직접 꾸민 일지를 출력해 가져갈 수 있습니다.
+    일지를 꾸미는 스티커는 박물관에서 실물로 제작해 판매하고 있습니다.
+</p>
+
+</div>
+
+
+</div>
+
+</div>
+
+</section>
+
+<section class="ui-design">
+
+<div class="container">
+
+
+<h2>
+    흙으로 만든 성 풍납동토성 <span>점프 체험</span>
+</h2>
+
+
+<p class="overview-text">
+
+백제의 토성을 흙을 다져 쌓아 올린 방식을 놀이로 옮긴 콘텐츠입니다.
+디자인은 몽촌토성을 주제로 진행했고, 설치 직전에 이름이 풍납동토성으로 바뀌었습니다.
+바닥에 프로젝션된 발판 위에서 점프하면 HOKUYO 센서가 이를 인식하고,
+벽면 화면에 흙층이 한 단씩 쌓여 토성이 완성됩니다.
+성벽의 세로 칸마다 그 앞 바닥에 발판이 하나씩 있어, 아이가 다가가 서면 발판이 켜집니다.
+모든 칸을 끝까지 쌓아야 성이 완성되기 때문에, 여럿이 나란히 뛸수록 빨리 끝나 다 같이 성을 쌓는 경험이 됩니다.
+
+</p>
+
+
+
+
+<div class="pg-shots">
+
+<figure class="pg-shot is-wide">
+<div><img src="images/baekje/jump_intro.webp" alt="흙으로 만든 성 몽촌토성 시작 화면" loading="lazy"></div>
+<figcaption>시작 화면 · 디자인 당시 이름(몽촌토성)</figcaption>
+</figure>
+
+<figure class="pg-shot is-wide">
+<div><img src="images/baekje/jump_ending.webp" alt="흙층이 모두 쌓여 완성된 토성 화면" loading="lazy"></div>
+<figcaption>완성 화면</figcaption>
+</figure>
+
+</div>
+
+<div class="pg-compare">
+
+<h3>초기 시안에서 바꾼 점</h3>
+
+<div class="pg-shots">
+
+<figure class="pg-shot is-wide">
+<div><img src="images/baekje/jump_early_build.webp" alt="초기 시안 - 캐릭터와 하늘 배경" loading="lazy"></div>
+<figcaption>초기 시안 · 캐릭터 중심</figcaption>
+</figure>
+
+<figure class="pg-shot is-wide">
+<div><img src="images/baekje/jump_build.webp" alt="최종 시안 - 흙 질감 층과 능선 배경" loading="lazy"></div>
+<figcaption>최종 · 흙 질감 층과 능선</figcaption>
+</figure>
+
+</div>
+
+<div class="pg-shots">
+
+<figure class="pg-shot is-wide">
+<div><img src="images/baekje/jump_early_chars.webp" alt="초기 시안의 점프 캐릭터 8종" loading="lazy"></div>
+<figcaption>초기 시안 · 점프 캐릭터 8종</figcaption>
+</figure>
+
+<figure class="pg-shot is-wide">
+<div><img src="images/baekje/jump_ground.webp" alt="최종 시안의 흙 텍스처 4종" loading="lazy"></div>
+<figcaption>최종 · 흙 텍스처 4종</figcaption>
+</figure>
+
+</div>
+
+<ul>
+    <li><b>배경</b>하늘과 구름 → 몽촌토성 능선 모양의 어두운 배경</li>
+    <li><b>블록</b>매끈한 색 블록 → 실제 흙 질감을 살린 층</li>
+    <li><b>주인공</b>점프 캐릭터 8종 → 쌓여 가는 토성 자체</li>
+    <li><b>의도</b>실제로 토성을 쌓는 느낌을 전달</li>
+</ul>
+
+</div>
+
+<div class="pg-shots is-3 is-site">
+
+<figure class="pg-shot is-portrait">
+<div><video src="images/baekje/v_jump.mp4" poster="images/baekje/v_jump_poster.webp" autoplay muted loop playsinline preload="metadata" aria-label="바닥 발판 위에서 점프하는 체험 영상"></video></div>
+<figcaption>현장 · 발판 위에서 점프</figcaption>
+</figure>
+
+<figure class="pg-shot is-portrait">
+<div><img src="images/baekje/jump_site1.webp" alt="바닥에 프로젝션된 발판과 점프하는 아이들" loading="lazy"></div>
+<figcaption>현장 · 바닥 발판 프로젝션</figcaption>
+</figure>
+
+<figure class="pg-shot is-portrait">
+<div><img src="images/baekje/jump_site2.webp" alt="토성 쌓기 벽면 앞에서 점프하는 모습" loading="lazy"></div>
+<figcaption>현장 · 벽면 화면</figcaption>
+</figure>
+
+</div>
+
+
+</div>
+
+</section>
+
+<section class="ui-design">
+
+<div class="container">
+
+
+<h2>
+    바람을 불어 철을 만들어요 <span>풀무 체험</span>
+</h2>
+
+
+<p class="overview-text">
+
+백제의 제철 과정을 풀무질로 체험하는 콘텐츠입니다.
+세로형 화면 앞의 풀무 바를 앞뒤로 움직이면, 그 힘과 속도에 맞춰 불꽃이 커지고
+충분히 커진 불꽃이 철을 녹여 칠지도를 완성합니다.
+박물관이 작성한 기획 스토리보드를 바탕으로 불꽃·바람 캐릭터와 전체 화면을 디자인했습니다.
+
+</p>
+
+
+<div class="pg-shots is-4">
+
+<figure class="pg-shot is-tall">
+<div><img src="images/baekje/fire_0.webp" alt="풀무질 시작 화면" loading="lazy"></div>
+<figcaption>시작</figcaption>
+</figure>
+
+<figure class="pg-shot is-tall">
+<div><img src="images/baekje/fire_2.webp" alt="바람을 먹고 커진 불꽃 화면" loading="lazy"></div>
+<figcaption>불꽃이 커지는 단계</figcaption>
+</figure>
+
+<figure class="pg-shot is-tall">
+<div><img src="images/baekje/fire_6.webp" alt="칠지도에 쇳물이 차오르는 화면" loading="lazy"></div>
+<figcaption>칠지도 만들기</figcaption>
+</figure>
+
+<figure class="pg-shot is-tall">
+<div><video src="images/baekje/v_chiljido.mp4" poster="images/baekje/v_chiljido_poster.webp" autoplay muted loop playsinline preload="metadata" aria-label="칠지도가 완성되는 화면 영상"></video></div>
+<figcaption>칠지도 완성</figcaption>
+</figure>
+
+</div>
+
+<div class="pg-shots is-3 is-site">
+
+<figure class="pg-shot is-portrait">
+<div><video src="images/baekje/v_bellows.mp4" poster="images/baekje/v_bellows_poster.webp" autoplay muted loop playsinline preload="metadata" aria-label="풀무 바를 움직여 불꽃을 키우는 체험 영상"></video></div>
+<figcaption>현장 · 풀무 바를 앞뒤로 움직이기</figcaption>
+</figure>
+
+<figure class="pg-shot is-portrait">
+<div><img src="images/baekje/fire_site.webp" alt="화산 모양 벽면과 세로형 화면, 풀무 상자" loading="lazy"></div>
+<figcaption>현장 · 체험 부스</figcaption>
+</figure>
+
+<figure class="pg-shot is-portrait">
+<div><img src="images/baekje/fire_site2.webp" alt="풀무질 시작 화면이 켜진 체험 부스" loading="lazy"></div>
+<figcaption>현장 · 시작 화면</figcaption>
+</figure>
+
+</div>
+
+
+
+
+</div>
+
+</section>
+
+<section class="ui-design">
+
+<div class="container">
+
+
+<h2>
+    몽촌토성 발굴일지 <span>꾸미고 출력하기</span>
+</h2>
+
+
+<p class="overview-text">
+
+발굴 조사원이 되어 유물을 고르고, 발굴일지를 스티커로 꾸며 출력하는 콘텐츠입니다.
+화면 속 체험이 실제 종이 결과물로 이어지도록 앱 화면과 함께 스티커, 출력 용지까지 디자인했습니다.
+
+</p>
+
+
+<div class="pg-shots">
+
+<figure class="pg-shot is-hd">
+<div><img src="images/baekje/dig_01.webp" alt="발굴일지 시작 화면" loading="lazy"></div>
+<figcaption>시작 화면</figcaption>
+</figure>
+
+<figure class="pg-shot is-hd">
+<div><img src="images/baekje/dig_05.webp" alt="스티커로 발굴일지를 꾸미는 화면" loading="lazy"></div>
+<figcaption>스티커 꾸미기</figcaption>
+</figure>
+
+</div>
+
+<div class="pg-shots is-3">
+
+<figure class="pg-shot is-doc">
+<div><img src="images/baekje/dig_sticker.webp" alt="발굴일지 스티커 디자인" loading="lazy"></div>
+<figcaption>스티커 디자인</figcaption>
+</figure>
+
+<figure class="pg-shot is-doc">
+<div><img src="images/baekje/dig_paper_blank.webp" alt="출력용 발굴일지 용지" loading="lazy"></div>
+<figcaption>출력 용지</figcaption>
+</figure>
+
+<figure class="pg-shot is-doc">
+<div><img src="images/baekje/dig_paper.webp" alt="스티커로 꾸며 출력된 발굴일지" loading="lazy"></div>
+<figcaption>꾸민 일지 출력</figcaption>
+</figure>
+
+</div>
+
+<div class="pg-shots is-3 is-site">
+
+<figure class="pg-shot is-portrait">
+<div><img src="images/baekje/dig_site.webp" alt="모니터에서 발굴일지를 꾸미는 모습" loading="lazy"></div>
+<figcaption>현장 · 일지 꾸미기</figcaption>
+</figure>
+
+<figure class="pg-shot is-portrait">
+<div><img src="images/baekje/dig_print_photo.webp" alt="출력된 발굴일지를 손에 든 모습" loading="lazy"></div>
+<figcaption>현장 · 출력된 일지</figcaption>
+</figure>
+
+<figure class="pg-shot is-portrait">
+<div><img src="images/baekje/dig_site2.webp" alt="모니터와 프린터가 놓인 발굴일지 체험 책상" loading="lazy"></div>
+<figcaption>현장 · 체험 책상</figcaption>
+</figure>
+
+</div>
+
+
+
+<p class="overview-text pg-sub">
+
+일지를 꾸미는 스티커는 박물관에서 실물 스티커로 제작해 판매하고 있습니다.
+
+</p>
+
+
+</div>
+
+</section>
+
+<section class="ui-design">
+
+<div class="container">
+
+
+<h2>
+    백제 아카이브 <span>미디어월</span>
+</h2>
+
+
+<p class="overview-text">
+
+백제 유물 이미지를 색면 도형 타일과 함께 배치한 대형 터치 아카이브 화면입니다.
+벽에서 궁금한 유물을 눌러 그 유물의 정보를 바로 볼 수 있습니다.
+
+</p>
+
+
+<figure class="bj-wide">
+<img src="images/baekje/wall_idea.webp" alt="미디어월 초기 디자인과 아이디어" loading="lazy">
+<figcaption>초기 디자인 · 아이디어</figcaption>
+</figure>
+
+<figure class="bj-wide">
+<img src="images/baekje/wall_final.webp" alt="미디어월 최종 디자인" loading="lazy">
+<figcaption>최종 디자인</figcaption>
+</figure>
+
+<figure class="bj-wide is-hd">
+<img src="images/baekje/wall_site2.webp" alt="설치된 백제 아카이브 미디어월" loading="lazy">
+<figcaption>현장</figcaption>
+</figure>
+
+
+</div>
+
+</section>
+
+<section class="overview outcome">
+
+<div class="container">
+
+
+<h2>
+    네 코너의 화면과<br>
+    캐릭터를 디자인했습니다.
+</h2>
+
+
+<p class="overview-text">
+
+코너별 화면 UX/UI와 그래픽, 등장 캐릭터를 디자인했습니다.
+토성 쌓기의 초기 시안 캐릭터 8종과, 실제로 쓰인 불꽃·바람 캐릭터, 발굴일지 스티커 캐릭터 모두 직접 그렸습니다.
+
+</p>
+
+
+<div class="pg-rows">
+
+<div class="pg-row">
+    <span>기여도</span>
+    <p>디자인 100% · UX/UI, 그래픽, 캐릭터, 스티커·출력물 디자인</p>
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<footer>
+
+<div class="footer-title">
+    Exhibition · Interactive UX/UI
+</div>
+
+<div class="footer-link">
+    서울백제어린이박물관
+</div>
+
+<a href="../projects.html" class="footer-back">
+    ← Back to Portfolio
+</a>
+
+</footer>
+
+
+<script src="../js/main.js"></script>
+
+</main>
+
+</body>
+
+</html>
