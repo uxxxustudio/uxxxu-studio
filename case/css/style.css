@@ -1593,3 +1593,18 @@ h3[style*="font-size:32px"]{
   .project-info strong span{display:inline;}
   .project-info strong span:not(:last-child)::after{content:", ";}
 }
+
+
+/* =========================================
+   HERO IMAGE : 모바일에서 화면 폭 가득 (모든 케이스 페이지)
+========================================= */
+
+@media (max-width: 980px) {
+
+    .hero .hero-image {
+        margin-left: -26px;
+        margin-right: -26px;
+        border-radius: 0;
+    }
+
+}

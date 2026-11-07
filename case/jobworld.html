@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>한국잡월드 | uxxxu.studio</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<meta name="description"
+content="한국잡월드 HD현대 산업 직무 체험 콘텐츠 3종 UX/UI Case Study">
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+
+<style>
+
+
+
+/* ==================================================
+   PAGE-LOCAL : 판교박물관
+   aiethics.html 페이지 로컬 스타일 값 재사용
+   (게임 화면 비율 1280x1024 → 5:4 만 다름)
+   라벨(eyebrow/section-title) 없는 버전 테스트 - 판교에만 적용
+================================================== */
+
+.hero h1,
+.overview h2,
+.problem-solving h2,
+.ui-design h2,
+.overview-text,
+.problem-item h3,
+.problem-item p,
+.pg-row p{
+    word-break:keep-all;
+}
+
+.hero .hero-image img{
+    display:block;
+    width:100%;
+    height:auto;
+}
+
+.ui-design h2{
+    font-size:clamp(32px,3.4vw,42px);
+    font-weight:800;
+    line-height:1.25;
+    letter-spacing:-.03em;
+    max-width:900px;
+    margin-bottom:24px;
+}
+
+.ui-design h2 span{
+    display:inline-block;
+    margin-left:10px;
+    font-size:18px;
+    font-weight:400;
+    letter-spacing:-.02em;
+    color:#888;
+}
+
+.ui-design .overview-text{
+    font-size:18px;
+    line-height:1.8;
+    margin-bottom:56px;
+}
+
+.ui-design .overview-text.pg-sub{
+    margin:80px 0 0;
+}
+
+/* 단계별 난이도 : 판 크기를 점 그리드로 시각화 */
+.pg-stages{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    column-gap:28px;
+    border-top:1px solid #111;
+}
+
+.pg-stage{
+    padding:28px 0 32px;
+}
+
+.pg-stage h3{
+    font-size:18px;
+    font-weight:700;
+    letter-spacing:-.02em;
+    color:#111;
+}
+
+.pg-board-wrap{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:300px;          /* 가장 큰 판(7x6, 260px) + 여백 20px x2 — 세 박스 동일 크기 */
+    max-width:100%;
+    height:262px;         /* 7x6 판 높이 222px + 여백 20px x2 */
+    margin:24px 0;
+    padding:20px;
+    border-radius:20px;
+    background:#8a6640;   /* 게임판 흙색 계열 (블록 대비를 위해 어둡게) */
+}
+
+.pg-board{
+    display:grid;
+    gap:6px;
+    width:calc(var(--cols) * 38px - 6px);
+    max-width:100%;
+}
+
+.pg-board i{
+    display:block;
+    aspect-ratio:1;
+    padding:12%;
+    border-radius:6px;
+    background:rgba(255,248,236,.6);
+    transition:transform .3s cubic-bezier(.2,.7,.2,1), opacity .25s ease, box-shadow .2s ease;
+}
+
+/* 매칭 데모 모션 */
+.pg-board i.is-match{
+    box-shadow:0 0 0 2px #4caf50, 0 0 10px rgba(76,175,80,.55);
+}
+
+.pg-board i.is-pop{
+    transform:scale(.2);
+    opacity:0;
+}
+
+.pg-board i.is-drop{
+    transform:translateY(-14px);
+    opacity:0;
+    transition:none;
+}
+
+@media (prefers-reduced-motion: reduce){
+    .pg-board i{ transition:none; }
+}
+
+.pg-board img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+/* 판교 RUN 수집 슬롯 데모 */
+.pg-collect{
+    display:grid;
+    grid-template-columns:repeat(6,minmax(0,1fr));
+    gap:16px;
+    margin-top:30px;
+    padding:28px;
+    border-radius:20px;
+    background:#8a6640;
+}
+
+.pg-slot{
+    text-align:center;
+}
+
+.pg-slot i{
+    position:relative;
+    display:block;
+    aspect-ratio:1;
+    max-width:110px;
+    margin:0 auto;
+    border-radius:12px;
+    background:rgba(255,248,236,.16);
+    transition:background .3s ease, box-shadow .3s ease;
+}
+
+.pg-slot i::before{
+    content:"?";
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    font-weight:800;
+    font-style:normal;
+    color:rgba(255,248,236,.55);
+    transition:opacity .2s ease;
+}
+
+.pg-slot img{
+    position:absolute;
+    inset:12%;
+    width:76%;
+    height:76%;
+    object-fit:contain;
+    opacity:0;
+    transform:scale(.4);
+    transition:transform .4s cubic-bezier(.2,.7,.2,1), opacity .25s ease;
+}
+
+.pg-slot.is-on i{
+    background:rgba(255,248,236,.6);
+    box-shadow:0 0 0 2px #4caf50, 0 0 12px rgba(76,175,80,.5);
+}
+
+.pg-slot.is-on.is-settled i{
+    box-shadow:none;
+}
+
+.pg-slot.is-on i::before{ opacity:0; }
+
+.pg-slot.is-on img{
+    opacity:1;
+    transform:scale(1);
+}
+
+.pg-slot strong{
+    display:block;
+    margin-top:12px;
+    font-size:14px;
+    font-weight:600;
+    line-height:1.4;
+    letter-spacing:-.02em;
+    color:#fff;
+    word-break:keep-all;
+}
+
+.pg-slot small{
+    display:block;
+    margin-top:2px;
+    font-size:13px;
+    letter-spacing:-.02em;
+    color:rgba(255,255,255,.6);
+}
+
+/* 스토리보드 흐름 */
+.pg-flow{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:28px 16px;
+    margin-top:30px;
+}
+
+.pg-flow figure{
+    margin:0;
+}
+
+.pg-flow div{
+    aspect-ratio:4 / 3;
+    overflow:hidden;
+    border-radius:12px;
+    border:1px solid #ececec;
+}
+
+.pg-flow img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.pg-flow figcaption{
+    margin-top:10px;
+    font-size:13px;
+    letter-spacing:-.02em;
+    color:#888;
+}
+
+.pg-flow figcaption b{
+    font-weight:600;
+    color:#111;
+}
+
+.pg-stage p{
+    font-size:15px;
+    line-height:1.6;
+    letter-spacing:-.02em;
+    color:#666;
+}
+
+.pg-stage p strong{
+    font-weight:600;
+    color:#111;
+}
+
+.pg-rows{
+    margin-top:56px;
+    border-top:1px solid #ececec;
+}
+
+.pg-row{
+    display:grid;
+    grid-template-columns:200px minmax(0,1fr);
+    gap:28px;
+    padding:28px 0;
+    border-bottom:1px solid #ececec;
+}
+
+.pg-row span{
+    font-size:15px;
+    font-weight:600;
+    line-height:1.6;
+    letter-spacing:-.02em;
+    color:#111;
+}
+
+.pg-row p{
+    font-size:15px;
+    line-height:1.6;
+    letter-spacing:-.02em;
+    color:#666;
+}
+
+.pg-shots{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:28px;
+    margin-top:30px;
+}
+
+.pg-shot{
+    margin:0;
+}
+
+.pg-shot div{
+    aspect-ratio:5 / 4;
+    overflow:hidden;
+    border-radius:20px;
+    border:1px solid #ececec;
+    background:#fff;
+}
+
+.pg-shot img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* 스토리보드 → 최종 비교 : 같은 크기 2열 + 변경 내용 */
+.pg-compare{
+    margin-top:72px;
+    padding-top:32px;
+    border-top:1px solid #ececec;
+}
+
+.pg-flow + .pg-compare{
+    margin-top:80px;
+}
+
+.pg-compare h3{
+    font-size:20px;
+    font-weight:700;
+    letter-spacing:-.02em;
+    color:#111;
+}
+
+.pg-compare .pg-shots{
+    margin-top:20px;
+}
+
+.pg-compare ul{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:0 28px;
+    margin-top:20px;
+    list-style:none;
+}
+
+.pg-compare li{
+    display:grid;
+    grid-template-columns:80px minmax(0,1fr);
+    gap:12px;
+    padding:14px 0;
+    border-top:1px solid #ececec;
+    font-size:15px;
+    line-height:1.5;
+    letter-spacing:-.02em;
+    color:#666;
+    word-break:keep-all;
+}
+
+.pg-compare li b{
+    font-weight:600;
+    color:#111;
+}
+
+/* After Play : 유물 확인 화면 + 설명 2열 */
+.pg-after{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:28px;
+    align-items:center;
+    margin-top:30px;
+}
+
+.pg-after .pg-rows{
+    margin-top:0;
+}
+
+.pg-after .pg-row{
+    grid-template-columns:100px minmax(0,1fr);
+    gap:16px;
+}
+
+.pg-shot figcaption{
+    margin-top:12px;
+    font-size:13px;
+    letter-spacing:-.02em;
+    color:#888;
+}
+
+@media(max-width:980px){
+
+    .pg-row{
+        grid-template-columns:1fr;
+        gap:8px;
+        padding:22px 0;
+    }
+
+    .pg-shots{
+        grid-template-columns:1fr;
+        gap:16px;
+    }
+
+    .pg-stages{
+        grid-template-columns:1fr;
+    }
+
+    .pg-collect{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        padding:20px;
+        gap:20px 12px;
+    }
+
+    .pg-flow{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .pg-compare ul{
+        grid-template-columns:1fr;
+    }
+
+    .pg-after{
+        grid-template-columns:1fr;
+    }
+
+    .pg-board-wrap{
+        width:100%;
+        height:auto;
+        min-height:0;
+    }
+
+    .pg-stage{
+        padding:24px 0 28px;
+        border-bottom:1px solid #ececec;
+    }
+
+}
+
+
+/* ==================================================
+   간격 통일 (판교 페이지 한정)
+   - 섹션 사이 200px (위아래 100px), 마지막 섹션은 푸터 앞 여유 확보
+   - 본문 문단 → 콘텐츠 48px, 보조 문단 앞 80px / 뒤 40px
+================================================== */
+
+main .problem-solving{
+    padding-top:100px;
+}
+
+main section.outcome{
+    padding-bottom:260px;
+}
+
+main .overview-text,
+main .problem-solving .overview-text,
+main .ui-design .overview-text{
+    margin-bottom:48px;
+}
+
+main .overview-text.pg-sub,
+main .ui-design .overview-text.pg-sub{
+    margin:80px 0 40px;
+}
+
+.pg-shots,
+.pg-rows,
+.pg-collect,
+.pg-flow,
+.pg-after{
+    margin-top:0;
+}
+
+.pg-compare,
+.pg-flow + .pg-compare,
+.pg-stages + .pg-shots{
+    margin-top:80px;
+}
+
+@media(max-width:980px){
+
+    main section.outcome{
+        padding-bottom:180px;
+    }
+
+    main .overview-text.pg-sub,
+    main .ui-design .overview-text.pg-sub{
+        margin:56px 0 32px;
+    }
+
+    .pg-compare,
+    .pg-flow + .pg-compare,
+    .pg-stages + .pg-shots{
+        margin-top:56px;
+    }
+
+}
+
+
+/* ==================================================
+   레이아웃 보정 2 : 세로로 길게 늘어지지 않게
+================================================== */
+
+/* 스토리보드 : 가로 슬라이드 */
+.pg-slider{
+    position:relative;
+}
+
+.pg-slider-nav{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+    margin-bottom:16px;
+}
+
+.pg-slider-nav button{
+    width:40px;
+    height:40px;
+    border-radius:999px;
+    border:1px solid #111;
+    background:#fff;
+    color:#111;
+    font-size:15px;
+    cursor:pointer;
+    transition:background .2s ease, color .2s ease, opacity .2s ease;
+}
+
+.pg-slider-nav button:hover{
+    background:#111;
+    color:#fff;
+}
+
+.pg-slider-nav button:disabled{
+    opacity:.25;
+    cursor:default;
+    background:#fff;
+    color:#111;
+}
+
+.pg-slider .pg-flow{
+    display:grid;
+    grid-template-columns:none;
+    grid-auto-flow:column;
+    grid-auto-columns:calc((100% - 32px) / 3);
+    gap:16px;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    scroll-behavior:smooth;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+}
+
+.pg-slider .pg-flow::-webkit-scrollbar{
+    display:none;
+}
+
+.pg-slider .pg-flow figure{
+    scroll-snap-align:start;
+}
+
+/* 플레이 이후 · 개요 표 : 촘촘한 목록 */
+.pg-after{
+    align-items:start;
+}
+
+.pg-after .pg-row,
+.overview .pg-row{
+    padding:16px 0;
+}
+
+@media(max-width:980px){
+
+    /* 이미지 2열 유지 */
+    .pg-shots{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:12px;
+    }
+
+    .pg-shot figcaption{
+        margin-top:8px;
+        font-size:12px;
+    }
+
+    .pg-shot div{
+        border-radius:12px;
+    }
+
+    /* 단계별 판 3열 유지 (판이 칸 폭에 맞춰 축소) */
+    .pg-stages{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        column-gap:10px;
+    }
+
+    .pg-stage,
+    .pg-stage:first-child,
+    .pg-stage:last-child{
+        padding:20px 0 0;
+        border-bottom:0;
+    }
+
+    .pg-stage h3{
+        font-size:15px;
+    }
+
+    .pg-board-wrap{
+        width:100%;
+        height:auto;
+        aspect-ratio:1;
+        margin:12px 0;
+        padding:8px;
+        border-radius:12px;
+    }
+
+    .pg-board{
+        gap:3px;
+    }
+
+    .pg-board i{
+        border-radius:3px;
+        padding:8%;
+    }
+
+    .pg-stage p{
+        font-size:12px;
+        line-height:1.5;
+    }
+
+    /* 스토리보드 슬라이드 : 2장씩 */
+    .pg-slider .pg-flow{
+        grid-auto-columns:calc((100% - 12px) / 2);
+        gap:12px;
+    }
+
+    .pg-slider-nav button{
+        width:34px;
+        height:34px;
+        font-size:13px;
+    }
+
+    /* 바꾼 점 2열 */
+    .pg-compare ul{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:0 12px;
+    }
+
+    .pg-compare li{
+        grid-template-columns:1fr;
+        gap:2px;
+        padding:12px 0;
+        font-size:13px;
+    }
+
+    /* 플레이 이후 : 이미지 위, 목록 3열 */
+    .pg-after{
+        grid-template-columns:1fr;
+        gap:16px;
+    }
+
+    .pg-after .pg-rows{
+        display:grid;
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        gap:0 12px;
+        border-top:0;
+    }
+
+    .pg-after .pg-row{
+        grid-template-columns:1fr;
+        gap:4px;
+        padding:12px 0;
+        border-top:1px solid #ececec;
+        border-bottom:0;
+    }
+
+    .pg-after .pg-row span,
+    .overview .pg-row span{
+        font-size:13px;
+    }
+
+    .pg-after .pg-row p{
+        font-size:12px;
+        line-height:1.5;
+    }
+
+    /* 개요 표 2열 */
+    .overview .pg-rows{
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:0 12px;
+        border-top:0;
+    }
+
+    .overview .pg-row{
+        grid-template-columns:1fr;
+        gap:4px;
+        padding:14px 0;
+        border-top:1px solid #ececec;
+        border-bottom:0;
+    }
+
+    .overview .pg-row p{
+        font-size:13px;
+        line-height:1.5;
+    }
+
+}
+
+
+@media(max-width:980px){
+
+    /* 수집 슬롯 : 한 줄 6칸으로 축소 (위 게임 화면보다 작게) */
+    .pg-collect{
+        grid-template-columns:repeat(6,minmax(0,1fr));
+        gap:6px;
+        padding:14px 12px;
+        border-radius:12px;
+    }
+
+    .pg-slot i{
+        border-radius:6px;
+    }
+
+    .pg-slot i::before{
+        font-size:16px;
+    }
+
+    .pg-slot strong{
+        margin-top:6px;
+        font-size:10px;
+        line-height:1.3;
+    }
+
+    .pg-slot small{
+        margin-top:1px;
+        font-size:9px;
+    }
+
+}
+
+
+
+/* ==================================================
+   PAGE-LOCAL : 한국잡월드 (판교·서울백제 페이지 스타일 재사용)
+================================================== */
+
+.pg-shot.is-portrait div{ aspect-ratio:3 / 4; }
+.pg-shot.is-wide div{ aspect-ratio:16 / 10; }
+.pg-shot.is-hd div{ aspect-ratio:16 / 9; }
+.pg-shot.is-doc div{ aspect-ratio:2 / 3; }
+.pg-shot.is-tall div{ aspect-ratio:9 / 16; }
+
+.pg-shot video{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.pg-shots + .pg-shots{
+    margin-top:28px;
+}
+
+.pg-shots.is-3{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+.pg-shots.is-4{ grid-template-columns:repeat(4,minmax(0,1fr)); }
+
+.pg-shots.is-site{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:16px;
+}
+
+.pg-shots.is-site .pg-shot div{
+    aspect-ratio:1;
+}
+
+.pg-compare + .pg-shots,
+.pg-shots + .pg-shots.is-site{
+    margin-top:56px;
+}
+
+.bj-wide{
+    margin:0;
+}
+
+.bj-wide + .bj-wide{
+    margin-top:28px;
+}
+
+.bj-wide img{
+    display:block;
+    width:100%;
+    height:auto;
+    border-radius:20px;
+    border:1px solid #ececec;
+}
+
+.bj-wide.is-hd img{
+    aspect-ratio:16 / 9;
+    object-fit:cover;
+}
+
+.bj-wide figcaption{
+    margin-top:12px;
+    font-size:13px;
+    letter-spacing:-.02em;
+    color:#888;
+}
+
+.bj-wide + .pg-shots,
+.pg-shots + .bj-wide{
+    margin-top:28px;
+}
+
+.pg-compare .pg-shots + .pg-shots{
+    margin-top:28px;
+}
+
+@media(max-width:980px){
+
+    .pg-shots.is-3{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+    .pg-shots.is-4{ grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
+    .pg-shots.is-site{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+    .pg-compare + .pg-shots,
+    .pg-shots + .pg-shots.is-site{ margin-top:32px; }
+
+    .pg-shots + .pg-shots,
+    .bj-wide + .bj-wide,
+    .bj-wide + .pg-shots,
+    .pg-shots + .bj-wide{
+        margin-top:16px;
+    }
+
+    .bj-wide img{ border-radius:12px; }
+
+}
+
+
+
+/* 유튜브 클릭 재생 (aiethics 페이지와 같은 방식) */
+.ae-video{
+    position:relative;
+    width:100%;
+    aspect-ratio:16 / 9;
+    overflow:hidden;
+    border-radius:20px;
+    border:1px solid #ececec;
+    background:#111;
+    cursor:pointer;
+}
+
+.ae-video img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.ae-video iframe{
+    display:block;
+    width:100%;
+    height:100%;
+    border:0;
+}
+
+.ae-play{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:72px;
+    height:72px;
+    margin:-36px 0 0 -36px;
+    border-radius:50%;
+    background:#fff;
+}
+
+.ae-play::before{
+    content:"";
+    position:absolute;
+    top:50%;
+    left:50%;
+    margin:-11px 0 0 -7px;
+    border-style:solid;
+    border-width:11px 0 11px 20px;
+    border-color:transparent transparent transparent #111;
+}
+
+.ae-video.is-playing{ cursor:default; }
+
+.ae-yt{
+    margin-top:12px;
+    text-align:right;
+    font-size:13px;
+    letter-spacing:-.02em;
+}
+
+.ae-yt a{
+    color:#888;
+    transition:color .2s ease;
+}
+
+.ae-yt a:hover{ color:#111; }
+
+/* 현장 사진 자리 (사진 받기 전 임시 영역) */
+.pg-shot.is-placeholder div{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#f7f7f7;
+    color:#999;
+    font-size:13px;
+    letter-spacing:-.02em;
+}
+
+.pg-shot.is-pad div{ aspect-ratio:10 / 16; }
+
+/* 현장 사진 : 작게 4열 */
+.pg-shots.is-site-sm{
+    gap:16px;
+}
+
+.pg-shots.is-site-sm .pg-shot div{
+    aspect-ratio:860 / 530;
+    border-radius:12px;
+}
+
+.ae-video.pg-after-site{
+    margin-top:56px;
+}
+
+@media(max-width:980px){
+
+    .ae-play{
+        width:56px;
+        height:56px;
+        margin:-28px 0 0 -28px;
+    }
+
+    .ae-play::before{
+        margin:-9px 0 0 -5px;
+        border-width:9px 0 9px 16px;
+    }
+
+    .ae-video{ border-radius:12px; }
+
+}
+
+
+/* 화면 흐름 자동 롤링 슬라이드 */
+.jw-track{
+    display:grid;
+    grid-auto-flow:column;
+    grid-auto-columns:calc((100% - 28px) / 2);
+    gap:28px;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    scroll-behavior:smooth;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+}
+
+.jw-track::-webkit-scrollbar{ display:none; }
+
+.jw-track .pg-shot{ scroll-snap-align:start; }
+
+.jw-slider + .pg-shots{ margin-top:28px; }
+
+@media(max-width:980px){
+
+    .jw-track{
+        grid-auto-columns:86%;
+        gap:12px;
+    }
+
+    .jw-slider + .pg-shots{ margin-top:16px; }
+
+    /* Design Concept : 모바일에서 가로로 넘기는 3장 */
+    .problem-flow{
+        display:grid;
+        grid-template-columns:none;
+        grid-auto-flow:column;
+        grid-auto-columns:82%;
+        gap:24px;
+        overflow-x:auto;
+        scroll-snap-type:x mandatory;
+        scrollbar-width:none;
+        border-top:1px solid #111;
+    }
+
+    .problem-flow::-webkit-scrollbar{ display:none; }
+
+    .problem-item,
+    .problem-item:first-child,
+    .problem-item:last-child{
+        padding:24px 0 0 !important;
+        scroll-snap-align:start;
+    }
+
+    .problem-item:not(:last-child)::after{ content:none; }
+
+    .problem-item h3{
+        font-size:18px;
+        margin-bottom:12px;
+    }
+
+    .problem-item p{
+        font-size:14px;
+        line-height:1.65;
+    }
+
+    .jw-swipe-hint{
+        display:block;
+        margin-top:16px;
+        font-size:12px;
+        color:#999;
+        letter-spacing:-.02em;
+    }
+
+}
+
+.jw-swipe-hint{ display:none; }
+
+/* 히어로 보정 (잡월드) */
+main > .hero{ padding-bottom:20px; }
+
+@media(max-width:980px){
+
+    .project-info > div:last-child{ grid-column:auto; }
+
+    main > .hero{ padding-bottom:0; }
+
+    .hero .hero-image{
+        margin-left:-26px;
+        margin-right:-26px;
+        margin-top:56px;
+        border-radius:0;
+    }
+
+    .hero .hero-image img{
+        aspect-ratio:16 / 10;
+        object-fit:cover;
+    }
+
+}
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<a href="../index.html" class="logo">
+    uxxxu.studio
+</a>
+
+<a href="../projects.html"
+class="back">
+    ← Back to Portfolio
+</a>
+
+</header>
+
+
+<main>
+
+<section class="hero">
+
+<div class="container">
+
+<h1>
+    한국잡월드
+</h1>
+
+<p class="subtitle">
+    HD현대 산업 직무 체험 콘텐츠 3종
+    UX/UI 디자인
+</p>
+
+<div class="project-info">
+
+<div>
+<small>Category</small>
+<strong><span>Exhibition</span><span>Interactive UX/UI</span></strong>
+</div>
+
+<div>
+<small>Year</small>
+<strong>2024</strong>
+</div>
+
+<div>
+<small>Tools</small>
+<strong><span>Photoshop</span><span>Illustrator</span></strong>
+</div>
+
+<div>
+<small>My Role</small>
+<strong><span>UX/UI Design</span><span>Graphic</span></strong>
+</div>
+
+</div>
+
+<div class="hero-image">
+<img src="images/jobworld/ges_intro.webp" alt="그린에너지 스테이션 타이틀 화면">
+</div>
+
+</div>
+
+</section>
+
+<section class="overview">
+
+<div class="container">
+
+
+<h2>
+    세 개의 산업을<br>
+    직접 해 보는 직업으로
+</h2>
+
+
+<p class="overview-text">
+
+한국잡월드 어린이·청소년 체험관에 새로 설치된 HD현대 계열 3개사의 직무 체험 콘텐츠입니다.<br>
+
+어린이는 자율주행 지게차를 점검하고, 청소년은 친환경 선박을 설계하거나 친환경 에너지 도시를 만듭니다.
+모두 함께 보는 큰 화면과 각자 조작하는 개인 패드로 이루어져 있어,
+두 화면이 하나의 체험으로 이어지도록 디자인했습니다.
+
+</p>
+
+
+<div class="pg-rows">
+
+<div class="pg-row">
+    <span>발주처</span>
+    <p>HD현대 · HD현대사이트솔루션 · HD한국조선해양 · HD현대오일뱅크</p>
+</div>
+
+<div class="pg-row">
+    <span>대상</span>
+    <p>어린이 체험관(자율주행 지게차) · 청소년 체험관(친환경 선박 연구소, 그린에너지 스테이션)</p>
+</div>
+
+<div class="pg-row">
+    <span>설치 형태</span>
+    <p>벽면 화면과 개인 패드 · 미디어 테이블과 개인 패드</p>
+</div>
+
+<div class="pg-row">
+    <span>기여도</span>
+    <p>디자인 100%</p>
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+<section class="problem-solving">
+
+<div class="container">
+
+<h2>
+    같은 산업 체험도<br>
+    연령과 화면에 맞게 나눴습니다.
+</h2>
+
+<p class="overview-text">
+
+어린이와 청소년이 같은 산업을 체험하더라도 이해할 수 있는 정보의 양이 다르고,
+큰 화면과 개인 패드가 맡는 역할도 달랐습니다.
+
+</p>
+
+
+<div class="problem-flow">
+
+
+<div class="problem-item">
+
+<h3>
+    연령에 맞춘 정보의 양
+</h3>
+
+<p>
+    어린이 체험관은 노란색을 주색으로 쓰고, 포크와 센서를 점검하는 단순한 미션으로 구성했습니다.
+    청소년 체험관은 선박 종류와 엔진, 연료 공정처럼 실제 산업 용어와 선택지를 화면에 담았습니다.
+</p>
+
+</div>
+
+
+<div class="problem-item">
+
+<h3>
+    함께 보는 화면, 혼자 조작하는 패드
+</h3>
+
+<p>
+    벽면 화면과 미디어 테이블은 여러 명이 함께 보는 공간으로,
+    개인 패드는 각자 설정하고 미션을 수행하는 조작판으로 역할을 나눠 디자인했습니다.
+</p>
+
+</div>
+
+
+<div class="problem-item">
+
+<h3>
+    화면 밖으로 이어지는 결과
+</h3>
+
+<p>
+    친환경 선박 연구소에서는 미션으로 모은 선박 조각으로 모형을 완성해 미디어 테이블에 올리면,
+    화면 속 바다에서 선박이 출항합니다.
+</p>
+
+</div>
+
+
+</div>
+
+<span class="jw-swipe-hint">옆으로 밀어서 보기 →</span>
+
+</div>
+
+</section>
+
+<section class="ui-design">
+
+<div class="container">
+
+
+<h2>
+    자율주행 지게차 <span>어린이 체험관</span>
+</h2>
+
+
+<p class="overview-text">
+
+HD현대사이트솔루션의 자율주행 지게차를 체험하는 콘텐츠입니다.
+큰 화면에서는 창고 안을 움직이는 지게차를 보고, 개인 패드로 지게차를 설정하고 움직입니다.
+어린이의 호기심을 끌도록 노란색을 주색으로 디자인했고, 창고와 지게차는 아이소메트릭 그래픽으로 표현했습니다.
+
+</p>
+
+
+<div class="jw-slider" aria-label="자율주행 지게차 큰 화면">
+
+<div class="pg-slider-nav">
+    <button type="button" class="pg-prev" aria-label="이전 화면">←</button>
+    <button type="button" class="pg-next" aria-label="다음 화면">→</button>
+</div>
+
+<div class="jw-track">
+
+<figure class="pg-shot is-hd">
+<div><img src="images/jobworld/lift_00.webp" alt="스스로 일하는 자율주행 지게차 타이틀 화면" loading="lazy"></div>
+<figcaption>큰 화면 · 타이틀</figcaption>
+</figure>
+
+<figure class="pg-shot is-hd">
+<div><img src="images/jobworld/lift_01.webp" alt="안내 캐릭터가 점검 시작을 알리는 화면" loading="lazy"></div>
+<figcaption>큰 화면 · 점검 시작</figcaption>
+</figure>
+
+<figure class="pg-shot is-hd">
+<div><img src="images/jobworld/lift_02.webp" alt="포크 작동 점검 중인 지게차 화면" loading="lazy"></div>
+<figcaption>큰 화면 · 포크 작동 점검</figcaption>
+</figure>
+
+<figure class="pg-shot is-hd">
+<div><img src="images/jobworld/lift_03.webp" alt="센서 작동 점검 중인 지게차 화면" loading="lazy"></div>
+<figcaption>큰 화면 · 센서 작동 점검</figcaption>
+</figure>
+
+</div>
+
+</div>
+
+<div class="pg-shots is-3">
+
+<figure class="pg-shot is-hd">
+<div><img src="images/jobworld/lift_pad_05.webp" alt="패드 - 포크 작동 점검" loading="lazy"></div>
+<figcaption>패드 · 포크 점검</figcaption>
+</figure>
+
+<figure class="pg-shot is-hd">
+<div><img src="images/jobworld/lift_pad_07.webp" alt="패드 - 센서 점검" loading="lazy"></div>
+<figcaption>패드 · 센서 점검</figcaption>
+</figure>
+
+<figure class="pg-shot is-hd">
+<div><img src="images/jobworld/lift_pad_09.webp" alt="패드 - 장애물 감지 경고" loading="lazy"></div>
+<figcaption>패드 · 문제 확인</figcaption>
+</figure>
+
+</div>
+
+
+</div>
+
+</section>
+
+<section class="ui-design">
+
+<div class="container">
+
+
+<h2>
+    친환경 선박 연구소 <span>청소년 체험관</span>
+</h2>
+
+
+<p class="overview-text">
+
+HD한국조선해양의 선박 설계와 제작 과정을 체험하는 콘텐츠입니다.
+선주에게서 선박 의뢰 편지를 받고, 개인 패드에서 미션을 수행하며 선박 종류와 선수 형태, 엔진을 고릅니다.
+미션으로 모은 선박 조각으로 모형을 완성해 미디어 테이블에 올리면 선박이 출항합니다.
+
+</p>
+
+
+<div class="jw-slider" aria-label="친환경 선박 연구소 화면">
+
+<div class="pg-slider-nav">
+    <button type="button" class="pg-prev" aria-label="이전 화면">←</button>
+    <button type="button" class="pg-next" aria-label="다음 화면">→</button>
+</div>
+
+<div class="jw-track">
+
+<figure class="pg-shot is-hd">
+<div><img src="images/jobworld/ship_intro.webp" alt="친환경 선박 연구소 시작 화면" loading="lazy"></div>
+<figcaption>시작</figcaption>
+</figure>
+
+<figure class="pg-shot is-hd">
+<div><img src="images/jobworld/ship_01.webp" alt="선주의 선박 의뢰 편지 화면" loading="lazy"></div>
+<figcaption>선박 의뢰</figcaption>
+</figure>
+
+<figure class="pg-shot is-hd">
+<div><img src="images/jobworld/ship_05.webp" alt="LNG선 정보 화면" loading="lazy"></div>
+<figcaption>선박 종류 확인</figcaption>
+</figure>
+
+<figure class="pg-shot is-hd">
+<div><img src="images/jobworld/ship_09.webp" alt="선수 형태를 고르는 화면" loading="lazy"></div>
+<figcaption>선수 형태 선택</figcaption>
+</figure>
+
+<figure class="pg-shot is-hd">
+<div><img src="images/jobworld/ship_12.webp" alt="엔진을 고르는 화면" loading="lazy"></div>
+<figcaption>엔진 선택</figcaption>
+</figure>
+
+<figure class="pg-shot is-hd">
+<div><img src="images/jobworld/ship_other_tip.webp" alt="체험 주의 사항 화면" loading="lazy"></div>
+<figcaption>주의 사항</figcaption>
+</figure>
+
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+<section class="ui-design">
+
+<div class="container">
+
+
+<h2>
+    그린에너지 스테이션 <span>청소년 체험관</span>
+</h2>
+
+
+<p class="overview-text">
+
+HD현대오일뱅크의 친환경 에너지를 체험하는 콘텐츠입니다.
+미디어 테이블 위의 넓은 도시 지도에서 에너지 시설을 하나씩 세우고,
+개인 패드에서 바이오 연료 같은 에너지원의 생산 공정을 미션으로 풀어 봅니다.
+
+</p>
+
+
+<figure class="bj-wide">
+<img src="images/jobworld/ges_map.webp" alt="친환경 에너지 도시 지도 화면" loading="lazy">
+<figcaption>미디어 테이블 · 에너지 도시 지도</figcaption>
+</figure>
+
+<figure class="bj-wide">
+<img src="images/jobworld/ges_build.webp" alt="에너지 시설이 세워진 지도 화면" loading="lazy">
+<figcaption>미디어 테이블 · 에너지 시설 건설</figcaption>
+</figure>
+
+<div class="pg-shots is-4">
+
+<figure class="pg-shot is-pad">
+<div><img src="images/jobworld/ges_pad1.webp" alt="패드 - 그린에너지 스테이션 시작" loading="lazy"></div>
+<figcaption>패드 · 시작</figcaption>
+</figure>
+
+<figure class="pg-shot is-pad">
+<div><img src="images/jobworld/ges_pad2.webp" alt="패드 - BIO연료 연구 미션 안내" loading="lazy"></div>
+<figcaption>패드 · BIO연료</figcaption>
+</figure>
+
+<figure class="pg-shot is-pad">
+<div><img src="images/jobworld/ges_pad3.webp" alt="패드 - 원료 확보 미션" loading="lazy"></div>
+<figcaption>패드 · 원료 확보</figcaption>
+</figure>
+
+<figure class="pg-shot is-pad">
+<div><img src="images/jobworld/ges_pad4.webp" alt="패드 - 바이오 연료 생산 공정 미션" loading="lazy"></div>
+<figcaption>패드 · 생산 공정</figcaption>
+</figure>
+
+</div>
+
+
+</div>
+
+</section>
+
+<section class="ui-design">
+
+<div class="container">
+
+
+<h2>
+    현장
+</h2>
+
+
+<p class="overview-text">
+
+한국잡월드 어린이·청소년 체험관에 설치된 모습과 소개 영상입니다.
+
+</p>
+
+
+<div class="pg-shots is-4 is-site-sm">
+
+<figure class="pg-shot">
+<div><img src="images/jobworld/site_lift.webp" alt="안전모를 쓴 아이가 지게차 화면 앞에서 체험하는 모습" loading="lazy"></div>
+<figcaption>자율주행 지게차 · 큰 화면</figcaption>
+</figure>
+
+<figure class="pg-shot">
+<div><img src="images/jobworld/site_pen.webp" alt="미디어 테이블과 개인 패드로 선박을 설계하는 모습" loading="lazy"></div>
+<figcaption>친환경 선박 연구소 · 미디어 테이블</figcaption>
+</figure>
+
+<figure class="pg-shot">
+<div><img src="images/jobworld/site_table.webp" alt="여러 명이 미디어 테이블의 도시 지도를 보는 모습" loading="lazy"></div>
+<figcaption>그린에너지 스테이션 · 미디어 테이블</figcaption>
+</figure>
+
+<figure class="pg-shot">
+<div><img src="images/jobworld/site_pad.webp" alt="개인 패드로 미션을 수행하는 모습" loading="lazy"></div>
+<figcaption>그린에너지 스테이션 · 개인 패드</figcaption>
+</figure>
+
+</div>
+
+
+
+
+<div class="ae-video pg-after-site"
+role="button"
+tabindex="0"
+data-yt="88uZhruKWxw"
+data-title="한국잡월드 영상"
+aria-label="한국잡월드 영상 재생">
+
+<img src="images/jobworld/ges_intro.webp"
+alt="그린에너지 스테이션 타이틀 화면">
+
+<span class="ae-play"></span>
+
+</div>
+
+<p class="ae-yt"><a href="https://youtu.be/88uZhruKWxw" target="_blank" rel="noopener">YouTube에서 보기 ↗</a></p>
+
+
+</div>
+
+</section>
+
+<section class="overview outcome">
+
+<div class="container">
+
+
+<h2>
+    세 체험의 화면을<br>
+    모두 디자인했습니다.
+</h2>
+
+
+<p class="overview-text">
+
+HD현대가 기획한 세 체험 콘텐츠의 큰 화면과 개인 패드 UX/UI, 그래픽을 디자인했습니다.
+화면에 등장하는 안내 캐릭터는 한국잡월드의 공식 캐릭터입니다.
+
+</p>
+
+
+<div class="pg-rows">
+
+<div class="pg-row">
+    <span>기여도</span>
+    <p>디자인 100% · 큰 화면과 패드 UX/UI, 아이소메트릭 그래픽</p>
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<footer>
+
+<div class="footer-title">
+    Exhibition · Interactive UX/UI
+</div>
+
+<div class="footer-link">
+    한국잡월드
+</div>
+
+<a href="../projects.html" class="footer-back">
+    ← Back to Portfolio
+</a>
+
+</footer>
+
+
+<script src="../js/main.js"></script>
+
+<script>
+
+(function(){
+
+    var items = document.querySelectorAll('.ae-video');
+
+    function play(box){
+        if (box.classList.contains('is-playing')) return;
+        var frame = document.createElement('iframe');
+        frame.src = 'https://www.youtube.com/embed/' + box.getAttribute('data-yt') + '?autoplay=1&rel=0';
+        frame.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+        frame.title = box.getAttribute('data-title') || '';
+        frame.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture; fullscreen');
+        frame.setAttribute('allowfullscreen', '');
+        box.innerHTML = '';
+        box.appendChild(frame);
+        box.classList.add('is-playing');
+        box.removeAttribute('role');
+        box.removeAttribute('tabindex');
+        box.removeAttribute('aria-label');
+    }
+
+    Array.prototype.forEach.call(items, function(box){
+        box.addEventListener('click', function(){ play(box); });
+        box.addEventListener('keydown', function(e){
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); play(box); }
+        });
+    });
+
+})();
+
+/* 화면 흐름 슬라이드 : 버튼 + 자동 롤링 */
+(function(){
+
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    Array.prototype.forEach.call(document.querySelectorAll('.jw-slider'), function(box){
+
+        var track = box.querySelector('.jw-track');
+        var prev = box.querySelector('.pg-prev'), next = box.querySelector('.pg-next');
+        var visible = false, paused = false;
+
+        function step(){
+            var f = track.querySelector('.pg-shot');
+            return f ? f.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 0) : 300;
+        }
+        function atEnd(){ return track.scrollLeft + track.clientWidth >= track.scrollWidth - 2; }
+        function go(dir){
+            if (dir > 0 && atEnd()) track.scrollTo({ left: 0, behavior: 'smooth' });
+            else if (dir < 0 && track.scrollLeft <= 2) track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' });
+            else track.scrollBy({ left: dir * step(), behavior: 'smooth' });
+        }
+
+        prev.addEventListener('click', function(){ go(-1); });
+        next.addEventListener('click', function(){ go(1); });
+
+        ['mouseenter','touchstart','focusin'].forEach(function(ev){ box.addEventListener(ev, function(){ paused = true; }, { passive: true }); });
+        ['mouseleave','focusout'].forEach(function(ev){ box.addEventListener(ev, function(){ paused = false; }); });
+        box.addEventListener('touchend', function(){ setTimeout(function(){ paused = false; }, 4000); }, { passive: true });
+
+        if ('IntersectionObserver' in window) {
+            new IntersectionObserver(function(e){ visible = e[0].isIntersecting; }).observe(box);
+        } else { visible = true; }
+
+        if (!reduce) {
+            setInterval(function(){
+                if (visible && !paused && !document.hidden) go(1);
+            }, 3200);
+        }
+    });
+
+})();
+
+</script>
+
+</main>
+
+</body>
+
+</html>
